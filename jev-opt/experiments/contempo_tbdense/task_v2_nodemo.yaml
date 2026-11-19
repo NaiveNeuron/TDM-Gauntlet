@@ -1,0 +1,60 @@
+# v2 dev study (second pre-registration). Generated from task.yaml: same data, seed and metric;
+# class-bias calibration + temperature fit on a 400-example train slice held out of reflection,
+# reflection pool 100, <=1500 chars per text slot, <=8000 chars per program, ensembles of top 3/5.
+# No demonstrations (configuration A).
+name: contempo-tbdense
+labels:
+  BEFORE: 'BEFORE: Event 1 happens before Event 2; Event 1 ends before Event 2 begins (including immediately
+    before).'
+  AFTER: 'AFTER: Event 1 happens after Event 2; Event 1 begins after Event 2 ends (including immediately
+    after).'
+  INCLUDES: 'INCLUDES: the time interval of Event 1 contains the time interval of Event 2; Event 2 happens
+    during Event 1 (including Event 2 starting or ending Event 1).'
+  IS_INCLUDED: 'IS_INCLUDED: the time interval of Event 1 is contained in the time interval of Event 2;
+    Event 1 happens during Event 2 (including Event 1 starting or ending Event 2).'
+  SIMULTANEOUS: 'SIMULTANEOUS: Event 1 and Event 2 occupy the same time interval; they happen at the same
+    time.'
+  VAGUE: 'VAGUE: no specific relation above can be chosen with 80% confidence that it was the writer''s
+    intent that a reader infer it; the text leaves the temporal relation between the two events underspecified.'
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+negative_label: VAGUE
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: micro_f1
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 8900
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 8000
+  ensemble_k:
+  - 3
+  - 5
+seed_program: seed.yaml

@@ -1,0 +1,61 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Rubric-fit ladder; each level states how many of the three rubric requirements (vocabulary, grammar, mechanics) are met and how fully.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: score
+    instructions: 'Judge how fully `essay` meets this language rubric. Requirement V: sophisticated control
+      of a wide range of vocabulary and collocations. Requirement G: grammar and usage rules followed
+      throughout. Requirement M: spelling and punctuation correct throughout. Use only the language of
+      `essay`, not its ideas or structure. `essay_prompt` is context only.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - None of V, G or M is met. Every part of the essay shows serious problems in vocabulary, grammar
+      and mechanics.
+    - None of V, G or M is met, but a few sentences are written correctly.
+    - None is met. Correct sentences are a minority, and vocabulary is basic.
+    - One requirement is close to met, and the other two show frequent problems.
+    - The essay partly meets the rubric. Roughly half the sentences are error-free, vocabulary is ordinary,
+      and errors never hide meaning.
+    - More than half the sentences are error-free. At least one of V, G or M is close to fully met.
+    - Two of V, G and M are nearly met. Errors are occasional, and the vocabulary is somewhat varied.
+    - All three are nearly met. There are only rare small slips, or vocabulary is wide but not fully sophisticated.
+    - All three are fully met. Vocabulary is sophisticated and wide, and grammar, usage, spelling and
+      punctuation are correct throughout.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

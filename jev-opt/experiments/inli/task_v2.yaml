@@ -1,0 +1,59 @@
+# v2 dev study (second pre-registration). Generated from task.yaml: same data, seed and metric;
+# class-bias calibration + temperature fit on a 400-example train slice held out of reflection,
+# reflection pool 100, <=1500 chars per text slot, <=8000 chars per program, ensembles of top 3/5.
+# Demonstrations: 8 nearest train examples (class-balanced) by BAAI/bge-small-en-v1.5.
+name: inli
+labels:
+  implied_entailment: 'Implicature: The hypothesis is a valid inference from the passage, but it is NOT
+    explicitly stated in the passage. Implied entailment: Requires some sort of an additional cognitive
+    step, such as logical reasoning, world knowledge, conversational pragmatics, or figurative language.'
+  explicit_entailment: 'Explicature: The hypothesis is a valid inference from the passage, and it is explicitly
+    stated in the passage. Explicit entailment: Follows directly from the text''s lexical semantics (e.g.
+    via synonymy and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging, or other endophora).'
+  neutral: 'Neutral: The hypothesis can neither be supported nor contradicted by the passage.'
+  contradiction: 'Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted
+    by the passage.'
+inputs:
+  premise: ''
+  hypothesis: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: accuracy
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 8000
+  ensemble_k:
+  - 3
+  - 5
+seed_program: seed.yaml
+seed_demos:
+  mode: knn
+  k: 8
+  balanced: true

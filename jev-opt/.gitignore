@@ -1,0 +1,12 @@
+node_modules/
+runs/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+worker.log
+# Python worker
+.jev-cache/
+examples/lifetox/data/
+experiments/*/data/
+python/*.egg-info/

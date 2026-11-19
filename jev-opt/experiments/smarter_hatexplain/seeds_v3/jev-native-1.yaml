@@ -1,0 +1,36 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria that state what separates each label from its nearest neighbour, with the group-target test as the Hate/Offensive boundary.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Which category fits the social media post in `post` (lowercased, tokenised, with placeholders
+      such as <user> and <number>)?
+    state:
+    - post
+    options:
+      Normal:
+        criterion: The `post` uses no rude, hurtful, derogatory, obscene or insulting language and does
+          not attack or demean any group. Criticism, disagreement or the mere mention of a group or sensitive
+          topic in neutral wording belongs here. Insulting or obscene wording belongs to Offensive instead.
+          Attacks on a group belong to Hate instead.
+      Offensive:
+        criterion: The `post` uses rude, hurtful, derogatory, obscene or insulting language to upset or
+          embarrass people, but it does not attack a group for a trait such as race, ethnic origin, religion,
+          disability, gender, age or sexual orientation. Insults aimed at an individual or at people in
+          general, and profanity, belong here. If the insult targets a group because of such a trait,
+          it belongs to Hate instead.
+      Hate:
+        criterion: In context, the `post` attacks, demeans, offends, threatens or insults a group based
+          on race, ethnic origin, religion, disability, gender, age, sexual orientation or another trait.
+          A slur or group word alone is not enough; the context must show the group is being attacked.
+          Insults that do not target a group for such a trait belong to Offensive instead.

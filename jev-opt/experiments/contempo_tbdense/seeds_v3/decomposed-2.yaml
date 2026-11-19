@@ -1,0 +1,50 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest; each label is judged as an independent true/false statement about the writer's intended relation, and the most probable label wins.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: one_vs_rest
+    instructions: In `context`, Event 1 is marked <e1>...</e1> (`event_1`) and Event 2 is marked <e2>...</e2>
+      (`event_2`). Each event is a time interval. Negated, modal and hypothetical events count as occurring.
+      Judge whether the statement is the relation the writer intends a reader to infer, with at least
+      80% confidence.
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 ends before Event 2 begins, including immediately before, and the two intervals
+          do not overlap.
+      AFTER:
+        criterion: Event 1 begins after Event 2 ends, including immediately after, and the two intervals
+          do not overlap.
+      INCLUDES:
+        criterion: Event 2 happens during Event 1, or starts or ends Event 1, and Event 1 lasts longer
+          than Event 2.
+      IS_INCLUDED:
+        criterion: Event 1 happens during Event 2, or starts or ends Event 2, and Event 2 lasts longer
+          than Event 1. This includes Event 1 being an aspectual or manner event of Event 2.
+      SIMULTANEOUS:
+        criterion: Event 1 and Event 2 occupy the same time interval, and neither event is longer than
+          the other.
+      VAGUE:
+        criterion: The text does not make any specific order or containment between Event 1 and Event
+          2 clear with 80% confidence, or one event is generic while the other is a specific event.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

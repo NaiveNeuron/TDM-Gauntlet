@@ -1,0 +1,130 @@
+{
+ "wikiwd": [
+  {
+   "index": 123144,
+   "sentence_sha256": "c2c8db9262c2f8772cdfad907f43e87b297322b22b5eea8eecb84ef802472e88",
+   "reason": "quoted Korean lyric phrase"
+  },
+  {
+   "index": 135370,
+   "sentence_sha256": "bd2bafd4dd4a510632999e33ec3e05108bf3c8e306beb185323e2e0de3591b44",
+   "reason": "quoted non-English verse line"
+  },
+  {
+   "index": 145855,
+   "sentence_sha256": "1e9055295de78cc5c678aea261c965cb0526403dd0aaace5db4abe505925cb7f",
+   "reason": "Arabic honorific phrase (radiyAllahu anhum ajmaeen)"
+  },
+  {
+   "index": 156643,
+   "sentence_sha256": "1ea246332125a91f72460efc75ffdaeb2c5140685d5b67e698e379d4b6eff899",
+   "reason": "Japanese sentence fragments"
+  },
+  {
+   "index": 172192,
+   "sentence_sha256": "e0514e15f69a9589e857c432f7a3cc5afe7523d2d228fae13eaa9bafe2acc237",
+   "reason": "Spanish phrase 'luchador enmascarado' as running text"
+  },
+  {
+   "index": 196043,
+   "sentence_sha256": "02c5625985217ed71f39bfce4c5b9c18ffe2095e4e2a9901258ab55fe009b716",
+   "reason": "French sentences"
+  },
+  {
+   "index": 202288,
+   "sentence_sha256": "b003e4548e64bc8a0e8294f63bae1a34756f82a1f9d9d88f91b1c919180b4200",
+   "reason": "Swedish function word 'och' (code-mixed)"
+  },
+  {
+   "index": 202504,
+   "sentence_sha256": "c75fe1448c31835fe061f0b0c427eccc39bc376a716e428c2af7bf193a47507e",
+   "reason": "German sentence"
+  },
+  {
+   "index": 244234,
+   "sentence_sha256": "c410f8949c9ab12c72b96459eb4ed3b0cdfb90aa811c6e1f65343f13b510e8d8",
+   "reason": "Greek running-text phrase"
+  },
+  {
+   "index": 262255,
+   "sentence_sha256": "1e4f03b33342a6e6f19ec0fbc93b9f996235874ac7ba269f6fe07c64c9b13933",
+   "reason": "Old Norse phrase 'Þrúðar þjófr' as running text"
+  },
+  {
+   "index": 302079,
+   "sentence_sha256": "5e612cf0463dcac42ab6c71bab639621f98e0e2f4d9f185f63ae625bffbb7235",
+   "reason": "Italian phrase 'frazione del comune di ... in province di'"
+  },
+  {
+   "index": 316168,
+   "sentence_sha256": "491f33ec1460cb12707d21e02c5aa4a28ef7cdb0235efbd88bfe8b4d4f46337c",
+   "reason": "French phrase 'salle de spectacles' as running text"
+  },
+  {
+   "index": 318947,
+   "sentence_sha256": "74d14c5b30ee9ee356b7019b8edd04ec625b594a3480fd17dfb6caec86a091de",
+   "reason": "quoted Greek inscriptions"
+  }
+ ],
+ "nytfb": [],
+ "_method": {
+  "langid_non_en": {
+   "wikiwd": 6465,
+   "nytfb": 226
+  },
+  "non_latin_letters_ge_2": {
+   "wikiwd": 1240,
+   "nytfb": 0
+  },
+  "candidates": {
+   "wikiwd": 7271,
+   "nytfb": 226
+  },
+  "llm_flagged": {
+   "wikiwd": 36,
+   "nytfb": 0
+  },
+  "llm_flagged_indices_wikiwd": [
+   10764,
+   11883,
+   14779,
+   31447,
+   33545,
+   80044,
+   95525,
+   99033,
+   123144,
+   127050,
+   135370,
+   145855,
+   156643,
+   159121,
+   172192,
+   177959,
+   187765,
+   196043,
+   202288,
+   202504,
+   207848,
+   209989,
+   215791,
+   234592,
+   244234,
+   257092,
+   262255,
+   266604,
+   278064,
+   284752,
+   293295,
+   302079,
+   316168,
+   318947,
+   348272,
+   358786
+  ],
+  "excluded_after_adjudication": {
+   "wikiwd": 13,
+   "nytfb": 0
+  }
+ }
+}

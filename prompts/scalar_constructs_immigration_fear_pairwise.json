@@ -1,0 +1,14 @@
+{
+  "_source": "Licht et al., Measuring Scalar Constructs in Social Science with LLMs, EMNLP 2025, https://aclanthology.org/2025.emnlp-main.1635/. Prompt text from the paper's App. E, pp. 32163 and 32165 (zero-shot prompt), taken byte-for-byte from github.com/haukelicht/scalar_measurement@7fec6010d3f95e9118d5907d77c65d5d8d380b11 prompting/pairwise_comparison/prompts/carlson_montgomery2017_immigration/original/zero_shot.md. Zero-shot: no exemplars.",
+  "_primitive": "choice {\"1\", \"2\"}; four requests per pair (paper's label-swap x order-reversal debiasing, App. A.2)",
+  "_state": "string, byte-identical to the `text` field of the release's prompting/pairwise_comparison/data/carlson_montgomery2017_immigration/0.test.pairwise.expanded.jsonl: '\"**Text a**\": \"\"\"<first text>\"\"\"\\n\\n\"**Text b**\": \"\"\"<second text>\"\"\"', in the four label-swap x order-reversal presentations",
+  "_adaptation": "Instructions = the release's zero-shot pairwise prompt verbatim, with two edits: the {text} slot is replaced by a note that the two labelled texts are the state, and the final line '**Response**: [Output only \"1\" or \"2\"]' is dropped (the choice labels \"1\"/\"2\" are the paper's answer tokens). Criteria restate the paper's comparison question for each label.",
+  "question": {
+    "type": "choice",
+    "instructions": "Your tasks is to **indicate which of these two statements expresses more fear, anxiety, or worry about the negative impact of immigrants or immigration on America.** \n\nNote that we are not interested in whether the writer dislikes immigrants, wants them to go home, resents them, or blames them. We are only interested in whether the writer is expressing fear, anxiety, or worry.\n\n## Input\n\n[The two texts are provided as the state, labelled **Text 1** and **Text 2**.]",
+    "criteria": {
+      "1": "Text 1 expresses more fear, anxiety, or worry about the negative impact of immigrants or immigration on America.",
+      "2": "Text 2 expresses more fear, anxiety, or worry about the negative impact of immigrants or immigration on America."
+    }
+  }
+}

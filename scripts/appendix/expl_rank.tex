@@ -1,0 +1,35 @@
+\paragraph{Task.} Rank the candidate explanations for each e-SNLI query (premise, hypothesis and gold relation):
+the human explanation plus good, fair, poor and nonsense candidates. The replaced predictor is the paper's
+ListNet reward model. \jev{} scores each candidate on the paper's quality tiers (one \textsc{Score}
+question each, all in one request per query), and candidates are ranked by expected level.
+
+\paragraph{Data and test set.} e-SNLI validation (<<m:expl_rank:source.data.repo|url>> at
+<<m:expl_rank:source.data.commit|commit>>, MIT / CC BY-SA), frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_expl\_rank.py} (SHA-256
+<<m:expl_rank:frozen.sha256|sha>>): $N=$ <<s:expl_rank:n|int>>. The paper's graded candidates were never
+released, and its repository contains neither the templates nor the scorer. We therefore rebuilt them: for
+entailment and contradiction, the Table~10 templates verbatim. For neutral, templates we wrote in the same
+style. Gold scores from Algorithm~1, with the unspecified details fixed in advance. The App.~D pairwise subset
+is a hash-selected stand-in. The language screen dropped <<m:expl_rank:english_verification.rows_dropped|int>>
+rows.
+
+\paragraph{Metric.} NDCG@5 (Table~20), MAP, MRR, and Kendall/Spearman per query, all against the rebuilt
+Algorithm~1 scores and computed with the authors' metric code. We also report agreement with the designed tier
+order.
+<<metrics
+cols: expl_rank=e-SNLI val
+ndcg@5 = NDCG@5 | pct
+map = MAP | pct
+mrr = MRR | pct
+spearman = Spearman $\rho$ | pct
+pairwise_agreement_200 = Pairwise agr.\ (App.~D subset) | pct
+vs_tier_order.spearman = Spearman vs.\ tier order | pct
+>>
+<<papernums:expl_rank=e-SNLI val>>
+
+\paragraph{Deviations and status.} Not comparable. All candidates except the human explanation are fixed
+templates per label, so recognising the tier is enough to score highly. A tier-order oracle gets
+<<m:expl_rank:metrics.offline_checks.tier-order oracle>>, and a random ranker already gets
+<<m:expl_rank:metrics.offline_checks.uniform random>>. \jev{} agrees more closely with the tier order than with
+the rebuilt scores. The paper's Table~20 values also do not fit the stated construction and metric code (manifest
+\texttt{deviations}). The authors' own later report calls this e-SNLI setup
+confounded.

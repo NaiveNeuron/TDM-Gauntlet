@@ -1,0 +1,80 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria; each option states what it covers and which nearby cases belong to the neighbouring option instead.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: true
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: choice
+    instructions: Compare `old_text` with `new_text` (one sentence of a scientific paper, before and after
+      revision). Which intent best describes the change?
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: 'The change corrects a language error or convention: grammar, capitalization, punctuation,
+          tense, modality, spelling, typography or abbreviations. The meaning stays the same. If the old
+          wording was already correct and was only reworded to read better, choose Clarity instead.'
+      Clarity:
+        criterion: The change alters word choice, phrasing, expressions or text format so the sentence
+          is more formal, concise or understandable. It may amplify the existing meaning for clarity.
+          The old wording contained no error, which separates this from Grammar. No fact, number, result
+          or claim is added, removed or changed, which separates this from Fact/Evidence and Claim.
+      Fact/Evidence:
+        criterion: The change adds, elaborates, extends, verifies, updates, corrects or removes factual
+          content. This includes third-party facts or evidence, citations, numbers, data, results, experimental
+          details and the authors' own observations or manipulations. If the change is instead to the
+          authors' opinion, idea, conclusion or aim, choose Claim.
+      Claim:
+        criterion: The change adds, removes or modifies a claim, statement, opinion or idea of the authors,
+          or the overall aim of the paper. Examples of what it changes include what the authors argue,
+          conclude or intend. If the changed content is a verifiable fact, data point, citation or observation,
+          choose Fact/Evidence instead.
+      Other:
+        criterion: 'The change fits none of the other intents: it is not a language correction, not a
+          clarity rewording, not a change of facts or evidence, and not a change of claims or aims.'
+  edit_intent_add_delete:
+    kind: choice
+    instructions: One sentence was added to or deleted from a scientific paper. `edit_action` says which.
+      The sentence is in `new_text` (Add) or `old_text` (Delete). Which intent best describes this addition
+      or deletion?
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'The sentence contains factual content: facts or evidence from third parties, citations,
+          data, numbers, results, experimental details, or the authors'' observations. It is added to
+          extend the facts, or deleted because it is erroneous or irrelevant. If the sentence mainly states
+          the authors'' opinion, idea, conclusion or aim, choose Claim.'
+      Claim:
+        criterion: The sentence mainly states a claim, opinion, idea, conclusion or aim of the authors.
+          If the sentence mainly reports verifiable facts, data, citations or observations, choose Fact/Evidence
+          instead.
+      Other:
+        criterion: The sentence carries neither factual content nor a claim or aim of the authors. For
+          example, it is a heading, a transition, or structural or formatting text.

@@ -1,0 +1,58 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Split into the paper's two atomic questions (A1 and A2) as branch nouls and combine them in code, which reproduces the mapping exactly.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: branch
+    condition: Given `context` (Event 1 trigger marked <e1>, also in `event_1`; Event 2 trigger marked
+      <e2>, also in `event_2`; both events on the main story line), it is possible that the START of Event
+      1 is before the START of Event 2. End times are ignored.
+    state:
+    - context
+    - event_1
+    - event_2
+    if_true:
+      node: relation_a1yes
+    if_false:
+      node: relation_a1no
+    threshold: 0.5
+  relation_a1yes:
+    kind: branch
+    condition: Given `context` (Event 1 trigger marked <e1>, also in `event_1`; Event 2 trigger marked
+      <e2>, also in `event_2`; both events on the main story line), it is possible that the START of Event
+      2 is before the START of Event 1. End times are ignored.
+    state:
+    - context
+    - event_1
+    - event_2
+    if_true:
+      label: VAGUE
+    if_false:
+      label: BEFORE
+    threshold: 0.5
+  relation_a1no:
+    kind: branch
+    condition: Given `context` (Event 1 trigger marked <e1>, also in `event_1`; Event 2 trigger marked
+      <e2>, also in `event_2`; both events on the main story line), it is possible that the START of Event
+      2 is before the START of Event 1. End times are ignored.
+    state:
+    - context
+    - event_1
+    - event_2
+    if_true:
+      label: AFTER
+    if_false:
+      label: EQUAL
+    threshold: 0.5

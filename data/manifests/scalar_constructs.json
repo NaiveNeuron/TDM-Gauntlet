@@ -1,0 +1,493 @@
+{
+  "tasks": [
+    "scalar_constructs/immigration_fear/pointwise",
+    "scalar_constructs/immigration_fear/pairwise",
+    "scalar_constructs/ad_negativity/pointwise",
+    "scalar_constructs/ad_negativity/pairwise",
+    "scalar_constructs/grandstanding/pointwise",
+    "scalar_constructs/grandstanding/pairwise"
+  ],
+  "paper": {
+    "title": "Measuring Scalar Constructs in Social Science with LLMs",
+    "authors": "Licht, Sarkar, Wu, Goel, Stoehr, Ash, Hoyle",
+    "venue": "EMNLP 2025 (main), pages 32144-32171",
+    "url": "https://aclanthology.org/2025.emnlp-main.1635/",
+    "pdf_sha256": "512d8e2930521d8ed65b8e37d7fa4bbf066c6bc83ecd16eda3323b6c9f5260dd"
+  },
+  "source": {
+    "release_repo": "https://github.com/haukelicht/scalar_measurement",
+    "commit": "7fec6010d3f95e9118d5907d77c65d5d8d380b11 (2025-10-22; README: 'Work in progress')",
+    "download": "raw.githubusercontent.com/haukelicht/scalar_measurement/<commit>/<path> (scripts/prepare_scalar_constructs.py)",
+    "licence": "None stated: the release repo has no LICENSE file and the README grants no terms. Underlying data: Carlson & Montgomery (2017, APSR) replication data (survey responses; WiscAds 2008 storyboards, which the Wisconsin Advertising Project distributes under its own academic-use terms) and Park (2021, JOP) hearing paragraphs. Texts are therefore NOT copied into data/frozen: only item IDs, text SHA-256s, gold BT scores, pair IDs and pair labels are frozen; items() rebuilds texts from data/raw and verifies each hash.",
+    "raw_files_sha256": {
+      "data/processed_data/carlson_montgomery2017_immigration/bt_scores.jsonl": "20bfa3492eb5e0aeab939d6a84d295c8c47e7dd559a9cf34286a8a24f3a3cb28",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/0.test.jsonl": "71fdf31f001b3000e9652d551b28a94fafb10b9f37461a8f2fa712aca96dd7d1",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/0.train.jsonl": "d7711f8edc840cfd2121f3ab133308fad3ec810c7ef5b076ae10a11bc52be364",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/0.val.jsonl": "51c969b024b0c7c924eb2362963fe1fbafef22ed6a99d4a8731dfe474f9feef7",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/1.test.jsonl": "d1eadd957c875e61bcdd8106c6cfaac5d087b2e3c68e75e0f047683e3d0c097b",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/1.train.jsonl": "d1ff5785e2b2d6aac6c1b6ca243d4cbbfeb44da7aa5b5022c6633e32ab953a95",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/1.val.jsonl": "09b75ec1256b85302df82879713329e7a03bb176d6a4b160611a04f48012cf95",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/2.test.jsonl": "6cebee3bc071feab5480495dc2ac5469ae9eb0ee2f94491f8bb1fc92c3322aa1",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/2.train.jsonl": "308c0565a7e926745167f193d7f89ba2fc8c89e7a44525b73da7c704868a13fc",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/2.val.jsonl": "0859ba7a36f4e9a469b1c46e021f544a3112af12a7d11537d2bb74f751dfff1c",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/3.test.jsonl": "8c450a6af6a27c07e0653b10f5630855dab4e2d653571937b4e4b50f64497751",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/3.train.jsonl": "baa9a166cd9670de375fbdfd3b27d37a124732197497f710e845bcf6fdfb2a82",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/3.val.jsonl": "533518b8e20b7335835e66919588d2092b5952bafbbceb6e9a4176d1ae324778",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/4.test.jsonl": "2e08bfe0d5fbc79d33d6796e21006b9b000541ead61af41d5a75eb309d4f6034",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/4.train.jsonl": "2555fa041cd966f552664b59920573a3fdb9e6317cbd954aa1a18486b6116f28",
+      "data/processed_data/carlson_montgomery2017_immigration/graph_splits/4.val.jsonl": "5a29658c0fe939dcd609f5ac9e2d26a0f5d42acb4a591916b3c937fec75459c6",
+      "data/processed_data/carlson_montgomery2017_wiscads/bt_scores.jsonl": "ae4ae316d87b545e981e64c7feebb31f281e3e4bdfd3246bec45961455befb5d",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/0.test.jsonl": "af0462b61b96b032ec3ccfa9ea896fc084a65c056656048f5cc1f63620af8be5",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/0.train.jsonl": "348368ec62d354e953c037a1a182e4f898dbdf8cf541469a9ebbe60123145c69",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/0.val.jsonl": "f60f2d8f204f703d257852f71e366cf8f6187b67fef654501c9c1595666cd35a",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/1.test.jsonl": "1f0f5c60898a34d356270736d089d788f6db1fb7f702e9ed024e22e6a3d7533c",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/1.train.jsonl": "725c4f8f4b4879dafb58f5bd8c710ea0e72f72929025dc3ba349cf9c838c2c63",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/1.val.jsonl": "41f19ba250d7492ff52b5d07649d8ac27461bfa7074d600fff5bc21115c30c72",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/2.test.jsonl": "626aa189bf62501634764f22406b05c0131faab06f35404cc6c4d40e58fa5271",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/2.train.jsonl": "f85fa104b4a82e3f5bab484bbb1dd9db390572c766cc2f1ce334d5ef46101c62",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/2.val.jsonl": "3e3377d25cce131dfbf080547f159b74811cb15c4cba882cb5af91864c21a7b6",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/3.test.jsonl": "1497ea860f5ef6cb90ce17dbc7dcc217de523539ab0f3e15debbf0b27baa4cf9",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/3.train.jsonl": "4d99da98f6aff659a4fbdf1080c2b7f2f17ab26a990abc2c1ac83416d17fb47c",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/3.val.jsonl": "0f71dc6cc5bc448acc18823d91cbd1de73eaee08023312f6c327b40c14a16d62",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/4.test.jsonl": "09521b3bee03d1fd685f717b4c0ec50c3ba60ffec5ac80abd5ffc7aff707594d",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/4.train.jsonl": "fbd396feffa7a334e5e81a046c382a544416968cd10e74a6f03c4cc265f4567d",
+      "data/processed_data/carlson_montgomery2017_wiscads/graph_splits/4.val.jsonl": "d25f9b9dbf553d92a18648682abe8e4fcad67134124c91300c2a153106956f2d",
+      "data/processed_data/park2019/bt_scores.jsonl": "63cde4e8b7165ca771f7c1821f878ce4a3d7c054e05a135a20d33baca97440a5",
+      "data/processed_data/park2019/graph_splits/0.test.jsonl": "fc68efdc85467219f49432ec6e7f274ebceed01921cdcf21cddd09a35be95b04",
+      "data/processed_data/park2019/graph_splits/0.train.jsonl": "0f7feab9299a253bad545beb7e584c7539d8b73aecaefac92e4cb9804136ec96",
+      "data/processed_data/park2019/graph_splits/0.val.jsonl": "7b57168eb5510aacd72c416c2f8f1c29529479ed9c8213737c447b16a9f16be0",
+      "data/processed_data/park2019/graph_splits/1.test.jsonl": "10353097210386997942c9034816ac3a6bed9e1c5da5ee32c23dc0945e55d922",
+      "data/processed_data/park2019/graph_splits/1.train.jsonl": "b47e3a7d7074dbd926b78344a2b5d43afd9ce4f69994b0fab2620d8251be5108",
+      "data/processed_data/park2019/graph_splits/1.val.jsonl": "22e2706be1820513c6cbea0fde67c9be4c6ca81f858bff63e1d0a633b4f499e9",
+      "data/processed_data/park2019/graph_splits/2.test.jsonl": "7d9d2e7eef8c4e06f8705a8fbbd24362d885d6f170bb73f50592002203698243",
+      "data/processed_data/park2019/graph_splits/2.train.jsonl": "25cfb7f9501d3519c2c5a27a5939b33b382d6bcf7fc170b6dad6b45e8ed76a41",
+      "data/processed_data/park2019/graph_splits/2.val.jsonl": "8773d107b68548315fa9d0c4c870d2c58009f5b7dd788b05d9b89a73c5ac3987",
+      "data/processed_data/park2019/graph_splits/3.test.jsonl": "390040737fcdf3d496ac5011c91a38a651a156c4d092ac7d8abea7df88f404eb",
+      "data/processed_data/park2019/graph_splits/3.train.jsonl": "ecf3090f0c4678b6a6070949a543df261cb2677d01d7736d33299a84e5438553",
+      "data/processed_data/park2019/graph_splits/3.val.jsonl": "d5d11ba0ac6a9a3e24c9528449709094db9db3cfe494b2940e2ec31f5219d595",
+      "data/processed_data/park2019/graph_splits/4.test.jsonl": "48904e6c0ee63937980636607a0de28c7375373d6984a348cd9bff9ebf608e68",
+      "data/processed_data/park2019/graph_splits/4.train.jsonl": "dd89194a2e04d76c1f502fbcd9c32928f0fc7288df081d0fc9efea2bf4641118",
+      "data/processed_data/park2019/graph_splits/4.val.jsonl": "0f5af7cd26831ab1be46f36c19878dd860d40e85ed2d84c2a7d39ab051551803"
+    },
+    "datasets": {
+      "immigration_fear": "data/processed_data/carlson_montgomery2017_immigration",
+      "ad_negativity": "data/processed_data/carlson_montgomery2017_wiscads",
+      "grandstanding": "data/processed_data/park2019"
+    },
+    "gold": "bt_scores.jsonl `label` = Bradley-Terry score of each text fit with choix ILSR (alpha 1e-4, max_iter 1000) to all human comparisons in data.jsonl (release src/bt.py). Our numpy/scipy port of ilsr_pairwise_dense reproduces the released scores from data.jsonl (see validation). Pair label 1/2 = which text the (single) crowd annotator chose; no ties in any test split.",
+    "prompt_sources": "prompting/{absolute_scoring,pairwise_comparison}/prompts/<dataset>/original/zero_shot.md (= paper App. E)"
+  },
+  "frozen": {
+    "builder": "scripts/prepare_scalar_constructs.py (downloads 48 release files, verifies SHA-256 against data/frozen/scalar_constructs/raw_sha256.json, writes the freeze; re-run is byte-identical)",
+    "form": "ID + SHA-256 manifest (no licence)",
+    "files": {
+      "data/frozen/scalar_constructs/ad_negativity/folds.json": "0da3c2e8d61f9af2b056902da8cce276a29b94361dd9eecc42a46b42fc415f63",
+      "data/frozen/scalar_constructs/ad_negativity/items.jsonl": "6fc4cc67e00b38c4c0abffb58f04ab4355e6bfc5e2ca91c18f94e8da58f283e8",
+      "data/frozen/scalar_constructs/ad_negativity/pairs.jsonl": "13d81d00113090eac4a1094ba82da50da75900e75931dc9950c81fb8410e838c",
+      "data/frozen/scalar_constructs/grandstanding/folds.json": "4123fe3daa558385ce28f3f0de42def7341942b17148fbe7b43109947760eec5",
+      "data/frozen/scalar_constructs/grandstanding/items.jsonl": "4674b3b0dc46d229aec798d127f09a8760a7e18383b2ffe13885756553c234d1",
+      "data/frozen/scalar_constructs/grandstanding/pairs.jsonl": "d229a1363a856e1c4238e82febe90605df4061353968e9be6bf96ea375459af7",
+      "data/frozen/scalar_constructs/immigration_fear/folds.json": "ecf3029d73a2f263a97c9a160e3feaea78cef263abec9996c2acfb196b535df5",
+      "data/frozen/scalar_constructs/immigration_fear/items.jsonl": "bcd7929a9cb754e9e5122b5c72c92ce8dc0b9d268cc69146afe6cf34f526b85d",
+      "data/frozen/scalar_constructs/immigration_fear/pairs.jsonl": "de0f7d74e9b3a4a68c5d3db13cc538429db6f3c1d546cc4fa0dcd35c797e727f",
+      "data/frozen/scalar_constructs/raw_sha256.json": "f7f8d9459ffc66340e6d96b0fc17b16f03d9725a5278888b7de2029c8b4618cd"
+    },
+    "layout": "per construct: items.jsonl {id, sha256 (UTF-8 text), bt_score} in bt_scores.jsonl order for every text in any fold's test pairs; pairs.jsonl {fold, pair_id, id1, id2, label} per fold in release file order; folds.json per fold {n_pairs, test_item_ids (test-pair items minus train-pair items: the release notebook's evaluation set), heldout_item_ids (additionally minus val-pair items: the paper's V_test, 100)}",
+    "sent_to_jev": "pointwise: the text as a JSON string state; pairwise: the release's formatted pair string (byte-identical to prompting/pairwise_comparison/data/<dataset>/0.test.pairwise.expanded.jsonl) as a JSON string state. BT scores, labels, IDs and expert ratings are never sent."
+  },
+  "test_n_resolution": {
+    "per_construct": {
+      "immigration_fear": {
+        "items_scored_pointwise_all_folds": 334,
+        "fold0_pairs": 3265,
+        "fold0_label_counts": {
+          "2": 1639,
+          "1": 1626
+        },
+        "fold0_items_in_pairs": 334,
+        "fold0_test_items_notebook_rule": 100,
+        "fold0_v_test": 100,
+        "fold0_test_test_pairs": 595,
+        "pairs_per_fold": [
+          3265,
+          3148,
+          3285,
+          3091,
+          3249
+        ],
+        "test_items_per_fold": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "max_text_chars": 1021
+      },
+      "ad_negativity": {
+        "items_scored_pointwise_all_folds": 935,
+        "fold0_pairs": 1944,
+        "fold0_label_counts": {
+          "1": 969,
+          "2": 975
+        },
+        "fold0_items_in_pairs": 855,
+        "fold0_test_items_notebook_rule": 151,
+        "fold0_v_test": 100,
+        "fold0_test_test_pairs": 334,
+        "pairs_per_fold": [
+          1944,
+          1920,
+          1924,
+          1883,
+          1882
+        ],
+        "test_items_per_fold": [
+          151,
+          152,
+          152,
+          151,
+          151
+        ],
+        "max_text_chars": 2288
+      },
+      "grandstanding": {
+        "items_scored_pointwise_all_folds": 3414,
+        "fold0_pairs": 2228,
+        "fold0_label_counts": {
+          "2": 1111,
+          "1": 1117
+        },
+        "fold0_items_in_pairs": 1673,
+        "fold0_test_items_notebook_rule": 303,
+        "fold0_v_test": 100,
+        "fold0_test_test_pairs": 469,
+        "pairs_per_fold": [
+          2228,
+          2282,
+          2351,
+          2234,
+          2303
+        ],
+        "test_items_per_fold": [
+          303,
+          300,
+          298,
+          296,
+          303
+        ],
+        "max_text_chars": 782
+      }
+    },
+    "note": "Test set = fold 0 of the released graph splits (seed 112358, 100 high-degree held-out vertices), which is the only fold the paper's prompting experiments (Table 2) use. Pairwise tasks: every fold-0 test pair (3,265 / 1,944 / 2,228). Pointwise tasks: every text in the test pairs of any of the 5 folds (334 / 935 / 3,414), so that fold 0 (primary) and the 5-fold protocol of Table 3 (supplementary) can both be scored; fold 0 alone needs 334 / 855 / 1,673 texts. Rho/RMSE are computed over the release notebook's 'test items' = items in test pairs minus items in train pairs = 100 / 151 / 303 (the 51 and 203 extra ad and hearing texts are train-graph vertices whose edges all landed in the val split); the strict 100-vertex V_test variant is reported alongside. Paper Table 1 counts 6,489 / 9,489 / 38,348 pairs; the release data.jsonl has 6,640 / 9,528 / 38,500 annotation rows = 6,281 / 9,431 / 38,179 distinct item pairs (graph edges; the splits keep one row per edge, the last one in file order). Text counts 334 / 935 / 3,499 match Table 1."
+  },
+  "english_verification": {
+    "metadata": "Paper Limitations: 'our datasets only include English-language texts with applications focused on U.S. politics'. Sources: U.S. survey responses, U.S. Senate TV ad storyboards, U.S. House hearing transcripts.",
+    "method": "langid 1.1.6 (all languages) over all 4,768 released texts (334 + 935 + 3,499), plus a non-Latin-letter count, a >5% non-ASCII ratio check, and a Spanish function-word scan (>= 3 hits); every flag inspected.",
+    "result": "15 langid flags, all Immigration Fear keyword-style English answers (e.g. items 10470, 10602, 10360, 10503). No non-Latin letters and no non-ASCII-heavy texts in any dataset. The Spanish scan hit one English ad (ad_negativity item 7507, where 'con' is an English word). No non-English or code-mixed rows; nothing dropped.",
+    "rows_dropped": 0
+  },
+  "primitives": {
+    "pointwise": "score, 9 levels (1-9 as in the paper, 'We use a range between 1 and 9', Section 3.2); one request per text; prediction = sum_s P(s)*s / sum_s P(s) (paper Eq. 1) from Jev's level probabilities. Supplementary: modal level (paper's 'naive').",
+    "pairwise": "choice {'1','2'}; four requests per pair = the paper's augmentations (App. A.2 / Table 5: label swap x order reversal); P(text1 wins) = mean of the four aligned probabilities (release debias_pairwise_locally); choice 1 / 2 / tie at exactly 0.5; item scores = BT fit (ported choix ILSR, alpha 1e-4, max_iter 1000) to the predicted choices on the fold-0 test pairs. Supplementary: no debiasing (original presentation only, release default_output)."
+  },
+  "metrics": {
+    "primary": "Spearman rho between predicted item scores and gold BT scores over the fold-0 test items (paper Section 3.3: 'Our primary focus is on LLMs' scoring performance'); headline value = mean over 25 bootstrap resamples (np.random.RandomState(42), notebook row order), exactly as Table 2 reports.",
+    "also": "RMSE after min-max rescaling both score vectors to [0,1] over the test items; pairwise accuracy over all fold-0 test pairs (a predicted tie counts as wrong); accuracy on test-test pairs; point estimates; V_test-only variant; pointwise 5-fold mean +- sd of point estimates (Table 3 protocol).",
+    "implementation": "ported from release prompting/evaluate_prompting.ipynb (get_itemwise_results / get_pairwise_results), src/icl/evaluation.py, src/icl/debias.py, src/bt.py; verified by replaying the paper's released model outputs (see validation)."
+  },
+  "paper_results": {
+    "immigration_fear": {
+      "table2_prompting_fold0": {
+        "Qwen-2.5-72B pointwise 0-shot": {
+          "accuracy": 0.76,
+          "spearman_rho": 0.81,
+          "rmse": 0.23
+        },
+        "Llama-3.3-70B pointwise 0-shot": {
+          "accuracy": 0.73,
+          "spearman_rho": 0.75,
+          "rmse": 0.3
+        },
+        "Qwen-2.5-32B pointwise 0-shot": {
+          "accuracy": 0.72,
+          "spearman_rho": 0.71,
+          "rmse": 0.26
+        },
+        "Qwen-2.5-72B pointwise 5-shot": {
+          "accuracy": 0.77,
+          "spearman_rho": 0.87,
+          "rmse": 0.2
+        },
+        "Qwen-2.5-72B pairwise 0-shot": {
+          "accuracy": 0.73,
+          "spearman_rho": 0.72,
+          "rmse": 0.19
+        },
+        "Llama-3.3-70B pairwise 0-shot": {
+          "accuracy": 0.73,
+          "spearman_rho": 0.74,
+          "rmse": 0.18
+        },
+        "Qwen-2.5-32B pairwise 5-shot": {
+          "accuracy": 0.77,
+          "spearman_rho": 0.85,
+          "rmse": 0.16
+        },
+        "Llama-3.3-70B pairwise 5-shot": {
+          "accuracy": 0.76,
+          "spearman_rho": 0.85,
+          "rmse": 0.15
+        }
+      },
+      "table3_finetuning_5fold_mean": {
+        "DeBERTa-v3-large RM (all 2,729 train pairs)": {
+          "accuracy": 0.78,
+          "spearman_rho": 0.91,
+          "rmse": 0.18
+        },
+        "DeBERTa-v3-large RM (2,000)": {
+          "accuracy": 0.77,
+          "spearman_rho": 0.89,
+          "rmse": 0.19
+        },
+        "ModernBERT-large RM (all)": {
+          "accuracy": 0.77,
+          "spearman_rho": 0.85,
+          "rmse": 0.18
+        },
+        "Llama-3.1-8B-Instruct RM (all)": {
+          "accuracy": 0.76,
+          "spearman_rho": 0.83,
+          "rmse": 0.17
+        },
+        "best pointwise prompting (Table 3 last row)": {
+          "accuracy": 0.77,
+          "spearman_rho": 0.87,
+          "rmse": 0.18
+        }
+      },
+      "derived_deberta_v3_large_rm_all_fold0_bootstrap": {
+        "spearman_rho": 0.876,
+        "rmse": 0.126,
+        "accuracy": 0.782
+      }
+    },
+    "ad_negativity": {
+      "table2_prompting_fold0": {
+        "Qwen-2.5-72B pointwise 0-shot": {
+          "accuracy": 0.81,
+          "spearman_rho": 0.91,
+          "rmse": 0.13
+        },
+        "Llama-3.3-70B pointwise 0-shot": {
+          "accuracy": 0.8,
+          "spearman_rho": 0.89,
+          "rmse": 0.29
+        },
+        "Qwen-2.5-32B pointwise 0-shot": {
+          "accuracy": 0.79,
+          "spearman_rho": 0.87,
+          "rmse": 0.14
+        },
+        "Qwen-2.5-72B pointwise 5-shot": {
+          "accuracy": 0.81,
+          "spearman_rho": 0.92,
+          "rmse": 0.17
+        },
+        "Qwen-2.5-72B pairwise 0-shot": {
+          "accuracy": 0.8,
+          "spearman_rho": 0.86,
+          "rmse": 0.18
+        },
+        "Llama-3.3-70B pairwise 0-shot": {
+          "accuracy": 0.78,
+          "spearman_rho": 0.83,
+          "rmse": 0.19
+        },
+        "Qwen-2.5-72B pairwise 5-shot": {
+          "accuracy": 0.81,
+          "spearman_rho": 0.87,
+          "rmse": 0.19
+        }
+      },
+      "table3_finetuning_5fold_mean": {
+        "DeBERTa-v3-large RM (all 6,760 train pairs)": {
+          "accuracy": 0.81,
+          "spearman_rho": 0.91,
+          "rmse": 0.19
+        },
+        "DeBERTa-v3-large RM (2,000)": {
+          "accuracy": 0.8,
+          "spearman_rho": 0.89,
+          "rmse": 0.19
+        },
+        "ModernBERT-large RM (all)": {
+          "accuracy": 0.79,
+          "spearman_rho": 0.87,
+          "rmse": 0.17
+        },
+        "Llama-3.1-8B-Instruct RM (all)": {
+          "accuracy": 0.79,
+          "spearman_rho": 0.87,
+          "rmse": 0.17
+        },
+        "best pointwise prompting (Table 3 last row)": {
+          "accuracy": 0.81,
+          "spearman_rho": 0.92,
+          "rmse": 0.13
+        }
+      },
+      "derived_deberta_v3_large_rm_all_fold0_bootstrap": {
+        "spearman_rho": 0.913,
+        "rmse": 0.172,
+        "accuracy": 0.805
+      }
+    },
+    "grandstanding": {
+      "table2_prompting_fold0": {
+        "Qwen-2.5-72B pointwise 0-shot": {
+          "accuracy": 0.65,
+          "spearman_rho": 0.6,
+          "rmse": 0.21
+        },
+        "Llama-3.3-70B pointwise 0-shot": {
+          "accuracy": 0.66,
+          "spearman_rho": 0.55,
+          "rmse": 0.26
+        },
+        "Qwen-2.5-32B pointwise 0-shot": {
+          "accuracy": 0.65,
+          "spearman_rho": 0.58,
+          "rmse": 0.31
+        },
+        "Llama-3.3-70B pointwise 5-shot": {
+          "accuracy": 0.69,
+          "spearman_rho": 0.65,
+          "rmse": 0.3
+        },
+        "Qwen-2.5-72B pointwise 5-shot": {
+          "accuracy": 0.67,
+          "spearman_rho": 0.66,
+          "rmse": 0.29
+        },
+        "Qwen-2.5-72B pairwise 0-shot": {
+          "accuracy": 0.66,
+          "spearman_rho": 0.48,
+          "rmse": 0.2
+        },
+        "Llama-3.3-70B pairwise 0-shot": {
+          "accuracy": 0.66,
+          "spearman_rho": 0.54,
+          "rmse": 0.19
+        },
+        "Qwen-2.5-32B pairwise 5-shot": {
+          "accuracy": 0.68,
+          "spearman_rho": 0.59,
+          "rmse": 0.19
+        }
+      },
+      "table3_finetuning_5fold_mean": {
+        "DeBERTa-v3-large RM (all 32,308 train pairs)": {
+          "accuracy": 0.68,
+          "spearman_rho": 0.78,
+          "rmse": 0.16
+        },
+        "DeBERTa-v3-large RM (2,000)": {
+          "accuracy": 0.66,
+          "spearman_rho": 0.73,
+          "rmse": 0.22
+        },
+        "ModernBERT-large RM (all)": {
+          "accuracy": 0.66,
+          "spearman_rho": 0.72,
+          "rmse": 0.21
+        },
+        "Llama-3.1-8B-Instruct RM (all)": {
+          "accuracy": 0.65,
+          "spearman_rho": 0.7,
+          "rmse": 0.21
+        },
+        "best pointwise prompting (Table 3 last row)": {
+          "accuracy": 0.69,
+          "spearman_rho": 0.66,
+          "rmse": 0.16
+        }
+      },
+      "derived_deberta_v3_large_rm_all_fold0_bootstrap": {
+        "spearman_rho": 0.735,
+        "rmse": 0.134,
+        "accuracy": 0.678
+      }
+    }
+  },
+  "truncation": "Frozen rule: each text cut to its first 20,000 characters; the longest text has 2,288 characters, so n_truncated = 0 for all tasks.",
+  "deviations": [
+    "Zero-shot only: Jev is compared with the paper's 0-shot prompting rows; 5-shot rows and fine-tuned models are reported as reference points.",
+    "Pointwise tasks additionally score texts from folds 1-4 (334 / 935 / 3,414 texts instead of 334 / 855 / 1,673) to report the Table 3 5-fold protocol; the fold-0 primary numbers use fold-0 texts only.",
+    "Prompt adaptation: the release's zero-shot prompt is sent verbatim as the question instructions, except the {text} slot (replaced by a note that the text is the state) and the final '**Response**: [Output only ...]' line (dropped; the primitive fixes the answer space).",
+    "Pairwise state strings are byte-identical to the release's expanded pair files; the Immigration Fear file quotes the labels ('\"**Text 1**\": ...') and names the two mixed augmentations the other way round (_0_1 <-> _1_0) relative to the committed format_text_pair; the four presented strings per pair are identical, and the debiasing average is unaffected.",
+    "Evaluation item set follows the release notebook (test-pair items minus train-pair items: 100 / 151 / 303), which is what Table 2 reports, not the 100 V_test vertices described in Section 3.3; the V_test-only numbers are reported as a supplement.",
+    "Jev's probabilities replace the paper's next-token probabilities over '1'-'9' / '1','2' (the paper renormalises over the scale tokens; Jev's level probabilities already sum to 1)."
+  ],
+  "validation": {
+    "offline_only": "No Jev calls. All checks below were run on 2026-09-26 against the frozen data.",
+    "requests": {
+      "scalar_constructs/immigration_fear/pointwise": 334,
+      "scalar_constructs/immigration_fear/pairwise": 13060,
+      "scalar_constructs/ad_negativity/pointwise": 935,
+      "scalar_constructs/ad_negativity/pairwise": 7776,
+      "scalar_constructs/grandstanding/pointwise": 3414,
+      "scalar_constructs/grandstanding/pairwise": 8912,
+      "total": 34431,
+      "total_chars_state_plus_questions": 111122173,
+      "max_request_chars": 6732,
+      "est_input_tokens_chars_div_4": 27780543,
+      "est_cost_usd_at_0.042_per_M": 1.17,
+      "checks": "every request JSON-serialisable; request hashes unique within each task (34,431 distinct); largest request ~1.7K tokens, far below 32K"
+    },
+    "pair_strings": "all 29,748 pairwise states are byte-identical to the `text` field of the release's 0.test.pairwise.expanded.jsonl files (Immigration Fear with the _0_1/_1_0 naming swap).",
+    "bradley_terry_port": "bt_fit on the release data.jsonl reproduces bt_scores.jsonl to max |diff| 5.0e-11 for all three datasets.",
+    "table2_replay": "The paper's released LLM outputs (prompting/{absolute_scoring,pairwise_comparison}/outputs, 5 models x {0,5}-shot x {pointwise,pairwise} x 3 datasets = 60 configurations) fed through predict() + the fold-0 scorer reproduce every Table 2 accuracy / rho / RMSE value to the printed 2 decimals (max deviation 0.01 on half-way rounding cases). E.g. Qwen-2.5-72B pointwise 0-shot Immigration Fear: paper .76/.81/.23, replay .763/.815/.233; pairwise 0-shot Grandstanding: paper .66/.48/.20, replay .657/.483/.202.",
+    "table3_replay": "The released fine-tuned reward-model predictions (finetuning/outputs/pairwise) through the 5-fold scorer reproduce Table 3, e.g. DeBERTa-v3-large (all) Immigration Fear paper .78/.91/.18, replay .780/.911/.178 (sd .002/.020/.040); Grandstanding paper .68/.78/.16, replay .676/.777/.158.",
+    "gold_derived_oracles": {
+      "pointwise (expected level linear in gold BT)": {
+        "immigration_fear": {
+          "spearman_rho": 1.0,
+          "rmse": 0.0,
+          "accuracy": 0.831
+        },
+        "ad_negativity": {
+          "spearman_rho": 1.0,
+          "rmse": 0.0,
+          "accuracy": 0.853
+        },
+        "grandstanding": {
+          "spearman_rho": 1.0,
+          "rmse": 0.0,
+          "accuracy": 0.735
+        }
+      },
+      "pairwise (every presentation answered per gold label)": {
+        "immigration_fear": {
+          "spearman_rho": 0.994,
+          "rmse": 0.025,
+          "accuracy": 1.0
+        },
+        "ad_negativity": {
+          "spearman_rho": 0.928,
+          "rmse": 0.116,
+          "accuracy": 1.0
+        },
+        "grandstanding": {
+          "spearman_rho": 0.632,
+          "rmse": 0.163,
+          "accuracy": 1.0
+        }
+      },
+      "note": "Pointwise accuracy ceilings (.83/.85/.73) are the agreement of the gold BT scores with the single human labels of the test pairs. The pairwise rho ceilings are below 1 because the BT fit sees only the fold-0 test pairs (the gold uses all pairs); the Grandstanding ceiling (.63) bounds any pairwise judge on this protocol.",
+      "ties": "all-0.5 answers give choice 0 (tie, counted wrong), matching the release's margin-0 rule"
+    },
+    "runtime_note": "score() fits BT with dense LU on up to 1,673 items; ~7 s for all six oracle scorings with 4 BLAS threads, but minutes under heavy BLAS oversubscription (set OMP_NUM_THREADS/OPENBLAS_NUM_THREADS on a loaded machine)."
+  }
+}

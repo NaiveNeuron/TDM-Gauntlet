@@ -1,0 +1,56 @@
+\paragraph{Task.} English utterances from six public intent benchmarks (ACID, ATIS, BANKING77 (B77), CLINC150 (C150),
+HWU64, MTOD). The paper feeds a fine-tuned BERT's softmax into split conformal prediction: the nonconformity score is
+$1-p_{\text{true}}$ on a calibration split, $\hat q$ is its MAPIE quantile at the paper's per-dataset $1-\alpha$, and
+the set holds every intent with $p\geq 1-\hat q$. The system answers directly (set size 1), asks a clarification
+question, or rejects the input (size $>\mathit{th}=$ <<s:cicc/mtod:th|int>>). \jev{} replaces only BERT: one
+\textsc{<<q:cicc_c150:_primitive|upper>>} over the full intent inventory per calibration and test utterance, with
+the conformal procedure unchanged. Excluded: the unreleased Dutch industry set, the commercial Dialogflow CX setting
+and the generated clarification wording.
+
+\paragraph{Data and freeze.} \url{https://github.com/florisdenhengst/cicc} at <<m:cicc:source.code_commit|commit>>.
+Its released calibration/test prediction files are the paper's exact splits and are used directly. The corpora's
+licences are mixed or missing (ACID has none, ATIS is LDC-derived), so \texttt{data/frozen/cicc/} holds only row
+coordinates, gold labels and per-row SHA-256s. \texttt{scripts/prepare\_cicc.py} rebuilds the text from the pinned
+clone and verifies every hash.
+
+\paragraph{Test set and screen.} All released calibration and test rows are used (test $N$ below). C150 is the
+in-scope set: the release's \texttt{oos} rows are dropped, as in the authors' notebook. The HWU64 release has
+<<m:cicc:splits.hwu64.intents|int>> intents. All <<m:cicc:english_verification.flags|int>> language-screen flags
+were checked and are English. No row was dropped.
+
+\paragraph{Prompt.} State = \{utterance\}. The options are the released intent names with underscores as spaces
+(MTOD adds the intent's domain). No definitions exist in any release. The largest inventory (ACID,
+<<m:cicc:splits.acid.intents|int>> options) is within \jev{}'s option limit, so no decomposition is needed.
+Probabilities are renormalised to sum to one, and omitted intents get 0. Truncated inputs:
+<<s:cicc/acid:n_truncated|int>>.
+
+\paragraph{Metric.} The primary metric is Single: the share of test inputs answered without clarification at the
+paper's $1-\alpha$ (Table~2, p.~2418). Coverage over non-rejected inputs, mean set size and top-1 accuracy are
+secondary. Our scorer, a port of the authors' \texttt{eval.py} and MAPIE~0.6.5, reproduces their
+\texttt{results.csv} from the released BERT probabilities.
+
+{\setlength{\tabcolsep}{2.4pt}
+<<metrics
+cols: cicc/mtod=MTOD; cicc/hwu64=HWU64; cicc/c150=C150; cicc/acid=ACID; cicc/atis=ATIS; cicc/b77=B77
+n = Test $N$ | int
+one_minus_alpha = $1-\alpha$ | f2
+qhat = $\hat q$ | f2
+---
+single = Single | pct
+coverage = Coverage | pct
+mean_set_size = Mean size | f1
+accuracy = Top-1 acc. | pct
+other_levels.0.90.CICC.single = Single (App.~E) | pct
+>>
+<<papernums:cicc/mtod=MTOD;cicc/hwu64=HWU64;cicc/c150=C150;cicc/acid=ACID;cicc/atis=ATIS|paper|src1>>}
+
+\paragraph{Deviations and status.} Complete, except that B77 is not comparable: <<m:cicc:deviations.2>> \jev{}'s
+B77 Single is <<s:cicc/b77:single|pct>> at both the effective and the printed level. The main finding is a
+granularity failure. \jev{} gives probabilities to two decimals, and on ACID, ATIS, C150 and B77 the true intent
+gets $P=0$ on more than $\alpha$ of calibration items. Then $\hat q=1$ and every set is the full inventory (Single 0,
+coverage undefined, shown as --), although top-1 accuracy is good. At the looser Appendix~E level (last row),
+$\hat q<1$ on every set. In the Table~3 OOS-detection settings the paper's CICC-OOS selection picks
+$\mathit{th}=$ <<s:cicc/c150_oos:CICC-OOS.th|int>> for \jev{}, flagging every input as OOS. The resulting F1
+(C150-OOS <<s:cicc/c150_oos:f1|pct>>, B77-OOS <<s:cicc/b77_oos:f1|pct>>, AUROC <<s:cicc/c150_oos:auroc|pct>>) is
+the trivial all-OOS value, versus BERT's <<pn:cicc/c150_oos:paper.CICC-OOS (BERT)|pct>> and
+<<pn:cicc/b77_oos:paper.CICC-OOS (BERT)|pct>>.

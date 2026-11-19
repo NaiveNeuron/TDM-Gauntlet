@@ -1,0 +1,83 @@
+{
+  "task": "ezstance-subtaskA",
+  "task_path": "jev-opt/experiments/ezstance_subtaskA/task_v3.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Minimal literal rewrite; each criterion names what separates it from its nearest neighbour, NONE framed as absence of a clear side.",
+          "digest": "3c5e399b46532032",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "choice",
+            "stance": "choice"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Evidence-focused wording; each option names the observable signal in the tweet, such as praise or attack for noun phrases and agreement or contradiction for claims.",
+          "digest": "080694c8816ccb3b",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "choice",
+            "stance": "choice"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Author-perspective framing that keeps the paper's definitions nearly verbatim and adds explicit boundary rules for sarcasm and indirect stance.",
+          "digest": "3f7d2b7b5f51ed34",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "choice",
+            "stance": "choice"
+          }
+        }
+      ],
+      "rejected": []
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Flat Jev-style choice per target type with short literal instructions and contrastive criteria that separate each option from its nearest neighbour.",
+          "digest": "82e54e0aada60d79",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "choice",
+            "stance": "choice"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "Two-level hierarchy where a branch first decides whether any stance is expressed, and a second branch then decides its polarity.",
+          "digest": "1592389b96ea97f1",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "branch",
+            "stance_np_polarity": "branch",
+            "stance": "branch",
+            "stance_polarity": "branch"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "One_vs_rest with one independent true/false statement per label, each judged on its own.",
+          "digest": "f710467e33a62378",
+          "nodes": {
+            "by_target_type": "switch",
+            "stance_np": "one_vs_rest",
+            "stance": "one_vs_rest"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.106132
+}

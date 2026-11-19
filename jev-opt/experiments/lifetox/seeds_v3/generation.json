@@ -1,0 +1,71 @@
+{
+  "task": "lifetox",
+  "task_path": "jev-opt/experiments/lifetox/task_v3.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Direct literal question about whether `answer` promotes harmful behavior, with contrastive criteria naming what moves each case to the other option.",
+          "digest": "13dbabc6745e4fa7",
+          "nodes": {
+            "safety": "choice"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Context-first framing that focuses on the action the advice leads to in the situation described in `question`.",
+          "digest": "43e3c7f2dfc15160",
+          "nodes": {
+            "safety": "choice"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Two-option contrast centered on the boundary cases of profanity versus content and of isolated versus in-context harm.",
+          "digest": "c43da85ee4d94cad",
+          "nodes": {
+            "safety": "choice"
+          }
+        }
+      ],
+      "rejected": []
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Single contrastive choice in Jev style; short literal instructions, criteria that separate safe from unsafe and resolve the boundary cases (profanity, context-dependent harm).",
+          "digest": "7fd63f5d50b376d8",
+          "nodes": {
+            "safety": "choice"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "Atomic branch cascade; separate checks for direct harm, offensive tone, and context-dependent complicity, combined in code.",
+          "digest": "91229a2a1bb027ea",
+          "nodes": {
+            "safety": "branch",
+            "safety_tone": "branch",
+            "safety_context": "branch"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "One-vs-rest; each label judged as an independent absolute statement, and the more probable statement wins.",
+          "digest": "c16d944136075799",
+          "nodes": {
+            "safety": "one_vs_rest"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.080616
+}

@@ -1,0 +1,23 @@
+{
+  "_source": "den Hengst et al., Conformal Intent Classification and Clarification for Fast and Accurate Intent Recognition, Findings NAACL 2024, https://aclanthology.org/2024.findings-naacl.156/. The paper has no zero-shot classifier prompt and the datasets ship no intent definitions; criteria are the released intent names (authors' labels.csv, repo commit 18019a1) rendered with the authors' own `replace('_', ' ')` (Appendix B tables), prefixed with the intent's domain from the official MTOD release (domain/intent). Assistant context from the dataset paper: Schuster et al. (2019), multilingual task-oriented dialog (English part): alarm, reminder and weather domains.",
+  "_primitive": "choice",
+  "_labels": 12,
+  "question": {
+    "type": "choice",
+    "instructions": "The state holds one utterance (\"utterance\") from a user of a task-oriented assistant for alarms, reminders and weather. Identify the user's intent: choose the single intent from the options that the utterance expresses.",
+    "criteria": {
+      "cancel_alarm": "alarm/cancel alarm",
+      "cancel_reminder": "reminder/cancel reminder",
+      "checkSunrise": "weather/checkSunrise",
+      "checkSunset": "weather/checkSunset",
+      "find": "weather/find",
+      "modify_alarm": "alarm/modify alarm",
+      "set_alarm": "alarm/set alarm",
+      "set_reminder": "reminder/set reminder",
+      "show_alarms": "alarm/show alarms",
+      "show_reminders": "reminder/show reminders",
+      "snooze_alarm": "alarm/snooze alarm",
+      "time_left_on_alarm": "alarm/time left on alarm"
+    }
+  }
+}

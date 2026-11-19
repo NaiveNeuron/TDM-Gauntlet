@@ -1,0 +1,85 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/edit_intent.json), verbatim; generated, do not hand-edit.
+# Switch on edit_action (no Jev call): Modify -> the 5-label `edit_intent` Choice; Add/Delete -> the 3-label add_delete Choice.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: false
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: choice
+    instructions: 'You will read two versions of a sentence from a scientific paper revision. The state
+      holds one sentence-level edit: "old_text" is the sentence in the old version of the paper and "new_text"
+      is the corresponding revised sentence in the new version ("edit_action" is "Modify"). Your task
+      is to analyze the revision intent behind the difference between the two texts. The intent can be
+      one of the following labels: fix grammar (Grammar), improve clarity (Clarity), change claim or statement
+      (Claim), change factual information (Fact/Evidence). Grammar and Clarity are more about surface
+      language improvements, while Fact/Evidence and Claim are more about meaning changes. If none of
+      the above labels are relevant, please answer with ''Other''. Read the old and new texts. What is
+      the intent of the revision?'
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: 'Surface, fix grammar (Grammar): Correct grammatical errors, capitalization, punctuation,
+          tense, modality, spelling, typography, abbreviations or any errors related to grammar and/or
+          conventions to improve the language.'
+      Clarity:
+        criterion: 'Surface, improve clarity (Clarity): Alter word choice, phrase usage, expressions and/or
+          text format to be more formal, concise and understandable without meaning changes, or to amplify
+          meaning for clarity.'
+      Fact/Evidence:
+        criterion: 'Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify
+          or update the fact and/or evidence from third parties, or the author''s factual manipulations
+          and observations, or delete/modify erroneous/irrelevant ones.'
+      Claim:
+        criterion: 'Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement,
+          opinion, idea of the authors, or their overall aim of the document.'
+      Other:
+        criterion: 'Other: Revise the text in a way that is irrelevant to any other type of edit intent.'
+  edit_intent_add_delete:
+    kind: choice
+    instructions: 'You will read a sentence that was added to or deleted from a scientific paper during
+      revision. The state holds one sentence-level edit: if "edit_action" is "Add", "old_text" is empty
+      and "new_text" is the sentence added in the new version of the paper; if "edit_action" is "Delete",
+      "new_text" is empty and "old_text" is the sentence removed from the old version. Your task is to
+      analyze the revision intent behind the difference between the two texts. Additions and deletions
+      of sentences typically pertain to improving factual content or claims, but are never intended for
+      superficial language enhancement, so the intent is one of the following labels: change claim or
+      statement (Claim), change factual information (Fact/Evidence). If none of the above labels are relevant,
+      please answer with ''Other''. What is the intent of the revision?'
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify
+          or update the fact and/or evidence from third parties, or the author''s factual manipulations
+          and observations, or delete/modify erroneous/irrelevant ones.'
+      Claim:
+        criterion: 'Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement,
+          opinion, idea of the authors, or their overall aim of the document.'
+      Other:
+        criterion: 'Other: Revise the text in a way that is irrelevant to any other type of edit intent.'

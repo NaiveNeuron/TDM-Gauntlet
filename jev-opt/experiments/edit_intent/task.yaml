@@ -1,0 +1,37 @@
+# Re3-Sci edit intent (Ruan et al., EMNLP 2024): intent of one sentence-level revision.
+# Data: `uv run jev-opt/experiments/edit_intent/prepare.py` (see ../README.md).
+# Metric: macro-F1 over the five labels (paper Table 2 reports accuracy and macro-F1).
+name: edit-intent
+labels:   # descriptions: the gauntlet prompt's criteria (prompts/edit_intent.json)
+  "Grammar": "Surface, fix grammar (Grammar): Correct grammatical errors, capitalization, punctuation, tense, modality, spelling, typography, abbreviations or any errors related to grammar and/or conventions to improve the language."
+  "Clarity": "Surface, improve clarity (Clarity): Alter word choice, phrase usage, expressions and/or text format to be more formal, concise and understandable without meaning changes, or to amplify meaning for clarity."
+  "Fact/Evidence": "Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify or update the fact and/or evidence from third parties, or the author's factual manipulations and observations, or delete/modify erroneous/irrelevant ones."
+  "Claim": "Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement, opinion, idea of the authors, or their overall aim of the document."
+  "Other": "Other: Revise the text in a way that is irrelevant to any other type of edit intent."
+inputs:   # empty descriptions: the seed instructions describe the state, as in the gauntlet prompt
+  edit_action: ""
+  old_text: ""
+  new_text: ""
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1
+objectives: [quality, calibration, cheap, tokens]
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 16
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000   # ~14.0 full-val equivalents (val n=1000) per optimizing condition
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive: [64, 256]
+  fit_examples: 64
+  calibrate: true
+seed_program: seed.yaml

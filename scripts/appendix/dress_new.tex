@@ -1,0 +1,28 @@
+\paragraph{Task.} Scoring EFL argumentative essays on three rubrics (content, organization, language), each on
+\{<<q:dress_new:levels|keys>>\}. The total is their sum (\S3.1). The replaced predictors are the paper's
+supervised BERT and Llama~3.1~8B scorers (Table~3). \jev{} chooses one level per rubric.
+
+\paragraph{Data and test set.} The data are gated behind a consent form (<<m:dress_new:source.project_page|url>>).
+We obtained the consented release (\texttt{DREsS\_New.tsv}, SHA-256
+<<m:dress_new:raw_sha256.DREsS_New.tsv|sha>>). The consent terms forbid sharing, so the prepare script stores only an ID + row-SHA-256
+manifest. The paper's seeded split is unreleased. Our reconstruction is <<m:dress_new:split.frozen_rule>> Of these, <<m:dress_new:test_n_found.dropped_empty_essay|int>>
+have an empty essay in the release, so $N=$ <<s:dress_new:n|int>>. The language screen dropped
+<<j:data/frozen/dress_new/stats.json:dropped_non_english|len>> rows.
+
+\paragraph{Prompt and metric.} One request per essay, with state \{essay\_prompt, essay\} and one
+\textsc{Score} question per rubric. The rubric explanations come from Table~2, and the framing from the paper's
+gpt-4o prompt (C) (Table~10). Prediction: argmax level, ties to the lower level. The metric is QWK on the total
+(Table~3) and per rubric.
+<<metrics
+cols: dress_new=Test
+qwk_total = QWK total | pct
+qwk_content = QWK content | pct
+qwk_organization = QWK organization | pct
+qwk_language = QWK language | pct
+supplementary_expected_rounded.qwk_total = QWK total (expected level) | pct
+>>
+<<papernums:dress_new=Total>>
+
+\paragraph{Deviations and status.} Reconstructed test set. The split is our seeded reconstruction, and the
+empty-essay rows are dropped. Paper numbers, including the zero-shot gpt-4o baselines, come from the authors'
+own split and are therefore only approximately comparable.

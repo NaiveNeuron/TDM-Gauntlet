@@ -1,0 +1,14 @@
+@task
+Decide whether a short answer that a language model gave to a factual question (or a standalone statement) is
+factually correct, without seeing the reference answer.
+@output
+One label from \{<<q:pinose_qa:question.criteria|keys>>\}.
+@example the paper's own illustration, \S2. The release has no licence, so no test item is shown
+Question & <<rx:data/raw/pinose/paper.txt:(What is the capital city\s+of China\?)|c220>>
+Response & <<rx:data/raw/pinose/paper.txt:“(Beijing)” serves|c220>>
+Gold & <<rx:data/raw/pinose/paper.txt:serves as the response with\s+(True) judgement|c220>>
+@sets
+pinose/true_false = True-False
+pinose/nq = NQ
+pinose/triviaqa = TriviaQA
+pinose/webq = WebQ

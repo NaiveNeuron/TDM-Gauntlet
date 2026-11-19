@@ -1,0 +1,80 @@
+{
+  "task": "dress-new-organization",
+  "task_path": "jev-opt/experiments/dress_new/task_v3_organization.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Holistic observable levels; each level describes the overall structure, paragraph focus and linking a reader would see, anchored on the rubric wording.",
+          "digest": "18bc8558e606cbda",
+          "nodes": {
+            "organization": "score"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Levels defined by which rubric components (followable structure, single-idea paragraphs, coherence devices) are met, stated as counts of met components.",
+          "digest": "e9563c1335cdde81",
+          "nodes": {
+            "organization": "score"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Reader-experience levels that describe how much effort a reader needs to follow the argument in `essay`, together with the paragraph evidence behind it.",
+          "digest": "1b92e58720896b88",
+          "nodes": {
+            "organization": "score"
+          }
+        }
+      ],
+      "rejected": [
+        "attempt 1 program 1: 9 validation errors for Program\nnodes.organization.score.outcomes.0\n  Input should be a valid dictionary or instance of Target [type=model_type, input_value='1.0', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/model_type\nnodes.organization.score.outcomes.1\n  In",
+        "attempt 1 program 2: 9 validation errors for Program\nnodes.organization.score.outcomes.0\n  Input should be a valid dictionary or instance of Target [type=model_type, input_value='1.0', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/model_type\nnodes.organization.score.outcomes.1\n  In",
+        "attempt 1 program 3: 9 validation errors for Program\nnodes.organization.score.outcomes.0\n  Input should be a valid dictionary or instance of Target [type=model_type, input_value='1.0', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/model_type\nnodes.organization.score.outcomes.1\n  In"
+      ]
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Single score with nine observable level descriptions of organization (structure, paragraph focus, coherence devices), one outcome per level.",
+          "digest": "f8469742809f4523",
+          "nodes": {
+            "organization": "score"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "Coarse-to-fine hierarchy; a choice over three bands (does not meet / partly meets / fully meets the rubric) routes to finer choices within each band.",
+          "digest": "e4bd0adcbd40f859",
+          "nodes": {
+            "organization": "choice",
+            "organization_low": "choice",
+            "organization_mid": "choice",
+            "organization_high": "choice"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "Branch chain splitting at the midpoint, then quarter bands, then finer choices, each noul a single organization threshold statement.",
+          "digest": "0429af808f2a5cd7",
+          "nodes": {
+            "organization": "branch",
+            "organization_lower": "choice",
+            "organization_upper": "branch",
+            "organization_middle": "choice",
+            "organization_top": "choice"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.220104
+}

@@ -1,0 +1,66 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Reader-experience levels that describe how much effort a reader needs to follow the argument in `essay`, together with the paragraph evidence behind it.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: score
+    instructions: Rate how easy it is for a reader to follow how `essay` builds its argument in response
+      to `essay_prompt`. Base the rating on the essay's structure, whether each paragraph holds one main
+      idea, and its use of coherence devices. Language errors and idea quality do not count.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - The reader cannot follow any line of argument. The text reads as disconnected sentences without
+      paragraph organization.
+    - The reader can guess the topic but not how the ideas connect. Paragraphs, if present, do not group
+      related ideas.
+    - The reader follows isolated parts, but the order of ideas seems random and connections are rarely
+      signalled.
+    - The reader follows the main position only by rereading. Paragraphs often combine unrelated ideas,
+      and linking is sparse or repetitive.
+    - The reader follows the argument with moderate effort. Paragraphing mostly groups ideas, but some
+      paragraphs drift, and linking words are present but sometimes inaccurate.
+    - The reader follows the argument with little effort. There are occasional jumps between ideas or
+      one unfocused paragraph.
+    - The reader follows the argument easily. The introduction, body and conclusion are clear, with a
+      few small weak spots in transitions or development.
+    - The reader follows the argument easily throughout. Paragraphs are focused and connected smoothly,
+      with at most one slight weak spot.
+    - The reader follows the argument effortlessly and sees at every point how it is built. Each paragraph
+      has a single main idea, and the coherence devices are effective throughout.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

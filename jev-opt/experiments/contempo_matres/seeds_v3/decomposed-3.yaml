@@ -1,0 +1,54 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy that first decides whether the start order is fixed, open, or simultaneous, then picks the direction.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: In `context`, Event 1 is marked <e1> (`event_1`) and Event 2 is marked <e2> (`event_2`).
+      Both events are on the main story line. Considering only START times, how does the text constrain
+      the order of the two starts?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      ordered:
+        criterion: 'The text fixes the order: exactly one of the two events starts first, and the other
+          order is ruled out. This differs from open, where both orders remain possible, and from same,
+          where neither event starts first.'
+        to:
+          node: relation_direction
+      same:
+        criterion: The two events start at the same time. Neither start can be before the other.
+        to:
+          label: EQUAL
+      open:
+        criterion: The text leaves the order open. Event 1 could start first and Event 2 could also start
+          first. This differs from ordered, where one of these orders is ruled out.
+        to:
+          label: VAGUE
+  relation_direction:
+    kind: choice
+    instructions: In `context`, Event 1 is marked <e1> (`event_1`) and Event 2 is marked <e2> (`event_2`).
+      Considering only START times, which event starts first?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 starts before Event 2 starts. Event 2 cannot start before Event 1.
+      AFTER:
+        criterion: Event 2 starts before Event 1 starts. Event 1 cannot start before Event 2.

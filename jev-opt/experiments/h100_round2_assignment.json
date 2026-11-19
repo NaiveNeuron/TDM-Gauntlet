@@ -1,0 +1,162 @@
+{
+ "rule": "Within each experiment, sets by planned input tokens, largest first, each to the GPU with the smaller running total (ties: gpu0). Each GPU runs its base slot, then its native slot.",
+ "clef_chars_per_token": 3.45426226043814,
+ "base": {
+  "slots": {
+   "gpu0": [
+    "dress-new-organization",
+    "lifetox",
+    "inli",
+    "edit-intent",
+    "contempo-tbdense",
+    "smarter-latent-hate"
+   ],
+   "gpu1": [
+    "dress-new-language",
+    "dress-new-content",
+    "sciprompt-s2orc",
+    "ezstance-subtaskA",
+    "contempo-matres",
+    "smarter-implicit-hate",
+    "smarter-hatexplain"
+   ]
+  },
+  "planned_tokens": {
+   "gpu0": 89964896,
+   "gpu1": 87834118
+  },
+  "per_set": {
+   "contempo-tbdense": {
+    "calls": 12115,
+    "tokens": 4613765
+   },
+   "ezstance-subtaskA": {
+    "calls": 31535,
+    "tokens": 8683196
+   },
+   "smarter-implicit-hate": {
+    "calls": 9700,
+    "tokens": 4539772
+   },
+   "edit-intent": {
+    "calls": 15426,
+    "tokens": 4766789
+   },
+   "inli": {
+    "calls": 32327,
+    "tokens": 14573041
+   },
+   "dress-new-content": {
+    "calls": 6630,
+    "tokens": 22244728
+   },
+   "dress-new-organization": {
+    "calls": 21042,
+    "tokens": 42748755
+   },
+   "dress-new-language": {
+    "calls": 7407,
+    "tokens": 25030246
+   },
+   "contempo-matres": {
+    "calls": 16632,
+    "tokens": 7006989
+   },
+   "lifetox": {
+    "calls": 22600,
+    "tokens": 18819706
+   },
+   "sciprompt-s2orc": {
+    "calls": 42120,
+    "tokens": 18193552
+   },
+   "smarter-hatexplain": {
+    "calls": 9176,
+    "tokens": 2135635
+   },
+   "smarter-latent-hate": {
+    "calls": 22206,
+    "tokens": 4442840
+   }
+  }
+ },
+ "native": {
+  "slots": {
+   "gpu0": [
+    "sciprompt-s2orc",
+    "inli",
+    "dress-new-content",
+    "contempo-tbdense",
+    "smarter-latent-hate",
+    "contempo-matres"
+   ],
+   "gpu1": [
+    "ezstance-subtaskA",
+    "edit-intent",
+    "lifetox",
+    "dress-new-organization",
+    "dress-new-language",
+    "smarter-hatexplain",
+    "smarter-implicit-hate"
+   ]
+  },
+  "planned_tokens": {
+   "gpu0": 13939874,
+   "gpu1": 13932163
+  },
+  "per_set": {
+   "contempo-tbdense": {
+    "calls": 2456,
+    "tokens": 1114213
+   },
+   "ezstance-subtaskA": {
+    "calls": 9065,
+    "tokens": 3869766
+   },
+   "smarter-implicit-hate": {
+    "calls": 2300,
+    "tokens": 869346
+   },
+   "edit-intent": {
+    "calls": 3695,
+    "tokens": 3313798
+   },
+   "inli": {
+    "calls": 5396,
+    "tokens": 1910054
+   },
+   "dress-new-content": {
+    "calls": 1172,
+    "tokens": 1273786
+   },
+   "dress-new-organization": {
+    "calls": 1173,
+    "tokens": 1482981
+   },
+   "dress-new-language": {
+    "calls": 1173,
+    "tokens": 1143049
+   },
+   "contempo-matres": {
+    "calls": 2220,
+    "tokens": 908047
+   },
+   "lifetox": {
+    "calls": 4400,
+    "tokens": 2148889
+   },
+   "sciprompt-s2orc": {
+    "calls": 7060,
+    "tokens": 7661514
+   },
+   "smarter-hatexplain": {
+    "calls": 2592,
+    "tokens": 1104334
+   },
+   "smarter-latent-hate": {
+    "calls": 2314,
+    "tokens": 1072260
+   }
+  }
+ }
+}

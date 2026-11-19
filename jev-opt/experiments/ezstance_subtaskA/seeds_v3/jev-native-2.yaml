@@ -1,0 +1,67 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Evidence-focused wording; each option names the observable signal in the tweet, such as praise or attack for noun phrases and agreement or contradiction for claims.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: choice
+    instructions: Classify the attitude the author of `tweet` expresses toward `target`.
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The `tweet` praises, defends, promotes or hopes for the success of `target`, or it
+          attacks opponents of `target`.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The `tweet` attacks, mocks, blames or warns against `target`, or it praises opponents
+          of `target`.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: The `tweet` contains no praise or attack that is directed at `target` or its opponents.
+          Plain news, questions and off-topic text are included here.
+        to:
+          label: NONE
+  stance:
+    kind: choice
+    instructions: Classify how the `tweet` relates to the claim in `target`.
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The `tweet` states, repeats or clearly endorses the message of the claim in `target`.
+          Relevance to the claim alone is not enough.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The `tweet` states the opposite of the claim in `target`, or clearly rejects or ridicules
+          it. Relevance to the claim alone is not enough.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: The `tweet` neither clearly endorses nor clearly rejects the claim in `target`. This
+          includes tweets that are relevant but undecided.
+        to:
+          label: NONE

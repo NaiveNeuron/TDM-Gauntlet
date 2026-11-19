@@ -1,0 +1,36 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Short definition-faithful criteria, each phrased as an observable property of the two fields.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Label the `hypothesis` by its relation to the `premise` (the passage).
+    state:
+    - premise
+    - hypothesis
+    options:
+      implied_entailment:
+        criterion: 'Implicature: the `hypothesis` is a valid inference from the `premise` but is not explicitly
+          stated in it. It needs an additional cognitive step such as logical reasoning, world knowledge,
+          conversational pragmatics, or figurative language.'
+      explicit_entailment:
+        criterion: 'Explicature: the `hypothesis` is a valid inference from the `premise` and is explicitly
+          stated in it. It follows directly from lexical semantics (synonymy, paraphrasing) and syntax
+          (pronominal co-reference, bridging, other endophora). No extra reasoning or world knowledge
+          is needed.'
+      neutral:
+        criterion: The `premise` gives no basis to accept the `hypothesis` and no basis to reject it.
+      contradiction:
+        criterion: The `hypothesis` is not a valid inference from the `premise`, and the `premise` contradicts
+          it.

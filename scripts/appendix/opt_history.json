@@ -1,0 +1,363 @@
+{
+ "_about": "Values taken once from the git history of the repository in which the study was run, which is not public. code: values in the jev-opt source at the commits recorded in runs/jev-opt/*/environment.json (constants as source text). trees: git tree ids of jev-opt/python and jev-opt/extension at two of those commits. code_times: commit time of each of those commits. commits: [commit, commit time] of each protocol and of the commits that fixed a choice or added a first run or test. seed_selection: the representatives in results/seeds.json, and heads_frozen_sha256: the SHA-256 of data/frozen/heads/*.json, as committed when the choice was fixed. tailored_tests: [commit, commit time] that added each runs/jev-opt/tailored-<task>/test_consumed.json. Read by scripts/paper_appendix_opt.py.",
+ "code": {
+  "221c7d31c93eec7e58c0b364dee817bcc9e39c19": {
+   "jev-opt/python/src/jev_opt/population.py": {
+    "MAX_COMBOS": "20000"
+   },
+   "jev-opt/python/src/jev_opt/hygiene.py": {
+    "LEAK_CHARS": "40"
+   },
+   "jev-opt/python/src/jev_opt/fit.py": {
+    "CLASS_BIAS_GRID": "[round(float(x), 2) for x in np.arange(-3.0, 3.001, 0.25)]",
+    "BIAS_GRID": "[round(float(x), 2) for x in np.arange(-2.0, 2.001, 0.25)]",
+    "PROB_GRID": "[round(float(x), 2) for x in np.arange(0.05, 0.951, 0.05)]",
+    "LR_C": "[0.01, 0.03, 0.1, 0.3, 1.0, 3.0]",
+    "RIDGE_ALPHA": "[0.3, 1.0, 3.0, 10.0, 30.0, 100.0]",
+    "temperature bounds": [
+     "0.05",
+     "20.0"
+    ],
+    "Score cutoff step": "0.1"
+   },
+   "jev-opt/python/src/jev_opt/execute.py": {
+    "FEATURE_FLOOR": "1e-4",
+    "BIAS_FLOOR": "1e-4"
+   },
+   "jev-opt/docs/architecture.md": {
+    "Jev limits": [
+     255,
+     2,
+     10
+    ],
+    "## 4. Jev Decision Program IR": [
+     [
+      "`choice`",
+      "Choice",
+      "options → `{label: L}` or `{node: id}` (hierarchical routing, argmax)"
+     ],
+     [
+      "`one_vs_rest`",
+      "K × Noul",
+      "one Noul per label; `aggregation: {rule: argmax_normalized \\| threshold, thresholds: {L: t}, abstain: L?}`"
+     ],
+     [
+      "`score`",
+      "Score",
+      "ordered `levels`; `cutoffs` on the expected score map to labels (ordinal tasks)"
+     ],
+     [
+      "`branch`",
+      "Noul",
+      "`condition` Noul; `if_true` / `if_false` node ids; `threshold` (default 0.5)"
+     ],
+     [
+      "`switch`",
+      "none",
+      "routes on the verbatim value of state field `field`: `cases: {value: target}`, optional `default` target; no Jev call (e.g. per-subset questions)"
+     ],
+     [
+      "`stage`",
+      "any",
+      "evaluates `decision` node, writes its result into derived state field `as`, then runs `next` with the augmented state"
+     ]
+    ]
+   }
+  },
+  "477d5cc384ae11547c435830b7e0e77734b8a9b1": {
+   "jev-opt/python/src/jev_opt/fit.py": {
+    "LR_C": "[0.01, 0.03, 0.1, 0.3, 1.0, 3.0]",
+    "RIDGE_ALPHA": "[0.3, 1.0, 3.0, 10.0, 30.0, 100.0]"
+   },
+   "jev-opt/python/src/jev_opt/tailored.py": {
+    "LOGP_FLOOR": "1e-4"
+   }
+  },
+  "6a1d0496916e82a385a277c1e489f6cbca621c82": {
+   "jev-opt/python/src/jev_opt/hygiene.py": {
+    "size cap": [
+     4000,
+     8
+    ]
+   },
+   "jev-opt/docs/architecture.md": {
+    "## 1. Ownership": [
+     [
+      "LLM credentials",
+      "OMP",
+      "`ctx.modelRegistry.resolver(model, sessionId)` (OAuth refresh, key rotation, auth retry)"
+     ],
+     [
+      "LLM model resolution",
+      "OMP",
+      "`ctx.models.resolve(spec)` for `@slow`, `@smol`, roles, `provider/id`, bare ids; `ctx.models.current()` for `current`"
+     ],
+     [
+      "LLM inference",
+      "OMP",
+      "`@oh-my-pi/pi-ai` `completeSimple(model, context, {apiKey, reasoning, maxTokens, signal})`"
+     ],
+     [
+      "Reasoning levels",
+      "OMP",
+      "`reasoning: Effort` / `disableReasoning`; jev-opt only forwards the configured value"
+     ],
+     [
+      "Reflective optimization",
+      "GEPA",
+      "`gepa.optimize(..., reflection_lm=OMPReflectionLM)` and GEPA's `InstructionProposalSignature`"
+     ],
+     [
+      "Pareto candidate search",
+      "GEPA",
+      "`candidate_selection_strategy=\"pareto\"`, `frontier_type=\"hybrid\"` with `objective_scores`"
+     ],
+     [
+      "Candidate scheduling / sampling",
+      "GEPA",
+      "`EpochShuffledBatchSampler`, `module_selector=\"round_robin\"`, `use_merge`"
+     ],
+     [
+      "Stopping",
+      "GEPA",
+      "`max_metric_calls`, `max_reflection_cost`, `run_dir` file stopper (`gepa.stop`)"
+     ],
+     [
+      "Generic persistence / resume",
+      "GEPA",
+      "`run_dir/gepa_state.bin`, `run_log.json`, `candidates.json`"
+     ],
+     [
+      "Experiment callbacks",
+      "GEPA",
+      "`callbacks=[...]` → forwarded to OMP as progress notifications"
+     ],
+     [
+      "Jev program representation",
+      "jev-opt",
+      "Pydantic IR (`jev_opt.ir`), YAML/JSON"
+     ],
+     [
+      "Jev transformations",
+      "jev-opt",
+      "`jev_opt.transforms` (deterministic) + structural reflection prompt"
+     ],
+     [
+      "Jev API execution",
+      "jev-opt",
+      "`jev_opt.jev` (Decisions API client, retries, pacing, usage, cache)"
+     ],
+     [
+      "Threshold / aggregation fitting",
+      "jev-opt",
+      "`jev_opt.fit` (numerical; scipy/numpy, no LLM)"
+     ],
+     [
+      "Task metrics",
+      "jev-opt (sklearn)",
+      "`jev_opt.metrics` wraps scikit-learn; ECE is the only hand-written metric"
+     ],
+     [
+      "Task evaluation",
+      "jev-opt / GEPA adapter",
+      "`jev_opt.adapter.JevAdapter` implements GEPA's `GEPAAdapter` protocol"
+     ],
+     [
+      "Progressive validation",
+      "jev-opt via GEPA protocol",
+      "`ProgressivePolicy` implements GEPA's `EvaluationPolicy` protocol (0.1.4 ships only full eval)"
+     ],
+     [
+      "Test-set isolation",
+      "jev-opt",
+      "worker never loads the test split except in `evaluate_final`; consumption ledger"
+     ],
+     [
+      "Experiment reporting",
+      "jev-opt",
+      "`runs/<id>/report.md`, representatives, `environment.json`"
+     ],
+     [
+      "UI / commands / worker lifecycle",
+      "jev-opt (OMP extension)",
+      "`/jev-optimize`, `/jev-status`, … registered with `pi.registerCommand`"
+     ]
+    ],
+    "structural operators": [
+     "choice_to_one_vs_rest",
+     "one_vs_rest_to_choice",
+     "choice_to_score",
+     "score_to_choice",
+     "hierarchize",
+     "flatten",
+     "toggle_shared_state",
+     "set_abstain",
+     "set_aggregation",
+     "narrow_state",
+     "widen_state"
+    ]
+   }
+  }
+ },
+ "trees": {
+  "23278a08e5cc5f3923bd2d7d078b1a9962012b2f": {
+   "jev-opt/python": "92210afa9d85ef5a00e3f271ad8c67fb5847936f",
+   "jev-opt/extension": "292f1166901126c2f9801d750e6bae54ab181213"
+  },
+  "221c7d31c93eec7e58c0b364dee817bcc9e39c19": {
+   "jev-opt/python": "92210afa9d85ef5a00e3f271ad8c67fb5847936f",
+   "jev-opt/extension": "292f1166901126c2f9801d750e6bae54ab181213"
+  }
+ },
+ "code_times": {
+  "6a1d0496916e82a385a277c1e489f6cbca621c82": "2026-09-27T15:00:28+02:00",
+  "221c7d31c93eec7e58c0b364dee817bcc9e39c19": "2026-09-27T20:50:11+02:00",
+  "477d5cc384ae11547c435830b7e0e77734b8a9b1": "2026-09-27T22:30:06+02:00",
+  "23278a08e5cc5f3923bd2d7d078b1a9962012b2f": "2026-09-29T05:12:37+02:00"
+ },
+ "commits": {
+  "first protocol": [
+   "e35cc712ff476f96e3f6144ab42167868685c775",
+   "2026-09-27T01:39:18+02:00"
+  ],
+  "second protocol": [
+   "a05ade9dc519b24611ebbc07a1eab44de3abe5a2",
+   "2026-09-27T20:49:11+02:00"
+  ],
+  "second protocol, choice fixed": [
+   "c7e0cc24f6a91bdc738f48f8f42a70cae4fc553b",
+   "2026-09-29T05:17:48+02:00"
+  ],
+  "third protocol": [
+   "7af7492bc374aaba6512afbb9d28cbe9da328d36",
+   "2026-09-27T20:19:33+02:00"
+  ],
+  "third protocol, choice fixed": [
+   "5987f7ecec1efcc3d24d96db40863a99d52fcbcc",
+   "2026-09-28T22:09:26+02:00"
+  ],
+  "seed protocol": [
+   "f68f4d6c3cac795817616e5e0e8f01e9dad57663",
+   "2026-09-29T12:15:32+02:00"
+  ],
+  "seed protocol, choice fixed": [
+   "e740e8567e9a1395fdb9a6dc27988033edf7cea2",
+   "2026-09-29T15:30:20+02:00"
+  ],
+  "tailored protocol": [
+   "a6cd62b4a0b21ba65a361ef8357d7db7ce3d3d21",
+   "2026-09-27T22:19:52+02:00"
+  ],
+  "reranking protocol": [
+   "2c743f6df80bde29f1883f28b13a29999bba2d0f",
+   "2026-09-27T21:01:42+02:00"
+  ],
+  "reranking protocol, choice fixed": [
+   "e0d78b0e893ca02d28f121737fdfb7a8a391d6a6",
+   "2026-09-27T21:34:43+02:00"
+  ],
+  "reranking first test": [
+   "136dd0165e141f29e0415bd8e611752d1b276cdd",
+   "2026-09-29T05:26:43+02:00"
+  ],
+  "heads protocol": [
+   "f0a638bef13b69d1f889f3c2f63364cc10d13b30",
+   "2026-09-29T13:11:57+02:00"
+  ],
+  "heads protocol, choice fixed": [
+   "f0a638bef13b69d1f889f3c2f63364cc10d13b30",
+   "2026-09-29T13:11:57+02:00"
+  ],
+  "heads first dev run": [
+   "ce52b9cf083e61944a387365c0cd1de015eb3b5b",
+   "2026-09-27T20:49:18+02:00"
+  ],
+  "heads first test": [
+   "fe188f6d103f9d8c9b94edf1baa82d17e2443b22",
+   "2026-09-29T13:20:16+02:00"
+  ]
+ },
+ "seed_selection": {
+  "contempo-tbdense": {
+   "0": "top-single",
+   "1": "top-single",
+   "2": "top-single"
+  },
+  "ezstance-subtaskA": {
+   "0": "top-single",
+   "1": "top-single",
+   "2": "top-single"
+  },
+  "smarter-implicit-hate": {
+   "0": "top-stacked",
+   "1": "top-stacked",
+   "2": "top-stacked"
+  },
+  "edit-intent": {
+   "0": "top-stacked",
+   "1": "top-single",
+   "2": "top-stacked"
+  },
+  "inli": {
+   "0": "top-single",
+   "1": "top-single",
+   "2": "top-single"
+  },
+  "dress-new-content": {
+   "0": "top-single",
+   "1": "top-stacked",
+   "2": "top-stacked"
+  },
+  "dress-new-organization": {
+   "0": "top-single",
+   "1": "top-stacked",
+   "2": "top-single"
+  },
+  "dress-new-language": {
+   "0": "top-single",
+   "1": "top-single",
+   "2": "top-stacked"
+  }
+ },
+ "heads_frozen_sha256": {
+  "data/frozen/heads/contempo/matres.json": "782716bd362ac2da6da06e6550b482164c8ed650c1b1ab4455abfceee600d653",
+  "data/frozen/heads/contempo/tbdense.json": "5b860d3ed53b7d0c4c4855ab0732f6639f8f1302263764d2a2fe64330657a6ea",
+  "data/frozen/heads/smarter/hatexplain.json": "57005e66d465ad8770faaa059db942de3dba04ec44be09bd22fe7ac7bb8c1893",
+  "data/frozen/heads/smarter/latent_hate.json": "c03f5a0e1d2b0177887f3d5451778ce8a181e8d4545a1f9889fef15122ab60e5",
+  "data/frozen/heads/smarter/implicit_hate.json": "e871b7dee1216f6536c55c47c4d805fa2ab29a0a648ac54dfcdf893487dd804c"
+ },
+ "tailored_tests": [
+  [
+   "e1d5b656a",
+   "2026-09-29T05:23:50+02:00"
+  ],
+  [
+   "7c49f6b7a",
+   "2026-09-29T05:23:17+02:00"
+  ],
+  [
+   "7af99b832",
+   "2026-09-29T05:22:43+02:00"
+  ],
+  [
+   "317f17665",
+   "2026-09-29T05:22:11+02:00"
+  ],
+  [
+   "a0db286e9",
+   "2026-09-29T05:19:42+02:00"
+  ],
+  [
+   "7dcfbda6a",
+   "2026-09-29T05:18:10+02:00"
+  ],
+  [
+   "6896c05a2",
+   "2026-09-29T05:17:27+02:00"
+  ],
+  [
+   "a4adecdb8",
+   "2026-09-29T05:12:56+02:00"
+  ]
+ ]
+}

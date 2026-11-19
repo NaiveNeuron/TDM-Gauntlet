@@ -1,0 +1,55 @@
+{
+  "task": "inli",
+  "paper": {
+    "title": "Entailed Between the Lines: Incorporating Implication into NLI",
+    "venue": "ACL 2025 (long), pages 32274-32290",
+    "url": "https://aclanthology.org/2025.acl-long.1552/",
+    "pdf_sha256": "69734a962d6b6054319e58315ab9ccc4c5090131b7b584886a20a0ac463d234b"
+  },
+  "source": {
+    "repo": "https://github.com/google-deepmind/inli",
+    "commit": "e953ca29a6e404d5203401b66ff51fee88fa1ec6",
+    "licence": "CC BY-SA 4.0 (repo LICENSE, added in commit 05c2e93 'changed License'); redistribution permitted with attribution under the same licence, so the frozen test file that scripts/prepare_inli.py writes is full-row JSONL and carries CC BY-SA 4.0",
+    "files": {
+      "INLI Data/test.csv": {"sha256": "28153a6f601ccaacf70e1f091c35548a7d72cf196b9462e0fe44ca1062131cf2", "bytes": 458342, "rows": 1000},
+      "INLI Data/train.csv": {"sha256": "e643900306fdb9ac2c4aa4534ec6eb0f253a87be62bf7b5ac5f2aac9c5f75042", "bytes": 3617264, "rows": 8000},
+      "INLI Data/val.csv": {"sha256": "fa13b6603e2a99c6c16e8d770fa35d259f3fb7f4be31e3a41d69e7a71196458b", "bytes": 449959, "rows": 1000},
+      "Resources/Few-shot LLM Results.xlsx": {"sha256": "0b9e2a8994ddc8922424321c4447bf67c01e0b7b84bcb5f75a67dd1d0f35f1ff", "note": "paper's 8-shot LLM outputs on the 4,000 test pairs (GPT-4, GPT-4o, Mistral-Large, Claude-3-Sonnet); used only to verify the metric definition, never shown to Jev"},
+      "LICENSE": {"sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"},
+      "README.md": {"sha256": "b57f91cf2b9dd4c90af9089c1fbc003041f43e6ea280a2f7418b6ff4af6dfa5c"}
+    },
+    "fields": "unnamed row index, dataset (circa/ludwig/normbank/socialchem), premise, implied_entailment, explicit_entailment, neutral, contradiction (one row = one premise + its four hypotheses)"
+  },
+  "frozen": {
+    "path": "data/frozen/inli/test.jsonl",
+    "sha256": "1d97d9dd0d81bd52329ff7383fdacfbebeb5ec57ed6b6e6de011399b291b3528",
+    "builder": "scripts/prepare_inli.py",
+    "fields": "id (inli-test-<row:04d>-<label>; never sent to Jev), group (premise row index), source_dataset, premise, hypothesis (verbatim), gold (release column name)",
+    "n": 4000,
+    "n_premises": 1000,
+    "label_counts": {"implied_entailment": 1000, "explicit_entailment": 1000, "neutral": 1000, "contradiction": 1000},
+    "source_dataset_premises": {"circa": 436, "socialchem": 256, "normbank": 254, "ludwig": 54}
+  },
+  "test_n_resolution": "test.csv has 1,000 premise rows x 4 hypotheses = 4,000 pairs (README: 'Size of test dataset: 4,000'; train 8,000 / val 1,000 premises = 32,000 / 4,000 pairs; total 10,000 premises / 40,000 pairs = paper Section 1). Per-source pair totals over all splits equal paper Table 5 (LUDWIG 1,956; CIRCA 18,044; NORMBANK 10,000; SOCIALCHEM 10,000). The paper's released Table 6 LLM outputs contain exactly these 4,000 test pairs (3,999 exact matches; the last differs only by a trailing space in test.csv row 865 that the xlsx dropped). Test N = 4,000.",
+  "metric_verification": "Table 6 'Implied Entailment' accuracy = accuracy on the 1,000 gold implied_entailment pairs (recall). Replaying the released few-shot outputs through inli.py score() gives GPT-4 0.753/0.645, GPT-4o 0.749/0.608, Mistral-Large 0.744/0.735 = Table 6 exactly. Claude-3-Sonnet's sheet has 1,022 'ERROR' responses; Table 6's 0.686 equals accuracy over the 2,978 non-error rows, so that row is not on the full test set.",
+  "english_verification": {
+    "metadata": "README and paper: premises/hypotheses generated in English by Gemini-Pro from English sources (LUDWIG, CIRCA, NormBank, Social Chemistry 101); names from the 2011 US Census.",
+    "method": "langid 1.1.6 on all 5,000 test texts (1,000 premises + 4,000 hypotheses), plus non-ASCII ratio > 5%; every flag inspected.",
+    "result": "56 langid flags (af/es/sl/de/fr/...), all short English sentences with personal names (e.g. 'Alma desires a pay raise.', 'Heights frighten Stefanie.'); 0 non-ASCII flags (only 3 non-ASCII characters in the whole test set: 'canap\u00e9', 'apr\u00e8s-ski', an en dash). No non-English rows; none dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "duplicate_premises": 0,
+    "empty_fields": 0,
+    "max_text_chars": 436,
+    "truncated_items": 0,
+    "identical_hypothesis_text_under_two_labels": {
+      "count_groups": 3,
+      "rows": {"93": "implied_entailment == explicit_entailment ('Thad likes going to concerts.')", "477": "implied_entailment == explicit_entailment ('This is Steven's first time living in the area.')", "571": "implied_entailment == contradiction"},
+      "effect": "kept as released (the paper scored them). Identical inputs get identical Jev answers, so at most one pair of each is correct: accuracy ceiling 3,997/4,000 = 0.99925"
+    }
+  },
+  "deviations": [
+    "Zero-shot: the paper's LLM baselines used an 8-shot prompt (App. E.3, examples from train). Jev gets the E.3 instructions and label definitions without examples, plus the paper's Section 2 definitions of explicit/implied entailment."
+  ]
+}

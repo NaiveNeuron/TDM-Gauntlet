@@ -1,0 +1,111 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Flat choice with contrastive criteria naming each field's core subject and what belongs to its nearest neighbour instead.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`? Pick the field the work itself contributes to, not a field only mentioned as context
+      or application.
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: 'Semantic Scholar field Engineering: designing, building, controlling or testing devices,
+          structures, circuits, machines or industrial processes. Algorithms and software as the main
+          contribution belong to Computer Science; new materials and their properties belong to Materials
+          Science.'
+      Chemistry:
+        criterion: 'Semantic Scholar field Chemistry: molecules, chemical reactions, synthesis, catalysis,
+          chemical analysis or spectroscopy of compounds. Bulk material properties and fabricated materials
+          belong to Materials Science; biomolecules in living systems belong to Biology.'
+      Computer Science:
+        criterion: 'Semantic Scholar field Computer Science: algorithms, software, machine learning, data
+          processing, networks, computing systems or information retrieval. Hardware and physical systems
+          belong to Engineering; formal proofs with no computing purpose belong to Mathematics.'
+      Business:
+        criterion: 'Semantic Scholar field Business: firms, management, marketing, accounting, organizational
+          strategy, consumers or entrepreneurship. Markets, prices and policy studied at the level of
+          the whole economy belong to Economics.'
+      Political Science:
+        criterion: 'Semantic Scholar field Political Science: governments, elections, public policy, law,
+          international relations, political parties or power. Social groups and everyday social life
+          without a focus on politics belong to Sociology.'
+      Environmental Science:
+        criterion: 'Semantic Scholar field Environmental Science: pollution, climate change impacts, ecosystems
+          under human pressure, water or air quality, sustainability and environmental management. Rocks,
+          earth structure and earth history belong to Geology.'
+      Physics:
+        criterion: 'Semantic Scholar field Physics: physical laws, particles, quantum systems, optics,
+          astrophysics, fields, matter and energy at a fundamental level. Applied materials development
+          belongs to Materials Science; devices built for a purpose belong to Engineering.'
+      Economics:
+        criterion: 'Semantic Scholar field Economics: markets, prices, trade, growth, labor, finance at
+          the level of the economy, and econometric analysis. Single firms and their management belong
+          to Business.'
+      Geography:
+        criterion: 'Semantic Scholar field Geography: places, regions, spatial patterns, land use, urban
+          areas, mapping and GIS, human-environment relations across space. Environmental damage and its
+          measurement belong to Environmental Science.'
+      Medicine:
+        criterion: 'Semantic Scholar field Medicine: diseases, patients, clinical trials, diagnosis, treatment,
+          drugs, public health or health care. Basic cellular, genetic or organism biology without a clinical
+          aim belongs to Biology.'
+      Psychology:
+        criterion: 'Semantic Scholar field Psychology: mind, behavior, cognition, emotion, perception,
+          personality and mental processes of individuals. Psychiatric treatment of patients belongs to
+          Medicine; groups and society belong to Sociology.'
+      Art:
+        criterion: 'Semantic Scholar field Art: visual arts, music, literature, film, design, architecture
+          as art, and artistic works or practices. Past events and periods studied as history belong to
+          History.'
+      Materials Science:
+        criterion: 'Semantic Scholar field Materials Science: making and characterizing materials such
+          as alloys, polymers, ceramics, composites, thin films or nanomaterials and their structure and
+          properties. Reaction mechanisms and molecular synthesis belong to Chemistry.'
+      Mathematics:
+        criterion: 'Semantic Scholar field Mathematics: theorems, proofs, equations, statistics theory,
+          numerical methods and abstract structures. Models applied mainly to explain physical phenomena
+          belong to Physics.'
+      Sociology:
+        criterion: 'Semantic Scholar field Sociology: social groups, institutions, inequality, family,
+          culture, education and social behavior in society. Government and elections belong to Political
+          Science; individual mental processes belong to Psychology.'
+      Geology:
+        criterion: 'Semantic Scholar field Geology: rocks, minerals, earth structure, tectonics, sediments,
+          earthquakes, volcanoes and earth history. Present-day pollution and climate impacts belong to
+          Environmental Science.'
+      Philosophy:
+        criterion: 'Semantic Scholar field Philosophy: ethics, metaphysics, epistemology, logic as philosophy,
+          religion and conceptual arguments. Empirical studies of minds belong to Psychology.'
+      Biology:
+        criterion: 'Semantic Scholar field Biology: living organisms, cells, genes, proteins, evolution,
+          ecology of species and physiology. Disease treatment and patients belong to Medicine.'
+      History:
+        criterion: 'Semantic Scholar field History: past events, periods, people and societies studied
+          through historical sources. Artworks studied as art belong to Art.'

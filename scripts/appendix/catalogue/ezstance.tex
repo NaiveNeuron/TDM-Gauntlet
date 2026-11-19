@@ -1,0 +1,13 @@
+@task
+Given a tweet and a target (a short noun phrase or a full claim sentence), decide whether the tweet's author is in
+favour of, against, or neutral toward the target. Targets and, in Subtask B, whole topic domains are unseen in
+training.
+@output
+One label from \{<<q:ezstance:noun_phrase.criteria|keys>>\} (released as <<q:ezstance:_label_map.Favor>>/<<q:ezstance:_label_map.Against>>/<<q:ezstance:_label_map.Neutral>>).
+@example the paper's Table~1 example, with the tweet paraphrased (release tweets carry no licence, so no test or training tweet is shown)
+Tweet & Whatever became of ``herd immunity''? Are we all meant to hide under the bed sealed in a plastic bag? [paraphrased]
+Target & <<rx:data/raw/ezstance/paper.txt:Stance/Claim targets: Favor / (.*?)\nStance|c220>>
+Gold & <<rx:data/raw/ezstance/paper.txt:Stance/Claim targets: (Favor) /|c220>>
+@sets
+ezstance/subtaskA = Subtask A, unseen targets | tweet--target pairs
+ezstance/subtaskB = Subtask B, unseen domains (mean over domains) | tweet--target pairs

@@ -1,0 +1,78 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Branch cascade of atomic true/false statements about error impact and vocabulary, descending from the top label.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: branch
+    condition: The `essay` (an EFL essay answering `essay_prompt`) has essentially no errors in grammar,
+      usage, spelling or punctuation.
+    state:
+    - essay_prompt
+    - essay
+    if_true:
+      node: language_top
+    if_false:
+      node: language_clear
+    threshold: 0.5
+  language_top:
+    kind: branch
+    condition: The `essay` shows sophisticated control of a wide range of vocabulary and collocations.
+    state:
+    - essay
+    if_true:
+      label: '5.0'
+    if_false:
+      label: '4.5'
+    threshold: 0.5
+  language_clear:
+    kind: branch
+    condition: In the `essay`, language errors never make the meaning of a sentence unclear.
+    state:
+    - essay
+    if_true:
+      node: language_upper
+    if_false:
+      node: language_lower
+    threshold: 0.5
+  language_upper:
+    kind: choice
+    instructions: How frequent are language errors in the `essay`?
+    state:
+    - essay
+    options:
+      '4.0':
+        criterion: Errors are occasional; most sentences are fully correct and vocabulary is varied.
+      '3.5':
+        criterion: Most sentences are correct, but some error types recur; vocabulary is adequate.
+      '3.0':
+        criterion: Many sentences have errors; vocabulary is plain.
+  language_lower:
+    kind: choice
+    instructions: How often do language errors in the `essay` make meaning unclear?
+    state:
+    - essay
+    options:
+      '2.5':
+        criterion: Only one or two sentences are unclear; the rest are understandable despite errors.
+      '2.0':
+        criterion: A few sentences are unclear; errors are in most sentences.
+      '1.5':
+        criterion: Many sentences are unclear, but some passages are clear.
+      '1.0':
+        criterion: Meaning is unclear throughout; the essay does not meet the language rubric.

@@ -1,0 +1,19 @@
+@task
+Measure how strongly a short political text expresses a construct (fear of immigration, negativity of a
+campaign ad, grandstanding in a congressional hearing), either by rating one text or by picking the stronger
+text of a pair.
+@output
+Pointwise: a rating on the paper's scale from ``<<q:scalar_constructs_immigration_fear_pointwise:question.criteria.0>>'' to
+``<<q:scalar_constructs_immigration_fear_pointwise:question.criteria.-1>>''. Pairwise: one of
+\{<<q:scalar_constructs_immigration_fear_pairwise:question.criteria|keys>>\} (which text expresses more).
+@example a released fold-0 training pair of the immigration-fear set, not a test item, paraphrased (the release states no licence)
+Text 1 & that violent people may come here. [paraphrased]
+Text 2 & immigration does not worry me. [paraphrased]
+Gold & Text <<jl:data/raw/scalar_constructs/release/data/processed_data/carlson_montgomery2017_immigration/graph_splits/0.train.jsonl:369.label>> (the crowd annotator's choice)
+@sets
+scalar_constructs/immigration_fear/pointwise = Imm.\ fear (point) | texts
+scalar_constructs/ad_negativity/pointwise = Ad neg.\ (point) | texts
+scalar_constructs/grandstanding/pointwise = Grandst.\ (point) | texts
+scalar_constructs/immigration_fear/pairwise = Imm.\ fear (pair) | pairs
+scalar_constructs/ad_negativity/pairwise = Ad neg.\ (pair) | pairs
+scalar_constructs/grandstanding/pairwise = Grandst.\ (pair) | pairs

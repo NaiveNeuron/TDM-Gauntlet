@@ -1,0 +1,42 @@
+\paragraph{Task.} Single-label topic classification of English scientific abstracts over four fixed inventories:
+arXiv categories (<<q:sciprompt_arxiv:question.criteria|len>> classes), Semantic Scholar fields (S2ORC, S2 in tables,
+<<q:sciprompt_s2orc:question.criteria|len>>), SDPRA-2021 CS domains (<<q:sciprompt_sdpra:question.criteria|len>>)
+and Emerging NLP topics (ENLP, <<q:sciprompt_emerging_nlp:question.criteria|len>>). Replaced predictor: the paper's
+knowledge-augmented prompt-tuned SciBERT (SciPrompt). \jev{} chooses each abstract's topic.
+
+\paragraph{Data and freeze.} The authors' data archive linked from \texttt{<<m:sciprompt:source.code_repo>>}
+(<<m:sciprompt:source.code_commit|commit>>, zip SHA-256 <<m:sciprompt:source.raw_zip_sha256|sha>>), using the test
+files the paper's scripts read. \texttt{scripts/prepare\_sciprompt.py} freezes SDPRA (CC BY 4.0) and Emerging NLP
+(Apache-2.0) as JSONL. ArXiv and S2ORC state no licence, so for them it stores only row-SHA-256 manifests and
+rebuilds the text.
+
+\paragraph{Test sets and English screen.} Released test sets are balanced per class and match paper Table~5. For
+SDPRA we apply the paper's own short-abstract filter (recomputed with its code:
+<<s:sciprompt/sdpra:n_excluded_short|int>> rows), which reproduces its evaluated N. A multi-signal screen (langid,
+function words, scripts and foreign keyword headings, with all candidates read) excluded abstracts with non-English
+sentences or keyword lines: arXiv <<s:sciprompt/arxiv:n_excluded_non_english|int>>, S2ORC
+<<s:sciprompt/s2orc:n_excluded_non_english|int>>, SDPRA <<s:sciprompt/sdpra:n_excluded_non_english|int>>, Emerging NLP
+<<s:sciprompt/emerging_nlp:n_excluded_non_english|int>>.
+
+\paragraph{Prompt and metric.} One \textsc{choice} per abstract over the full inventory. State = \{abstract\}. The
+instruction is the paper's zero-shot LLM instruction (App.~G) with its field-word list replaced by typed options:
+arXiv's official category names and descriptions (arXiv, SDPRA), field names only (S2ORC), and Emerging NLP class
+names with their Taxonomy4CL position. Argmax. Ties to the lower released label id. Truncated:
+<<s:sciprompt/arxiv:n_truncated|int>>. Accuracy (Tables~1--2, Fig.~3). Macro-F1 secondary.
+
+<<metrics
+cols: sciprompt/arxiv=arXiv; sciprompt/s2orc=S2; sciprompt/sdpra=SDPRA; sciprompt/emerging_nlp=ENLP
+n = $N$ | int
+accuracy = Accuracy | pct
+macro_f1 = Macro-F1 | pct
+>>
+<<papernums:sciprompt/arxiv=arXiv;sciprompt/s2orc=S2;sciprompt/sdpra=SDPRA;sciprompt/emerging_nlp=ENLP>>
+
+\paragraph{Deviations and status.} Complete. Emerging NLP paper values are read from the Fig.~3 bar chart. Table~1 of
+the main paper compares with the best trained setting per dataset. The matching zero-shot comparison is paper
+Table~2 and Fig.~3. \jev{} exceeds every configuration the paper reports on arXiv, SDPRA and Emerging NLP (on S2ORC
+only the 50-shot and fully fine-tuned models are higher). The arXiv margin is the largest and is recorded as
+anomalous. We verified it (balanced gold, predictions spread over all classes, accuracy recomputed), and two factors
+likely contribute: \jev{}'s options include arXiv's official descriptions, whereas the paper's LLM baselines saw only
+field words (some of which name the wrong category), and arXiv abstracts are a probable pretraining exposure (a
+risk that also applies to the arXiv-sourced Emerging NLP and SDPRA abstracts).

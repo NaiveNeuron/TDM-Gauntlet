@@ -1,0 +1,95 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; first decide surface versus meaning versus other, then separate the pair within each group.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: true
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: choice
+    instructions: Compare `old_text` with `new_text`. Does the revision change only the language of the
+      sentence, or does it change what the sentence says?
+    state:
+    - old_text
+    - new_text
+    options:
+      surface:
+        criterion: 'Only the language changes: grammar, spelling, punctuation, wording, conciseness or
+          formality. The facts and the claims stated stay the same.'
+        to:
+          node: edit_intent_surface
+      semantic:
+        criterion: 'The content changes: a fact, result, number, citation, observation, claim, opinion
+          or aim is added, removed or altered.'
+        to:
+          node: edit_intent_semantic
+      other:
+        criterion: The revision is neither a language improvement nor a change of content.
+        to:
+          label: Other
+  edit_intent_surface:
+    kind: choice
+    instructions: The change from `old_text` to `new_text` improves language without changing meaning.
+      Does it fix an error, or does it improve wording that was already correct?
+    state:
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: 'It fixes an error of grammar or conventions in `old_text`: grammar, capitalization,
+          punctuation, tense, modality, spelling, typography or abbreviations.'
+      Clarity:
+        criterion: The old wording had no error. The new word choice, phrasing, expression or format is
+          more formal, concise or understandable, or it amplifies meaning for clarity.
+  edit_intent_semantic:
+    kind: choice
+    instructions: The change from `old_text` to `new_text` changes content. Is the changed content a fact
+      or evidence, or a claim of the authors?
+    state:
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'The changed content is factual: data, numbers, results, experimental details, citations,
+          third-party facts, or the authors'' factual manipulations and observations. It is added, elaborated,
+          verified, updated, or removed as erroneous or irrelevant.'
+      Claim:
+        criterion: The changed content is an authors' claim, statement, opinion or idea, or the overall
+          aim of the document, rather than a fact or result.
+  edit_intent_add_delete:
+    kind: choice
+    instructions: The sentence in `new_text` (if `edit_action` is Add) or in `old_text` (if Delete) was
+      added or removed. What kind of content does this sentence carry?
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'Factual content: data, numbers, results, experimental details, citations, third-party
+          facts or observations. It is not mainly an opinion or aim, which would be Claim.'
+      Claim:
+        criterion: An authors' claim, statement, opinion, idea or aim. It is not mainly a fact or result,
+          which would be Fact/Evidence.
+      Other:
+        criterion: Neither factual content nor a claim.

@@ -1,0 +1,11 @@
+@task
+Re-rank the documents a keyword search engine returned for a COVID-19 research question, by relevance.
+@output
+A ranking of each topic's candidate documents, scored against graded relevance judgments (qrels).
+@example a frozen topic, paraphrased, and its qrels. CORD-19 passages carry mixed licences, so only document ids are shown
+Query & How much do masks reduce the spread of COVID-19? [paraphrased]
+Passage A & CORD-19 \texttt{<<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.candidates.0.docid>>} (BM25 rank <<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.candidates.0.rank|int>>)
+Passage B & CORD-19 \texttt{<<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.candidates.1.docid>>} (BM25 rank <<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.candidates.1.rank|int>>)
+Gold & relevance grades A <<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.qrels.xfjexm5b|int>>, B <<jl:data/frozen/prp_graph/trec_covid/queries.jsonl:0.qrels.28utunid|int>>, so Passage B is preferred
+@sets
+prp_graph/trec_covid = TREC-COVID | topics

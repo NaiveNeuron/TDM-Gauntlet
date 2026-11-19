@@ -1,0 +1,36 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Criteria framed by what a reader of the premise would find, which separates stated, inferred, open and ruled-out.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Reading only the `premise` (the passage), what can a reader conclude about the `hypothesis`?
+    state:
+    - premise
+    - hypothesis
+    options:
+      implied_entailment:
+        criterion: 'The reader concludes that the `hypothesis` is true, but only after going beyond the
+          wording of the `premise`: a logical inference, general world knowledge, what the speaker implies,
+          or the meaning of a figure of speech. The `premise` does not say it outright.'
+      explicit_entailment:
+        criterion: The reader finds the `hypothesis` said in the `premise` itself, possibly with other
+          words (synonyms, paraphrase) or with references resolved (pronouns, bridging, other references
+          within the text). Nothing beyond the wording and grammar of the `premise` is needed.
+      neutral:
+        criterion: 'The reader cannot tell whether the `hypothesis` is true or false: the `premise` neither
+          supports it nor contradicts it.'
+      contradiction:
+        criterion: The reader concludes that the `hypothesis` is false, because the `premise` contradicts
+          it.

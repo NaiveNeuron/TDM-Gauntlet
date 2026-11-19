@@ -1,0 +1,26 @@
+# Minimal jev-opt task: route customer messages. Runs offline against the mock Jev
+# simulator (JEV_OPT_MOCK_JEV=1); see README "Python worker" section.
+name: minimal-support
+description: Classify the customer message as a complaint, praise or question.
+labels:
+  complaint: The message is a complaint.
+  praise: The message gives praise.
+  question: The message asks a question.
+inputs:
+  message: ""
+data:
+  train: train.jsonl
+  val: val.jsonl
+  test: test.jsonl
+primary_metric: macro_f1
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+optimizer:
+  model: current
+  max_metric_calls: 150
+  reflection_minibatch_size: 3
+  use_merge: false
+  seed: 0
+  progressive: [6]
+  fit_examples: 15

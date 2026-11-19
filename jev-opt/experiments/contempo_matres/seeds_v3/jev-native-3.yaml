@@ -1,0 +1,38 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Evidence-focused wording; asks what the text fixes about the start times, with boundaries stated as what the text does or does not settle.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Both events are on the main story line of the news text in `context`. Event 1 is marked
+      <e1> (`event_1`) and Event 2 is marked <e2> (`event_2`). Classify what `context` settles about which
+      event begins first. Use beginnings only.
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: '`context` settles that Event 1 begins earlier than Event 2. Choose this only if Event
+          2 cannot have begun first; if `context` does not settle the order, choose VAGUE.'
+      AFTER:
+        criterion: '`context` settles that Event 1 begins later than Event 2. Choose this only if Event
+          1 cannot have begun first; if `context` does not settle the order, choose VAGUE.'
+      EQUAL:
+        criterion: '`context` settles that Event 1 and Event 2 begin at the same moment, so neither begins
+          earlier. If one could begin earlier, this option does not apply.'
+      VAGUE:
+        criterion: '`context` does not settle which event begins first: either Event 1 or Event 2 could
+          have begun earlier. If `context` excludes one of these, choose BEFORE, AFTER or EQUAL.'

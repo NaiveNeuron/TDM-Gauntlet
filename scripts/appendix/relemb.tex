@@ -1,0 +1,39 @@
+\paragraph{Task.} Sentence-level relation classification. Each input sentence has a marked head and tail entity,
+and the output is one label from a fixed inventory that includes no-relation. The replaced predictor is the
+paper's RoBERTa-large encoder with an MLP softmax over the inventory (\S3.2). \jev{} picks the relation for each
+marked pair.
+
+\paragraph{Data and test set.} The paper's code (<<m:relemb:paper.code_repo|url>> at
+<<m:relemb:paper.code_commit|commit>>) ships no data, so we use the RECON releases that its loaders read.
+\emph{Wiki-WD} (CC BY-SA) is frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_relemb.py} (SHA-256 <<m:relemb:frozen.relemb/wikiwd.sha256|sha>>). $N=$
+<<s:relemb/wikiwd:n|int>> edges in <<s:relemb/wikiwd:n_sentences|int>> sentences. As in the paper's loader,
+edges with an empty entity span are dropped, and a language screen (langid.py, then a chat model, then
+adjudication of its flags) removed <<m:relemb:frozen.excluded.wikiwd_non_english>>. \emph{NYT-FB} sentences come from the
+LDC-licensed NYT corpus, so the prepare script stores only row indices and hashes. $N=$ <<s:relemb/nytfb:n|int>> rows, of
+which <<s:relemb/nytfb:n_gold_positive|int>> are positive. <<m:relemb:frozen.excluded.nytfb_out_of_inventory>>.
+
+\paragraph{Prompt and metric.} \textsc{Choice}, one question per distinct entity pair, with the pair marked
+\texttt{<e1>}/\texttt{<e2>}. The pairs of a sentence are packed into shared requests, whose state holds the
+paper's \S3 task statement and the sentence. Options are label \emph{names only}, because the paper's
+classifier never sees label text. An earlier design with definitions was replaced before any test output was
+scored. Wiki-WD's <<q:relemb_wikiwd_v2:labels|len>> labels exceed the option cap. We therefore ask two fixed
+halves, each with a ``none of the listed'' option, and add an adaptive two-way final round when both halves
+return a real label (<<s:relemb/wikiwd:n_round2_pairs|int>> pairs). This equals the flat argmax under
+consistent preferences. Prediction: argmax, ties to the earlier label. For Wiki-WD the metric is micro-F1 with
+P0 excluded, pooled over edges. For NYT-FB it is P@K, precision at K\% recall over all (row, relation)
+probabilities (KGPool protocol), also reported averaged per label because the paper's wording is ambiguous.
+<<metrics
+cols: relemb/wikiwd=Wiki-WD; relemb/nytfb=NYT-FB
+?precision = Micro-P | pct
+?recall = Micro-R | pct
+?f1 = Micro-F1 | pct
+?p_at_10 = P@10 | pct
+?p_at_30 = P@30 | pct
+?macro_over_labels.p_at_10 = P@10 per label | pct
+?argmax.f1 = Argmax micro-F1 | pct
+>>
+<<papernums:relemb/wikiwd=Wiki-WD;relemb/nytfb=NYT P@10>>
+
+\paragraph{Deviations and status.} \textbf{Complete} for Wiki-WD and NYT-FB. \jev{} is zero-shot and sees only label names, whereas the paper's
+model is supervised. NYT-FB is distantly supervised, and some pairs carry several gold labels, which caps any
+single-label argmax.

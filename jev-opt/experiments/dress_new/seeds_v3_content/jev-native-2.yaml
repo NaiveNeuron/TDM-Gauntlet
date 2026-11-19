@@ -1,0 +1,65 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Anchor the levels on the support given for the argument (reasons and examples), with relevance and development as secondary cues; each level is written to contrast with its neighbours.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: content
+nodes:
+  content:
+    kind: score
+    instructions: How well is the argument in the `essay` supported? The `essay` answers `essay_prompt`.
+      A strong essay has relevant, well-developed paragraphs that give strong reasons and concrete examples.
+      Judge only this. Language errors and paragraph order do not count.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - The `essay` has no argument that responds to `essay_prompt`, so the content rubric is not met.
+    - The `essay` responds to `essay_prompt` with an opinion, but it gives no reason beyond repeating
+      the opinion.
+    - The `essay` gives at least one reason for its opinion, but no reason is explained and no example
+      supports it.
+    - The `essay` contains an example or an explanation, but it is vague, repeated, or only loosely related
+      to the opinion.
+    - The `essay` has relevant reasons with some explanation or examples, but most of its support is brief
+      or general. It partly meets the rubric.
+    - In the `essay`, most reasons are explained and relevant, but the examples are general statements
+      rather than specific cases.
+    - In the `essay`, reasons are explained and backed by specific examples, but one part is underdeveloped
+      or less convincing.
+    - In the `essay`, all reasons are explained and backed by specific examples. The only weakness is
+      minor, such as slight repetition or a less persuasive example.
+    - In the `essay`, every paragraph is fully developed and on the argument, with strong reasons and
+      specific, persuasive examples throughout.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

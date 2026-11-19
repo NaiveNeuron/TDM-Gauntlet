@@ -1,0 +1,50 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria; each option states what it covers and which nearest-neighbour option takes the other cases.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: 'The `post` is a social media post (user mentions shown as <user>, URLs removed) that
+      contains implicit hate: coded or indirect language that disparages a person or group based on protected
+      characteristics. Which kind of implicit hate does the `post` mainly express?'
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: The `post` complains that minority groups get unfair privilege, or presents white or
+          majority people as the real victims of racism. It is about the in-group being wronged. If it
+          instead calls the out-group lesser or subhuman, choose Inferiority Language.
+      Incitement to Violence:
+        criterion: The `post` celebrates in-group unity and power, or promotes or praises known hate groups,
+          hate figures or hate ideologies. It rallies the in-group. If it instead states that the speaker
+          will harm the target, choose Threatening and Intimidation.
+      Inferiority Language:
+        criterion: The `post` says or implies the target group or person is inferior or less than human,
+          compares them to disease, insects or animals, or declares in-group superiority. If it instead
+          ties the group to a specific bad trait such as crime or terrorism, choose Stereotypes and Misinformation.
+      Irony:
+        criterion: The `post` attacks or demeans a protected group or person through sarcasm, jokes or
+          satire, so its surface meaning differs from its intent. If the hostile message is stated directly
+          without sarcasm or humor, choose another option.
+      Stereotypes and Misinformation:
+        criterion: The `post` links a protected group with a negative attribute such as crime or terrorism,
+          or spreads false claims that support such stereotypes, including Holocaust denial or other denial
+          of historical events. If it instead calls the group subhuman or inferior in general, choose
+          Inferiority Language.
+      Threatening and Intimidation:
+        criterion: The `post` expresses the speaker's intent or commitment to cause the target pain, injury,
+          damage or loss, to remove their rights, freedoms or opportunities, or otherwise intimidates
+          them. If it only praises hate groups or in-group power without threatening the target, choose
+          Incitement to Violence.

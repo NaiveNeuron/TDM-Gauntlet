@@ -1,0 +1,39 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One_vs_rest with a contrastive true/false statement per label, each excluding its nearest neighbour.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: one_vs_rest
+    instructions: Judge the statement about the `premise` and the `hypothesis`.
+    state:
+    - premise
+    - hypothesis
+    options:
+      explicit_entailment:
+        criterion: 'The `hypothesis` is explicitly stated in the `premise`: it follows from the wording
+          alone, via the same words, synonyms, paraphrase, or pronouns and other references resolved within
+          the `premise`, without reasoning, world knowledge, pragmatics or figurative interpretation.'
+      implied_entailment:
+        criterion: 'The `hypothesis` is a valid inference from the `premise` but is not explicitly stated
+          there: getting to it needs logical reasoning, world knowledge, conversational pragmatics, or
+          interpreting figurative language, not just paraphrase or resolving references.'
+      neutral:
+        criterion: 'The `premise` neither supports nor contradicts the `hypothesis`: the `hypothesis`
+          could be true or false without conflicting with the `premise`.'
+      contradiction:
+        criterion: 'The `premise` contradicts the `hypothesis`: if the `premise` is true, the `hypothesis`
+          cannot be true.'
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

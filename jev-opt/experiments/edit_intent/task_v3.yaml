@@ -1,0 +1,90 @@
+# v3 dev study (third pre-registration). Generated from task_v2_nodemo.yaml: same data, seed program
+# (the gauntlet prompt, no demonstrations), metric, 400-example stratified train fit slice and val split.
+# A = jev-zero with a readout head (L2 logistic regression; ridge + cutoffs for QWK) fitted on the fit slice,
+#     hyperparameters by 5-fold CV.
+# P = jev-population-opt from the union of the paper seed and 3 jev-native + 3 decomposed seeds written by
+#     /jev-seeds from the task definition only (seeds_v3/); 4 rounds x 20 proposed variants (<=1500 chars
+#     per text field, <=2 aux questions, optional kNN demonstrations), packed requests, train-CV scoring; val picks
+#     among the 4 best programs (top-single) and their forward-selected stacks under one readout (top-stacked);
+#     every seed is also scored zero-shot (top-zero-<kind>). Fresh Jev spend <= $2 per run.
+name: edit-intent
+labels:
+  Grammar: 'Surface, fix grammar (Grammar): Correct grammatical errors, capitalization, punctuation, tense,
+    modality, spelling, typography, abbreviations or any errors related to grammar and/or conventions
+    to improve the language.'
+  Clarity: 'Surface, improve clarity (Clarity): Alter word choice, phrase usage, expressions and/or text
+    format to be more formal, concise and understandable without meaning changes, or to amplify meaning
+    for clarity.'
+  Fact/Evidence: 'Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify
+    or update the fact and/or evidence from third parties, or the author''s factual manipulations and
+    observations, or delete/modify erroneous/irrelevant ones.'
+  Claim: 'Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement, opinion,
+    idea of the authors, or their overall aim of the document.'
+  Other: 'Other: Revise the text in a way that is irrelevant to any other type of edit intent.'
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: true
+  readout_folds: 5
+  population:
+    size: 20
+    rounds: 4
+    elite: 4
+    worst_examples: 8
+    max_aux: 2
+    val_candidates: 4
+    stack_max: 4
+    demos:
+      mode: knn
+      k: 8
+      balanced: true
+    max_jev_cost: 2.0
+    max_tokens: 32000
+    seeds:
+    - kind: jev-native
+      path: seeds_v3/jev-native-1.yaml
+    - kind: jev-native
+      path: seeds_v3/jev-native-2.yaml
+    - kind: jev-native
+      path: seeds_v3/jev-native-3.yaml
+    - kind: decomposed
+      path: seeds_v3/decomposed-1.yaml
+    - kind: decomposed
+      path: seeds_v3/decomposed-2.yaml
+    - kind: decomposed
+      path: seeds_v3/decomposed-3.yaml
+seed_program: seed.yaml

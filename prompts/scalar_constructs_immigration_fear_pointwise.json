@@ -1,0 +1,21 @@
+{
+  "_source": "Licht et al., Measuring Scalar Constructs in Social Science with LLMs, EMNLP 2025, https://aclanthology.org/2025.emnlp-main.1635/. Prompt text from the paper's App. E, pp. 32163 and 32165 (zero-shot prompt), taken byte-for-byte from github.com/haukelicht/scalar_measurement@7fec6010d3f95e9118d5907d77c65d5d8d380b11 prompting/absolute_scoring/prompts/carlson_montgomery2017_immigration/original/zero_shot.md. Zero-shot: no exemplars.",
+  "_primitive": "score (9 ordered levels, 1-9); prediction = probability-weighted mean level (paper Eq. 1)",
+  "_state": "the text itself, verbatim (a JSON string), exactly the {text} the paper substitutes into its prompt",
+  "_adaptation": "Instructions = the release's zero-shot absolute-scoring prompt verbatim, with two edits: the {text} slot is replaced by a note that the text is the state, and the final line '**Response**: [Output only a score between 1 and 9]' is dropped (the score primitive fixes the answer space). Score levels: the paper's scale anchors verbatim at 1 and 9; levels 2-8 carry only their number, as in the paper's prompt.",
+  "question": {
+    "type": "score",
+    "instructions": "## Task\n\nYour tasks is to **rate the statement below in terms of the level of fear, anxiety, or worry about the negative impact of immigrants or immigration on America expressed in it on a scale from 1 (none) to 9 (extreme).**\n\nNote that we are not interested in whether the writer dislikes immigrants, wants them to go home, resents them, or blames them. We are only interested in whether the writer is expressing fear, anxiety, or worry.\n\n## Input\n\n[The statement is provided as the state.]",
+    "criteria": [
+      "1 (none)",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9 (extreme)"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Reader-experience ladder; levels describe what a reader observes (comprehension effort, noticeable errors, word choice), with the boundary between levels stated in each description.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: score
+    instructions: How well does a reader find the English in `essay` controlled? Consider word choice
+      and collocations, grammar and usage, spelling and punctuation only. The writer is an EFL undergraduate
+      writing a timed response to `essay_prompt`. Do not judge ideas or organization.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - The reader cannot follow most of the text because of broken grammar, wrong words and misspellings.
+    - The reader follows only fragments. Most sentences are broken, and some short simple ones are correct.
+    - The reader follows the general point with effort. Errors are in most sentences, and wording is basic
+      and repetitive.
+    - The reader follows most sentences with some effort. Errors are in many sentences, and wording is
+      plain.
+    - The reader understands everything but notices errors in many sentences. Wording is ordinary and
+      sometimes unnatural.
+    - The reader understands easily. Errors appear in some sentences, and wording is ordinary but mostly
+      natural.
+    - The reader notices only a few errors. Wording is varied and mostly idiomatic.
+    - The reader notices at most one or two small slips. Wording is precise, varied and idiomatic.
+    - The reader finds no errors in grammar, usage, spelling or punctuation. Wording is sophisticated,
+      wide-ranging and idiomatic throughout.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

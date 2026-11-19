@@ -1,0 +1,40 @@
+{
+  "_source": "Nigam et al., LegalSeg, Findings NAACL 2025. Label inventory Y: Section 3 (p. 1131). Role definitions: Section 4.5 'Annotation Roles' (p. 1133), quoted verbatim (PDF line-break hyphens removed). Document description: Section 4.1 (p. 1132, judgments of the Supreme Court of India and various High Courts). Instruction adapted from the paper's own instruction set 1 (Table 5, p. 1143: 'Analyze the given legal sentence and predict its rhetorical role'), with the numeric-code output replaced by a Choice over the seven role names. Zero-shot: no example sentences (Table 4 examples are not used).",
+  "_design": "One request per document chunk. `state` carries the role definitions once, an excerpt note and the numbered sentences; one Choice question per target sentence, each pointing at its sentence by path. Criteria descriptions are null because the verbatim definitions are in `state.role_definitions` (sent once per request, not once per question, so the document context fits the context budget).",
+  "labels": [
+    "None",
+    "Facts",
+    "Issue",
+    "Arguments of Petitioner",
+    "Arguments of Respondent",
+    "Reasoning",
+    "Decision"
+  ],
+  "state": {
+    "document": "An Indian legal judgment (Supreme Court of India or a High Court), split into sentences; `sentences` maps sentence numbers to sentence text in document order.",
+    "excerpt_full": "Complete judgment: all {n} sentences are shown.",
+    "excerpt_partial": "Excerpt: sentences {first} to {last} of the judgment's {n} sentences are shown; the other sentences are omitted.",
+    "role_definitions": {
+      "Facts": "Sentences that describe the sequence of events that led to the case. These typically involve details of the circumstances and actions related to the case, providing a factual narrative of the case’s background, and details about the parties involved, including key dates, events, and parties involved.",
+      "Issue": "Sentences that outline the legal issues or questions being addressed in the case. These often identify the core legal disputes or points of law that the court must resolve to make a ruling.",
+      "Arguments of Petitioner": "Sentences representing the arguments made by the petitioner (the party bringing the case to court). These include claims, reasoning, and justifications presented by the petitioner to support their position and persuade the court to rule in their favor.",
+      "Arguments of Respondent": "Sentences that summarize the arguments made by the respondent (the party defending against the case). Like the petitioner’s arguments, these statements offer counterpoints, legal interpretations, and rebuttals designed to challenge the petitioner’s claims and persuade the court to rule in the respondent’s favor.",
+      "Reasoning": "Sentences that provide the rationale or reasoning behind the court’s decision. This includes the application of legal principles and precedents, as well as the logic that connects the facts and arguments to the final ruling. This label captures how the court justifies its decision in light of the legal issues presented.",
+      "Decision": "Sentences that reflect the final ruling or judgment of the court. This label marks the conclusion of the case, where the court issues its verdict or order, stating the outcome of the case based on its reasoning, such as granting relief, compensation, or dismissing the case.",
+      "None": "Sentences that do not fall under any of the defined rhetorical roles. These sentences may include procedural information, non-substantive remarks, legal jargon, or content that is not directly relevant to the legal analysis or judgment."
+    }
+  },
+  "question": {
+    "type": "choice",
+    "instructions": "Analyze the legal sentence `sentences.{sid}` of this judgment and predict its rhetorical role, as defined in `role_definitions`. Use the surrounding sentences as context.",
+    "criteria": {
+      "Facts": null,
+      "Issue": null,
+      "Arguments of Petitioner": null,
+      "Arguments of Respondent": null,
+      "Reasoning": null,
+      "Decision": null,
+      "None": null
+    }
+  }
+}

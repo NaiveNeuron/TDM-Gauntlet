@@ -1,0 +1,45 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Framed by who is portrayed and how (victim in-group, strong in-group, lesser target, mocked target, stereotyped target, threatened target), with boundary rules.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: The `post` disparages a group or person in an indirect way. Decide how the `post` frames
+      the in-group or the target, and pick the matching option.
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: 'The `post` frames the in-group (white or majority people) as victims: minorities are
+          unfairly favored or the majority suffers racism. The victim framing, not an insult to the target,
+          is the focus.'
+      Incitement to Violence:
+        criterion: The `post` frames the in-group as strong and united, or glorifies a known hate group
+          or ideology. It contains no direct statement that the speaker will harm the target.
+      Inferiority Language:
+        criterion: The `post` frames the target as lower in worth or not fully human (animal, insect or
+          disease comparisons, denial of dignity), or the in-group as superior. General lesser worth,
+          not a specific crime or terror trait.
+      Irony:
+        criterion: The `post` frames the target through a sarcastic, joking or satirical remark whose
+          literal words are not its real meaning. Use this whenever the attack is carried mainly by sarcasm
+          or humor.
+      Stereotypes and Misinformation:
+        criterion: The `post` frames the target group as having a specific negative trait such as criminality
+          or terrorism, or makes false factual or historical claims such as Holocaust denial. Stated as
+          fact, not as a joke.
+      Threatening and Intimidation:
+        criterion: The `post` frames the target as someone the speaker will hurt, damage, or strip of
+          rights, freedoms or opportunities, including veiled warnings meant to intimidate.

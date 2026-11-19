@@ -1,0 +1,37 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; a branch first asks whether hatred is present at all, then a choice separates explicit from implicit.
+version: 1
+labels:
+- Not Hate
+- Explicit Hate
+- Implicit Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: branch
+    condition: '`post` expresses hatred, prejudice or discrimination toward individuals or groups based
+      on their characteristics (such as race, gender or cultural identity), whether openly or through
+      coded or indirect language.'
+    state:
+    - post
+    if_true:
+      node: label_form
+    if_false:
+      label: Not Hate
+    threshold: 0.5
+  label_form:
+    kind: choice
+    instructions: How is the hatred or prejudice toward a group or person in `post` expressed?
+    state:
+    - post
+    options:
+      Explicit Hate:
+        criterion: 'Openly expressed and direct: `post` states the hatred or prejudice plainly, so no
+          reading between the lines is needed to see the attack on the group.'
+      Implicit Hate:
+        criterion: 'Coded or indirect: `post` disparages the group only through insinuation, stereotypes,
+          irony, euphemisms or coded terms, and does not state the hatred openly.'

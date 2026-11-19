@@ -1,0 +1,53 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Chain of binary branch nouls; first test contradiction, then support, then explicit statement.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: branch
+    condition: 'The `premise` contradicts the `hypothesis`: if the `premise` is true, the `hypothesis`
+      is false.'
+    state:
+    - premise
+    - hypothesis
+    if_true:
+      label: contradiction
+    if_false:
+      node: relation_support
+    threshold: 0.5
+  relation_support:
+    kind: branch
+    condition: 'The `hypothesis` is a valid inference from the `premise`: if the `premise` is true, the
+      `hypothesis` is true, whether stated outright or inferred through reasoning, world knowledge, pragmatics
+      or figurative meaning. Being merely plausible or unaddressed does not count.'
+    state:
+    - premise
+    - hypothesis
+    if_true:
+      node: relation_explicit
+    if_false:
+      label: neutral
+    threshold: 0.5
+  relation_explicit:
+    kind: branch
+    condition: 'The `hypothesis` is explicitly stated in the `premise`: it follows from the wording alone
+      (same words, synonyms, paraphrase, or pronouns and references resolved within the `premise`), with
+      no logical reasoning, world knowledge, conversational pragmatics or figurative interpretation needed.'
+    state:
+    - premise
+    - hypothesis
+    if_true:
+      label: explicit_entailment
+    if_false:
+      label: implied_entailment
+    threshold: 0.5

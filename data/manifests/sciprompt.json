@@ -1,0 +1,82 @@
+{
+  "task": ["sciprompt/arxiv", "sciprompt/s2orc", "sciprompt/sdpra", "sciprompt/emerging_nlp"],
+  "paper": {
+    "title": "SciPrompt: Knowledge-augmented Prompting for Fine-grained Categorization of Scientific Topics",
+    "authors": "Zhiwen You, Kanyao Han, Haotian Zhu, Bertram Ludäscher, Jana Diesner",
+    "venue": "EMNLP 2024 (main), pages 6087-6104",
+    "url": "https://aclanthology.org/2024.emnlp-main.350/",
+    "pdf_sha256": "c28c5e378ae68817b91bea3110795e06d22281a8830fad9ff82ef8547878607d"
+  },
+  "source": {
+    "code_repo": "https://github.com/zhiwenyou103/SciPrompt",
+    "code_commit": "cc6db91a1d24c7be9b55247fb707954be1484434 (2025-03-16, HEAD of main at download); licence Apache-2.0 (LICENSE)",
+    "data_url": "https://drive.google.com/file/d/1w5IxtfayNPlrAE6I_vp2zKhx8ntDMRMv/view (repo README: 'Our datasets can be downloaded here')",
+    "download_tool": "uv run --with gdown gdown 1w5IxtfayNPlrAE6I_vp2zKhx8ntDMRMv, 2026-09-26",
+    "raw_zip": "data/raw/sciprompt/sciprompt_data.zip",
+    "raw_zip_sha256": "2b0a53d715787e42b9105f06facb0ddae9b82b3bd6bc006a62714426ca524f2d",
+    "raw_zip_bytes": 53786883,
+    "test_member_sha256": {
+      "data/arXiv/sample_random_test100_dataset.txt": "cda00fd8686e7e1567091be721cdec0733d99ef5c65221358bc3403c41738b01",
+      "data/arXiv/sample_random_label_test100_dataset.txt": "56266a42d145bfbc6d0327ed12f8ca4ef605c2fd008416dc46be022f52ceb8cf",
+      "data/S2ORC/300_random_sample_test_dataset.txt": "c5cb9448b8c5110740e085addc1d14525d9ea7de82b6704ea380b517f6bec159",
+      "data/S2ORC/300_random_sample_test_labels.txt": "9c5b902436a87770d937de739ffa0d5cbbb8ab32395f251d646c2235a603abfd",
+      "data/SDPRA/test_output.csv": "c33c189fc8a93ce887719664b9905f9ae0762dfacae461a1e0e624354e256235",
+      "data/EmergingNLP/test_set.csv": "eed5b3880c6f024cc9739f28f89ff6eec5ea5c5687bb43379d544fe9214a5267"
+    },
+    "test_files_used_by_paper_code": "arXiv_script.py reads sample_random_test100_dataset / sample_random_label_test100_dataset; s2orc_script.py reads 300_random_sample_test_dataset / _labels; sdpra_script.py reads test_output.csv; Emerging NLP test_set.csv is also committed in the repo (data/EmergingNLP/, byte-identical to the zip copy).",
+    "label_inventories": "repo label_mappings/{arXiv,S2ORC,SDPRA,Emerging_NLP}_label_mappings.json (sha256 4d89abe7..., 4961422d..., ffac438c..., 6701f0e6...); label-id order of these files is the adapter's tie-break order.",
+    "licences": {
+      "sdpra": "CC BY 4.0. The SDPRA-2021 shared-task data (Reddy & Saini, Mendeley Data doi:10.17632/njb74czv49.1, version 1; public zip sha256 0fee9f8e...) is CC BY 4.0. SciPrompt's 'test' is a 10% re-split of the shared task's train+validation (16,800 + 11,200 = 28,000 = 25,200 + 2,800); all 2,800 test rows were matched to a Mendeley train/validation row with the same label after alphanumeric normalisation (2,354 match after whitespace normalisation alone; the rest differ only in removed backslashes). Abstracts are frozen verbatim with attribution.",
+      "emerging_nlp": "Apache-2.0 (repo LICENSE covers data/EmergingNLP/; HF dataset uzw/Emerging_NLP@f99ce8665c51321c01d8c848d1d697cbb364ebce card 'license: apache-2.0'). Frozen verbatim. The HF test.csv differs from the paper-era repo/zip file only by one trailing space (row 253) and a header row; the paper-era file is used.",
+      "arxiv": "No dataset licence stated (zip has none; data originate from Meng et al. 2019's arXiv collection). Not redistributed: the frozen file holds only row index + SHA-256; text rebuilt from the zip.",
+      "s2orc": "No dataset licence stated; abstracts were pulled by the authors from the Semantic Scholar API (2023-11-07 release), whose terms do not grant redistribution. The frozen file holds only row index + SHA-256; text rebuilt from the zip."
+    },
+    "prompt_sources": {
+      "arxiv_taxonomy": "https://arxiv.org/category_taxonomy fetched 2026-09-26 (data/raw/sciprompt/arxiv_category_taxonomy.html, sha256 b68362abee9154e329c56febfc6838748b128c3aebf5fc392849b2411301a931); names and descriptions copied verbatim into prompts/sciprompt_arxiv.json and prompts/sciprompt_sdpra.json.",
+      "taxonomy4cl": "DFKI-NLP/Taxonomy4CL@7523be927f1d1beeffd7c99ad268adfbe433db22 data/Taxonomy4CL/Taxonomy4CL_v1.0.1.json (MIT; sha256 e7d062966cbae093e5ae408ffb0148309fcfe8aa5e03143ce7606c12b54aa7e6; copy in data/raw/sciprompt/) for the Emerging NLP topic hierarchy.",
+      "sdpra_names": "Domain names and codes from the Mendeley dataset description (see licences.sdpra)."
+    }
+  },
+  "test_n_resolution": {
+    "arxiv": "Release 5,300 = 53 x 100 (paper Table 5, Appendix B '100 samples for each category as test set'). Paper's 30-SciBERT-token filter drops 0 (paper: test 5,300). Minus 5 non-English -> 5,295.",
+    "s2orc": "Release 5,700 = 19 x 300 (Table 5, file name 300_random_sample). Filter drops 0 (paper: 5,700). Minus 40 non-English -> 5,660.",
+    "sdpra": "Release 2,800 (Table 5 gives 2,800). The paper's evaluated test set is 2,790 (Appendix B, p. 6099: 'abstracts shorter than 30 tokens were excluded ... 2,790 for SDPRA'); recomputing sdpra_script.py's filter (BertTokenizer allenai/scibert_scivocab_uncased@24f92d32, transformers 4.38.1, len(input_ids) < 30) drops exactly 10 rows (840, 1111, 1125, 1544, 1683, 1725, 2183, 2283, 2530, 2791; e.g. 'This paper has been withdrawn'), reproducing 2,790. Minus 1 non-English -> 2,789.",
+    "emerging_nlp": "Release 420 = 21 x 20 (Table 5; Section 5.2: 30 per topic, 5 train + 5 validation, rest test). Filter drops 0. No non-English rows -> 420. 3 abstracts occur twice with the same label (rows 22/25, 156/157, 192/199); kept as released."
+  },
+  "english_verification": {
+    "paper": "Section 4.1: 'three publicly available datasets in English'; Emerging NLP collected from arXiv cs.CL. S2ORC abstracts come from Semantic Scholar without a language filter.",
+    "method": "All 14,220 release test abstracts: (1) langid.py 1.1.6 on each whole abstract; (2) langid (normalised probabilities) on every sentence of >= 8 words, flag non-en with p > 0.99; (3) count of common Spanish/French/German/Portuguese/Italian function words; (4) non-Latin letter count >= 5 and any run of >= 3 Cyrillic/Hebrew/Arabic/Thai/CJK/Hangul characters; (5) foreign 'abstract/keywords' headings (Resumen, Résumé, Özet, Kata kunci, 关键词, ...); (6) Latin-diacritic density > 1%. 281 candidates; each was read (text only, no labels or Jev output).",
+    "rule": "Exclude an abstract containing any non-English sentence, clause or multi-word phrase: parallel translations, foreign keyword lines, publisher notices (same rule as EZ-STANCE). Keep English abstracts whose only non-English material is proper names, cited titles (e.g. German/Italian/French book titles in reviews), single glossed terms in any script (e.g. Chinese characters after romanised terms), OCR-spaced English, mojibake punctuation, and a name-only author list (s2orc 5509).",
+    "result": "46 excluded: arXiv 5 (English abstracts followed by French/Spanish/Polish/German translations), SDPRA 1 (English + French), S2ORC 40 (Japanese, Russian, Ukrainian, Turkish, Spanish, Catalan, Portuguese, French, Italian, Romanian, Polish, Lithuanian, Finnish, Swedish, Thai, Chinese, Indonesian text or keyword lines), Emerging NLP 0. List with per-row notes: data/frozen/sciprompt/excluded.jsonl (reason non_english) and NON_ENGLISH in scripts/prepare_sciprompt.py.",
+    "per_label_effect": "arXiv: math.LO, physics.class-ph, math.MG, cs.DS, cs.LG 99 each (others 100). S2ORC: Art 291, Philosophy 293, Political Science 295, Geography 296, Psychology 297, Economics/Biology/Engineering/Geology 298, Environmental Science/Materials Science/Business/Sociology 299, others 300. SDPRA (after the paper filter and 1 non-English): CL 484, CR 471, NI 449, DS 413, DC 351, SE 322, LO 299 (release 485/474/450/417/352/322/300)."
+  },
+  "frozen": {
+    "builder": "scripts/prepare_sciprompt.py (asserts the zip SHA-256, release N per dataset, and that the recomputed short-abstract filter equals the frozen list)",
+    "format": "JSONL per dataset: id (sciprompt-<dataset>-test-<release row>), row (0-based release row), gold (release label: arXiv code, S2 field name, SDPRA code, Emerging NLP class name), sha256 = SHA-256 of compact JSON [abstract, gold] (UTF-8); sdpra and emerging_nlp rows also carry the abstract. Abstract = the string the paper's loader feeds the model (line files: stripped line; CSV: raw field). items() rebuilds arXiv/S2ORC text from the zip and checks every hash.",
+    "files": {
+      "data/frozen/sciprompt/arxiv.jsonl": {"sha256": "5570469ad21517566c09fe5b080b8ebd07cb50b39238235caa518259a3152d8b", "n": 5295},
+      "data/frozen/sciprompt/s2orc.jsonl": {"sha256": "a98214493a51a80fbcd6f5e93bbacc37b383fe5a0feda680e91dd5e1f36806b1", "n": 5660},
+      "data/frozen/sciprompt/sdpra.jsonl": {"sha256": "00cfacb5169fd52f8135470ee3884d9261aee76551b89016cc414f30157cbc55", "n": 2789, "labels": {"CL": 484, "CR": 471, "NI": 449, "DS": 413, "DC": 351, "SE": 322, "LO": 299}},
+      "data/frozen/sciprompt/emerging_nlp.jsonl": {"sha256": "4f995567c2d451cbcfde630401b649eb10325ba34f0010c0ed615f7aa7f05b6d", "n": 420},
+      "data/frozen/sciprompt/excluded.jsonl": {"sha256": "099d3c5793f90533749fc9b9f0f13fc8a4911b9005ae21e542632b3a7cc93c9b", "n": 56, "short_abstract": 10, "non_english": 46}
+    },
+    "prompts": {
+      "prompts/sciprompt_arxiv.json": "82d465d4c7fa4fc73bacdde2f26f3deff1d32c9e71e082a6eba50a240fa230ac",
+      "prompts/sciprompt_s2orc.json": "ee5d343fd9301033d488760ffc319142676f2f4c7910906d51c8899eeb0a5ca2",
+      "prompts/sciprompt_sdpra.json": "02a9c10081116c869a4e070cada33a5c2d531bebad191df9f7f93c17031514ea",
+      "prompts/sciprompt_emerging_nlp.json": "bfcf87992f00042bc796beb6b9718fb499663af28fa7e1710a279dc827ee0f3c"
+    }
+  },
+  "data_notes": [
+    "Train/test overlap in the release (irrelevant to zero-shot Jev, favours the paper's few-shot/full fine-tuned models only marginally): identical abstracts in train and test: arXiv 14, S2ORC 152, SDPRA 2, Emerging NLP 6.",
+    "The same V2V channel-model abstract appears in arXiv (row 730, cs.NI) and SDPRA (row 2359, NI).",
+    "S2ORC contains noisy Semantic Scholar 'abstracts' kept as released: book-review openings, reference lists, figure captions, retraction notices, 10,000-char truncated full texts (5 rows at exactly 10,000 chars).",
+    "Truncation rule (frozen in sciprompt.py): abstract cut to 60,000 chars; the longest frozen abstract is 10,000 chars, so 0 items are truncated. Largest request: arXiv question (~3.5K tokens) + abstract."
+  ],
+  "deviations": [
+    "Non-English abstracts excluded (English-only rule): scored N arXiv 5,295 (paper 5,300), S2ORC 5,660 (5,700), SDPRA 2,789 (2,790), Emerging NLP 420 (420). Paper numbers are on the full sets.",
+    "SDPRA N follows the paper's evaluated set (2,790 after its 30-token filter) rather than Table 5's 2,800 (pre-filter count); the filter is the paper's own code, recomputed, not re-tuned.",
+    "arXiv and SDPRA options use arXiv's official category names/descriptions (SDPRA: shared-task names) instead of the paper's lower-case field words, because two of the paper's words name the wrong category (math.AP 'applied mathematics' is Analysis of PDEs; cs.CY 'cryptography and security' is Computers and Society, while cs.CR is 'cryptography'). The paper's words are kept in each prompt's _paper_field_words.",
+    "Jev is zero-shot; the matching comparison is paper Table 2 (zero-shot) and Figure 3 lower panel (Emerging NLP zero-shot). Few-shot numbers (Table 1, Figure 3 upper) are reported for context only."
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "task": [
+    "legalseg"
+  ],
+  "paper": {
+    "title": "LegalSeg: Unlocking the Structure of Indian Legal Judgments Through Rhetorical Role Classification",
+    "authors": "Shubham Kumar Nigam, Tanmay Dubey, Govind Sharma, Noel Shallum, Kripabandhu Ghosh, Arnab Bhattacharya",
+    "venue": "Findings of NAACL 2025, pages 1129-1144",
+    "url": "https://aclanthology.org/2025.findings-naacl.63/",
+    "pdf_sha256": "888e14933985dc2151b71afb9b298f5830fe1e53f975026a45fc3feb4a2b7960"
+  },
+  "source": {
+    "code_repo": "https://github.com/ShubhamKumarNigam/LegalSeg @ af1b45c52cab22a71ddea0bf13c987741b16f042 (2026-06-04, HEAD of main). Apache-2.0. Holds code only; Data/README.md points to the Hugging Face collection https://huggingface.co/collections/L-NLProc/legalseg-dataset (earlier revisions pointed to a Google access-request form).",
+    "canonical_data": "L-NLProc/LegalSeg_CSV @ 31217aa845866bbd18a8ad567a785e6f5485435a, test.csv (LFS sha256 5e1a2f9a03fd7581d4585ef97f55787d058afbed063b5e03b6e3611cbe45f9ee, 27,791,389 bytes). Gated on Hugging Face (gated=auto, card licence apache-2.0); access was not requested (download attempt returned HTTP 403). Not used.",
+    "used_data": "L-NLProc/LegalSeg_RhetoricLLaMA_Predictions @ 686d8082bdadc4f08cf21ff068b561ac38a88cc4 (ungated, card licence apache-2.0, published by the authors 2025-02-21), RhetoricLLaMA_predictions.csv. Columns Index (document id), Text (sentence), Label (gold role; the None role is written as an empty cell), llama_p (RhetoricLLaMA raw generation; ignored). It is the full test split in document order: see test_split_checks.",
+    "raw_file": "data/raw/legalseg/RhetoricLLaMA_predictions.csv",
+    "raw_file_sha256": "f4a366643ab5b9edcee38e83549b5c88ff1511fa461b7e018ebaae65711ba1a1 (equals the HF LFS sha256)",
+    "raw_file_bytes": 69430931,
+    "gold_check_file": "L-NLProc/LegalSeg_ToInLegalBert_Predictions @ 9c68cfbd231c3bbf46cd851825c8b36a85204469, ToInlegalbertpredictions.csv (ungated, apache-2.0), sha256 9459d0232675ad2bccbaa7724ddd91c2fc390ce5de62262feec0fafbadf27b12; its `true` column equals the used file's gold sequence at all 149,881 positions (also true of GNN_predictions.csv and InLegalBert(i-1, label_p, i).csv).",
+    "licence": "Apache-2.0 (HF dataset cards and GitHub repo). Texts are Indian court judgments from IndianKanoon (paper Section 4.1). Although Apache-2.0 permits redistribution, the canonical copy is access-gated, so no text is stored: data/frozen/legalseg/test.jsonl, written by scripts/prepare_legalseg.py, holds per-document gold codes and a SHA-256 over [raw texts, labels]; items() rebuilds text from the raw CSV and verifies every hash.",
+    "download": "uv run --with huggingface_hub python scripts/prepare_legalseg.py (downloads both ungated files at the pinned revisions if absent, checks SHA-256s, verifies the split, writes the frozen file). Downloaded 2026-09-26."
+  },
+  "test_split_checks": {
+    "documents": "712 distinct Index values (6408-7119), each one contiguous run; paper Table 2: 712 test documents.",
+    "sentences": "149,881; paper Table 2: 1,49,881.",
+    "per_label": "Facts 24,909; Issue 1,843; AoP 14,520; AoR 9,579; Reasoning 36,689; Decision 3,841; None 58,500 - identical to paper Table 2 test column.",
+    "sentences_per_document": "min 22, median 153.5, mean 210.5 (paper: 210), max 2,100.",
+    "empty_sentences": "13 sentences whose Text is a single space (gold as released: 4 None, 7 Issue, 1 Reasoning, 1 Facts). Kept and asked about like any other sentence (shown as an empty string), since the paper scores all 149,881 sentences.",
+    "sentence_segmentation": "As released (spaCy sentencizer, paper Section 4.2). Text is used after whitespace normalisation only (runs of whitespace -> one space, stripped); hashes are over the raw text."
+  },
+  "frozen": {
+    "file": "data/frozen/legalseg/test.jsonl",
+    "rows": 712,
+    "fields": "id (doc<Index>), doc_index, n_sentences, gold (one digit per sentence: paper label id None-0 Facts-1 Issue-2 Arguments of Petitioner-3 Arguments of Respondent-4 Reasoning-5 Decision-6, as in paper Table 5), sha256 (canonical JSON [raw texts, labels]).",
+    "n_items": 712,
+    "n_scored_sentences": 149875,
+    "excluded_file": "data/frozen/legalseg/excluded_non_english.jsonl (doc_index, 0-based sentence position, gold, text SHA-256, reason); 6 sentences"
+  },
+  "english_verification": {
+    "paper": "Section 4 calls LegalSeg 'the largest annotated dataset of legal judgments in the English language' (Table 1: language English); judgments of the Supreme Court of India and High Courts from IndianKanoon.",
+    "method": "(1) Script check: all 149,881 sentences are pure ASCII (no Devanagari or other non-Latin letters; the release's preprocessing dropped non-ASCII characters). (2) langid.py 1.1.6 (all languages) on every whitespace-normalised sentence with >= 4 words (137,922): 852 flagged non-en, all read. (3) Romanised-Hindi keyword scan over all 149,881 sentences (diya, karna, nahi, hain, kiya, jisko, apko, raha/rahe, ...; plus a Hindi-function-word density screen): 22 hits, read with their neighbouring sentences. Adjudication used the text only (no Jev outputs).",
+    "rule": "Exclude a sentence if it contains a non-English sentence or clause (here: romanised Hindi quoted speech), under the benchmark's English-only rule, as for EZ-STANCE. Keep case names, party/person/place names, citations, tables/lists of names and numbers, English sentences quoting Hindi proper names or titles (e.g. a Hindi film-song title split by the sentencizer, doc 6818), Indian-English legal terms (panchanama, vide, Sd), and conventional legal Latin (e.g. a Latin maxim glossed in English).",
+    "langid_false_positives": "All 852 langid flags are English: case-name/citation fragments, judge-name headers, tables of names/amounts, company names, short English clauses. One of them (doc 7049 position 617) is Hindi and is excluded.",
+    "excluded": "6 sentences: doc 7017 positions 11, 54, 55, 56, 57 (a quoted confession and statement in romanised Hindi, with English translation in neighbouring sentences, which are kept); doc 7049 position 617 (quoted Hindi speech). Gold: 4 Reasoning, 1 Facts, 1 None. They are removed from state and scoring; remaining sentences are renumbered consecutively.",
+    "effect_vs_paper_N": "Scored N = 149,875 of the paper's 149,881 sentences (-6, 0.004%); all 712 documents kept."
+  },
+  "prompt": {
+    "file": "prompts/legalseg.json",
+    "primitive": "choice over the 7 roles, one question per sentence",
+    "label_definitions": "Verbatim from paper Section 4.5 (p. 1133), checked programmatically against the PDF text; label names from Section 3 (p. 1131).",
+    "instruction": "Adapted from the paper's instruction set 1 (Table 5, p. 1143) with the numeric-code output replaced by a Choice over role names.",
+    "request_structure": "state = {document (fixed description), excerpt (whole-judgment or window note), role_definitions (verbatim, once per request), sentences {S0001: text, ...}}; questions = {S####: Choice pointing at `sentences.S####`, criteria = 7 role names with null descriptions}. Zero-shot; paper Table 4 example sentences are not used."
+  },
+  "chunking_rule": {
+    "constants": "MAX_QUESTIONS = 40 questions per request; MAX_STATE_CHARS = 72,000 compact-JSON characters of state; TARGET_SHARE = 0.5.",
+    "rule": "k = ceil(n / 40) contiguous near-equal target blocks (bounds n*j//k). If the whole judgment's state fits 72,000 chars, every block's request shows the whole judgment. Otherwise (k increased until each block's own sentences fit 36,000 chars) each block's window grows from the block by neighbouring sentences, nearest first, alternating before/after, while the state fits 72,000 chars. Sentences are never cut.",
+    "token_calibration": "Densest test judgment: 3.98 state chars per o200k token (mean 4.51). On cached Jev responses from earlier task runs, reported input_tokens ~= 1.02-1.11 x o200k(state) + o200k(questions) + ~300 per request. Estimated Jev input per request (1.11 x o200k state + o200k questions + 300): max 24,714, median 18,334, below the 32,000-token context for state plus all questions (also below the TypeSafe-documented 32K state+longest-question / 64K total limits).",
+    "requests": 4087,
+    "questions": 149875,
+    "questions_per_request": "min 20, median 38, max 40",
+    "n_truncated": "82 of 712 judgments (50,210 sentences) exceed the state budget and are shown as windows; the other 630 are shown whole in every request.",
+    "request_chars_total": 256367382,
+    "o200k_tokens_total": 60159617,
+    "estimated_cost_usd": "about 2.9 (60.2M o200k tokens x 1.11 + 300 per request, at $0.042/M)"
+  },
+  "metric": {
+    "primary": "macro-averaged F1 over the 7 roles, pooled over all 149,875 scored test sentences (149,881 minus 6 non-English) (paper Section 6 and Table 3).",
+    "secondary": "macro precision, macro recall, accuracy, MCC (sklearn multiclass matthews_corrcoef) - the other Table 3 columns; weighted F1 and per-class F1 added.",
+    "prediction": "argmax of the Choice probabilities; exact ties go to the lower paper label id (None first).",
+    "paper_table3": {
+      "Hier_BiLSTM CRF": {
+        "P": 0.78,
+        "R": 0.77,
+        "F1": 0.77,
+        "Acc": 0.62,
+        "MCC": 0.68
+      },
+      "ToInLegalBERT": {
+        "P": 0.67,
+        "R": 0.6,
+        "F1": 0.62,
+        "Acc": 0.64,
+        "MCC": 0.52
+      },
+      "GNN": {
+        "P": 0.64,
+        "R": 0.5,
+        "F1": 0.54,
+        "Acc": 0.64,
+        "MCC": 0.4
+      },
+      "InLegalBERT(i-2, i-1, i)": {
+        "P": 0.62,
+        "R": 0.56,
+        "F1": 0.58,
+        "Acc": 0.59,
+        "MCC": 0.52
+      },
+      "InLegalBERT(i-1, i, i+1)": {
+        "P": 0.61,
+        "R": 0.56,
+        "F1": 0.58,
+        "Acc": 0.59,
+        "MCC": 0.52
+      },
+      "InLegalBERT(i)": {
+        "P": 0.57,
+        "R": 0.45,
+        "F1": 0.49,
+        "Acc": 0.53,
+        "MCC": 0.45
+      },
+      "MTL": {
+        "P": 0.59,
+        "R": 0.4,
+        "F1": 0.37,
+        "Acc": 0.41,
+        "MCC": 0.78
+      },
+      "Role-Aware": {
+        "P": 0.21,
+        "R": 0.2,
+        "F1": 0.14,
+        "Acc": 0.5,
+        "MCC": 0.04
+      },
+      "RhetoricLLaMA": {
+        "P": 0.19,
+        "R": 0.15,
+        "F1": 0.09,
+        "Acc": 0.39,
+        "MCC": 0.02
+      },
+      "LLaMA-2 (Unquantized)": {
+        "P": 0.19,
+        "R": 0.15,
+        "F1": 0.08,
+        "Acc": 0.25,
+        "MCC": 0.05
+      }
+    },
+    "recomputed_from_released_predictions": {
+      "ToInLegalBERT": "ToInlegalbertpredictions.csv, 149,881 sentences aligned with our gold: P 0.6744, R 0.5981, F1 0.6215, Acc 0.6448, MCC 0.5203, weighted F1 0.6278 - reproduces Table 3 exactly; routed through this adapter's predict/score on the 149,875 scored sentences it gives the same values to 4 decimals.",
+      "InLegalBERT(i-2, i-1, i)": "F1 0.5814, P 0.6191, R 0.5578, Acc 0.5873, MCC 0.4435 (Table 3: 0.58/0.62/0.56/0.59/0.52; MCC differs).",
+      "InLegalBERT(i-1, i, i+1)": "F1 0.5799, Acc 0.5870, MCC 0.4433.",
+      "GNN": "GNN_predictions.csv: F1 0.4594, P 0.5459, R 0.4237, Acc 0.5362, MCC 0.3547 - does not match Table 3 (0.54/0.64/0.50/0.64/0.40).",
+      "Hier_BiLSTM CRF": "Table 3's F1 0.77 is not reproducible from the authors' released predictions. Hier_BiLSTM_predictions.csv (149,825 rows) equals the paper's Figure 3 confusion matrix and gives macro F1 0.2696, Acc 0.3928; it appears mis-paired. The document-level predictions.txt (file_<Index+1>) aligns exactly for 671 of 712 documents (138,094 sentences; the other 41 lack 56 sentences in total) and gives macro F1 0.5998, P 0.6095, R 0.6058, Acc 0.6184 (Table 3 Acc 0.62), MCC 0.4945, weighted F1 0.6109."
+    }
+  },
+  "deviations": [
+    "Test text taken from the authors' ungated RhetoricLLaMA prediction release instead of the gated LegalSeg_CSV test.csv; verified as the exact test split (712 docs, 149,881 sentences, per-label counts = Table 2, gold identical to the ToInLegalBERT prediction file's gold). Byte identity with the gated test.csv is not verified (its LFS sha256 is recorded above).",
+    "Label definitions are sent once per request in state.role_definitions, with null Choice criteria descriptions, instead of repeating them in every question, so that document context fits the context budget.",
+    "Document context: 630/712 judgments are shown whole in every request; 82 long judgments (50,210 sentences) are shown as windows of up to 72,000 state characters around each 40-sentence block. The paper's hierarchical models see the whole document.",
+    "Each sentence is classified independently (questions in a request do not see each other's answers); no CRF-style label-transition decoding.",
+    "English-only rule: 6 sentences with romanised Hindi quoted speech (docs 7017, 7049) are removed from state and scoring; scored N = 149,875 vs the paper's 149,881."
+  ]
+}

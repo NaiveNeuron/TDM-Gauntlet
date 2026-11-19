@@ -1,0 +1,12 @@
+@task
+Rate how faithfully a plain-language summary of a clinical-trial abstract reports the trial's population,
+intervention, comparator, outcome and results. Medical experts gave the gold ratings.
+@output
+Ordinal scores: <<q:factpico:pico.population.criteria|len>> levels per PICO element (incl.\ N/A),
+<<q:factpico:evidence_inference.criteria|len>> levels per result span. The overall score is their mean.
+@example frozen evaluation set (annotations CC-BY, item \texttt{<<jl:data/frozen/factpico/test.jsonl:11.id>>})
+Abstract & <<jl:data/frozen/factpico/test.jsonl:11.abstract|c160>>
+Summary & <<jl:data/frozen/factpico/test.jsonl:11.summary|c160>>
+Gold & P <<jl:data/frozen/factpico/test.jsonl:11.gold.population|f1>>, I <<jl:data/frozen/factpico/test.jsonl:11.gold.intervention|f1>>, C <<jl:data/frozen/factpico/test.jsonl:11.gold.comparator|f1>>, O <<jl:data/frozen/factpico/test.jsonl:11.gold.outcome|f1>>, Results <<jl:data/frozen/factpico/test.jsonl:11.gold.results|f1>>; Avg.\ PICO-R <<jl:data/frozen/factpico/test.jsonl:11.gold.avg|f2>>
+@sets
+factpico = All released summaries | summaries

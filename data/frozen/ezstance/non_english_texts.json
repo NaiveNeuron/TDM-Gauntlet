@@ -1,0 +1,1148 @@
+{
+ "_doc": "Language screen for the EZ-STANCE test tweets. Each entry is the SHA-256 (UTF-8) of a release `Text` value whose rows are excluded under the benchmark's English-only rule: the tweet contains a non-English sentence, clause or multi-word phrase (including quoted tweets and link-preview titles), code-mixed text with non-English grammar or function words, or English-lexifier pidgin, creole or patois. Proper names, handles, hashtags, single loanwords or particles and names in other scripts were kept. Candidates came from langid.py 1.1.6 (whole text and 8-token windows, p > 0.999), a non-Latin-script letter count and two independent LLM screening passes over all 9,296 unique test tweets; every candidate was then judged from the text alone (no labels, no Jev outputs). `detected_by` lists the signals that flagged the tweet (whole, win, nonlatin, llm); `note` gives the reason without quoting the tweet. See data/manifests/ezstance.json.",
+ "texts": [
+  {
+   "text_sha256": "0115641973c0862d4e5c544a7a3a38e3165ea414fa6a0fc0f43da95e02dca595",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Indonesian phrases"
+  },
+  {
+   "text_sha256": "02f9618cf2e5a1f5396ab4c1be5df8fe24b05558a12302c57fb5c4ba0f57d3b5",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Punjabi phrase"
+  },
+  {
+   "text_sha256": "0500171fc2939daf8c2fa5c1dd0b7b54b57692ddc83d28d23df37fe76674f605",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Quoted tweet in Spanish"
+  },
+  {
+   "text_sha256": "0726505360d2931a83b1f3016eaaa1d53bf78e5f711111ec10fddf23ae05e3ea",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing"
+  },
+  {
+   "text_sha256": "0759a96ca6e0725ded81ccc76a5e3d48828138563842fbed22887e58766125b3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Kurdish slogan"
+  },
+  {
+   "text_sha256": "092d53327dcd7cdd31b33e7dc18ce5e1e92c2f65470f01e49c61e9ddf10edb1c",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin/Twi code-mixing"
+  },
+  {
+   "text_sha256": "09d31792c14a56e16eb785364f9157c3747c299547a4fb678350939990a268d0",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing (Tagalog linker -ng)"
+  },
+  {
+   "text_sha256": "0b64ea8ce2788a545a99f709c7602cc4e9622bb2e065fce4231af3ee0d0fe77f",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Malay-English code-mixing"
+  },
+  {
+   "text_sha256": "0bd44511d16b2778873d0f41bc45733657e682105c887c1393e172140d8d0345",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hindi sentence"
+  },
+  {
+   "text_sha256": "0ced47f3cd4c21c134ab61f34105475fa449a09b78daf188c5e8d195d34cf9f4",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains an Igbo sentence"
+  },
+  {
+   "text_sha256": "0d6905730cd8b3091b50891eb727101d93f8eb3dda58fa1191d1bc58531322ac",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Hindi phrase"
+  },
+  {
+   "text_sha256": "11a6aaa0945af81653977aafa687bfdfca5fedb7f7c28b74a5d6bec43ce8bd04",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Jamaican Patois"
+  },
+  {
+   "text_sha256": "122bbd01b416ed1bad40dddf16cfb986c4c3ca04ec0fdd19bd93fbf0bc04f911",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted Chinese-language passage"
+  },
+  {
+   "text_sha256": "134ae0d0bf58e0b7b85cc80f5f4a98c95cf296c7b99bd284ed7ef7d437625e8b",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "194a67eda08b4c810f061bc2a1f4972d4b7063a9ed84ae70c6bdb1b69c8f50b3",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Taglish code-mixing and a quoted tweet in Tagalog"
+  },
+  {
+   "text_sha256": "1b0a1b9d7304f4e94a298f953132cc5904de48a2bc4696c46ed6852dbe6c8be3",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Link-preview title and snippet are Czech sentences"
+  },
+  {
+   "text_sha256": "1b23edd698c26ad28bada7b93c3f82b85d2f6fe01a1f185659fdad4816bbf1bc",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin / Twi code-mixing"
+  },
+  {
+   "text_sha256": "1c7419caa74288abfe1b6d2a13a958573e3eefad3040ce7d397c1008b7f327cb",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Quotes a full tweet in Dutch"
+  },
+  {
+   "text_sha256": "1d2c18c10c8dfdc04ffab51b25e7e50b2433565c5c072e39bec7e33c4e1531e6",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin phrase"
+  },
+  {
+   "text_sha256": "1ebd4cd2171329a8099f6adf887380f758f3e11b5011c1411e99bc3b8d12d9b0",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "20ba6146e6f866c05c730ecea812292d993ad029b4d0c3ac982894a37b0e6820",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Shona"
+  },
+  {
+   "text_sha256": "24682afff73a6440d131ad2c7e0eddb926c6d8398d78ce8b7b1f01e29ca8b390",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains Spanish sentences"
+  },
+  {
+   "text_sha256": "280ca7fdb6467193c0fab3796716172a231196f20bd5cfd6b836f020b8626261",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "llm"
+   ],
+   "note": "Japanese text and Korean-romanized"
+  },
+  {
+   "text_sha256": "2887d292700da061de8c19d8f3353071a790d4abfbdedbeaf3a77e7ec80424c2",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Indonesian/Javanese and English"
+  },
+  {
+   "text_sha256": "288d6ffd4b4724f2aff5662507ba8af0274d117ecc9bf03f29a09c945182a594",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin phrase"
+  },
+  {
+   "text_sha256": "2c83c5b3dc7b008fb9751b2e0d6af1833bed8a0b64ae21a5ba433d00c1371245",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "2d174517609f4e53acc5e3ecc2426a656a63575aed29b95bccbeeac75ccbac8a",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed South African slang with non-English phrases"
+  },
+  {
+   "text_sha256": "2dac051ed786c86e3c87168e0454ef372f8e5c17efcaa0c2736e980e7120837a",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a romanized Korean phrase"
+  },
+  {
+   "text_sha256": "2fe6e835f78e6c20d2638c745ab32dcd97f408b7d67cf86f9d0f4b55f0b592f1",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Sheng/Swahili-English"
+  },
+  {
+   "text_sha256": "32ca71390d2db61e1268ebd187b95c8a3622d2fe006a8ded723944a86224baa4",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin"
+  },
+  {
+   "text_sha256": "33b6ed3dd23744f2d60d26405ebab954934735ba7beb737c7fa89dba767df6e3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted tweet in Malay"
+  },
+  {
+   "text_sha256": "34b59968fabfa37adaf04054f7664c53a1e93bcbb83e954c7178dea2cbb585a2",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted tweet contains a Spanish phrase"
+  },
+  {
+   "text_sha256": "365b566d9ecfddaa5248deb61d091744471e52beecdb1d6859d64cbf0f43e2de",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "French link-preview title"
+  },
+  {
+   "text_sha256": "3692183f1e18575b4cd3e549a963f7a3e8af7e2bf7d8e452e135948888b712c8",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian/Ghanaian Pidgin"
+  },
+  {
+   "text_sha256": "38a8bfcfbeab31ef6ab7cffc75e1ac654df7886e3ff065ba7b5e371d3d8df457",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Hinglish clause"
+  },
+  {
+   "text_sha256": "3a866e1d7b72afe849d0525db99336d5deb2fe34a451080eb1dce5ac0caf89c7",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Spanish phrase"
+  },
+  {
+   "text_sha256": "3ab1371a9caaf49234d4c3660896c67f7d813075448b1c15d95e54f2d796e42d",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Creole/pidgin-style English"
+  },
+  {
+   "text_sha256": "3b409fb5eff1f99668ad16dbb26ef8625ac6afef63a030bbdc0ee72595b13aa1",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted tweet written in Polish"
+  },
+  {
+   "text_sha256": "3e4c86a93c53bc4e6f70796fc0b63a7182de93145e222865d234bbee944857c5",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Urdu/Hindi-English code-mixing"
+  },
+  {
+   "text_sha256": "3fcd7e38a22d3c73a1282f49ba6d0ecdc288214ea0f5c6bab8d39bf63e3b6d71",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Yoruba phrase"
+  },
+  {
+   "text_sha256": "405ff8f2fbe954dda006d32785fd60187300af2666a4ba9d8cc221250f48294b",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Kurdish slogan (multi-word non-English phrase)"
+  },
+  {
+   "text_sha256": "42945431d416a62c82af949a53aac1e8e5d36c6aec2710934640f4b91771311b",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "Quoted Indonesian sentence"
+  },
+  {
+   "text_sha256": "43768eed020ce6b61f9d163697fd717a1f719554bc3edd66261eb4826ce92154",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains a Chinese-language sentence"
+  },
+  {
+   "text_sha256": "4588d7f176ff98d67018cc794100239f729fefd436e9363dea4b5850bd5e153b",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted Spanish sentence"
+  },
+  {
+   "text_sha256": "462b165f1cb6b073672941dd32405fcfc710e8da63224172e9954d72ef89b36e",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Mixes English and Malay"
+  },
+  {
+   "text_sha256": "46ec8a92ab6277b5fd3e5a2b29fb3cd05ea711e883911d8e26e332f1e1ef3d06",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin/Twi-mixed text"
+  },
+  {
+   "text_sha256": "4858ee21110a0369d95851097a404861ae08bbe9c6d0709cabaf082c853c755d",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Includes a Dutch link-preview title and snippet"
+  },
+  {
+   "text_sha256": "48b72bba6ea36a8371df999a6d2e3df1128982293d8867b553ecdfc0c995ae9c",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Malay-English code-mixing"
+  },
+  {
+   "text_sha256": "535af990e8f69c2309927a69961f557815c48b05cc3ff388839fea2825b9364c",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing"
+  },
+  {
+   "text_sha256": "5670f6fe7bad9ac298bd53d8aaa94a31d5378f250d7e5178dedce742a2a6285f",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Shona clause"
+  },
+  {
+   "text_sha256": "592728a72baa5fd3e6f6d8e9cf68ce027d33c7feab8f48d599569d0dae46ee8d",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Hindi phrase mixed into English"
+  },
+  {
+   "text_sha256": "595b5516dea83329e3f73a9068733d57d449990207978fa08d94ceb003d93ddc",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Quoted Spanish sentence"
+  },
+  {
+   "text_sha256": "59c50573c2e9cfbb5cea33a707584af76e279b346a22aade1d3968445fc9123d",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a transliterated Hebrew greeting phrase"
+  },
+  {
+   "text_sha256": "5ccd5758458d892e369f72522eab211e3aef0bf6d417088e0acecbe7b56d8938",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Turkish phrase (a descriptive label, not a name)"
+  },
+  {
+   "text_sha256": "5e20953811d634b2d947fc6ebee7b9b44e19cfcc9656b5b549915218d765c343",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Jamaican Patois in quoted tweet"
+  },
+  {
+   "text_sha256": "5fcf4d7f2fabb3bb8329c38131568365222eeaaa1db99811497dbe68edd498d2",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "65a936d6c726cac2b75c81dd63577a3947b3ef22410f05b19d5010bbd90e7de0",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hinglish code-mixing"
+  },
+  {
+   "text_sha256": "66781fcccd7798acdf7935d31812fee8f02d3b5c12bc433faf44d2efed7f3875",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Malay code-mixed with English"
+  },
+  {
+   "text_sha256": "6695be42d424e88a4d82d227ac5ea936563c7c711a4f46aa61e68d0432645383",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Swahili phrase"
+  },
+  {
+   "text_sha256": "676d0fbca47a362c181a3358d26ca61284abf6d58a13bb3ab3ec1dfe9924e0ef",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains non-English phrase"
+  },
+  {
+   "text_sha256": "6ae418441c0edda12a9a76788979a6da7462bf957b624d5d04ee488cba3b5be3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Portuguese phrase"
+  },
+  {
+   "text_sha256": "6caeb6e7c3fd028018683433cfce1daef47c3d7e736184cb4cd94a1c4c8fd7e3",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Quoted text has Tagalog sentences mixed with English"
+  },
+  {
+   "text_sha256": "713bace22183197f48eaa095eb3b605837b63db03d99385c226e97d6849ddcc1",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Twi/Akan sentence"
+  },
+  {
+   "text_sha256": "791b02e58a780b9f6f1ade1c665b9b5fe9b610c89caa3fb97883dbee4f562672",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin phrase"
+  },
+  {
+   "text_sha256": "7a05b42f60c4766380ed0e83b0f80fbb35a275f7b6db9abd97035dc77eb4349c",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Irish sentences"
+  },
+  {
+   "text_sha256": "7aaa8984fd54538a5686c8e2034d9d99b858650d1f5c2adf3243ddc7540e244c",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Hindi sentence"
+  },
+  {
+   "text_sha256": "7c4f7eee60f923b4e49e2b3d63dc72d9416d7c1b2676ceb5f0f9bfce7b660869",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing (Tagalog conjunction)"
+  },
+  {
+   "text_sha256": "7cc81647eb8529d0efeca17a8cd7c26c01e6d40b1b7dae82089c5135f0d99414",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Swahili phrase"
+  },
+  {
+   "text_sha256": "7d007f66366f710dea0e2ae5a703a08a9cf8802470d4cfa26837e78638c781f4",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Taglish code-mixing"
+  },
+  {
+   "text_sha256": "7d50bf1b098dc31c1b5f23fc88fcffe7266a597db64de97496913ef5b74e9c91",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted tweet has a romanized Telugu sentence mixed with English"
+  },
+  {
+   "text_sha256": "7faba4d956469272d9c4c3865d6f8e840d87c81ce4f07a3725ac04c8ed26d483",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "The quoted tweet is written in Indonesian"
+  },
+  {
+   "text_sha256": "82d1fe2855406d2d2298e43f936fdbee9df447b0129130a32c923b03fc574522",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin phrase"
+  },
+  {
+   "text_sha256": "83cbd794e7375df1c5d501799074b21170c2a6bcaefa47639c13a8f650ce8cd0",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Spanish clause"
+  },
+  {
+   "text_sha256": "842b2b754f0ff2d73f5b1976dc8b3a1885d34fbb00e718ebe00affb3af10ebcd",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains French phrase in quoted tweet label"
+  },
+  {
+   "text_sha256": "84c3790dea23ec48f1344f8d6a41097ae3446e8a66c3adb0d9f939adb8aabae6",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Quoted Polish text"
+  },
+  {
+   "text_sha256": "854be67eb9cd5bd044a27c27636eb3bca7d8e8f23a266657cf2ba74461f2b6da",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hinglish code-mixing"
+  },
+  {
+   "text_sha256": "85a34effc4cbe1b7493d938681396c8f4d8419f535a9105c83e20f84f29970a8",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "8cf5fea44e5d9c790ebe73565b4560fd18a820b77277b1118131d19d80ce0265",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "8da7d46cbccd7d274dcf4acfe212b21312a132bb071965380c565148ef30ef48",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains a full sentence in Chinese"
+  },
+  {
+   "text_sha256": "8e7012c25b10e6a85def1f7a19cbdec90272a58ca2115702d67c49696a0e73a4",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Finnish phrase"
+  },
+  {
+   "text_sha256": "8fe963ce6bfc1626acbe21ee147cf9d8071bd447baba67790ea2abce81d3c514",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted French sentence"
+  },
+  {
+   "text_sha256": "90eb689630bb7fb5fd0cd1cb185e7ae72c9d0c53f43233af9c28813148c205db",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains quoted French text"
+  },
+  {
+   "text_sha256": "91397c467fee111309a4e8211b335e3473d207db2e08e163e32ccd26b06d6b04",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Quoted tweet written in French"
+  },
+  {
+   "text_sha256": "9365e6c06f8b2db1e5ea8ba60feb5ff0cf5b7dbe3c7f0a7c2c02f9f87695e401",
+   "detected_by": [
+    "nonlatin",
+    "llm"
+   ],
+   "note": "Contains a Chinese sentence"
+  },
+  {
+   "text_sha256": "941611700535b893d5c28f1383d12c4dd8062c59c6c4738879a8b08cd7eb5e0e",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Quoted German sentence"
+  },
+  {
+   "text_sha256": "990b9f6be38dc13c774566defe8e0982bcd466a13fda65d777feefeb3d130d04",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "99ec515e35a938e81fd606761d740f88d837ee80dacaf129610cb0362e71ace2",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains a full Chinese-language quoted tweet"
+  },
+  {
+   "text_sha256": "9cdeb21752bc8bf07b9b990bbaaf7fde6c424f45aa2c65b359236500274bc78e",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Caribbean creole/patois"
+  },
+  {
+   "text_sha256": "9fabe9e2a0ad426a80c16bb8ba632b9a3878eb883d4f288c1700fc39e6daf267",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hindi clause"
+  },
+  {
+   "text_sha256": "a0f2ff20ff0a3153d8fa35b3b3600f6c0ef8dc93690ba81a45ac2cb5cdf70108",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Luganda phrase"
+  },
+  {
+   "text_sha256": "a419734758a6154e515b2c8a235290330e2bf93564d2c858f19cb702f1b09d7b",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Hindi/Urdu and English: it uses Urdu grammar and function words"
+  },
+  {
+   "text_sha256": "a47643e30a160655363261d9339df28a72d436a937362cf37acb0f23a3cb7b06",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains Finnish link-preview title and description"
+  },
+  {
+   "text_sha256": "a720bade9af9a0657c7eb2d8de1d47ed161e642f3a1aacb4924001ac333c3acd",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains quoted Swedish sentences"
+  },
+  {
+   "text_sha256": "a87b9a8e92082b6e05dad63255e3a8b39e5e9cedca0442b20526e06af08a8b20",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hinglish"
+  },
+  {
+   "text_sha256": "a91ae7c6a220ca9975b4beb6c09ac1af5d21983da6e69e5f7e63f36e936df0c6",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "Hinglish code-mixing"
+  },
+  {
+   "text_sha256": "ab1093f5f9794841516e2d2be2ba71fb60495820cb40f37c80e988ccbdee2f05",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted French sentence"
+  },
+  {
+   "text_sha256": "ac135342e2919833f1d0248f9fcb276fe2d7a36ec8300c5c883c8a626a5dae62",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Zulu/Nguni text with non-English grammar"
+  },
+  {
+   "text_sha256": "ae51ebafc42c8f89642141bcd9edc12463cba95f712b23bdbf9fd54151077ca5",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Quoted tweet contains a Spanish phrase"
+  },
+  {
+   "text_sha256": "af57cc75f5312f74d88558daac1d39fe54e450ebad11d9016807171a86a038ba",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing (Tagalog words)"
+  },
+  {
+   "text_sha256": "b09a7c7825fae3ff5f8aa451a4b1836afd7965451957b8e1599dc8f110c709f5",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "Contains a quoted Indonesian sentence"
+  },
+  {
+   "text_sha256": "b0affb7375c3298817ba9a61f31c8ea43658624d390bcf36b0fe3e759fb60555",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hinglish code-mixing"
+  },
+  {
+   "text_sha256": "b4ed2f5133338be8b36e36b48d280f8c89369fc375c9f93a49fc181b33e5e4f2",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a multi-word Tamil phrase inside an English sentence"
+  },
+  {
+   "text_sha256": "b543ddf5e26afd53f1e6ecbc1539b1bb813cee9f0b49a37a8b165dcd498d04bb",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Code-mixed Indonesian-English"
+  },
+  {
+   "text_sha256": "b7df26c8f7ad7c637d41dc1d705549d7e19106e7a68a5fc6d174db11b23c249b",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing"
+  },
+  {
+   "text_sha256": "b91632a0bb69d36d07605e11f88e66f018f5bd6aa87ae23903fc47527f921f90",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Urdu phrases code-mixed"
+  },
+  {
+   "text_sha256": "ba716a1159b0ea24eab3ad4cae223b5fec981d65531eaf8c0ccc08bbb7214f12",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted Malay sentence"
+  },
+  {
+   "text_sha256": "bb36ec08f132c4a2fe1dbb4038adbcc85b4d869447a6b89bd1a4459fd0aee586",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Indonesian/Javanese sentence"
+  },
+  {
+   "text_sha256": "bdca4487872189f67e8ea5e289f7021c610e72b2a75df1d5404c4741cf28dde7",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Shona phrase"
+  },
+  {
+   "text_sha256": "bef6314911bbe4be31c80f3151ae269ad86bc3b82d5beee809571cb653f090e2",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Malay-English"
+  },
+  {
+   "text_sha256": "bfd9358d1e5575e236e96de395099f63b22ffcce523cd823ba6db24aea1bc11c",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin"
+  },
+  {
+   "text_sha256": "c0628fe958dd7b18986575ae9309ac414d634d98a6f911013ecac7368637b284",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "llm"
+   ],
+   "note": "Contains a Chinese phrase"
+  },
+  {
+   "text_sha256": "c4f6bfa377d84b8ccff332d5293f21bde4f34e9ade58f3d0b97fe1e2c0f1ab7e",
+   "detected_by": [
+    "nonlatin",
+    "whole",
+    "llm"
+   ],
+   "note": "Contains a full Chinese sentence"
+  },
+  {
+   "text_sha256": "cd942ffcc9f0a746e444e637ed62f6cd77ba184e3de25a182df8f9817584267a",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "cdc7f8c9b25be11d277098a03b1c8f5c65dc40f71db4d72deb6993989b3a3b08",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Embedded tweet contains a French phrase"
+  },
+  {
+   "text_sha256": "d5cdd974931f8d40cbfb9f7a503ee07d8b7415e29c756f5039c41ac062890b70",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Malay phrase"
+  },
+  {
+   "text_sha256": "d79eca96dfb51b11a971c10eb25c12113b82dbc8b9acf7dca594bbac1ca98a7d",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hinglish code-mixing"
+  },
+  {
+   "text_sha256": "d7feff88b96bf53d16df1ed658e9f0fd8a4437805b168b821db81171da015c32",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a Swahili phrase"
+  },
+  {
+   "text_sha256": "db0e54d6c0ea87be128956618ab28a71c0ba195b983858006d6111c7d68b94b0",
+   "detected_by": [
+    "nonlatin",
+    "win",
+    "llm"
+   ],
+   "note": "Chinese text mixed into English sentences"
+  },
+  {
+   "text_sha256": "de8c1d6e5fc00dd367f19844d3d907aa5445d9e0f544559a353b3dacfc41582c",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains a quoted Polish tweet"
+  },
+  {
+   "text_sha256": "e13df4d35c6c5432875bd91dac980638a0d65cd836dc756906069814586e3293",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Hindi/Punjabi code-mixing"
+  },
+  {
+   "text_sha256": "e38f1f1334c0bd7c90799bbec4d4876b674a0a1f274a8ab07f5660d7cbd64ff2",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Contains Tagalog text"
+  },
+  {
+   "text_sha256": "e396b2135bbc275e6e7caa3d73b20a1cd0f8c022812f1224488596aad3d662b0",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish: Tagalog words mixed into English"
+  },
+  {
+   "text_sha256": "e4330755c929fae1d18f7f4e1d60938a00be8e83b3ae8231839ad7300ee23d69",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin construction"
+  },
+  {
+   "text_sha256": "e6f2ecfba7c6565eab3b06c86a774e3d7b1f0b911f66f2ef4f4f799be9b40313",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "e997bbdf8ede4035aa8897ac1d11cff5778319183fdff832cc9ba4d751195afc",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "ea6e3ee312925c63408573362f75a70cf54a266868cc47b232ac51ce3b936807",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin clause"
+  },
+  {
+   "text_sha256": "eac1689e4b3b02459aecf11809b5b35ca36fe43df81deb0e40161bc620477e99",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin with a Yoruba word"
+  },
+  {
+   "text_sha256": "eb6dd698a6dac7991bfe1d953ff81b3a7eb3c5ef8c1599152c0cc36faa3b8749",
+   "detected_by": [
+    "whole",
+    "llm"
+   ],
+   "note": "Portuguese sentence"
+  },
+  {
+   "text_sha256": "eb9b1112d05edb3a84a119bc404da035ca917a433ca0b3b98cefd2c4a4673ddb",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "ec2f4f9d1340ad62fc714b86b141e09c71b4ea5360de94a5b06ee079a1d33368",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Caribbean English creole"
+  },
+  {
+   "text_sha256": "ecd9eab7c2efb8204a9ea87a823e67c2f88a44b9e5d80ff599efc314dabe51ee",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "French link-preview title and text"
+  },
+  {
+   "text_sha256": "ecf5082f33426c88a62a67292bc9e5f11ace3f2ec0cd37129ee029d006fe836a",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Taglish code-mixing"
+  },
+  {
+   "text_sha256": "ed8af0269d482102e98a4777e5a417d15bf9b738d5481240a9ce684221ea197e",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted Malay sentences"
+  },
+  {
+   "text_sha256": "efd2192ddef3d037ec269bc19295ced17a4d2de47f2ba93946900d829f0c9292",
+   "detected_by": [
+    "whole",
+    "win",
+    "llm"
+   ],
+   "note": "Contains quoted German tweet text"
+  },
+  {
+   "text_sha256": "f22b265f07565f4eadc31a584a61ab6ce9ea09bd4b87c537942d3911cba754a1",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains an isiXhosa/isiZulu phrase"
+  },
+  {
+   "text_sha256": "f381315708949261a22e145c631bba33b034753aac0a21289b1d82583c4c919f",
+   "detected_by": [
+    "nonlatin",
+    "win",
+    "llm"
+   ],
+   "note": "Contains a Chinese four-character idiom (not a name)"
+  },
+  {
+   "text_sha256": "f39b92cac57ff60741d809bbb9070a3fa5603ce7a87acce784861e5da7f06bb6",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains Luganda phrases"
+  },
+  {
+   "text_sha256": "f3c46735e01079e7d4ea0c099e6298b0e9b8b8e36deda7bc006f80181f3529e3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Twi/Ghanaian code-mixed text"
+  },
+  {
+   "text_sha256": "f4103d4042066ab503e5c58653e7463cd9b2b91ac279b5369a8dbcce306c693d",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed Cebuano/Bisaya-English"
+  },
+  {
+   "text_sha256": "f49dc46797a011f8675462abee107cbd505ef69fd1b4b9fe5c22f72d906bc7ec",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Italian phrase"
+  },
+  {
+   "text_sha256": "f5e4ed399c696dffc9ce32e5963a4b84f384c6fdc69d304018d4512072319126",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "French link-preview title"
+  },
+  {
+   "text_sha256": "f747de6b841f7ae9b7964c3503c29d213b42e1827aaf557cae6dee22ed0a2d6e",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Ghanaian Pidgin English"
+  },
+  {
+   "text_sha256": "f756cf61d71e8b71c40657be9678750be846a4de1df36315a96a4034a4ca5bd3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Code-mixed English and Malay"
+  },
+  {
+   "text_sha256": "f901d77e1af3a8cfd7a5bff0b48d59886e889d2176be6acdb67e87cccba770d0",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted Pidgin"
+  },
+  {
+   "text_sha256": "fab6ea53f2ceed992a162668d30271b89e47849b479e5cb2393098222db9ff03",
+   "detected_by": [
+    "win",
+    "llm"
+   ],
+   "note": "Tagalog sentence"
+  },
+  {
+   "text_sha256": "fb4dd3d7ff9ba7c6cc7bf5386dd69a571e5cf8a8d5df10014ad363bfc4197ffc",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Caribbean creole"
+  },
+  {
+   "text_sha256": "fd58ce6a638409a6972a70e7dba3f6fd92f72f579cc9821f29b25d607404d1af",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Portuguese phrase"
+  },
+  {
+   "text_sha256": "fdb4e318c847990965e5f6f599caae477ea33937a65d21db9e92e7499645236f",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Quoted tweet contains Tagalog/Taglish sentences"
+  },
+  {
+   "text_sha256": "fdf0940a7aec32f145c7481a8a077fd277ba7d5ca2944be25a7da66b9be2baeb",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Taglish code-mixing with Tagalog function words and a full Tagalog sentence"
+  },
+  {
+   "text_sha256": "fe447750a8dcb5b94d6d5c5035131f66cfe645d6e26b44e850f66e41e04e64c3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Spanish phrase"
+  },
+  {
+   "text_sha256": "fee02f164501e21cc76b018166502ae40e2cf2a79a552edbfb47c76899a6d1c3",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Uses Nigerian Pidgin"
+  },
+  {
+   "text_sha256": "ff5d020eb908e07b249aca221fe97ac28e49bfac4922a2ee1a0eece8e4449869",
+   "detected_by": [
+    "llm"
+   ],
+   "note": "Contains a romanized Urdu sentence mixed with English"
+  }
+ ]
+}

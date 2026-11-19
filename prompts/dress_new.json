@@ -1,0 +1,53 @@
+{
+  "_source": "Yoo et al., DREsS: Dataset for Rubric-based Essay Scoring on EFL Writing, ACL 2025, https://aclanthology.org/2025.acl-long.659/. Rubric explanations quoted verbatim from Table 2 'Rubric explanations' (p. 13441; identical text on https://haneul-yoo.github.io/dress/). Opening sentence and the score grid are adapted from the paper's gpt-4o prompt (C) 'rubric explanation', Appendix B.1 Table 10 (p. 13452): 'Please score the essay with three rubrics: content, organization, and language.' / 'Note that the float values of scores are within [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0].' The scoring-context sentence paraphrases Section 3.1 'Dataset Collection' (p. 13441). The paper publishes no per-level descriptors, so the Table 2 explanation is given as the description of the rubric (the top of the scale) and levels are labelled by score value only. Each rubric is asked as a separate question in one request; question IDs are not shown to the model.",
+  "_primitive": "score (9 ordered levels per rubric: 1.0, 1.5, ..., 5.0)",
+  "_state": {"essay_prompt": "the writing prompt the student answered", "essay": "the student's essay"},
+  "levels": [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+  "questions": {
+    "content": {
+      "type": "score",
+      "instructions": "Please score the essay on the rubric CONTENT. The state holds an essay prompt (\"essay_prompt\") and an argumentative essay written in response to it (\"essay\") by an undergraduate English-as-a-foreign-language student during a 40-minute timed in-class writing test; the course instructor scores each essay on three rubrics (content, organization, and language) from 1.0 to 5.0 in increments of 0.5. The float values of scores are within [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]. Rubric explanation for content: \"Paragraph is well-developed and relevant to the argument, supported with strong reasons and examples.\" Score only the content rubric: how fully the essay meets this explanation. Organization and language are scored separately.",
+      "criteria": [
+        "1.0 out of 5.0 (lowest score): the essay does not meet the content rubric explanation.",
+        "1.5 out of 5.0",
+        "2.0 out of 5.0",
+        "2.5 out of 5.0",
+        "3.0 out of 5.0 (midpoint): the essay partly meets the content rubric explanation.",
+        "3.5 out of 5.0",
+        "4.0 out of 5.0",
+        "4.5 out of 5.0",
+        "5.0 out of 5.0 (highest score): Paragraph is well-developed and relevant to the argument, supported with strong reasons and examples."
+      ]
+    },
+    "organization": {
+      "type": "score",
+      "instructions": "Please score the essay on the rubric ORGANIZATION. The state holds an essay prompt (\"essay_prompt\") and an argumentative essay written in response to it (\"essay\") by an undergraduate English-as-a-foreign-language student during a 40-minute timed in-class writing test; the course instructor scores each essay on three rubrics (content, organization, and language) from 1.0 to 5.0 in increments of 0.5. The float values of scores are within [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]. Rubric explanation for organization: \"The argument is very effectively structured and developed, making it easy for the reader to follow the ideas and understand how the writer is building the argument. Paragraphs use coherence devices effectively while focusing on a single main idea.\" Score only the organization rubric: how fully the essay meets this explanation. Content and language are scored separately.",
+      "criteria": [
+        "1.0 out of 5.0 (lowest score): the essay does not meet the organization rubric explanation.",
+        "1.5 out of 5.0",
+        "2.0 out of 5.0",
+        "2.5 out of 5.0",
+        "3.0 out of 5.0 (midpoint): the essay partly meets the organization rubric explanation.",
+        "3.5 out of 5.0",
+        "4.0 out of 5.0",
+        "4.5 out of 5.0",
+        "5.0 out of 5.0 (highest score): The argument is very effectively structured and developed, making it easy for the reader to follow the ideas and understand how the writer is building the argument. Paragraphs use coherence devices effectively while focusing on a single main idea."
+      ]
+    },
+    "language": {
+      "type": "score",
+      "instructions": "Please score the essay on the rubric LANGUAGE. The state holds an essay prompt (\"essay_prompt\") and an argumentative essay written in response to it (\"essay\") by an undergraduate English-as-a-foreign-language student during a 40-minute timed in-class writing test; the course instructor scores each essay on three rubrics (content, organization, and language) from 1.0 to 5.0 in increments of 0.5. The float values of scores are within [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]. Rubric explanation for language: \"The writing displays sophisticated control of a wide range of vocabulary and collocations. The essay follows grammar and usage rules throughout the paper. Spelling and punctuation are correct throughout the paper.\" Score only the language rubric: how fully the essay meets this explanation. Content and organization are scored separately.",
+      "criteria": [
+        "1.0 out of 5.0 (lowest score): the essay does not meet the language rubric explanation.",
+        "1.5 out of 5.0",
+        "2.0 out of 5.0",
+        "2.5 out of 5.0",
+        "3.0 out of 5.0 (midpoint): the essay partly meets the language rubric explanation.",
+        "3.5 out of 5.0",
+        "4.0 out of 5.0",
+        "4.5 out of 5.0",
+        "5.0 out of 5.0 (highest score): The writing displays sophisticated control of a wide range of vocabulary and collocations. The essay follows grammar and usage rules throughout the paper. Spelling and punctuation are correct throughout the paper."
+      ]
+    }
+  }
+}

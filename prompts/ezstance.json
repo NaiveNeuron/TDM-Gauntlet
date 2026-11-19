@@ -1,0 +1,24 @@
+{
+  "_source": "Zhao & Caragea, 'EZ-STANCE: A Large Dataset for English Zero-Shot Stance Detection', ACL 2024 (https://aclanthology.org/2024.acl-long.838/). Task sentence verbatim from the abstract / Section 1: 'determine whether the author of a text is in favor, against, or neutral toward a target'. noun_phrase: the stance-labelling instruction given to annotators is verbatim from Appendix C.1 (p. 15708-15709): 'Imagine yourself as the author of the tweet, please annotate the stance that you would take on this given target as \u201cFavor\u201d, \u201cAgainst\u201d, or \u201cNeutral\u201d.'; C.1 gives no per-label definitions, so the three criteria restate the abstract's task sentence per label. claim: the three label definitions are verbatim from the claim-writing instructions in Appendix C.2 (p. 15709): '1) The author is definitely in favor of the point or message of the claim (favor); 2) The author is definitely against the point or message from the claim (against); 3) Based solely on the information from the tweet, we cannot know whether the author definitely supports or opposes the point or message of the claim (neutral).'",
+  "_primitive": "choice (nominal three-way label)",
+  "_routing": "Each item's target type comes from the release file it was read from (noun_phrase/ vs claim/ directory) and selects the question with the matching key. The state is {\"tweet\": release `Text`, \"target\": release `Target 1`}.",
+  "_label_map": {"Against": "AGAINST", "Favor": "FAVOR", "Neutral": "NONE"},
+  "noun_phrase": {
+    "type": "choice",
+    "instructions": "Zero-shot stance detection: determine whether the author of a text is in favor, against, or neutral toward a target. The state holds a tweet (\"tweet\") and a noun-phrase target (\"target\"). Imagine yourself as the author of the tweet, please annotate the stance that you would take on this given target as \u201cFavor\u201d, \u201cAgainst\u201d, or \u201cNeutral\u201d.",
+    "criteria": {
+      "Favor": "The author of the tweet is in favor of the target.",
+      "Against": "The author of the tweet is against the target.",
+      "Neutral": "The author of the tweet is neutral toward the target."
+    }
+  },
+  "claim": {
+    "type": "choice",
+    "instructions": "Zero-shot stance detection: determine whether the author of a text is in favor, against, or neutral toward a target. The state holds a tweet (\"tweet\") and a claim target (\"target\"). Based on the message of the tweet, what is the author's stance toward the point or message of the claim?",
+    "criteria": {
+      "Favor": "The author is definitely in favor of the point or message of the claim.",
+      "Against": "The author is definitely against the point or message from the claim.",
+      "Neutral": "Based solely on the information from the tweet, we cannot know whether the author definitely supports or opposes the point or message of the claim."
+    }
+  }
+}

@@ -1,0 +1,45 @@
+\paragraph{Task.} Decide whether a model-written summary of a long English story is \textsc{factual} (``explicitly stated or implied
+by the source document'', \S4.4). FENICE extracts atomic claims and scores each by NLI against the source. Claim
+extraction stays fixed. \jev{} replaces the claim--source verification, giving $P(\text{claim supported})$.
+
+\paragraph{Data and freeze.} \texttt{Babelscape/\allowbreak{}story-summeval} at
+<<m:fenice:source.release.revision|commit>> (CC BY-NC-SA), frozen as JSONL with claims
+(\texttt{test.jsonl}, SHA-256 <<m:fenice:frozen.files.data/frozen/fenice/test.jsonl|sha>>, \texttt{val.jsonl}).
+The release gives only story ids. \texttt{scripts/\allowbreak{}prepare\_fenice.py} rebuilds the public-domain texts
+from Gutenberg/Wikisource (hash-checked, kept out of the frozen files). Claims come from the paper's released T5 extractor
+(<<m:fenice:source.claim_extractor.revision|commit>>).
+
+\paragraph{Test set and screen.} $N=$ <<s:fenice:n|int>> (<<m:fenice:frozen.label_counts.test|counts>>), the released
+test file. The val file (<<s:fenice:n_val|int>>) only sets the threshold. The public release is smaller than the
+paper's annotated set and the paper's test rows are not identified, so N and label balance differ from the paper.
+One narrative (Thumbelina) exists in several English translations and the release does not say which one each
+summary used. A langid screen flagged only English headline-style strings. Rows excluded:
+<<m:fenice:english_verification.rows_dropped|int>>. Only this English slice of the multilingual parent resource is
+used.
+
+\paragraph{Prompt.} One \textsc{<<q:fenice:_primitive|upper>>} per claim. All claims of a summary share one request
+per source chunk (<<s:fenice:n_claims_test|int>> claims, <<s:fenice:n_requests_test|int>> test requests). State =
+\{source\_text\}: the whole story, or one contiguous part when it exceeds the frozen chunk size (nothing truncated).
+Instructions quote the paper's label rule and claim definition (App.~A). As in FENICE (Eq.~2), a claim takes its
+maximum over parts (and over candidate translations), and a summary scores the mean over its claims.
+
+\paragraph{Metric.} Balanced accuracy on test (Table~7, p.~14156), with the threshold tuned on val by FENICE's own
+\texttt{choose\_best\_threshold} (\textsc{factual} iff score $>$ threshold).
+
+<<metrics
+cols: fenice=Test
+balanced_accuracy = Balanced acc. | pct
+roc_auc = ROC-AUC | pct
+threshold_from_val = Threshold (val) | f3
+without_ambiguous_thumbelina.balanced_accuracy = Bal.\ acc.\ w/o Thumbelina | pct
+n_pred_factual = Pred.\ factual | int
+>>
+<<papernums:fenice=Test>>
+
+\paragraph{Deviations and status.} Partial release: \jev{} and the paper are scored on different test rows. The
+comparison row is FENICE with T5 claims (same extractor as \jev{}). The GPT-3.5 claims behind the paper's best
+number are not released. Story texts are rebuilt from current public editions, whereas the annotators read PDFs of
+unknown edition. \jev{}'s $P(\text{supported})$ replaces an entailment-minus-contradiction score. The val-tuned
+threshold absorbs the scale. With few factual val summaries the threshold is coarse, and \jev{} predicts
+\textsc{factual} far more often than gold. The stories are well-known classics, so pretraining knowledge of their
+plots is likely, though the task still checks specific claims.

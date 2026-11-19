@@ -1,0 +1,57 @@
+[project]
+name = "gauntlet"
+version = "0.1.0"
+description = "TDM-Gauntlet: swapping typed decision models into 24 ACL-venue papers (46 English test sets)"
+readme = "README.md"
+authors = [
+    { name = "Marek Šuppa" },
+    { name = "Jaroslav Kopčan" },
+]
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.28.1",
+    "numpy>=2.4.6",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.17.1",
+]
+
+[project.optional-dependencies]
+clef = [
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+    "transformers==5.10.2",
+    "huggingface-hub>=1.0",
+    "safetensors>=0.7",
+    "accelerate>=1.0",
+    "pillow>=11.0",
+    "flash-linear-attention==0.5.2",
+]
+# LoRA fine-tuning (gauntlet.lora_train): clef pins, PEFT and TileLang for FLA's Hopper gated backward.
+# It also needs a standalone CUDA 12.8.1 compiler in data/cache/cuda-lora-12.8.1, checked by lora_preflight.
+# Torch 2.11 requires Triton 3.6.0. FLA refuses the Triton kernel for this backward pass on Hopper.
+lora = [
+    "gauntlet[clef]",
+    "peft==0.21.2",
+    "tilelang==0.1.12",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[project.scripts]
+gauntlet = "gauntlet.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

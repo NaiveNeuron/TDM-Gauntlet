@@ -1,0 +1,2 @@
+{"source":"omp","role":"structural","spec":"current","provider":"anthropic","model":"claude-opus-5-5","input":4,"output":2017,"cache_read":0,"cache_write":2617,"cost_total":0.061292,"stop_reason":"stop","at":"2026-09-27T18:37:09.292Z"}
+{"source":"omp","role":"structural","spec":"current","provider":"anthropic","model":"claude-opus-5-5","input":4,"output":2474,"cache_read":0,"cache_write":2760,"cost_total":0.071576,"stop_reason":"stop","at":"2026-09-27T18:37:29.498Z"}

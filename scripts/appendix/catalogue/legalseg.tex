@@ -1,0 +1,10 @@
+@task
+Given an Indian court judgment split into sentences, label each sentence with its rhetorical role in the judgment,
+such as stating facts, presenting a party's arguments, or giving the court's reasoning or decision.
+@output
+One role per sentence from \{<<q:legalseg:labels|keys>>\}.
+@example a sentence from the paper's Table~4, paraphrased because the judgment text is not redistributed
+Sentence & In reply, the assessee defended the Appellate Authority's order, which the Tribunal and the High Court had confirmed. [paraphrased]
+Gold & <<rx:data/raw/legalseg/paper.txt:(Arguments of\nRespondent \(AoR\))\nIn response|c60>>
+@sets
+legalseg = LegalSeg test | sentences

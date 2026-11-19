@@ -1,0 +1,62 @@
+{
+  "_source": "Joseph et al., FactPICO: Factuality Evaluation for Plain Language Summarization of Medical Evidence, ACL 2024, https://aclanthology.org/2024.acl-long.459/. Task framing quoted from Appendix A 'Evaluation Guidelines' (p. 8449): annotators are shown 'a \"source\" input (abstract of a technical paper describing an RCT), along with a plain language summary of it, automatically produced by a model'. PICO criteria (levels 1-4) are the Appendix A answer options for Questions II-V verbatim with the element name substituted, and the N/A instruction is quoted from the same page; element definitions, critical descriptors and examples are quoted from Table 7 (p. 8450) and Section 2.2 (p. 8439); the outcome note is the Appendix A 'Exhaustive Outcomes' guideline. Evidence-inference instructions quote Appendix A Question VI; its four levels combine the Appendix A option labels with the rating descriptions of the paper's evidence-inference LLM prompt, Appendix H.5 (p. 8455). Level order and numeric coding follow the release/paper: PICO N/A=0, missing=1, severe=2, somewhat=3, accurate=4 (the paper's LLM prompts list N/A as rating 5, flipped as 5-x -> 0, Appendix H.1-H.2); evidence inference not mentioned=1 ... accurate=4. One request per summary: four PICO questions plus one evidence-inference question per released result span; question IDs are not shown to the model.",
+  "_primitive": "score (PICO: 5 ordered levels, index = paper rating 0-4; evidence inference: 4 ordered levels, index + 1 = paper rating 1-4)",
+  "_state": {"abstract": "the RCT abstract (Evidence Inference 2.0 text)", "summary": "the model-generated plain language summary being evaluated"},
+  "pico": {
+    "population": {
+      "type": "score",
+      "instructions": "The state holds a \"source\" input (\"abstract\": the abstract of a technical paper describing a randomized controlled trial, RCT), along with a plain language summary of it, automatically produced by a model (\"summary\"). Rate the factuality of the summary with respect to the POPULATION of the trial, one of the PICO elements (Population, Intervention, Comparator, Outcome). Population: \"The types of patients involved in the trial\"; \"The trial population concerns characteristics of subjects in the trial, including what condition they have, the number of participants, and their demographics.\" Critical descriptors for the population: \"Demographics\" and \"Specific condition\" (examples: \"Diabetic males\", \"Healthy adults\"). \"A critical descriptor is a characteristic that is absolutely crucial to understanding the study.\" Choose the rating for how the population is presented in the summary in relation to the abstract. \"Some examples will actually not quite be randomized trials (e.g., they might be observational studies, or a description of a prospective trial not yet run). In these cases, it may be that there is no meaningful population (or intervention, comparator, and outcome). Here you should select the 'N/A' option.\" Rate only the population; the other elements are rated separately.",
+      "criteria": [
+        "N/A: there is no meaningful population in the abstract (e.g., it is not quite a randomized trial: an observational study, or a description of a prospective trial not yet run).",
+        "The population is missing in the model summary.",
+        "The population is mentioned, but described with severe inaccuracies and/or is missing critical descriptors.",
+        "The population is mentioned, but described somewhat inaccurately or vaguely.",
+        "The population is mentioned, and described accurately."
+      ]
+    },
+    "intervention": {
+      "type": "score",
+      "instructions": "The state holds a \"source\" input (\"abstract\": the abstract of a technical paper describing a randomized controlled trial, RCT), along with a plain language summary of it, automatically produced by a model (\"summary\"). Rate the factuality of the summary with respect to the INTERVENTION of the trial, one of the PICO elements (Population, Intervention, Comparator, Outcome). Intervention: \"The treatments considered\"; \"The intervention is the active treatment being assessed for comparative efficacy.\" Critical descriptors for the intervention: \"Mentioned as an intervention\" and \"Differentiates from comparator\" (example: \"Aspirin\"). \"A critical descriptor is a characteristic that is absolutely crucial to understanding the study.\" Choose the rating for how the intervention is presented in the summary in relation to the abstract. \"Some examples will actually not quite be randomized trials (e.g., they might be observational studies, or a description of a prospective trial not yet run). In these cases, it may be that there is no meaningful population (or intervention, comparator, and outcome). Here you should select the 'N/A' option.\" Rate only the intervention; the other elements are rated separately.",
+      "criteria": [
+        "N/A: there is no meaningful intervention in the abstract (e.g., it is not quite a randomized trial: an observational study, or a description of a prospective trial not yet run).",
+        "The intervention is missing in the model summary.",
+        "The intervention is mentioned, but described with severe inaccuracies and/or is missing critical descriptors.",
+        "The intervention is mentioned, but described somewhat inaccurately or vaguely.",
+        "The intervention is mentioned, and described accurately."
+      ]
+    },
+    "comparator": {
+      "type": "score",
+      "instructions": "The state holds a \"source\" input (\"abstract\": the abstract of a technical paper describing a randomized controlled trial, RCT), along with a plain language summary of it, automatically produced by a model (\"summary\"). Rate the factuality of the summary with respect to the COMPARATOR of the trial, one of the PICO elements (Population, Intervention, Comparator, Outcome). Comparator: \"The alternative treatment to which the intervention is being compared against.\"; \"the comparator is the control with respect to which this [the intervention] is being compared.\" Critical descriptors for the comparator: \"Mentioned as comparing against intervention\" and \"Differentiates from intervention\" (example: \"Placebo\"). \"A critical descriptor is a characteristic that is absolutely crucial to understanding the study.\" Choose the rating for how the comparator is presented in the summary in relation to the abstract. \"Some examples will actually not quite be randomized trials (e.g., they might be observational studies, or a description of a prospective trial not yet run). In these cases, it may be that there is no meaningful population (or intervention, comparator, and outcome). Here you should select the 'N/A' option.\" Rate only the comparator; the other elements are rated separately.",
+      "criteria": [
+        "N/A: there is no meaningful comparator in the abstract (e.g., it is not quite a randomized trial: an observational study, or a description of a prospective trial not yet run).",
+        "The comparator is missing in the model summary.",
+        "The comparator is mentioned, but described with severe inaccuracies and/or is missing critical descriptors.",
+        "The comparator is mentioned, but described somewhat inaccurately or vaguely.",
+        "The comparator is mentioned, and described accurately."
+      ]
+    },
+    "outcome": {
+      "type": "score",
+      "instructions": "The state holds a \"source\" input (\"abstract\": the abstract of a technical paper describing a randomized controlled trial, RCT), along with a plain language summary of it, automatically produced by a model (\"summary\"). Rate the factuality of the summary with respect to the OUTCOME of the trial, one of the PICO elements (Population, Intervention, Comparator, Outcome). Outcome: \"The measures used. NOT what was found in the study (\\\"result\\\"). For example, if the study finds a drug reduces the duration of headache, the outcome here is just the \\\"duration of headache\\\", not that it reduced it.\"; \"outcomes are those things that are measured to determine results.\" Critical descriptor for the outcome: \"Primary outcomes mentioned (cannot make any conclusions without them)\" (examples: \"Mortality\", \"Duration of headache\"). \"A critical descriptor is a characteristic that is absolutely crucial to understanding the study.\" \"Sometimes, the plain language summary may not mention all the outcome measures described in the abstract. The summary may still be considered factual if the omitted measures are non-critical for the experiment and are not mentioned any further in the abstract.\" Choose the rating for how the outcome is presented in the summary in relation to the abstract. \"Some examples will actually not quite be randomized trials (e.g., they might be observational studies, or a description of a prospective trial not yet run). In these cases, it may be that there is no meaningful population (or intervention, comparator, and outcome). Here you should select the 'N/A' option.\" Rate only the outcome; the other elements are rated separately.",
+      "criteria": [
+        "N/A: there is no meaningful outcome in the abstract (e.g., it is not quite a randomized trial: an observational study, or a description of a prospective trial not yet run).",
+        "The outcome is missing in the model summary.",
+        "The outcome is mentioned, but described with severe inaccuracies and/or is missing critical descriptors.",
+        "The outcome is mentioned, but described somewhat inaccurately or vaguely.",
+        "The outcome is mentioned, and described accurately."
+      ]
+    }
+  },
+  "evidence_inference": {
+    "_template": "One question per released result span; '{span}' is replaced by the span text (Evidence Inference 2.0 annotation, HTML entities decoded).",
+    "type": "score",
+    "instructions": "The state holds a \"source\" input (\"abstract\": the abstract of a technical paper describing a randomized controlled trial, RCT), along with a plain language summary of it, automatically produced by a model (\"summary\"). Evidence inference: whether the results and findings of the trial are reported factually in the summary. \"You will be presented with a span of text highlighting the inferred result from the experiment presented in the abstract. Based on this span, choose the following based on how this span is presented in the plain language summary.\" A result inference span corresponds to an inferred result in an experiment; find the corresponding result inference in the summary and rate it. Rate only this result span; other results are rated separately.\nResult inference span from the abstract: \"{span}\"",
+    "criteria": [
+      "Not mentioned: the result inference is missing in the model summary.",
+      "Inaccurate: the result inference is critically inaccurate.",
+      "Vague/Slightly Inaccurate: the result inference is mentioned but is described vaguely or is slightly inaccurate.",
+      "Accurate: the result inference is mentioned and described accurately."
+    ]
+  }
+}

@@ -1,0 +1,394 @@
+{
+  "task": "fenice",
+  "paper": {
+    "title": "FENICE: Factuality Evaluation of summarization based on Natural language Inference and Claim Extraction",
+    "authors": "Alessandro Scirè, Karim Ghonim, Roberto Navigli",
+    "venue": "Findings of ACL 2024, pages 14148-14161",
+    "url": "https://aclanthology.org/2024.findings-acl.841/",
+    "pdf_sha256": "27303f5ccb0390caf18ba1f188ddf73912ff1f93439c1a388c5a14902b7782d2",
+    "used": "Section 4.4 (long-form evaluation, p. 14155-14156: 26 English narratives from Echoes from Alexandria, 12 Echo-XSum systems + references, 338 pairs, binary label, 80/20 val/test, annotation rule), Table 7 (balanced accuracy on the test split), Table 10 (66 factual / 273 not factual), Section 4.2 (threshold tuned on validation, Tang et al. 2023), Appendix A Fig. 2 (claim definition)",
+    "code_repo": "https://github.com/Babelscape/FENICE @ 9741ec41996f1bf75825d7cdf29e931a066ce4f0 (metric/FENICE.py scoring, metric/claim_extractor, eval/aggrefact.py choose_best_threshold)",
+    "parent_resource": "https://github.com/Babelscape/echoes-from-alexandria @ f8abb6902dc7fcfbdb248da295876f4304cf654f (multilingual; only used to map narratives to Echo-XSum titles and for the Gutenberg cleaning rule)"
+  },
+  "source": {
+    "release": {
+      "dataset": "https://huggingface.co/datasets/Babelscape/story-summeval",
+      "revision": "ce741d568615de57a77934d171b301d20ba4a135",
+      "licence": "CC BY-NC-SA 4.0 (dataset card; FENICE repo licence). Non-commercial redistribution with attribution under the same licence: summaries, labels and derived claims are frozen as JSONL.",
+      "files": {
+        "data/test.jsonl": {
+          "sha256": "99e1b2fb9595ff4b02507d09780140c2396c0fa78ba5a450f6f26ea7aa352bbc",
+          "rows": 279
+        },
+        "data/val.jsonl": {
+          "sha256": "32c7bb505b4b8e1e928a3d3df73af8bdb6b90377e4afcea48933a3f9656791c9",
+          "rows": 40
+        }
+      },
+      "fields": "summary, factual (0/1), system_id (M0-M14, ref), text_id (Gutenberg id or Wikisource title), source (gutenberg|wikisource), id (= system_id_text_id; not unique)"
+    },
+    "story_texts": {
+      "gutenberg_hf": {
+        "dataset": "https://huggingface.co/datasets/manu/project_gutenberg",
+        "revision": "164853d214065df26a630ee1ab91a0c39e461caf",
+        "split": "en",
+        "rows": {
+          "29042-8": "en-00025-of-00052-9c00570871767dea.parquet",
+          "32759-0": "en-00046-of-00052-fbf5b6f877101255.parquet",
+          "1354-0": "en-00030-of-00052-cfdc6f381f17e852.parquet",
+          "267-0": "en-00001-of-00052-5c2b3fd5e60f0124.parquet",
+          "2814-0": "en-00002-of-00052-835bd07d97f52cbd.parquet",
+          "640-0": "en-00041-of-00052-6f04cd012627fa08.parquet"
+        },
+        "note": "Named by the release card. Ids 697, 1472, 2165, 8164, 68377 are absent from it at every revision (single-commit upload 2023-09-07) and come from gutenberg.org instead."
+      },
+      "gutenberg_org": {
+        "urls": [
+          "https://www.gutenberg.org/cache/epub/697/pg697.txt",
+          "https://www.gutenberg.org/cache/epub/1472/pg1472.txt",
+          "https://www.gutenberg.org/cache/epub/2165/pg2165.txt",
+          "https://www.gutenberg.org/cache/epub/8164/pg8164.txt",
+          "https://www.gutenberg.org/cache/epub/68377/pg68377.txt"
+        ],
+        "note": "current Project Gutenberg files; raw SHA-256 per file in data/frozen/fenice/narratives.json"
+      },
+      "wikisource_hf": {
+        "dataset": "https://huggingface.co/datasets/wikimedia/wikisource",
+        "config": "20231201.en",
+        "parquet_sha256": {
+          "20231201.en/train-00000-of-00005.parquet": "ca66d881e1831470ba3cc0fd843158ad37cee15f82843cc599376e3dedd29d51",
+          "20231201.en/train-00001-of-00005.parquet": "3c745191f991fc741307bb038489745f6484861e9fd5c15197e2bd6dd001edb9",
+          "20231201.en/train-00002-of-00005.parquet": "47a53d6633f0962e9ddb10d30fcbe353ed6dc4de8aef338a0e15a0d921d1611b",
+          "20231201.en/train-00003-of-00005.parquet": "28cd94274d1347a6bfe1e8c2bdda770c222c990db9a8104f502673945ecff8c6",
+          "20231201.en/train-00004-of-00005.parquet": "642d829eae0b3e320cff48102718bea4243da4571b0cca52a49fdbef58f52756"
+        },
+        "rows": {
+          "Lot No. 249": {
+            "id": "651911",
+            "url": "https://en.wikisource.org/wiki/Lot%20No.%20249"
+          },
+          "The Tree (Lovecraft)": {
+            "id": "8529",
+            "url": "https://en.wikisource.org/wiki/The%20Tree%20%28Lovecraft%29"
+          },
+          "Loss of Breath": {
+            "id": "3510",
+            "url": "https://en.wikisource.org/wiki/Loss%20of%20Breath"
+          },
+          "The Heathen": {
+            "id": "109181",
+            "url": "https://en.wikisource.org/wiki/The%20Heathen"
+          },
+          "The Union Buries Its Dead": {
+            "id": "51584",
+            "url": "https://en.wikisource.org/wiki/The%20Union%20Buries%20Its%20Dead"
+          }
+        }
+      },
+      "wikisource_pages": "en.wikisource.org action=parse renders (revids in narratives.json) for sub-pages absent from the dump: 6 Thumbelina translations, The Liar (3 chapters) and A London Life (13 chapters) of the 1889 American-issue volume.",
+      "licence": "Public-domain literary texts (Project Gutenberg / Wikisource). Not stored in data/frozen: the script rebuilds them in data/raw; the adapter checks each document's SHA-256."
+    },
+    "claim_extractor": {
+      "model": "https://huggingface.co/Babelscape/t5-base-summarization-claim-extractor",
+      "revision": "94775fb1c8dc2c3ef1bfec413f9f961e6ba5a1c8",
+      "licence": "CC BY-NC-SA 4.0",
+      "settings": "generation_config.json (num_beams 5, max_length 250), batch size 1, fp32 on CUDA, transformers 4.38.2, spaCy 3.7.4 en_core_web_sm 3.7.0 sentence split + de-duplication (FENICE ClaimExtractor.process_batch)"
+    }
+  },
+  "frozen": {
+    "builder": "scripts/prepare_fenice.py (uv run scripts/prepare_fenice.py; --skip-claims reuses frozen claims and re-verifies sources; rebuild verified byte-identical)",
+    "files": {
+      "data/frozen/fenice/test.jsonl": "32d7c003b9ec3207725f82c568ad5878a3a3a9d4eda2aaef1b76286b961077cc",
+      "data/frozen/fenice/val.jsonl": "805ca4cfb309b4181c38b964209952b090963cfab051b1eb5888ee8c0e4fc467",
+      "data/frozen/fenice/narratives.json": "dba26ec94bcedf5167425e0d416a726dfea3b938318cebb5cc30c25d4451cf87"
+    },
+    "fields": "id (<split>-<release line>), release_line, release_id, system_id, source, text_id, narrative, summary, claims, factual",
+    "n": {
+      "test": 279,
+      "val": 40
+    },
+    "label_counts": {
+      "test": {
+        "non_factual": 230,
+        "factual": 49
+      },
+      "val": {
+        "non_factual": 30,
+        "factual": 10
+      }
+    },
+    "narrative_counts_test": {
+      "gutenberg:1354": 12,
+      "gutenberg:697": 13,
+      "wikisource:Thumbelina": 73,
+      "wikisource:Lot No. 249": 13,
+      "gutenberg:267": 13,
+      "gutenberg:2814": 13,
+      "wikisource:The Union Buries Its Dead": 13,
+      "gutenberg:2165": 13,
+      "wikisource:The Liar": 16,
+      "gutenberg:640": 12,
+      "wikisource:Loss of Breath": 13,
+      "gutenberg:29042": 25,
+      "wikisource:The Tree (Lovecraft)": 13,
+      "gutenberg:8164": 12,
+      "gutenberg:68377": 12,
+      "gutenberg:1472": 13
+    },
+    "narrative_counts_val": {
+      "wikisource:A London Life": 13,
+      "wikisource:The Heathen": 14,
+      "gutenberg:32759": 13
+    },
+    "narratives": {
+      "gutenberg:1354": {
+        "title": "Chronicles of Avonlea (L. M. Montgomery)",
+        "documents": [
+          {
+            "chars": 362484,
+            "sha256": "18462f8b0ccc7478bb30eb0bea4d423bbf7563a6c462eea6adc0a52408d239d4"
+          }
+        ]
+      },
+      "gutenberg:1472": {
+        "title": "In a German Pension (Katherine Mansfield)",
+        "documents": [
+          {
+            "chars": 169383,
+            "sha256": "526df22782d1b15b4381798217ce7991edf43b6f1073ee8638614a75e090fcbd"
+          }
+        ]
+      },
+      "gutenberg:2165": {
+        "title": "The Lifted Veil (George Eliot)",
+        "documents": [
+          {
+            "chars": 99635,
+            "sha256": "66d0e16a4fb67ffda05972d0a129f9de8a5d2465b40b44baa2a84838215300b4"
+          }
+        ]
+      },
+      "gutenberg:267": {
+        "title": "The Touchstone (Edith Wharton)",
+        "documents": [
+          {
+            "chars": 151615,
+            "sha256": "90e24aba88654f9743ae4c8a51e7f10b4643b9e4a31974718dc2d1f4f8dfa718"
+          }
+        ]
+      },
+      "gutenberg:2814": {
+        "title": "The Dead (James Joyce, in Dubliners)",
+        "documents": [
+          {
+            "chars": 86120,
+            "sha256": "3ae6f0727d027a350f6d16c2f0c787937d47858d43fe1fb22ad1777f5201efa1"
+          }
+        ]
+      },
+      "gutenberg:29042": {
+        "title": "A Tangled Tale (Lewis Carroll)",
+        "documents": [
+          {
+            "chars": 159648,
+            "sha256": "ed83475187258c062501e0285ed337e3791d8c2cd995a5f70d051a370eca4326"
+          }
+        ]
+      },
+      "gutenberg:32759": {
+        "title": "Red Nails (Robert E. Howard)",
+        "documents": [
+          {
+            "chars": 177964,
+            "sha256": "570c9650592091c29fc1965a66c53d93873971603302387a9e22abdc11393203"
+          }
+        ]
+      },
+      "gutenberg:640": {
+        "title": "Thumbelina (in The Yellow Fairy Book, ed. Andrew Lang)",
+        "documents": [
+          {
+            "chars": 20929,
+            "sha256": "b0e079c385e3a5cc54cc90d306cdb2266b73107021419d740a7a8231a1eb326c"
+          }
+        ]
+      },
+      "gutenberg:68377": {
+        "title": "Let's Get Together (Isaac Asimov)",
+        "documents": [
+          {
+            "chars": 35227,
+            "sha256": "ec6cc5239cc65a615d2e42d3ac691ee92e9d7a65c6d134b1513eee850949aaf9"
+          }
+        ]
+      },
+      "gutenberg:697": {
+        "title": "The Light Princess (George MacDonald)",
+        "documents": [
+          {
+            "chars": 82906,
+            "sha256": "0fda0f1c7e1d11b3a1de47bedab3ed902820449c96149f17d626b5f204e0601c"
+          }
+        ]
+      },
+      "gutenberg:8164": {
+        "title": "My Man Jeeves (P. G. Wodehouse)",
+        "documents": [
+          {
+            "chars": 272033,
+            "sha256": "0c8c1f39da00bf665a1b7a95d66c62edb093118e644ad9ebadde4ea333373098"
+          }
+        ]
+      },
+      "wikisource:Loss of Breath": {
+        "title": "Loss of Breath (Edgar Allan Poe)",
+        "documents": [
+          {
+            "chars": 26959,
+            "sha256": "4bfbccdd80376c4eaa119b36490854bcbbd9606a4766a6b7c7782a3c8a934682"
+          }
+        ]
+      },
+      "wikisource:Lot No. 249": {
+        "title": "Lot No. 249 (Arthur Conan Doyle)",
+        "documents": [
+          {
+            "chars": 70453,
+            "sha256": "496bf1afe8a8f876f2c0d420be0990ef703de63ae46de72db82ca09ede6e13f5"
+          }
+        ]
+      },
+      "wikisource:The Heathen": {
+        "title": "The Heathen (Jack London)",
+        "documents": [
+          {
+            "chars": 41306,
+            "sha256": "06cdcd2fb3d7e3340495e49016eb174055f6892e946876a26ed00d08abedcc3e"
+          }
+        ]
+      },
+      "wikisource:The Tree (Lovecraft)": {
+        "title": "The Tree (H. P. Lovecraft)",
+        "documents": [
+          {
+            "chars": 9310,
+            "sha256": "4b1e845d6a4794bdcba69a57ee16bc475ab5141e414ce317df1f1ca6da0f2ad4"
+          }
+        ]
+      },
+      "wikisource:The Union Buries Its Dead": {
+        "title": "The Union Buries Its Dead (Henry Lawson)",
+        "documents": [
+          {
+            "chars": 9430,
+            "sha256": "08359a741025aaa3da6dfee1827d0e9395d7844b8409f77d750c652d933919e6"
+          }
+        ]
+      },
+      "wikisource:The Liar": {
+        "title": "The Liar (Henry James)",
+        "documents": [
+          {
+            "chars": 110775,
+            "sha256": "3f4570fa74cc192a3700b0ea0123628ec924e2a3aa761a5459ace808ea23ff82"
+          }
+        ]
+      },
+      "wikisource:A London Life": {
+        "title": "A London Life (Henry James)",
+        "documents": [
+          {
+            "chars": 238512,
+            "sha256": "04aaaa43b179d765809323299214f44d401497b41dae002c27afce7d9a5a2f35"
+          }
+        ]
+      },
+      "wikisource:Thumbelina": {
+        "title": "Thumbelina (H. C. Andersen; one of six English Wikisource translations)",
+        "documents": [
+          {
+            "chars": 24395,
+            "sha256": "7085c8850e31d352207d0d1a73254f6b0ba866336f14614687989b32203eaf1b"
+          },
+          {
+            "chars": 22764,
+            "sha256": "507b9c88efcb54d121c6bc2cff0f9cc70dc053a11156d7410214c9d680ea058f"
+          },
+          {
+            "chars": 23508,
+            "sha256": "1353cfab4cdf2b1061300bb5f8301f5eb796f99ef36fb5681f8a27537dd9b152"
+          },
+          {
+            "chars": 24439,
+            "sha256": "730c4a60eee257b11f080bd8de0990700f2108a876e8a7058e31723d8ea7761e"
+          },
+          {
+            "chars": 22647,
+            "sha256": "4fb40a840843579da2dbf2270505201768b185fc175986a9b992721e7fbee186"
+          },
+          {
+            "chars": 21559,
+            "sha256": "eda73d1c66aa69154c1b35e73c716a997e3974cf9fcfeb8baa71a6427ae7459f"
+          }
+        ]
+      }
+    },
+    "claims": {
+      "total": 691,
+      "test": 595,
+      "min_per_summary": 1,
+      "max_per_summary": 13,
+      "empty": 0
+    }
+  },
+  "test_n_resolution": "The paper reports 26 narratives / 338 pairs (Table 10: 66 + 273 = 339) split 80/20 val/test without a test count. The release has 319 pairs with an explicit split: test 279 (49 factual / 230 non-factual), val 40 (10 / 30); 59/260 overall vs 66/273 in the paper. Narratives in the release: 25 (test 22 = 16 text_ids with Thumbelina x6 translations, A Tangled Tale x2 (byte-identical duplicate Gutenberg rows) ; val 3), vs 26 in the paper. We score the released test.jsonl (N = 279) as the paper's test split; 1 row is an exact duplicate of another (kept as released). The val split fixes the decision threshold as in the paper.",
+  "narrative_resolution": {
+    "rule": "row -> (source, text_id); the Henry James volume title maps to The Liar for all 16 test rows and A London Life for all 13 val rows (content: Oliver Lyon/Capadose vs Laura Wing; the refs match Echo-XSum 'The Liar' and 'A London Life').",
+    "wikisource_versions_pages": "In wikimedia/wikisource 20231201.en the rows 'Thumbelina' (905 chars) and 'A London Life, The Patagonia, The Liar, Mrs. Temperly' (1,225 chars) are versions/disambiguation pages, not stories; the texts come from the rendered sub-pages.",
+    "thumbelina": "73 test rows (6 x 12 systems + 1 ref) share text_id 'Thumbelina' and repeat ids 6 times; the release does not say which of the six English Wikisource translations (Little Ellie, Little Tiny, Thumbeline, Tommelise, Thumbelina (Craigie), Thumbelisa; the Yellow Fairy Book one is gutenberg:640) each row summarises. Frozen rule: each claim is verified against all six translations and takes its best support. Reported separately: 'without_ambiguous_thumbelina' (N = 206).",
+    "stories_inside_collections": "gutenberg:2814 is Dubliners but the narrative (ref = Echo-XSum 'The Dead'; all summaries about Gabriel/Morkans) is 'The Dead': section from the 'THE DEAD' heading to the end. gutenberg:640 is The Yellow Fairy Book, but all 12 summaries are about Thumbelina: section 'THUMBELINA' up to 'THE NIGHTINGALE'. Book-level narratives (Chronicles of Avonlea, My Man Jeeves, In a German Pension, A Tangled Tale, ...) use the whole book, as the Echo-XSum Wikipedia page is about the book.",
+    "cleaning": "Gutenberg: Echoes-from-Alexandria clean_text (drop [Illustration]/[Footnote] notes, keep text between START/END markers); all texts NFC, LF, trailing spaces stripped, 3+ newlines collapsed. Wikisource: rendered HTML minus header/noexport/page-number/hidden nodes, block text joined by blank lines."
+  },
+  "english_verification": {
+    "metadata": "Paper: '26 English narratives'; dataset card language: en; texts from English Gutenberg/Wikisource.",
+    "method": "langid (all languages) on all 319 summaries and on every paragraph >= 200 chars of every story document, plus Latin-script share; flags inspected. Report: data/raw/fenice/english_report.json (rebuilt by the script).",
+    "result": "5 summary flags (et/nb/de/de/mt), all short English headline-style strings: \"CNN 20: Tommelise's Wife Speaks Out\", 'All photographs  Kjell Nedrelid.', 'CNN 20: Tiny Thumb Marries Uglier Toad', 'CNN 20: Oliver Lyon Dies, June 23, 1997', 'A TANGLED TALE BY LEWIS CARROLL'. All 24 story documents: whole-text langid en, Latin share >= 0.99, 0 non-English paragraphs. No rows dropped.",
+    "rows_dropped": 0
+  },
+  "request_design": {
+    "primitive": "noul per claim; all claims of one summary share one request per source chunk",
+    "chunking": "MAX_CHUNK_CHARS 72,000 (frozen, src/gauntlet/tasks/fenice.py); documents up to 362K chars -> up to 6 parts; nothing truncated",
+    "requests": {
+      "test": 897,
+      "val": 105,
+      "total": 1002
+    },
+    "max_request_json_chars": 81010,
+    "total_request_json_chars": 42123670,
+    "est_input_tokens": "10.5M-12.0M (4.0-3.5 chars/token) -> ~$0.44-0.51 at $0.042/M"
+  },
+  "metric": {
+    "primary": "balanced accuracy on test, threshold tuned on released val via FENICE eval/aggrefact.py choose_best_threshold (percentiles 0..99.8 step 0.2 of val scores; factual iff score > threshold)",
+    "secondary": [
+      "ROC-AUC (threshold-free)",
+      "balanced accuracy at a fixed 0.5 threshold",
+      "both on the 206 test rows outside the ambiguous Thumbelina narrative"
+    ],
+    "paper_table7_balanced_accuracy_percent": {
+      "AlignScore": 61.3,
+      "MENLI": 61.7,
+      "DAE": 51.4,
+      "FENICE_GPT_claims": 66.2,
+      "FENICE_T5_claims": 65.7
+    }
+  },
+  "deviations": [
+    "Test N = 279 released rows (val 40), not a count derivable from the paper's 338 pairs; the release has 319 pairs and 25 identifiable narratives.",
+    "Claims: FENICE_T5_claims extractor (released); the GPT-3.5 claims behind the paper's best number (66.2) are not released. Comparison target: FENICE_T5_claims 65.7.",
+    "Story texts rebuilt from public sources; the release gives only ids. 5 Gutenberg ids missing from manu/project_gutenberg are taken from gutenberg.org (current files). Wikisource sub-pages are current renders (revids recorded); annotators read PDFs of unknown edition.",
+    "Thumbelina (73 test rows): source translation unidentified; claims verified against all six candidate translations (max). Sensitivity subset without them reported.",
+    "Two narratives inside collections use the story section (The Dead; Thumbelina in The Yellow Fairy Book).",
+    "Long stories are split into <=72,000-char parts and a claim's score is its max over parts (FENICE's own max-over-passages alignment, Eq. 2); Jev never sees the whole of a >72K-char story at once.",
+    "Jev's per-claim P(supported) replaces FENICE's NLI entailment-minus-contradiction score (range [0,1] vs [-1,1]); the val-tuned threshold absorbs the scale."
+  ]
+}

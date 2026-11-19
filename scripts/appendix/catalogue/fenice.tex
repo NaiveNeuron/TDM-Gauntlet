@@ -1,0 +1,11 @@
+@task
+Decide whether a machine-written summary of a long public-domain story is faithful to the story.
+@output
+Each summary is \textsc{factual} or not.
+@example frozen test set (CC BY-NC-SA, item \texttt{<<jl:data/frozen/fenice/test.jsonl:203.id>>})
+Story & <<m:fenice:frozen.narratives.gutenberg:2814.title>>
+Summary & <<jl:data/frozen/fenice/test.jsonl:203.summary|c220>>
+Claim & <<jl:data/frozen/fenice/test.jsonl:203.claims.1|c220>>
+Gold & factual = <<jl:data/frozen/fenice/test.jsonl:203.factual>>
+@sets
+fenice = Released test split | summaries

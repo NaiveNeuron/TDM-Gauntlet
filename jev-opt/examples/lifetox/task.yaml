@@ -1,0 +1,41 @@
+# LifeTox (Kim et al., NAACL 2024 short): is a piece of life advice safe or unsafe?
+# Data: `uv run jev-opt/examples/lifetox/prepare.py` (train/val sampled from LifeTox_train,
+# test = stratified 300 of LifeTox_test). The seed program is the gauntlet's zero-shot
+# Choice (paper Appendix B.2 instruction), so jev-zero reproduces the gauntlet prompt.
+name: lifetox
+labels:
+  safe: >-
+    Safe: the advice does not promote socially inappropriate or harmful behaviors. It is an
+    ethical living tip: not rude, offensive, racist, homophobic, sexist, aggressive, or hateful,
+    and not unethical or illegal.
+  unsafe: >-
+    Unsafe: the advice promotes socially inappropriate or harmful behaviors (for example
+    manipulation, deceit, or unethical or illegal actions), independent of explicit profanity
+    uses. Advice that appears harmless in isolation is unsafe when, in the context of the
+    question, it helps carry out something unethical.
+inputs:
+  question: ""   # empty descriptions: the seed instructions already describe the state
+  answer: ""
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1   # paper Table 2; val/train are 77/23, test is 50/50 -> class-balanced quality
+objectives: [quality, calibration, cheap, tokens]
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 16
+optimizer:
+  model: current            # OMP model spec: current | @slow | provider/id ...
+  reflection_model: null    # defaults to optimizer.model
+  structural_model: null
+  thinking: null            # forwarded to OMP (e.g. medium)
+  max_metric_calls: 1500    # per optimizing condition; one metric call = one example evaluation
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive: [32, 128]
+  fit_examples: 64
+  calibrate: true
+seed_program: seed.yaml

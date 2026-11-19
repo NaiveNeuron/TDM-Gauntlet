@@ -1,0 +1,46 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Timeline framing; each option is described by where the start and end points of the events fall, with contrasts to the nearest neighbour.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Place the event of the <e1> trigger (`event_1`) and the event of the <e2> trigger (`event_2`)
+      from `context` on a timeline as intervals. Which option describes how Event 1 is positioned relative
+      to Event 2, as the writer intends it?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: The end of Event 1 comes at or before the start of Event 2. Event 1 comes entirely
+          first. The mirror case, where Event 1 comes entirely second, is AFTER.
+      AFTER:
+        criterion: The start of Event 1 comes at or after the end of Event 2. Event 1 comes entirely second.
+          The mirror case, where Event 1 comes entirely first, is BEFORE.
+      INCLUDES:
+        criterion: Event 2 starts and ends within Event 1, and may share its start or its end point. Event
+          1 spans more time than Event 2.
+      IS_INCLUDED:
+        criterion: Event 1 starts and ends within Event 2, and may share its start or its end point. Event
+          2 spans more time than Event 1.
+      SIMULTANEOUS:
+        criterion: Event 1 and Event 2 share both their start point and their end point; they occur at
+          the same time over the same span.
+      VAGUE:
+        criterion: The `context` does not make the placement of the two events clear enough for any other
+          option to be the writer's evident intent (below 80% confidence).

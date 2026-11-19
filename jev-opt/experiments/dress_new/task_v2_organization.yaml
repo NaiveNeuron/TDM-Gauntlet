@@ -1,0 +1,62 @@
+# v2 dev study (second pre-registration). Generated from task_organization.yaml: same data, seed and metric;
+# class-bias calibration + temperature fit on a 400-example train slice held out of reflection,
+# reflection pool 100, <=1500 chars per text slot, <=8000 chars per program, ensembles of top 3/5.
+# Demonstrations: 8 nearest train examples (class-balanced) by BAAI/bge-small-en-v1.5.
+name: dress-new-organization
+labels:
+  '1.0': '1.0 out of 5.0 (lowest score): the essay does not meet the organization rubric explanation.'
+  '1.5': 1.5 out of 5.0
+  '2.0': 2.0 out of 5.0
+  '2.5': 2.5 out of 5.0
+  '3.0': '3.0 out of 5.0 (midpoint): the essay partly meets the organization rubric explanation.'
+  '3.5': 3.5 out of 5.0
+  '4.0': 4.0 out of 5.0
+  '4.5': 4.5 out of 5.0
+  '5.0': '5.0 out of 5.0 (highest score): The argument is very effectively structured and developed, making
+    it easy for the reader to follow the ideas and understand how the writer is building the argument.
+    Paragraphs use coherence devices effectively while focusing on a single main idea.'
+inputs:
+  essay_prompt: ''
+  essay: ''
+ordinal: true
+data:
+  train: data/organization/train.jsonl
+  val: data/organization/val.jsonl
+  test: data/organization/test.jsonl
+primary_metric: qwk
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 5300
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 8000
+  ensemble_k:
+  - 3
+  - 5
+seed_program: seed_organization.yaml
+seed_demos:
+  mode: knn
+  k: 8
+  balanced: true

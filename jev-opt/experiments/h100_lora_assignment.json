@@ -1,0 +1,119 @@
+{
+ "rule": "Sets by expected GPU hours (3 seeds), largest first, each to the GPU with the smaller running total (ties: gpu0).",
+ "slots": {
+  "gpu0": [
+   "sciprompt-s2orc",
+   "dress-new-content",
+   "dress-new-organization",
+   "lifetox",
+   "inli",
+   "ezstance-subtaskA"
+  ],
+  "gpu1": [
+   "contempo-matres",
+   "dress-new-language",
+   "contempo-tbdense",
+   "edit-intent",
+   "smarter-implicit-hate",
+   "smarter-hatexplain",
+   "smarter-latent-hate"
+  ]
+ },
+ "expected_gpu_hours": {
+  "gpu0": 15.522754547935763,
+  "gpu1": 16.56424698492871
+ },
+ "per_set": {
+  "contempo-tbdense": {
+   "train": 1.691,
+   "val": 0.528,
+   "test": 0.202,
+   "load": 0.35,
+   "total": 2.771
+  },
+  "ezstance-subtaskA": {
+   "train": 0.697,
+   "val": 0.356,
+   "test": 0.454,
+   "load": 0.35,
+   "total": 1.857
+  },
+  "smarter-implicit-hate": {
+   "train": 1.285,
+   "val": 0.641,
+   "test": 0.096,
+   "load": 0.35,
+   "total": 2.373
+  },
+  "edit-intent": {
+   "train": 1.313,
+   "val": 0.66,
+   "test": 0.254,
+   "load": 0.35,
+   "total": 2.578
+  },
+  "inli": {
+   "train": 0.839,
+   "val": 0.42,
+   "test": 0.28,
+   "load": 0.35,
+   "total": 1.889
+  },
+  "dress-new-content": {
+   "train": 2.142,
+   "val": 0.398,
+   "test": 0.071,
+   "load": 0.35,
+   "total": 2.962
+  },
+  "dress-new-organization": {
+   "train": 1.854,
+   "val": 0.345,
+   "test": 0.062,
+   "load": 0.35,
+   "total": 2.611
+  },
+  "dress-new-language": {
+   "train": 2.228,
+   "val": 0.414,
+   "test": 0.074,
+   "load": 0.35,
+   "total": 3.067
+  },
+  "contempo-matres": {
+   "train": 1.758,
+   "val": 0.863,
+   "test": 0.122,
+   "load": 0.35,
+   "total": 3.093
+  },
+  "lifetox": {
+   "train": 1.197,
+   "val": 0.593,
+   "test": 0.3,
+   "load": 0.35,
+   "total": 2.439
+  },
+  "sciprompt-s2orc": {
+   "train": 1.725,
+   "val": 0.868,
+   "test": 0.822,
+   "load": 0.35,
+   "total": 3.764
+  },
+  "smarter-hatexplain": {
+   "train": 0.728,
+   "val": 0.365,
+   "test": 0.072,
+   "load": 0.35,
+   "total": 1.516
+  },
+  "smarter-latent-hate": {
+   "train": 0.534,
+   "val": 0.239,
+   "test": 0.045,
+   "load": 0.35,
+   "total": 1.168
+  }
+ }
+}

@@ -1,0 +1,38 @@
+\paragraph{Task.} English advice question--answer pairs from r/LifeProTips and r/UnethicalLifeProTips.
+Labels are binary, \textsc{safe}/\textsc{unsafe}. The replaced predictor is the paper's fine-tuned safety classifier
+(RoBERTa-LifeTox). \jev{} sees the question and one answer and chooses the released label.
+
+\paragraph{Data and freeze.} Hugging Face \texttt{<<m:lifetox:source.hf_dataset>>} at revision
+<<m:lifetox:source.hf_revision|commit>>. Licence: MIT, so \texttt{scripts/\allowbreak{}prepare\_lifetox.py} freezes the test
+inputs as JSONL (SHA-256 <<m:lifetox:frozen.sha256|sha>>).
+
+\paragraph{Test set.} $N=$ <<s:lifetox:n|int>> (<<m:lifetox:frozen.label_counts|counts>>), the complete released
+test file, matching the paper's App.~A.2. The release's total differs from the paper's only in unsafe
+\emph{training} rows.
+
+\paragraph{English screen.} Language identification on every query and response plus a non-ASCII check.
+Every flag was inspected and all were false positives (short strings, URLs, emoticons).
+<<m:lifetox:english_verification.rows_dropped|int>> rows dropped.
+
+\paragraph{Prompt.} One \textsc{choice} question per item over \{<<q:lifetox:question.criteria|keys>>\}. State =
+\{question, answer\}. The instruction is the paper's own zero-shot LLM-baseline prompt (App.~B.2) and the
+label criteria quote its definitions (\S1, Fig.~1). Prediction: argmax, exact ties to \textsc{safe}.
+<<s:lifetox:n_truncated|int>> inputs truncated.
+
+\paragraph{Metric.} Macro-F1 over the two classes (paper Table~2). ROC-AUC uses $P(\textsc{unsafe})$.
+
+<<metrics
+cols: lifetox=Test
+macro_f1 = Macro-F1 | pct
+accuracy = Accuracy | pct
+f1_safe = F1 safe | pct
+f1_unsafe = F1 unsafe | pct
+roc_auc_unsafe = ROC-AUC (unsafe) | pct
+n_pred.unsafe = Predicted unsafe | int
+>>
+<<papernums:lifetox=Test>>
+
+\paragraph{Status.} Complete, with no deviation from the released test file. Queries keep the release's
+literal `` nan'' suffix where the post body was empty (as the paper's models saw them). Many test queries
+also occur in the training split (<<m:lifetox:data_checks.test_queries_also_in_train|int>> of
+<<s:lifetox:n|int>>), which can only favour the fine-tuned baseline.

@@ -1,0 +1,76 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Surface-versus-semantic axis stated explicitly in each criterion, using the paper's category names.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: true
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: choice
+    instructions: Decide the revision intent of the edit from `old_text` to `new_text`. Grammar and Clarity
+      are surface edits that do not change meaning. Fact/Evidence and Claim are semantic edits that do
+      change meaning.
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: 'Surface edit that corrects errors or conventions: grammar, capitalization, punctuation,
+          tense, modality, spelling, typography or abbreviations. The meaning is unchanged. It differs
+          from Clarity in that something in `old_text` was incorrect.'
+      Clarity:
+        criterion: Surface edit that changes word choice, phrasing, expressions or format to be more formal,
+          concise or understandable, or to amplify the meaning for clarity. It differs from Grammar in
+          that `old_text` had no error. It differs from the semantic intents in that no information or
+          claim changes.
+      Fact/Evidence:
+        criterion: 'Semantic edit to factual information: it adds, elaborates, extends, verifies, updates
+          or deletes facts or evidence from third parties, or the authors'' factual manipulations and
+          observations. It differs from Claim in that the changed content is factual, not an opinion or
+          aim.'
+      Claim:
+        criterion: Semantic edit to the authors' claim, statement, opinion or idea, or to the overall
+          aim of the document. It differs from Fact/Evidence in that the changed content is the authors'
+          position, not a fact or observation.
+      Other:
+        criterion: The edit is irrelevant to all of the surface and semantic intents above.
+  edit_intent_add_delete:
+    kind: choice
+    instructions: A whole sentence was added (`edit_action` Add, text in `new_text`) or deleted (`edit_action`
+      Delete, text in `old_text`). Decide the semantic intent of this edit.
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'The added or deleted sentence is factual information: facts or evidence from third
+          parties, or the authors'' manipulations and observations. This includes deleting erroneous or
+          irrelevant facts. It differs from Claim in that the sentence is not mainly an opinion or aim.'
+      Claim:
+        criterion: The added or deleted sentence is a claim, statement, opinion or idea of the authors,
+          or states the aim of the document. It differs from Fact/Evidence in that the sentence is not
+          mainly a factual report.
+      Other:
+        criterion: The added or deleted sentence is irrelevant to both factual information and claims.

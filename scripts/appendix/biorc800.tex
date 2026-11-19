@@ -1,0 +1,30 @@
+\paragraph{Task.} Multi-label rhetorical-role classification of the sentences of English PubMed RCT abstracts over
+<<q:biorc800:labels|list>>. The replaced predictor is LLM-SSC (a LoRA-tuned Gemma-2b). For each (sentence, label)
+pair \jev{} answers a \textsc{noul} giving $P(\text{yes})$, with the whole abstract and the BIORC800 annotation
+guideline in the state.
+
+\paragraph{Data.} \url{https://github.com/ScienceNLP-Lab/LLM-SSC} at <<m:biorc800:source.commit|commit>>. The repository
+states no licence, so the frozen test set is only an ID + row-SHA-256 manifest
+(<<m:biorc800:frozen.manifests.data/frozen/biorc800/test/manifest.jsonl.sha256|sha>>), written by
+\texttt{scripts/prepare\_biorc800.py}. $N=$ <<s:biorc800:n|int>> abstracts / <<s:biorc800:n_sentences|int>>
+sentences, the full release test split. Its label counts equal the paper's Table~6. All langid flags are English.
+No row was dropped.
+
+\paragraph{Prompt and metric.} The guideline is quoted verbatim, minus its worked examples, which are train
+abstracts. Micro-F1 is the primary metric (Table~3, p.~16093). A label is predicted if $P\geq$
+<<s:biorc800:threshold|f1>>, otherwise the argmax label is used. As in the paper (\S3.3), per-label thresholds were
+also fit on the released dev split (<<s:biorc800/dev:n|int>> abstracts) before the test run. This dev-tuned score
+($\dagger$) is the one in the main table.
+
+<<metrics
+cols: biorc800=Test
+micro_f1 = Micro-F1 (fixed) | pct
+macro_f1 = Macro-F1 (fixed) | pct
+dev_tuned.micro_f1 = Micro-F1 (dev-tuned)$^\dagger$ | pct
+dev_tuned.macro_f1 = Macro-F1 (dev-tuned) | pct
+>>
+<<papernums:biorc800=Test>>
+
+\paragraph{Status.} Complete. \jev{} is zero-shot, whereas LLM-SSC is fine-tuned (paper macro-F1
+<<pn:biorc800:paper_macro_f1.LLM-SSC with WeighCon|pct>>). The PubMed Central abstracts are public, so pretraining
+exposure cannot be ruled out.

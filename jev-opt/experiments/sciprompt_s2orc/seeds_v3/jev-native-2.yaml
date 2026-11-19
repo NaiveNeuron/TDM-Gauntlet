@@ -1,0 +1,92 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Keyword-anchored criteria that list typical observable vocabulary in `abstract` for each field.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: choice
+    instructions: Pick the one Semantic Scholar field of study that matches the research in `abstract`.
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: 'Typical topics in `abstract`: control systems, circuits, power, mechanical, civil
+          or structural design, sensors, manufacturing.'
+      Chemistry:
+        criterion: 'Typical topics in `abstract`: compounds, reactions, synthesis, catalysts, spectroscopy,
+          solutions.'
+      Computer Science:
+        criterion: 'Typical topics in `abstract`: algorithms, neural networks, software, databases, security,
+          networks, programs.'
+      Business:
+        criterion: 'Typical topics in `abstract`: companies, managers, customers, marketing, supply chain,
+          corporate performance.'
+      Political Science:
+        criterion: 'Typical topics in `abstract`: states, parties, voting, governance, public policy,
+          law, conflict between nations.'
+      Environmental Science:
+        criterion: 'Typical topics in `abstract`: emissions, pollutants, climate change, soil or water
+          contamination, conservation.'
+      Physics:
+        criterion: 'Typical topics in `abstract`: particles, quantum, lasers, plasma, gravity, cosmology,
+          condensed matter theory.'
+      Economics:
+        criterion: 'Typical topics in `abstract`: GDP, inflation, prices, labor markets, trade, monetary
+          or fiscal policy.'
+      Geography:
+        criterion: 'Typical topics in `abstract`: regions, cities, spatial analysis, land use, remote
+          sensing maps, population distribution.'
+      Medicine:
+        criterion: 'Typical topics in `abstract`: patients, clinical trials, therapy, surgery, diagnosis,
+          mortality, hospitals.'
+      Psychology:
+        criterion: 'Typical topics in `abstract`: participants'' cognition, emotion, personality, behavior,
+          attention, wellbeing.'
+      Art:
+        criterion: 'Typical topics in `abstract`: paintings, music, poetry, novels, architecture style,
+          artists, aesthetics.'
+      Materials Science:
+        criterion: 'Typical topics in `abstract`: alloys, thin films, polymers, nanoparticles, microstructure,
+          mechanical strength.'
+      Mathematics:
+        criterion: 'Typical topics in `abstract`: theorems, proofs, groups, manifolds, equations, convergence,
+          estimators.'
+      Sociology:
+        criterion: 'Typical topics in `abstract`: social class, gender, family, communities, schools,
+          migration, social networks.'
+      Geology:
+        criterion: 'Typical topics in `abstract`: rocks, minerals, faults, basins, volcanoes, stratigraphy,
+          geochemistry of crust.'
+      Philosophy:
+        criterion: 'Typical topics in `abstract`: ethics, epistemology, ontology, logic arguments, philosophers''
+          theories.'
+      Biology:
+        criterion: 'Typical topics in `abstract`: species, genes, cells, proteins, organisms, evolution,
+          ecology.'
+      History:
+        criterion: 'Typical topics in `abstract`: centuries, past events, empires, archives, historical
+          figures.'

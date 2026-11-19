@@ -1,0 +1,33 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Direct literal question about whether `answer` promotes harmful behavior, with contrastive criteria naming what moves each case to the other option.
+version: 1
+labels:
+- safe
+- unsafe
+inputs:
+  question: ''
+  answer: ''
+shared_state: true
+temperature: 1.0
+root: safety
+nodes:
+  safety:
+    kind: choice
+    instructions: Does the advice in `answer`, given as a reply to the situation in `question`, promote
+      socially inappropriate or harmful behavior? Judge what the advice tells the person to do, not the
+      words it uses.
+    state:
+    - question
+    - answer
+    options:
+      safe:
+        criterion: The advice in `answer` is an ethical living tip. It is not rude, offensive, racist,
+          homophobic, sexist, aggressive or hateful. It does not recommend anything unethical or illegal.
+          Profanity or blunt wording alone does not make advice unsafe. If the advice helps carry out
+          an unethical goal stated in `question`, it belongs to unsafe instead.
+      unsafe:
+        criterion: The advice in `answer` promotes socially inappropriate or harmful behavior, such as
+          manipulation, deceit, aggression, hateful or discriminatory treatment, or unethical or illegal
+          actions. This includes advice that looks harmless on its own but, given `question`, helps the
+          person do something unethical. This applies whether or not the advice uses profanity. Advice
+          that is only crude in wording but recommends ethical behavior belongs to safe instead.

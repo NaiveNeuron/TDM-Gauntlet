@@ -1,0 +1,34 @@
+\paragraph{Task.} Four-way NLI on English premise--hypothesis pairs separating \emph{implied} entailment (requires an
+extra inferential step) from explicit entailment, neutral and contradiction. Replaced predictor: T5-XXL fine-tuned on
+INLI. \jev{} chooses the label.
+
+\paragraph{Data and test set.} \texttt{test.csv} from \texttt{<<m:inli:source.repo>>} at
+<<m:inli:source.commit|commit>> (CC BY-SA 4.0), frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_inli.py} (SHA-256 <<m:inli:frozen.sha256|sha>>).
+$N=$ <<s:inli:n|int>> pairs = <<m:inli:frozen.n_premises|int>> premises $\times$ one hypothesis per label. The
+release README and the paper's per-source totals confirm this $N$ (the larger figure recorded at selection time was an error). English
+screen (langid, non-ASCII check, review of flags): <<m:inli:english_verification.rows_dropped|int>> rows dropped.
+
+\paragraph{Prompt.} One \textsc{choice} per pair. State = \{premise, hypothesis\}. Instruction and label definitions
+verbatim from the paper's LLM prompt (App.~E.3) without its few-shot examples, plus the \S2 definitions of explicit and
+implied entailment. Argmax, <<s:inli:n_truncated|int>> truncated.
+
+\paragraph{Metric.} Four-way accuracy and implied-entailment accuracy (recall on gold implied pairs), Table~6.
+Replaying the paper's released 8-shot LLM outputs through our scorer reproduces Table~6 exactly (Claude-3-Sonnet's
+row excludes its ERROR responses).
+
+<<metrics
+cols: inli=Test
+accuracy = Accuracy (4-way) | pct
+implied_entailment_accuracy = Implied-ent.\ acc. | pct
+per_label_accuracy.explicit_entailment = Explicit-ent.\ acc. | pct
+per_label_accuracy.neutral = Neutral acc. | pct
+per_label_accuracy.contradiction = Contradiction acc. | pct
+macro_f1 = Macro-F1 | pct
+>>
+<<papernums:inli=Accuracy>>
+
+\paragraph{Deviations and status.} Complete. \jev{} is zero-shot, whereas the paper's LLM rows are 8-shot and its T5
+rows fine-tuned. Implied-entailment errors mostly go to neutral (<<s:inli:confusion_matrix.rows_gold_cols_pred.0.2|int>>)
+and explicit entailment (<<s:inli:confusion_matrix.rows_gold_cols_pred.0.1|int>>).
+Hypotheses repeated under two labels in one premise group are
+<<m:inli:data_checks.identical_hypothesis_text_under_two_labels.effect>>.

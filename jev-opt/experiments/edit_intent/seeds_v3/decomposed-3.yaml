@@ -1,0 +1,72 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One_vs_rest nouls; each label is judged as an independent true/false statement about the edit.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: true
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: one_vs_rest
+    instructions: Judge whether the statement is true about the revision from `old_text` to `new_text`.
+    state:
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: The revision corrects an error in grammar, capitalization, punctuation, tense, modality,
+          spelling, typography or abbreviations, and does not change the meaning.
+      Clarity:
+        criterion: The revision rewords correct text so that it is more formal, concise or understandable,
+          or amplifies its meaning for clarity, without changing facts or claims and without fixing an
+          error.
+      Fact/Evidence:
+        criterion: The revision adds, extends, verifies, updates, deletes or corrects a fact, piece of
+          evidence, number, result, citation, or factual observation by the authors.
+      Claim:
+        criterion: The revision adds, deletes or changes a claim, statement, opinion or idea of the authors,
+          or the aim of the document.
+      Other:
+        criterion: The revision is not a grammar fix, not a clarity rewording, not a factual change and
+          not a claim change.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}
+  edit_intent_add_delete:
+    kind: one_vs_rest
+    instructions: One sentence was added (it is in `new_text`) or deleted (it is in `old_text`), according
+      to `edit_action`. Judge whether the statement is true about that sentence.
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: 'The sentence mainly gives factual information or evidence: data, numbers, results,
+          experimental details, citations or observations.'
+      Claim:
+        criterion: The sentence mainly states the authors' claim, opinion, idea or the aim of the document.
+      Other:
+        criterion: The sentence contains neither factual information nor a claim of the authors.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

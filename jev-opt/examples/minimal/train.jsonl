@@ -1,0 +1,15 @@
+{"id": "train-001", "message": "My order arrived broken and I want a refund.", "label": "complaint"}
+{"id": "train-002", "message": "I love this blender, it works great.", "label": "praise"}
+{"id": "train-003", "message": "How do I reset the device?", "label": "question"}
+{"id": "train-004", "message": "Terrible service, the package was late again.", "label": "complaint"}
+{"id": "train-005", "message": "Excellent support team, thanks so much!", "label": "praise"}
+{"id": "train-006", "message": "When will my order ship?", "label": "question"}
+{"id": "train-007", "message": "The screen is cracked and a part is missing.", "label": "complaint"}
+{"id": "train-008", "message": "Amazing product, absolutely perfect.", "label": "praise"}
+{"id": "train-009", "message": "Where is the manual for this kettle?", "label": "question"}
+{"id": "train-010", "message": "Worst purchase ever, totally disappointed.", "label": "complaint"}
+{"id": "train-011", "message": "Wonderful experience, I am delighted.", "label": "praise"}
+{"id": "train-012", "message": "Does this come in blue?", "label": "question"}
+{"id": "train-013", "message": "Awful quality, it came damaged.", "label": "complaint"}
+{"id": "train-014", "message": "Fantastic value, very happy with it.", "label": "praise"}
+{"id": "train-015", "message": "Which charger works with this model?", "label": "question"}

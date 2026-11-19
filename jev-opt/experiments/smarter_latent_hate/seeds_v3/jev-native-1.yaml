@@ -1,0 +1,37 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria centred on the explicit/implicit boundary (direct wording vs coded meaning), with Not Hate defined by absence of any disparagement of a group-based characteristic.
+version: 1
+labels:
+- Not Hate
+- Explicit Hate
+- Implicit Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Which category fits the Twitter post in `post`? In `post`, user mentions appear as <user>
+      and URLs are removed. Judge only the text of `post`.
+    state:
+    - post
+    options:
+      Not Hate:
+        criterion: The `post` expresses no hatred, prejudice or discrimination toward a person or group
+          based on characteristics such as race, gender, religion or cultural identity. Insults, anger
+          or profanity that do not target a group-based characteristic are not hate. If `post` disparages
+          a group openly, choose Explicit Hate instead. If it disparages a group indirectly, choose Implicit
+          Hate instead.
+      Explicit Hate:
+        criterion: The `post` openly and directly expresses hatred or prejudice toward a person or group
+          based on their characteristics. The hostile meaning is stated in the words themselves, for example
+          through slurs, direct insults to the group or direct calls for harm. If the disparagement can
+          only be seen through coded terms, insinuation or stereotypes, choose Implicit Hate instead.
+      Implicit Hate:
+        criterion: The `post` disparages a person or group based on protected characteristics such as
+          race, gender or cultural identity, but only through coded or indirect language. This includes
+          insinuation, stereotypes, dog whistles, sarcasm or rhetorical questions, and it includes cases
+          with no openly hateful wording. If the hatred is stated directly, choose Explicit Hate instead.
+          If there is no disparagement of a group-based characteristic, choose Not Hate instead.

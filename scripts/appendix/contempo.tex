@@ -1,0 +1,40 @@
+\paragraph{Task.} Temporal relation between two marked events in English news. MATRES compares start points
+(\textsc{before}/\textsc{after}/\textsc{equal}/\textsc{vague}). TimeBank-Dense (TBD) uses six interval relations
+(adding \textsc{includes}, \textsc{is\_included}, \textsc{simultaneous}). Replaced predictor: the fine-tuned
+ConTempo model with its unified framework (document graph features, GPT-3 duration descriptions).
+
+\paragraph{Data and test set.} The paper's code and CleanMATRES labels were never published (its repository
+returns 404, also in the Wayback Machine), so only the two public test sets are scored. MATRES: \texttt{platinum.txt}
+from \texttt{<<m:contempo:sources.matres_annotations.url>>} (<<m:contempo:sources.matres_annotations.commit|commit>>)
+with TempEval-3 platinum texts. $N=$ <<s:contempo/matres:n|int>>, the release version the paper uses (label counts
+match its Table~5). TBD: \texttt{TimebankDense.full.txt} and TBAQ-cleaned TimeBank texts (Wayback copies, live URLs
+dead), the standard <<m:contempo:frozen.tbdense.docs|int>> test documents restricted to pairs whose events exist in TimeBank. $N=$
+<<s:contempo/tbdense:n|int>>, identical to Han et al.'s (2019) released test set. Texts are copyrighted news, so
+\texttt{scripts/prepare\_contempo.py} stores only IDs and row hashes; it rebuilds and verifies the rows. English
+screen: <<m:contempo:english_verification.rows_dropped|int>> rows dropped.
+
+\paragraph{Input and prompt.} The paper's input pipeline is unreleased, so we use the standard sentence-level input
+of the baselines it reproduces: the sentence(s) from the earlier to the later event, triggers wrapped in
+\texttt{<e1>}/\texttt{<e2>}, no document creation time or wider context. One \textsc{choice} per pair. State =
+\{context, event\_1, event\_2\}. MATRES criteria and instruction quote the MATRES scheme (start points, main axis,
+the two yes/no questions and their label mapping). TBD quotes the TB-Dense guidelines (Cassidy et al., 2014). Argmax. Truncated:
+<<s:contempo/matres:n_truncated|int>>/<<s:contempo/tbdense:n_truncated|int>>.
+
+\paragraph{Metric.} Micro-F1 over non-\textsc{vague} labels, with \textsc{vague} as a negative label (paper
+\S4.1).
+
+<<metrics
+cols: contempo/matres=MATRES; contempo/tbdense=TBD
+micro_f1 = Micro-F1 | pct
+micro_precision = Micro-P | pct
+micro_recall = Micro-R | pct
+accuracy = Accuracy | pct
+---
+n_gold.VAGUE = Gold \textsc{vague} | int
+n_pred.VAGUE = Pred.\ \textsc{vague} | int
+>>
+<<papernums:contempo/matres=MATRES;contempo/tbdense=TBD>>
+
+\paragraph{Deviations and status.} Partial release: CleanMATRES cannot be scored, and our input construction replaces
+the paper's. On TBD \jev{} predicts \textsc{vague} far less often than the gold labels, which lowers micro-precision.
+The test texts are widely circulated news, so pre-training exposure cannot be excluded.

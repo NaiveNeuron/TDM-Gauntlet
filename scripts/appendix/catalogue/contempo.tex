@@ -1,0 +1,14 @@
+@task
+Given two events mentioned in a news article, decide how they are ordered in time: which starts first (MATRES), or
+whether one precedes, contains or coincides with the other (TB-Dense), or whether the text leaves it vague.
+@output
+One relation per event pair, from \{<<q:contempo_matres:question.criteria|keys>>\} in MATRES and from
+\{<<q:contempo_tbdense:question.criteria|keys>>\} in TB-Dense.
+@example MATRES training annotation (TimeBank part, not a test item). The news sentence is LDC text and is not shown
+Document & <<rx:data/raw/contempo/MATRES/timebank.txt:^([^\t]+)|c220>>
+Event 1 & <<rx:data/raw/contempo/MATRES/timebank.txt:^[^\t]+\t([^\t]+)|c220>>
+Event 2 & <<rx:data/raw/contempo/MATRES/timebank.txt:^[^\t]+\t[^\t]+\t([^\t]+)|c220>>
+Gold & <<rx:data/raw/contempo/MATRES/timebank.txt:^(?:[^\t]*\t){5}([^\t\n]+)|c220>>
+@sets
+contempo/matres = MATRES (platinum) | event pairs
+contempo/tbdense = TB-Dense | event pairs

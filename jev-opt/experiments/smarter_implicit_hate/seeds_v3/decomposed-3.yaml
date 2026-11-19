@@ -1,0 +1,47 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest, where each label is judged as an independent true/false statement about the post, and the most probable wins.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: one_vs_rest
+    instructions: The `post` is an implicit hate social media post (user mentions are <user>, URLs removed).
+      Judge whether the statement is true of the `post`.
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: The `post` expresses frustration over a minority group's perceived privilege, or presents
+          the majority group as the real victims of racism.
+      Incitement to Violence:
+        criterion: The `post` flaunts in-group unity and power, or elevates or promotes known hate groups
+          or hate ideologies.
+      Inferiority Language:
+        criterion: The `post` implies a group or individual is inferior. This includes dehumanizing them,
+          denying their humanity, comparing them with disease, insects or animals, or declaring in-group
+          superiority.
+      Irony:
+        criterion: The `post` uses sarcasm, humor or satire as its way of attacking or demeaning a protected
+          class or individual.
+      Stereotypes and Misinformation:
+        criterion: The `post` associates a protected class with negative attributes such as crime or terrorism,
+          or spreads misinformation feeding stereotypes, such as Holocaust denial or other historical
+          negationism.
+      Threatening and Intimidation:
+        criterion: The `post` conveys the speaker's commitment to a target's pain, injury, damage, loss,
+          or violation of rights and freedoms, removal of opportunities, or other intimidation of the
+          target.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

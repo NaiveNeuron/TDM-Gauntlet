@@ -1,0 +1,42 @@
+\paragraph{Task.} Binary factuality of a Llama2-7B answer to an English question (NQ, TriviaQA, WebQ) or of a standalone
+statement (True-False). The replaced predictor is the PiNose probe on Llama2-7B hidden states. \jev{} returns
+$P(\textsc{true})$ per item.
+
+\paragraph{Data and freeze.} Data zip linked from \texttt{RUCKBReasoning/PiNose} at
+<<m:pinose:source.code_repos.https://github.com/RUCKBReasoning/PiNose|commit>> (zip SHA-256
+<<m:pinose:source.zip.sha256|sha>>, the original repository's link is dead). No licence is stated, so
+\texttt{scripts/\allowbreak{}prepare\_pinose.py} stores only ID + row-SHA-256 manifests. It downloads and verifies the zip,
+and the adapter rebuilds and hash-checks every row.
+
+\paragraph{Test set and screen.} All four released test files in full (True-False <<s:pinose/true_false:n|int>>, NQ
+<<s:pinose/nq:n|int>>, TriviaQA <<s:pinose/triviaqa:n|int>>, WebQ <<s:pinose/webq:n|int>>). The gold
+\textsc{true} rates match the paper's Table~1 exactly. Rows are kept verbatim, including one empty TriviaQA response
+and a few True-False duplicates, one with conflicting labels. A langid screen with
+inspection of the flags found only English sentences with foreign names. Rows excluded:
+<<m:pinose:english_verification.rows_dropped|int>>.
+
+\paragraph{Prompt.} One \textsc{<<q:pinose_qa:_primitive|upper>>} per item. State \{question, response\} (QA) or
+\{statement\} (True-False). The reference answer is never sent, since the human labels were made by comparing
+against it. Instructions quote the paper's task definition (\S2) and its capital-of-China example. No input is
+truncated (<<s:pinose/nq:n_truncated|int>>). Prediction: \textsc{true} iff $P>$ <<s:pinose/nq:threshold|f1>>.
+
+\paragraph{Metric.} ROC-AUC (primary, threshold-free) and accuracy (Table~2, p.~12353). The paper tunes its accuracy
+threshold on unidentified items drawn from each test set (\S4.1.4). Ours is fixed a priori, a stricter protocol.
+
+<<metrics
+cols: pinose/true_false=T-F; pinose/nq=NQ; pinose/triviaqa=TQA; pinose/webq=WebQ
+auc = AUC | pct
+accuracy = Acc.\ (fixed thr.) | pct
+majority_class_accuracy = Majority acc. | pct
+n_pred_true = Pred.\ true | int
+n_gold_true = Gold true | int
+>>
+<<papernums:pinose/true_false=T-F;pinose/nq=NQ;pinose/triviaqa=TQA;pinose/webq=WebQ>>
+
+\paragraph{Deviations and status.} Complete. The only protocol difference is the fixed accuracy threshold (the
+paper's tuned accuracies for PiNose are
+<<pn:pinose/true_false:paper_accuracy.PiNose|pct>>, <<pn:pinose/nq:paper_accuracy.PiNose|pct>>,
+<<pn:pinose/triviaqa:paper_accuracy.PiNose|pct>> and <<pn:pinose/webq:paper_accuracy.PiNose|pct>>). On the QA sets
+\jev{} predicts \textsc{true} well above the gold rate, so most errors accept wrong Llama2 answers. Validity caveat:
+PiNose reads the internal states of the model that wrote the answer, whereas \jev{} judges from its own world
+knowledge. The questions and statements are public benchmarks, so pretraining exposure cannot be ruled out.

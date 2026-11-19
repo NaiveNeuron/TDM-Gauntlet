@@ -1,0 +1,67 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/ezstance.json), verbatim; generated, do not hand-edit.
+# Switch on target_type (no Jev call) -> the noun_phrase or claim Choice; options Favor/Against/Neutral map to FAVOR/AGAINST/NONE.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: false
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: choice
+    instructions: 'Zero-shot stance detection: determine whether the author of a text is in favor, against,
+      or neutral toward a target. The state holds a tweet ("tweet") and a noun-phrase target ("target").
+      Imagine yourself as the author of the tweet, please annotate the stance that you would take on this
+      given target as “Favor”, “Against”, or “Neutral”.'
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The author of the tweet is in favor of the target.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The author of the tweet is against the target.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: The author of the tweet is neutral toward the target.
+        to:
+          label: NONE
+  stance:
+    kind: choice
+    instructions: 'Zero-shot stance detection: determine whether the author of a text is in favor, against,
+      or neutral toward a target. The state holds a tweet ("tweet") and a claim target ("target"). Based
+      on the message of the tweet, what is the author''s stance toward the point or message of the claim?'
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The author is definitely in favor of the point or message of the claim.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The author is definitely against the point or message from the claim.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: Based solely on the information from the tweet, we cannot know whether the author definitely
+          supports or opposes the point or message of the claim.
+        to:
+          label: NONE

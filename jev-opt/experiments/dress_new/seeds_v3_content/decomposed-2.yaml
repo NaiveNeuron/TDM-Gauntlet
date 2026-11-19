@@ -1,0 +1,93 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; a choice over three bands (does not meet / partly meets / meets), then a finer choice inside each band.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: content
+nodes:
+  content:
+    kind: choice
+    instructions: 'How far does the content of `essay` meet this rubric: "Paragraph is well-developed
+      and relevant to the argument, supported with strong reasons and examples"? Judge the content only,
+      as a response to `essay_prompt`, not organization or language.'
+    state:
+    - essay_prompt
+    - essay
+    options:
+      low:
+        criterion: 'The content mostly does not meet the rubric: it is off-topic or has no clear position,
+          and its reasons are missing or bare assertions with no real examples. It belongs in partial
+          instead if it has a relevant position with at least some explained reasons.'
+        to:
+          node: content_low
+      partial:
+        criterion: 'The content partly meets the rubric: it has a relevant position and some reasons,
+          but development is uneven or examples are thin. It belongs in high instead if most reasons are
+          explained and supported by concrete examples.'
+        to:
+          node: content_mid
+      high:
+        criterion: 'The content largely or fully meets the rubric: it is relevant throughout, and most
+          or all reasons are well explained and supported with concrete examples.'
+        to:
+          node: content_high
+  content_low:
+    kind: choice
+    instructions: Which description best fits the content of `essay` as a response to `essay_prompt`?
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '1.0':
+        criterion: The essay is off-topic, takes no position, or has almost no content. It gives no reasons.
+      '1.5':
+        criterion: The essay is on topic with a vague opinion but gives at most one undeveloped reason
+          and no example.
+      '2.0':
+        criterion: The essay has a clear position, but its reasons are unexplained assertions and there
+          are no concrete examples.
+      '2.5':
+        criterion: The essay has a clear position, and one or two reasons get a brief explanation, but
+          examples are vague or absent.
+  content_mid:
+    kind: choice
+    instructions: Which description best fits the content of `essay` as a response to `essay_prompt`?
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '3.0':
+        criterion: The essay has relevant reasons, but most are shallowly explained, and examples are
+          generic or missing for most of them.
+      '3.5':
+        criterion: Most reasons in the essay are explained, and at least one has a concrete example, but
+          some paragraphs stay shallow.
+  content_high:
+    kind: choice
+    instructions: Which description best fits the content of `essay` as a response to `essay_prompt`?
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '4.0':
+        criterion: The essay is relevant, and most reasons are explained with concrete examples, but there
+          are noticeable gaps in depth or in example strength.
+      '4.5':
+        criterion: The essay is well-developed with strong reasons and specific examples. At most one
+          point is slightly less supported.
+      '5.0':
+        criterion: Every paragraph is well-developed and relevant to the argument, supported with strong
+          reasons and specific, convincing examples, with no weak point.

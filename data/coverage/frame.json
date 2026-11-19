@@ -1,0 +1,33 @@
+{
+  "export_url": "https://aclanthology.org/anthology+abstracts.bib.gz",
+  "export_sha256": "304f9406f1362bf625a61df2afc1bd99e37a3dd0676ee144a672916e7c49e39d",
+  "spec_export_sha256": "dd753c17fe34a46d8bc9e3076d59a90335589b86e3ff226c841e99205a7373ad",
+  "export_matches_spec": false,
+  "parsed_records": 131151,
+  "spec_parsed_records": 131152,
+  "frame_records": 18201,
+  "frame_by_year": {
+    "2024": 5436,
+    "2025": 7501,
+    "2026": 5264
+  },
+  "spec_frame_by_year": {
+    "2024": 5436,
+    "2025": 7501,
+    "2026": 5264
+  },
+  "frame_by_year_matches_spec": true,
+  "frame_by_entry_type": {
+    "proceedings": 25,
+    "inproceedings": 18176
+  },
+  "frame_missing_abstract": 154,
+  "seed": 20260929,
+  "sample_size": 300,
+  "sampler": "random.Random(seed).sample(frame sorted by anthology id, n)",
+  "sample_by_year": {
+    "2024": 101,
+    "2025": 107,
+    "2026": 92
+  }
+}

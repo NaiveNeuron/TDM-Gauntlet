@@ -1,0 +1,80 @@
+{
+ "rule": "Two-GPU split for the H100 machine: sets by planned characters (seed answered on test where the frozen requests differ; the Jev-chosen representative stands in for the chosen one), largest first, each to the GPU with the smaller running total (ties: gpu0).",
+ "slots": {
+  "gpu0": [
+   "lifetox",
+   "dress-new-language",
+   "ezstance-subtaskA",
+   "edit-intent",
+   "smarter-implicit-hate",
+   "smarter-hatexplain"
+  ],
+  "gpu1": [
+   "dress-new-content",
+   "dress-new-organization",
+   "sciprompt-s2orc",
+   "inli",
+   "contempo-matres",
+   "contempo-tbdense",
+   "smarter-latent-hate"
+  ]
+ },
+ "planned_chars": {
+  "gpu0": 186895529,
+  "gpu1": 194930149
+ },
+ "per_set": {
+  "contempo-tbdense": {
+   "requests": 4514,
+   "chars": 9791205
+  },
+  "ezstance-subtaskA": {
+   "requests": 19152,
+   "chars": 28838352
+  },
+  "smarter-implicit-hate": {
+   "requests": 7400,
+   "chars": 14470617
+  },
+  "edit-intent": {
+   "requests": 8787,
+   "chars": 16768205
+  },
+  "inli": {
+   "requests": 9968,
+   "chars": 21303800
+  },
+  "dress-new-content": {
+   "requests": 3901,
+   "chars": 55488890
+  },
+  "dress-new-organization": {
+   "requests": 4671,
+   "chars": 49331597
+  },
+  "dress-new-language": {
+   "requests": 3126,
+   "chars": 41648202
+  },
+  "contempo-matres": {
+   "requests": 7752,
+   "chars": 16080870
+  },
+  "lifetox": {
+   "requests": 18200,
+   "chars": 73120470
+  },
+  "sciprompt-s2orc": {
+   "requests": 9860,
+   "chars": 34141434
+  },
+  "smarter-hatexplain": {
+   "requests": 7984,
+   "chars": 12049683
+  },
+  "smarter-latent-hate": {
+   "requests": 6199,
+   "chars": 8792353
+  }
+ }
+}

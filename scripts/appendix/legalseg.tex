@@ -1,0 +1,39 @@
+\paragraph{Task.} Rhetorical role labelling of English Indian court judgments: every sentence gets one of seven roles
+(Facts, Issue, Arguments of Petitioner/Respondent, Reasoning, Decision, None). Replaced predictors: the paper's
+hierarchical and context-aware sequence classifiers.
+
+\paragraph{Data and freeze.} The canonical \texttt{LegalSeg\_CSV} test file is gated and was not used. The text comes
+from the authors' ungated RhetoricLLaMA prediction release (\texttt{L-NLProc/}\allowbreak\texttt{LegalSeg\_RhetoricLLaMA\_}\allowbreak\texttt{Predictions},
+SHA-256 <<m:legalseg:source.raw_file_sha256|sha>>), which is the full test split: document, sentence and per-role
+counts equal paper Table~2, and its gold equals that of the authors' ToInLegalBERT predictions at every position.
+Apache-2.0. \texttt{scripts/prepare\_legalseg.py} stores only gold codes and hashes and rebuilds the items.
+
+\paragraph{Test set and English screen.} $N=$ <<s:legalseg:n|int>> sentences in <<s:legalseg:n_docs|int>> judgments:
+the paper's test split minus <<s:legalseg:n_excluded_non_english|int>> sentences of romanised Hindi quoted speech,
+found by langid and a romanised-Hindi keyword scan (all flags read).
+
+\paragraph{Prompt.} One \textsc{choice} per sentence, a block of consecutive sentences per request. State =
+\{document description, excerpt note, role definitions (verbatim, paper \S4.5), numbered sentences\}. The instruction
+adapts the paper's instruction set~1 (Table~5) and is zero-shot. A judgment that fits the state budget is shown whole in
+every request. Longer ones (<<s:legalseg:n_truncated|int>>) are shown as windows around each block. Sentences are
+classified independently (no CRF decoding). Argmax. Ties to None first.
+
+\paragraph{Metric.} Macro-F1 over the seven roles, pooled over sentences (Table~3). Accuracy and MCC secondary.
+
+<<metrics
+cols: legalseg=Test
+macro_f1 = Macro-F1 | pct
+accuracy = Accuracy | pct
+mcc = MCC | pct
+per_class_f1.None = F1 None | pct
+---
+n_gold.None = Gold None | int
+n_pred.None = Predicted None | int
+>>
+<<papernums:legalseg=Macro-F1>>
+
+\paragraph{Deviations and status.} Complete. The paper's headline Hier-BiLSTM-CRF macro-F1 cannot be reproduced from
+the authors' released predictions (the sentence-level file appears mis-paired, and the document-level file, aligned for
+most documents, scores far lower, as noted under the table), whereas
+ToInLegalBERT's row reproduces exactly. We treat ToInLegalBERT as the strongest reliable baseline. \jev{}'s main error
+is None: it predicts the role far less often than the gold (counts above), mostly choosing Reasoning or Facts instead.

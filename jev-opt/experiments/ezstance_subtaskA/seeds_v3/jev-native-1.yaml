@@ -1,0 +1,67 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Minimal literal rewrite; each criterion names what separates it from its nearest neighbour, NONE framed as absence of a clear side.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: choice
+    instructions: Which stance does the author of `tweet` take toward the noun phrase in `target`?
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The `tweet` shows the author supports, likes or approves of `target`. A tweet that
+          only mentions `target` without approval belongs to Neutral.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The `tweet` shows the author opposes, dislikes or criticizes `target`. Criticism aimed
+          at something other than `target` does not count here.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: The `tweet` shows neither support for nor opposition to `target`. This includes tweets
+          that only report facts about `target`, ask about it, or are unrelated to it.
+        to:
+          label: NONE
+  stance:
+    kind: choice
+    instructions: Based only on `tweet`, does the author support or oppose the point of the claim in `target`?
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The `tweet` definitely agrees with the point or message of the claim in `target`. A
+          tweet on the same topic that does not clearly agree belongs to Neutral.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The `tweet` definitely disagrees with or contradicts the point or message of the claim
+          in `target`. A tweet on the same topic that does not clearly disagree belongs to Neutral.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: From `tweet` alone it cannot be known whether the author supports or opposes the claim
+          in `target`. This includes tweets that are unrelated, only ask questions, or are ambiguous.
+        to:
+          label: NONE

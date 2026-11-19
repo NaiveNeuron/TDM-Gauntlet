@@ -1,0 +1,21 @@
+{
+  "_source": "Scirè, Ghonim & Navigli, FENICE: Factuality Evaluation of summarization based on Natural language Inference and Claim Extraction, Findings of ACL 2024, https://aclanthology.org/2024.findings-acl.841/. Label definition quoted from Section 4.4 'Human evaluation' (p. 14156): 'we considered a summary factual if its content was explicitly stated or implied by the source document; otherwise, it was labeled as non factual.' Claim definition quoted from Appendix A, Figure 2 (p. 14161): a claim is an 'elementary information unit in a sentence, which no longer needs to be further split.' FENICE scores each claim by its best alignment with the source (Section 3, Eq. 2: max over source passages) and a summary by the mean of its claim scores; Jev replaces that NLI claim/source verification. Claims come from the paper's released T5 claim extractor (Babelscape/t5-base-summarization-claim-extractor). Zero-shot; no dataset rows appear in this prompt.",
+  "_primitive": "noul",
+  "_template_fields": {
+    "{claim}": "one claim extracted from the summary under evaluation",
+    "{scope}": "'whole' for a one-request document; otherwise 'version' and/or 'part' (in that order, joined by a space) filled with {version}/{versions} and {part}/{parts}"
+  },
+  "scope": {
+    "whole": "The state holds the full text of the source document (\"source_text\").",
+    "part": "The source document is too long for one request, so the state holds one contiguous part of it (\"source_text\"; part {part} of {parts}). The claim counts as supported by the source document if any part supports it; judge it against the part you are given.",
+    "version": "The source document exists in {versions} English translations and the summary was written from one of them; the state holds version {version} of {versions} (\"source_text\"). Judge the claim against the version you are given."
+  },
+  "question": {
+    "type": "noul",
+    "instructions": "Factuality evaluation of a summary of a long story, claim by claim. A claim is an \"elementary information unit in a sentence, which no longer needs to be further split\", extracted from the summary. A summary is factual if its content is explicitly stated or implied by the source document; otherwise it is non factual. {scope}\n\nClaim: {claim}\n\nIs the content of this claim explicitly stated or implied by the source text in the state?",
+    "criteria": {
+      "true": "Yes: the content of the claim is explicitly stated or implied by the source text.",
+      "false": "No: the content of the claim is not stated or implied by the source text (it is absent from it or contradicts it)."
+    }
+  }
+}

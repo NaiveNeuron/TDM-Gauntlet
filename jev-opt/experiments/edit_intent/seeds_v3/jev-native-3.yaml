@@ -1,0 +1,75 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrast by what differs between the texts, form only versus content; quote every text field to keep the YAML valid.
+version: 1
+labels:
+- Grammar
+- Clarity
+- Fact/Evidence
+- Claim
+- Other
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+shared_state: true
+temperature: 1.0
+root: by_edit_action
+nodes:
+  by_edit_action:
+    kind: switch
+    field: edit_action
+    cases:
+      Modify:
+        node: edit_intent
+      Add:
+        node: edit_intent_add_delete
+      Delete:
+        node: edit_intent_add_delete
+  edit_intent:
+    kind: choice
+    instructions: '`old_text` is a sentence from a scientific paper and `new_text` is its revised version.
+      Which option best describes what changed from `old_text` to `new_text`?'
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Grammar:
+        criterion: 'The change corrects errors of language conventions: grammar, capitalization, punctuation,
+          tense, modality, spelling, typography or abbreviations. The wording is otherwise kept. A change
+          that picks different words or rephrases correct text belongs to Clarity instead.'
+      Clarity:
+        criterion: The change alters correct wording, phrases, expressions or text format to be more formal,
+          concise or understandable, or it amplifies the existing meaning for clarity. The facts and claims
+          stay the same. Fixing an error of grammar or spelling belongs to Grammar instead.
+      Fact/Evidence:
+        criterion: The change adds, elaborates, extends, verifies, updates, corrects or removes facts,
+          evidence, numbers, results, citations, or the authors' factual observations and manipulations.
+          A change to the authors' opinion, idea or aim belongs to Claim instead.
+      Claim:
+        criterion: The change alters, adds or deletes the authors' claim, statement, opinion, idea, or
+          the overall aim of the document. A change to facts, data or evidence belongs to Fact/Evidence
+          instead.
+      Other:
+        criterion: 'The change fits none of the other options: it does not fix language conventions, does
+          not improve wording, and does not change facts, evidence or claims.'
+  edit_intent_add_delete:
+    kind: choice
+    instructions: A whole sentence was added to a scientific paper (`edit_action` is Add, see `new_text`)
+      or deleted from it (`edit_action` is Delete, see `old_text`). Which option best describes the content
+      of that sentence?
+    state:
+    - edit_action
+    - old_text
+    - new_text
+    options:
+      Fact/Evidence:
+        criterion: The sentence states facts, evidence, numbers, results, citations of third parties,
+          or the authors' factual observations and manipulations. A sentence stating the authors' opinion,
+          idea or aim belongs to Claim instead.
+      Claim:
+        criterion: The sentence states the authors' claim, statement, opinion, idea, or the overall aim
+          of the document. A sentence reporting facts, data or evidence belongs to Fact/Evidence instead.
+      Other:
+        criterion: The sentence carries neither facts or evidence nor a claim, opinion, idea or aim of
+          the authors.

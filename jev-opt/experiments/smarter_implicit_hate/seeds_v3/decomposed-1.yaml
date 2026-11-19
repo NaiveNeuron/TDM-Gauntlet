@@ -1,0 +1,52 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Flat choice with short literal instructions and contrastive criteria that name what separates each label from its nearest neighbour.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: The `post` is a social media post already judged to be implicit hate (coded or indirect
+      language disparaging a person or group for protected characteristics; user mentions are <user>,
+      URLs removed). Which implicit hate category best fits the `post`?
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: The `post` expresses frustration over a minority group's perceived privilege, or casts
+          the majority (e.g. white people) as the real victims of racism. It is not this if the main content
+          is claiming the minority is inferior or tied to crime; here the focus is the in-group being
+          wronged.
+      Incitement to Violence:
+        criterion: The `post` flaunts in-group unity and power, or elevates or promotes known hate groups
+          and ideologies (praising, recruiting, rallying). It differs from Threatening and Intimidation
+          because it celebrates the in-group or the movement rather than addressing harm at a target.
+      Inferiority Language:
+        criterion: The `post` implies a group or individual is inferior to another. This includes dehumanization,
+          denial of humanity, comparing the target with disease, insects or animals, and declaring in-group
+          superiority or dominance. It differs from Stereotypes because it attacks worth or humanity rather
+          than linking the group to specific bad behaviors such as crime.
+      Irony:
+        criterion: The `post` uses sarcasm, humor or satire to attack or demean a protected class or individual.
+          The mocking or joking tone is the main vehicle of the attack. A plain, non-sarcastic statement
+          belongs to another option.
+      Stereotypes and Misinformation:
+        criterion: The `post` associates a protected class with negative attributes such as crime or terrorism,
+          or spreads misinformation that feeds stereotypes. This includes Holocaust denial and other historical
+          negationism. It differs from Inferiority Language because it claims facts or behaviors about
+          the group rather than calling it subhuman.
+      Threatening and Intimidation:
+        criterion: The `post` conveys the speaker's commitment to a target's pain, injury, damage or loss.
+          This includes violating the target's rights and freedoms, removing their opportunities (e.g.
+          deportation, exclusion), and subtler intimidation. It differs from Incitement to Violence because
+          it is directed at harming the target.

@@ -1,0 +1,67 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; first decide whether the post attacks through tone, harm and power, or claims about groups, then choose within the group.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: The `post` is implicit hate (coded or indirect disparagement based on protected characteristics).
+      Which kind of message does the `post` mainly deliver?
+    state:
+    - post
+    options:
+      tone:
+        criterion: The attack in the `post` is delivered mainly through sarcasm, humor or satire.
+        to:
+          label: Irony
+      power:
+        criterion: 'The `post` is mainly about action or force: harm, threats, removal of rights or opportunities
+          aimed at a target, or rallying in-group power and promoting hate groups or ideologies. Plain
+          statements about what a group is like do not belong here.'
+        to:
+          node: label_power
+      claims:
+        criterion: The `post` is mainly a non-sarcastic statement about groups. This includes a minority
+          being inferior or subhuman, a group linked to crime or terrorism, historical denial, or the
+          majority being the real victims of a privileged minority. It is not about a threat or rallying.
+        to:
+          node: label_claims
+  label_power:
+    kind: choice
+    instructions: Is the `post` aimed at harming a target, or at celebrating in-group power and hate movements?
+    state:
+    - post
+    options:
+      Threatening and Intimidation:
+        criterion: The `post` conveys commitment to a target's pain, injury, damage, loss, violation of
+          rights and freedoms, removal of opportunities, or subtler intimidation of the target.
+      Incitement to Violence:
+        criterion: The `post` flaunts in-group unity and power, or elevates known hate groups and ideologies,
+          without being mainly a threat addressed at a target.
+  label_claims:
+    kind: choice
+    instructions: Which claim does the `post` mainly make about groups?
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: The `post` complains about a minority's perceived privilege, or casts the majority
+          as the real victims of racism.
+      Inferiority Language:
+        criterion: The `post` implies a group is inferior. This includes dehumanization, comparison to
+          disease, insects or animals, or declarations of in-group superiority. It is not about specific
+          behaviors such as crime.
+      Stereotypes and Misinformation:
+        criterion: The `post` links a protected class to negative attributes such as crime or terrorism,
+          or spreads stereotype-feeding misinformation such as Holocaust denial or historical negationism.

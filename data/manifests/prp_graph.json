@@ -1,0 +1,115 @@
+{
+  "task": "prp_graph/trec_covid",
+  "paper": {
+    "title": "PRP-Graph: Pairwise Ranking Prompting to LLMs with Graph Aggregation for Effective Text Re-ranking",
+    "venue": "ACL 2024 (long), pages 5766-5776",
+    "url": "https://aclanthology.org/2024.acl-long.313/",
+    "code": "https://github.com/Memelank/PRP-Graph",
+    "code_commit": "968e45ee8178f5d3ac44a2b8f11f091af69206d7",
+    "code_licence": "Apache-2.0 (LICENSE in repo)"
+  },
+  "preparation": {
+    "script": "scripts/prepare_prp_graph.py (isolated venv: Python 3.10, pyserini 0.22.1 + Anserini 0.22.1 fatjar on OpenJDK 11.0.32, transformers 4.33.1, sentencepiece 0.2.2, langid 1.1.6; setup commands in the script docstring)",
+    "first_stage": "Exact replica of PRP-Graph retriever/pyserini_retriever.py: LuceneSearcher.from_prebuilt_index('beir-v1.0.0-trec-covid.flat'), set_bm25() defaults (k1=0.9, b=0.4), topics 'beir-v1.0.0-trec-covid-test' field 'title', k=100, passage = ' '.join(('Title: ' + title + ' Content: ' + text).split())",
+    "truncation": "Paper (rankers/rank_flan.py) truncates the query to 32 and each passage to 128 Flan-T5 tokens (google/flan-t5-large tokenizer). Frozen rule: the ORIGINAL-text prefix ending at the last byte of token 32/128 (SentencePiece piece offsets); the paper instead decodes the kept tokens, which differs only by NFKC normalisation in 15 of 4,433 passages. Offsets are frozen as passage_chars per doc."
+  },
+  "sources": {
+    "beir_trec_covid": {
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/trec-covid.zip",
+      "sha256": "120f42a7864d2214234537733c0d2c6684e42fdfafff2c5eacf98afca6656aa0",
+      "bytes": 73876720,
+      "unzipped_sha256": {
+        "trec-covid/corpus.jsonl": "aded69896598665082316d00df487d22212cc5a8611db05db34eb40d04ed00d7",
+        "trec-covid/queries.jsonl": "78f4b76bfef251a0baf37a6cea5c4ba8376cb4536c34635709aaa4a2783b208c",
+        "trec-covid/qrels/test.tsv": "10669ab7d526cb04f52079139fd88c3d467a0776441b046567f540582798982b"
+      },
+      "role": "passage texts are rebuilt from corpus.jsonl by the adapter (verified against frozen SHA-256); queries/qrels used for cross-checks"
+    },
+    "pyserini_prebuilt_index": {
+      "name": "beir-v1.0.0-trec-covid.flat",
+      "url": "https://rgw.cs.uwaterloo.ca/pyserini/indexes/lucene-index.beir-v1.0.0-trec-covid.flat.20221116.505594.tar.gz",
+      "md5": "57b812594b11d064a23123137ae7dade",
+      "documents": 171331
+    },
+    "topics_and_qrels": {
+      "repo": "https://github.com/castorini/eval (formerly castorini/anserini-tools; Anserini 0.22.1's cloud URL for these files is dead, so they were fetched at a pinned commit and placed in Anserini's cache)",
+      "commit": "8f1bc80988c2483d9519bc2519862b54ab730986",
+      "files": {
+        "topics/topics.beir-v1.0.0-trec-covid.test.tsv.gz": "5c0823de359690f6582736be6b50e55afc17602bdf3f3aa7a29e173d5163552b",
+        "qrels/qrels.beir-v1.0.0-trec-covid.test.txt": "0d94dcea5bc3b44a64a1f9b1430f7672fae39fad1c980d581b92890ab0448713"
+      }
+    },
+    "tokenizer": {
+      "model": "google/flan-t5-large",
+      "revision": "0613663d0d48ea86ba8cb3d7a44f0f65dc596a2a",
+      "spiece.model_sha256": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86"
+    },
+    "cross_check_only": {
+      "castorini/rank_llm_data retrieve_results/BM25/retrieve_results_covid_top100.jsonl": {
+        "hf_revision": "39db0a25a552dd2a12012df22029686bf7fdc050",
+        "sha256": "750a7f99f97971bd82616e379d387bde9593f20c76d88d0deff470feda4aac1e",
+        "result": "identical top-100 docids in identical order for 50/50 topics"
+      }
+    },
+    "raw_derived_sha256": {
+      "data/raw/prp_graph/bm25/trec_results_covid.txt": "529ffad57fae3c8a363e332f5954c975d32e21070e851506850a5f4db0fcb223",
+      "data/raw/prp_graph/bm25/trec_results_covid.english.txt": "b4a97a48cd4550f875a5304cee4978bfe935c9ae52c86c183e3f49f3ce47d9c9",
+      "data/raw/prp_graph/bm25/retrieve_results_covid.json": "fa0d5314593f6a9abaf6d4c60020141f892b1692b1ada024747f8c72a2e70ab6"
+    }
+  },
+  "licence": {
+    "documents": "CORD-19 COVID Dataset License Agreement (AI2): 'license to use and make derivatives of the Data for text and data mining only', copyright stays with the publishers; no redistribution grant. Document texts are therefore not stored: the data/frozen files that scripts/prepare_prp_graph.py writes hold docids, truncation offsets and SHA-256 only, and the adapter rebuilds passages from the BEIR download.",
+    "topics_qrels": "TREC-COVID topics and relevance judgments (NIST), publicly redistributed by BEIR (Hugging Face card BeIR/trec-covid: cc-by-sa-4.0) and Anserini/pyserini; scripts/prepare_prp_graph.py writes them in full to data/frozen/prp_graph/trec_covid/queries.jsonl.",
+    "beir_packaging": "BEIR README: datasets redistributed as-is; users responsible for the underlying licences."
+  },
+  "frozen": {
+    "data/frozen/prp_graph/trec_covid/queries.jsonl": {
+      "sha256": "b1b07454af3a463ee676743f6cd102f929fbb48842f5a2880c5f05179b131422",
+      "content": "50 lines in BM25 retrieval order (pyserini topic-map order; this order seeds the paper's CV split): qid, query, query_input (32-token truncation), candidates [docid, BM25 rank, BM25 score] after the English filter, excluded_non_english, qrels (all judged docs)"
+    },
+    "data/frozen/prp_graph/trec_covid/passages.jsonl": {
+      "sha256": "2e1c68d080f314c83217b0868350f1df74417c13aa25c5639c809c026f2f79a8",
+      "content": "4,433 lines: docid, content_chars, content_sha256, passage_chars, passage_sha256, passage_tokens_total, truncated"
+    },
+    "prompt": "prompts/prp_graph_trec_covid.json"
+  },
+  "counts": {
+    "topics": 50,
+    "bm25_candidates_per_topic": 100,
+    "query_doc_pairs_before_english_filter": 5000,
+    "unique_docs_before_english_filter": 4479,
+    "non_english_docs_excluded": 46,
+    "query_doc_pairs_excluded": 49,
+    "topics_with_exclusions": 25,
+    "excluded_pairs_by_qrel": {"unjudged": 22, "0": 15, "1": 5, "2": 7},
+    "excluded_pairs_in_bm25_top10": [["50", "pb3r74uq", 5, null], ["4", "62je92vo", 9, null], ["5", "puc13jf1", 1, 1]],
+    "candidates_per_topic_after_filter": {"100": 25, "99": 11, "98": 8, "97": 3, "96": 2, "95": 1},
+    "query_doc_pairs_after_english_filter": 4951,
+    "unique_docs_after_english_filter": 4433,
+    "passages_truncated_at_128_tokens": 4317,
+    "queries_truncated_at_32_tokens": {"49": "trailing '?' dropped", "29": "'this information?' dropped"},
+    "qrels_judgments": 66334,
+    "qrels_label_counts": {"0": 41661, "1": 10456, "2": 14217},
+    "qrels_note": "pyserini qrels (used by the paper's trec_eval) = BEIR test.tsv minus two judgments labelled -1 (38/9hbib8b3, 50/svo94kuo); no effect on nDCG",
+    "jev_requests": 485376,
+    "jev_requests_note": "all ordered pairs per topic, sum n(n-1) over topics (495,000 without the English filter); total state JSON 596,431,136 chars (mean 1,229), questions 383 chars/request, request body max 2,065 chars",
+    "prp_graph_pairs_actually_used_per_topic": "R10 ~486, R20 ~961, R40 ~1,875 unordered pairs (x2 ordered requests), cf. paper Table 4 #Inference 489.1 / 965.5 / 1843.2"
+  },
+  "verification": {
+    "bm25_ndcg@10_trec_eval_full_top100": 0.5947,
+    "bm25_ndcg@10_paper_table2": 59.5,
+    "bm25_ndcg@10_trec_eval_english_candidates": 0.5975,
+    "doc_text_index_vs_beir_corpus": "identical for all 4,479 candidate docs",
+    "queries_pyserini_vs_beir": "identical for all 50 topics",
+    "english_only": "Queries: all 50 TREC-COVID topics read, all English (langid flags topic 3 'fr' at 0.61: false positive). Passages (exactly the text Jev sees): segment-level langid 1.1.6 on title variants and abstract sentences, non-Latin-script detection and accented-word listing flagged 165 of 4,479 docs; every flagged passage read. 46 docs contain non-English text (non-English title, translated title variant, non-English abstract, or CJK journal name) and are removed from the candidate lists (list with reasons: NON_ENGLISH in scripts/prepare_prp_graph.py); 119 flags were English text with foreign proper names, loanwords, symbols or mojibake and are kept.",
+    "port_vs_released_code": "swiss_system: rankings, scores and comparison records identical to rankers/swiss_system.py for 150/150 (topic, R) with random pairwise scores; pagerank_aggregate: max |diff| 1.4e-17 vs rankers/pagerank.py + networkx 3.1, identical order 150/150"
+  },
+  "deviations": [
+    "English-only rule: 46 non-English documents (49 topic-doc pairs) removed from the BM25 top-100 lists; topics keep 95-100 candidates. BM25 on the filtered lists scores 0.5975 vs 0.5947 unfiltered.",
+    "Truncation keeps the paper's token budget (32/128 Flan-T5 tokens) but cuts the original text instead of decoding tokens (15 passages differ from the paper's decoded strings, by NFKC normalisation only).",
+    "Jev's 'Passage A' probability is normalised over the two options; the paper uses Flan-T5's full-vocabulary softmax probability of the token 'A'.",
+    "All ordered pairs are requested (Allpair set); PRP-Graph's adaptive comparisons are replayed from them in predict(). Identical to adaptive querying under deterministic Jev answers.",
+    "One prompt (PRP-Graph rank_flan.py wording) is used for PRP-Graph and the Allpair baseline; the paper's baseline code quotes passages (Passage A: \"...\").",
+    "Primary metric is un-interpolated nDCG@10 (no test-label tuning). The paper's Table 2 per-dataset numbers are BM25-interpolated with alpha picked by 10-fold CV over the test queries; that protocol is reproduced only as a secondary, flagged number."
+  ]
+}

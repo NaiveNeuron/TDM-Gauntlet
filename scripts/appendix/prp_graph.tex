@@ -1,0 +1,49 @@
+\paragraph{Task.} Re-rank the BM25 top-<<m:prp_graph:counts.bm25_candidates_per_topic|int>> CORD-19 candidates for each
+English TREC-COVID topic. PRP-Graph asks Flan-T5 pairwise prompts in both orders, scores a comparison by
+$P(\text{Passage A})$ (Eq.~1), selects pairs by Swiss-system rounds and aggregates by PageRank. \jev{} replaces only
+the pairwise judge. Pair selection and aggregation are ported line by line from the authors' code
+(<<m:prp_graph:paper.code_commit|commit>>) and match it exactly on random scores.
+
+\paragraph{Data and freeze.} BM25 candidates are regenerated as in the paper's retriever (pyserini index
+\texttt{<<m:prp_graph:sources.pyserini_prebuilt_index.name>>}, paper's pyserini version) by
+\texttt{scripts/\allowbreak{}prepare\_prp\_graph.py}. They match independent \texttt{rank\_llm\_data} lists for every
+topic and give the paper's BM25 nDCG@10 (<<m:prp_graph:verification.bm25_ndcg@10_trec_eval_full_top100|pct>>).
+CORD-19 permits text mining but not redistribution, so the prepare script stores only topics, qrels, docids, truncation
+offsets and text hashes. Passages are rebuilt from the BEIR download (SHA-256
+<<m:prp_graph:sources.beir_trec_covid.sha256|sha>>).
+
+\paragraph{Test set and screen.} All <<s:prp_graph/trec_covid:n|int>> topics. A langid/script screen with
+reading of every flagged passage removed <<m:prp_graph:counts.non_english_docs_excluded|int>> documents with
+non-English text (<<m:prp_graph:counts.query_doc_pairs_excluded|int>> topic--document pairs, mean
+<<s:prp_graph/trec_covid:candidates.per_query_mean|f2>> candidates per topic remain). Qrels are unchanged, so removed
+relevant documents count as misses.
+
+\paragraph{Prompt.} One \textsc{<<q:prp_graph_trec_covid:question.type|upper>>} per ordered pair over \{Passage A,
+Passage B\}, with the paper's prompt verbatim (Fig.~2a) and its token budget for query and passages (original-text
+prefix, <<s:prp_graph/trec_covid:truncation.passages_truncated|int>> passages cut). Since pairings depend on earlier
+answers, requests are issued round by round, replaying the Swiss system on the answers so far
+(<<r:prp_graph/trec_covid:n_request_rounds|int>> rounds, <<r:prp_graph/trec_covid:n_requests|int>> requests).
+PRP-Graph-10/20 are the same tournaments stopped earlier.
+
+\paragraph{Metric.} nDCG@10 as computed by \texttt{trec\_eval}. Primary: uninterpolated PRP-Graph-40. The paper's
+per-dataset numbers instead interpolate with BM25, with the weight chosen by cross-validation over the \emph{test}
+queries. We report that protocol as secondary (``interp.''), and it is the value shown with $\dagger$ in the main
+results table.
+
+<<metrics
+cols: prp_graph/trec_covid=Test
+ndcg@10_by_method.prp_graph_R40 = PRP-Graph-40 | pct
+ndcg@10_by_method.prp_graph_R20 = PRP-Graph-20 | pct
+paper_protocol_bm25_interpolated_cv_on_test.prp_graph_R40.ndcg@10 = PRP-Graph-40, interp. | pct
+ndcg@10_by_method.swiss_R40 = Swiss only, $R=40$ | pct
+bm25_ndcg@10 = BM25 (filtered) | pct
+pairwise.accuracy_both_orders_averaged = Pairwise acc. | pct
+>>
+<<papernums:prp_graph/trec_covid=Test>>
+
+\paragraph{Deviations and status.} Complete, with the interpolation protocol difference above. The paper's closest
+uninterpolated number is its README PRP-Graph-20. \jev{}'s $P(\text{Passage A})$ is normalised over the two options,
+not a full-vocabulary token probability. Amendment: the run first requested all ordered pairs up front (which would
+also have given the Allpair baseline). We stopped it and replaced it with round-by-round requests
+for exactly the pairs PRP-Graph uses, which yields the same rankings but drops the Allpair baseline. The Swiss-system
+ranking alone beats the PageRank-aggregated one. TREC-COVID is public, so pretraining exposure cannot be ruled out.

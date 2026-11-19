@@ -1,0 +1,15 @@
+{
+  "_source": "Shaik, Sadat, Gautam, D. Caragea & C. Caragea, 'A MISMATCHED Benchmark for Scientific Natural Language Inference', Findings ACL 2025, pp. 21524-21538, https://aclanthology.org/2025.findings-acl.1109/. Question sentence and the four option texts are verbatim from the authors' zero-shot prompt for their best open-source LLM baseline (Phi-3), github.com/fshaik8/MisMatched@8d50372 MisMatched_Zero_Shot.py construct_test_input_phi3; the paper's Table 3 (p. 21528) prints the same prompt with 'Based only on' and 'made Sentence2' (missing 'in'), the code's Phi-3/Llama-3 wording is used. Option a = ENTAILMENT, b = REASONING, c = CONTRASTING, d = NEUTRAL (label mapping in MisMatched_Few_Shot.py lines 267-270). Linking phrases per class verbatim from Table 11 (p. 21537, the distant-supervision label definition, Section 3.2 Phase 1); the removal of the linking phrase from the second sentence is from Section 3.2 and the Table 1 caption (p. 21526); 'based only on the context available in the two sentences' is the annotator instruction in Section 3.2 Phase 2 (p. 21527). Zero-shot: no exemplars (the paper's zero-shot setting).",
+  "_primitive": "choice",
+  "_labels": "Criteria keys are the paper's class names (entailment, reasoning, contrasting, neutral); the release's label 'entailing' is mapped to 'entailment'.",
+  "question": {
+    "type": "choice",
+    "instructions": "Consider the following two sentences. The state holds \"Sentence1\" and \"Sentence2\", a pair of sentences extracted from a research article in psychology, engineering or public health. If Sentence2 originally started with a linking phrase (such as 'However', 'Therefore' or 'In particular'), that phrase has been deleted, so Sentence2 may begin in lower case. Based on only the information available in these two sentences, which of the following options is true?",
+    "criteria": {
+      "entailment": "Sentence1 generalizes, specifies or has an equivalent meaning with Sentence2. (ENTAILMENT: the relation signalled by the linking phrases 'Specifically', 'Precisely', 'In particular', 'Particularly', 'That is', 'In other words'.)",
+      "reasoning": "Sentence1 presents the reason, cause, or condition for the result or conclusion made in Sentence2. (REASONING: the relation signalled by the linking phrases 'Therefore', 'Thus', 'Consequently', 'As a result', 'As a consequence', 'From here, we can infer'.)",
+      "contrasting": "Sentence2 mentions a comparison, criticism, juxtaposition, or a limitation of something said in Sentence1. (CONTRASTING: the relation signalled by the linking phrases 'However', 'On the other hand', 'In contrast', 'On the contrary'.)",
+      "neutral": "Sentence1 and Sentence2 are independent. (NEUTRAL)"
+    }
+  }
+}

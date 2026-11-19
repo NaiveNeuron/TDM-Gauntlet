@@ -1,0 +1,40 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Direct start-time ordering; each criterion contrasts its option with its nearest neighbour (BEFORE vs VAGUE, AFTER vs VAGUE, EQUAL vs VAGUE).
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: In `context`, the trigger of Event 1 is marked <e1>...</e1> (also given in `event_1`)
+      and the trigger of Event 2 is marked <e2>...</e2> (also given in `event_2`). Each trigger stands
+      for its whole event. What does `context` say about the order of the START times of Event 1 and Event
+      2? Ignore when either event ends.
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 starts before Event 2 starts, and `context` rules out that Event 2 starts first.
+          If `context` still allows Event 2 to start first, choose VAGUE instead.
+      AFTER:
+        criterion: Event 1 starts after Event 2 starts, and `context` rules out that Event 1 starts first.
+          If `context` still allows Event 1 to start first, choose VAGUE instead.
+      EQUAL:
+        criterion: Event 1 and Event 2 start at the same time, and `context` rules out that either one
+          starts first. If one of them could start earlier, choose BEFORE, AFTER or VAGUE instead.
+      VAGUE:
+        criterion: '`context` leaves the order of the two start times open: Event 1 could start first,
+          and Event 2 could also start first. If `context` rules out one of these orders, choose BEFORE,
+          AFTER or EQUAL instead.'

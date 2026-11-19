@@ -1,0 +1,42 @@
+\paragraph{Task.} English cyber-threat text is mapped to the MITRE ATT\&CK techniques (TTPs) it mentions. The paper
+recasts this as text matching: a trained matcher (best: Asymmetric NCE) ranks the textual profiles of all TTPs.
+\jev{} replaces the matcher: for every (text, TTP) pair it gives $P(\text{yes})$ that the technique is mentioned, and
+all <<m:ttp:frozen.files.data/frozen/ttp/candidates.jsonl.n|int>> released profiles are ranked by it.
+
+\paragraph{Data and freeze.} HF \texttt{<<m:ttp:source.hf_dataset>>} at <<m:ttp:source.hf_revision|commit>> (CC BY
+4.0, no model code released), profiles from \texttt{ttp-desc-mappings.csv} with technique names added from ATT\&CK
+Enterprise v12.0. Test files are frozen as JSONL by \texttt{scripts/prepare\_ttp.py} (e.g.\ TRAM SHA-256
+<<m:ttp:frozen.files.data/frozen/ttp/tram_test.jsonl.sha256|sha>>).
+
+\paragraph{Test sets and English screen.} TRAM ($N=$ <<s:ttp/tram:n|int>>), Procedures+ (Procedures + Derived
+Procedures, <<s:ttp/procedures_plus:n|int>>), Expert test (<<s:ttp/expert:n|int>>) and the whole Expert dataset
+(<<s:ttp/expert_full:n|int>>, the paper's out-of-distribution setting, Tables~6--7, where it reports @5 metrics).
+Release totals match paper Table~1 except whole Expert, which differs slightly from the paper's count.
+langid flags were all English (short sentences, non-Latin file names in IOCs). Rows dropped:
+<<m:ttp:english_verification.rows_dropped|int>>.
+
+\paragraph{Prompt.} One \textsc{noul} per candidate. State = \{text\}. The question is the paper's zero-shot LLM
+prompt (App.~D.3: is the technique ``explicitly or implicitly mentioned''), asked per candidate with ID, name and
+profile description. All candidates, including revoked and deprecated ones (TRAM gold uses them), are asked for every
+text, without a shortlist, as in the paper. Questions are split across requests in a fixed order and answered
+independently. Ranking by $P(\text{yes})$. Ties by ATT\&CK ID. Truncated: <<s:ttp/tram:n_truncated|int>>.
+
+\paragraph{Metric.} App.~D.1: P@$k$, R@$k$ averaged over texts, MRR@$k$, and F1@$k$ from the averaged P@$k$ and
+R@$k$. Primary: TTP-level P@1 (Table~2). Technique-level maps TTPs to parent techniques (Table~3).
+
+<<metrics
+cols: ttp/tram=TRAM; ttp/procedures_plus=Proc+; ttp/expert=Exp.; ttp/expert_full=All
+p@1 = P@1 | pct
+r@1 = R@1 | pct
+f1@3 = F1@3 | pct
+mrr@3 = MRR@3 | pct
+f1@5 = F1@5 | pct
+mrr@5 = MRR@5 | pct
+technique_level.p@1 = Tech.\ P@1 | pct
+>>
+<<papernums:ttp/tram=TRAM;ttp/procedures_plus=Proc+;ttp/expert=Exp.;ttp/expert_full=All>>
+
+\paragraph{Deviations and status.} Complete. Only the matcher is replaced, while the candidate corpus and metrics are
+the paper's (Exp.\ = Expert test, All = whole Expert). The paper's matchers are trained on the released training
+splits. \jev{} is zero-shot. <<m:ttp:deviations.5>> Under our literal F1@$k$, the gold-oracle F1@3 on TRAM equals the
+paper's best F1@3, so the paper may compute F1 differently. P@1, R@1 and MRR are unambiguous.

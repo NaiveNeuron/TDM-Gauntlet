@@ -1,0 +1,45 @@
+\paragraph{Task.} English FDA MAUDE adverse-event reports, each coded with a set of IMDRF codes from a three-level
+vocabulary of <<q:made_v2:questions|len>> codes. Gold sets are up-propagated along each coder code's own IMDRF paths.
+Replaced predictor: the paper's multi-label classifiers (best: discriminatively fine-tuned Llama-3.1-8B-Base).
+\jev{} decides code by code whether a code applies.
+
+\paragraph{Data and freeze.} HF \texttt{<<m:made:source.hf_dataset>>} at <<m:made:source.hf_revision|commit>>
+(\texttt{test.jsonl}, SHA-256 <<m:made:source.hf_files.test.jsonl.sha256|sha>>). \texttt{evaluate.py} and vocabulary
+from \texttt{<<m:made:source.code_repo>>} at <<m:made:source.code_commit|commit>>. Dataset card MIT, openFDA text. The
+release is gated (we accepted the agreement), so \texttt{scripts/prepare\_made.py} stores only an ID +
+row-SHA-256 manifest and rebuilds the items.
+
+\paragraph{Test set and English screen.} $N=$ <<s:made:n|int>>, the paper's \emph{truncated test set} (Table~1), on
+which it performs all evaluations. The full test period is not released. langid flagged
+<<m:made:english_only_verification.flagged|int>> reports. All were read and English (citations, affiliations,
+product codes). Excluded: <<m:made:english_only_verification.excluded|int>>.
+
+\paragraph{Prompt.} One \textsc{noul} per code. State = \{report\}. The codes do not fit one request, so the
+release's hierarchy decomposes the decision top-down: round~1 asks the top-level codes, and each later round asks the
+children of accepted codes, all of a round's questions in one request. Codes never reached count as
+$P=0$. Instructions follow the paper's prompt (App.~A.7), with each code's IMDRF term,
+definition and path. Prompt v2 (questions byte-identical to v1, fixed before any run) closes
+predicted sets exactly as the gold was built: accepted codes plus the own-path ancestors of the deepest accepted
+codes. Reports longer than the paper's character limit for prompted models are cut
+(<<s:made:n_truncated|int>> reports).
+
+\paragraph{Metric.} Ports of the official \texttt{evaluate.py}: macro-F1 over all codes (primary), Jaccard, PRR,
+Spearman $\rho$ (negative is desirable) and ECE+.
+
+<<metrics
+cols: made=Test
+macro_f1 = Macro-F1 | pct
+jaccard = Jaccard | pct
+prr = PRR | f3
+spearman = Spearman $\rho$ | f3
+ece_plus = ECE+ | f3
+---
+labels_per_report.gold_mean = Gold codes / report | f2
+labels_per_report.pred_mean = Pred.\ codes / report | f2
+>>
+<<papernums:made=Macro-F1>>
+
+\paragraph{Deviations and status.} Complete. \jev{} is zero-shot with a fixed threshold, whereas the paper's prompted
+baselines see kNN-retrieved training reports and its fine-tuned models tune per-label thresholds. \jev{}
+over-predicts (codes per report above), which costs Jaccard more than macro-F1. ECE+ is high partly by construction,
+because gold codes under a rejected parent enter at $P=0$.

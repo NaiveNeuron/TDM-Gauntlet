@@ -1,0 +1,50 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/smarter_implicit_hate.json), verbatim; generated, do not hand-edit.
+# One Choice, question id `label`, state {post} -- the gauntlet request.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: false
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: 'By considering their corresponding Definitions, label the following post with only
+      one of these categories: White Grievance, Incitement to Violence, Inferiority Language, Irony, Stereotypes
+      and Misinformation, Threatening and Intimidation. The state holds one social media post ("post");
+      user mentions are replaced by <user> and URLs are removed. Every post in this task was annotated
+      as implicit hate (coded or indirect language that disparages a person or group on the basis of protected
+      characteristics); the label is its fine-grained implicit hate category.'
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: 'White Grievance: includes frustration over a minority groups'' perceived privilege
+          and casting majority groups as the real victims of racism. This language is linked to extremist
+          behavior and support for violence.'
+      Incitement to Violence:
+        criterion: 'Incitement to Violence: includes flaunting in group unity and power or elevating known
+          hate groups and ideologies'
+      Inferiority Language:
+        criterion: 'Inferiority Language: implies one group or individual is inferior to another, and
+          it can include dehumanization, denial of a person''s humanity, and toxic language that compares
+          the target with disease, insects, animals. Related to assaults on human dignity, dominance,
+          and declarations of superiority of the in group.'
+      Irony:
+        criterion: 'Irony: refers to the use of sarcasm , humor, and satire to attack or demean a protected
+          class or individual.'
+      Stereotypes and Misinformation:
+        criterion: 'Stereotypes And Misinformation: associate a protected class with negative attributes
+          such as crime, or terrorism. includes misinformation that feeds stereotypes and vice versa,
+          like Holocaust denial and other forms of historical negationism.'
+      Threatening and Intimidation:
+        criterion: 'Threatening And Intimidation: conveys a speaker''s commitment to a target''s pain,
+          injury, damage, loss or violation of rights, threats related to implicit violation of rights
+          and freedoms, removal of opportunities, and more subtle forms of intimidation.'

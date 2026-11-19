@@ -1,0 +1,40 @@
+\paragraph{Task.} Rate how faithfully an LLM-written plain-language summary of an English RCT abstract conveys the
+trial's Population, Intervention, Comparator, Outcome (PICO) and each reported result. Gold: medical experts' ordinal
+ratings. Avg.\ PICO-R is their mean. \jev{} replaces the paper's automatic factuality evaluators (best: GPT-4).
+
+\paragraph{Data and freeze.} \texttt{FactPICO.zip} linked from \texttt{lilywchen/FactPICO} at
+<<m:factpico:source.repo_commit|commit>> (SHA-256 <<m:factpico:source.raw_sha256.FactPICO.zip|sha>>). Annotations
+CC-BY, abstracts PMC Open Access. Frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_factpico.py} (SHA-256 <<m:factpico:frozen.sha256|sha>>). HTML entities
+decoded, everything else verbatim.
+
+\paragraph{Test set and screen.} $N=$ <<s:factpico:n|int>> summaries
+(<<m:factpico:frozen.n_abstracts|int>> abstracts with Alpaca, GPT-4 and Llama-2 summaries), matching the paper. There is no split, so the
+whole release is the evaluation set: \jev{} runs zero-shot and the set is never used for prompt development, fitting
+or \jevopt{}. The freeze script reproduces the paper's Table~4 ``Avg.'' row from the released per-summary scores. A
+langid screen found only English text. Rows excluded: <<m:factpico:english_only_verification.rows_dropped|int>>.
+
+\paragraph{Prompt.} One request per summary, state \{abstract, summary\}, with one
+\textsc{<<q:factpico:pico.population.type|upper>>} question per PICO element (N/A coded as the lowest level, as in
+the paper) and one per released result span (<<s:factpico:n_result_questions|int>> in total). Instructions and
+levels quote the expert guidelines (App.~A, Table~7) and the paper's evidence-inference prompt (App.~H.5). Nothing
+is truncated. \jev{}'s overall score is the mean of its expected element ratings (Results = mean over spans),
+as for the paper's LLM evaluators.
+
+\paragraph{Metric.} Kendall $\tau_b$ of the overall score against Avg.\ PICO-R over all summaries (Table~4, p.~8442).
+Spearman $\rho$ and pairwise accuracy acc$_{eq}$ as secondary.
+
+<<metrics
+cols: factpico=All
+kendall_tau_b = Kendall $\tau_b$ | pct
+spearman_rho = Spearman $\rho$ | pct
+acc_eq = acc$_{eq}$ | pct
+discrete.vs_overall.avg.kendall_tau_b = $\tau_b$, argmax levels | pct
+expected.attribute_wise.results.kendall_tau_b = $\tau_b$ Results vs Results | pct
+>>
+<<papernums:factpico=All>>
+
+\paragraph{Deviations and status.} Complete. Per-span expert ratings are not released, so \jev{}'s span ratings are
+compared only through the per-summary Results mean. \jev{} sees the abstract, as the experts did (the paper's
+evidence-inference LLM prompt saw only span and summary). Gold scores are used verbatim, including float noise in
+averaged ratings that affects tie handling slightly. \jev{} ranks the summarisers in the experts' order. The
+abstracts are public, so pretraining exposure to the sources is possible.

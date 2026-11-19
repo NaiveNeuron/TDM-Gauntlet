@@ -1,0 +1,41 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Minimal literal definitions keyed to one observable cue each, with no cross-references.
+version: 1
+labels:
+- White Grievance
+- Incitement to Violence
+- Inferiority Language
+- Irony
+- Stereotypes and Misinformation
+- Threatening and Intimidation
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Classify the implicit hate in the `post` (a social media post; mentions are <user>,
+      URLs removed) into the one category that best fits it.
+    state:
+    - post
+    options:
+      White Grievance:
+        criterion: 'Main cue in the `post`: resentment that minorities are privileged, or a claim that
+          whites or the majority are the true victims of racism.'
+      Incitement to Violence:
+        criterion: 'Main cue in the `post`: boasting about in-group unity or power, or elevating a known
+          hate group or hate ideology.'
+      Inferiority Language:
+        criterion: 'Main cue in the `post`: the target is portrayed as inferior or subhuman, for example
+          as vermin, animals or disease, or the in-group is declared superior.'
+      Irony:
+        criterion: 'Main cue in the `post`: sarcasm, humor or satire used to mock or demean a protected
+          group or person.'
+      Stereotypes and Misinformation:
+        criterion: 'Main cue in the `post`: a protected group is associated with negative attributes such
+          as crime or terrorism, or false history is claimed, such as Holocaust denial.'
+      Threatening and Intimidation:
+        criterion: 'Main cue in the `post`: a threat or promise to harm the target, take away their rights,
+          freedoms or opportunities, or to intimidate them.'

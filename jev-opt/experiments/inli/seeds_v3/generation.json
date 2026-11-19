@@ -1,0 +1,76 @@
+{
+  "task": "inli",
+  "task_path": "jev-opt/experiments/inli/task_v3.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Contrastive criteria that name the nearest neighbour of each option and say which cases belong to it instead.",
+          "digest": "9fe922a111de7379",
+          "nodes": {
+            "relation": "choice"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Short definition-faithful criteria, each phrased as an observable property of the two fields.",
+          "digest": "b782a7b12c61e04a",
+          "nodes": {
+            "relation": "choice"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Criteria framed by what a reader of the premise would find, which separates stated, inferred, open and ruled-out.",
+          "digest": "e1728dd1c1fae403",
+          "nodes": {
+            "relation": "choice"
+          }
+        }
+      ],
+      "rejected": [
+        "attempt 1 program 1: jev-native keeps the option keys and targets of relation",
+        "attempt 1 program 2: jev-native keeps the option keys and targets of relation",
+        "attempt 1 program 3: jev-native keeps the option keys and targets of relation"
+      ]
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Coarse-to-fine hierarchy; first decide whether the premise supports, contradicts or is silent on the hypothesis, then split supported cases into explicit vs implied.",
+          "digest": "1c52723e3f79581b",
+          "nodes": {
+            "relation": "choice",
+            "relation_entail": "choice"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "One_vs_rest with a contrastive true/false statement per label, each excluding its nearest neighbour.",
+          "digest": "74696529a5da5895",
+          "nodes": {
+            "relation": "one_vs_rest"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "Chain of binary branch nouls; first test contradiction, then support, then explicit statement.",
+          "digest": "c487be787b1163bf",
+          "nodes": {
+            "relation": "branch",
+            "relation_support": "branch",
+            "relation_explicit": "branch"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.151768
+}

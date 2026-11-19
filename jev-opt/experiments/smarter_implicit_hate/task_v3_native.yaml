@@ -1,0 +1,60 @@
+# v3 jev-native-zero (third pre-registration): jev-native seed jev-native-2, the kind's best zero-shot TRAIN score
+# in v3-smarter-implicit-hate-P, run exactly as written: no readout, bias, cutoff/threshold fit or temperature.
+name: smarter-implicit-hate
+labels:
+  White Grievance: 'White Grievance: includes frustration over a minority groups'' perceived privilege
+    and casting majority groups as the real victims of racism. This language is linked to extremist behavior
+    and support for violence.'
+  Incitement to Violence: 'Incitement to Violence: includes flaunting in group unity and power or elevating
+    known hate groups and ideologies'
+  Inferiority Language: 'Inferiority Language: implies one group or individual is inferior to another,
+    and it can include dehumanization, denial of a person''s humanity, and toxic language that compares
+    the target with disease, insects, animals. Related to assaults on human dignity, dominance, and declarations
+    of superiority of the in group.'
+  Irony: 'Irony: refers to the use of sarcasm , humor, and satire to attack or demean a protected class
+    or individual.'
+  Stereotypes and Misinformation: 'Stereotypes And Misinformation: associate a protected class with negative
+    attributes such as crime, or terrorism. includes misinformation that feeds stereotypes and vice versa,
+    like Holocaust denial and other forms of historical negationism.'
+  Threatening and Intimidation: 'Threatening And Intimidation: conveys a speaker''s commitment to a target''s
+    pain, injury, damage, loss or violation of rights, threats related to implicit violation of rights
+    and freedoms, removal of opportunities, and more subtle forms of intimidation.'
+inputs:
+  post: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: false
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: false
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: false
+  readout_folds: 5
+  fit_parameters: false
+seed_program: seeds_v3/jev-native-2.yaml

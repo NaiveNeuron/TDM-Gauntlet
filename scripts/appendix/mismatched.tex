@@ -1,0 +1,37 @@
+\paragraph{Task.} Scientific NLI on English sentence pairs from Psychology, Engineering and Public Health articles:
+\textsc{entailment}, \textsc{reasoning}, \textsc{contrasting} or \textsc{neutral} (the first three derived from a
+deleted linking phrase at the start of Sentence2). Replaced predictor: SciBERT fine-tuned on out-of-domain MSciNLI+.
+\jev{} chooses the relation.
+
+\paragraph{Data and test set.} \texttt{test.tsv} from the Drive archive linked by the authors' repository
+(<<m:mismatched:source.code_repo>>), CC BY-SA 4.0, frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_mismatched.py} (SHA-256 <<m:mismatched:frozen.sha256|sha>>).
+$N=$ <<s:mismatched:n|int>>, the paper's full test set, balanced over domains and classes. English screen (langid,
+non-ASCII census, review of flags): <<m:mismatched:english_verification.rows_dropped|int>> rows dropped.
+
+\paragraph{Prompt.} One \textsc{choice} per pair. State = \{Sentence1, Sentence2\}. Question and option texts are the
+authors' zero-shot LLM prompt verbatim (from their code). Each option adds its class name and defining linking
+phrases (Table~11), and the instruction notes that a leading linking phrase was deleted. No exemplars. Argmax.
+<<s:mismatched:n_truncated|int>> truncated.
+
+\paragraph{Metric.} Macro-F1 over the four classes pooled over all domains, as in the authors' code (not the mean
+of domain scores).
+
+<<metrics
+cols: mismatched=Test
+macro_f1 = Macro-F1 | pct
+accuracy = Accuracy | pct
+per_class_f1.contrasting = F1 \textsc{contrasting} | pct
+per_class_f1.reasoning = F1 \textsc{reasoning} | pct
+per_class_f1.entailment = F1 \textsc{entailment} | pct
+per_class_f1.neutral = F1 \textsc{neutral} | pct
+---
+by_domain.Psychology.macro_f1 = Macro-F1 Psychology | pct
+by_domain.Engineering.macro_f1 = Macro-F1 Engineering | pct
+by_domain.Public Health.macro_f1 = Macro-F1 Public Health | pct
+>>
+<<papernums:mismatched=Overall>>
+
+\paragraph{Deviations and status.} Complete. No deviation from the released test set beyond the prompt additions
+above. \jev{} is zero-shot like the paper's zero-shot LLM rows. It over-predicts \textsc{neutral}
+(<<s:mismatched:n_pred.neutral|int>> predictions against <<s:mismatched:n_pred.reasoning|int>>--<<s:mismatched:n_pred.entailment|int>>
+for the other classes).

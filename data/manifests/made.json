@@ -1,0 +1,160 @@
+{
+  "task": "made",
+  "status": "FROZEN. scripts/prepare_made.py hierarchy + test produce prompts/made_v2.json and data/frozen/made/{test_manifest.jsonl, stats.json}; the English screen excluded 0 reports.",
+  "paper": {
+    "title": "MADE: A Living Benchmark for Multi-Label Text Classification with Uncertainty Quantification of Medical Device Adverse Events",
+    "authors": "Raunak Agarwal, Markus A. Wenzel, Simon Baur, Jonas Zimmer, George Harvey, Jackie Ma",
+    "venue": "ACL 2026 (long), pages 46308-46328",
+    "url": "https://aclanthology.org/2026.acl-long.2148/",
+    "pdf_sha256": "5130384d11ec4a21d02e2b2b362b1d45bc4d7fa6cb6d1400fdb470c44f17ecef"
+  },
+  "source": {
+    "hf_dataset": "https://huggingface.co/datasets/ragarwal/MADE-Multilabel-Benchmark",
+    "hf_revision": "2caf6fcdc07a50ccb5f0316444b187bb9310908c (lastModified 2026-07-29)",
+    "hf_access": "gated=auto (contact-sharing agreement): accept the repository's conditions on Hugging Face before downloading (a download without accepted conditions returns 403 GatedRepoError). The conditions were accepted on 2026-09-26 and the files were downloaded at the pinned revision.",
+    "hf_files": {
+      "test.jsonl": {
+        "bytes": 22069869,
+        "lfs_sha256": "7dea78fdfa43b4f7b0e01ae1e66823afcdcb1ad4237cd1b47176b287b8c4827c",
+        "sha256": "7dea78fdfa43b4f7b0e01ae1e66823afcdcb1ad4237cd1b47176b287b8c4827c"
+      },
+      "train.jsonl": {
+        "bytes": 357836581,
+        "lfs_sha256": "88a5d08f601356019d28d37e6c7642c8d6c0e8151f260a7f284107ca6a54bbdf"
+      },
+      "val.jsonl": {
+        "bytes": 77598398,
+        "lfs_sha256": "4857b2a5411c80d0c5ff1fb031574171516b7ce03eee2849ed2098f1b95c5752"
+      },
+      "labels.json": {
+        "bytes": 13482,
+        "sha256": "211da9266f3d060dcc6103abc0834fa077d170fa2ecd49f8a41011dca0b6a863"
+      },
+      "imdrf_terminology.json": {
+        "bytes": 792569,
+        "sha256": "184d1437f80be65e11eb1c63bb8eee967fcbc7c7a9073e0ce58a1866a50a7329"
+      },
+      "code_to_parent_codes.json": {
+        "bytes": 125668,
+        "sha256": "50bd69e02333962a0bf2539a66138fdf976eac830d7077d59e57385c1d30fe1a"
+      }
+    },
+    "documented_row_format": "{\"idx\": int, \"text\": \"Device Information: ...\\nEvent Type: ...\\nDescription of Event: ...\", \"labels\": [up-propagated IMDRF codes]} (GitHub README); test.jsonl 'is the 10,288-sample evaluation set'.",
+    "code_repo": "https://github.com/raunak-agarwal/made-benchmark",
+    "code_commit": "9bff3ec3b6adc3a3d56556fd00b37c3d3cef0186 (HEAD of main, 2026-07-29; MIT)",
+    "code_files_sha256": {
+      "evaluate.py": "1d3d8d3b67e32759ab7ad0e05e49fcecbc7aed1044a77a512919cf7426d16a79",
+      "head_medium_tail.json": "3b7fdbc593ecdfda9d674519d4678513da571f4a49e47168f6495771e61fa5a9"
+    },
+    "label_vocabulary": "1,154 codes = union of head_medium_tail.json buckets (head 144 / medium 481 / tail 348 / extreme tail 181 = paper Table 2 header); copied to data/frozen/made/label_buckets.json (sha256 6a3cf7a7cc3257cd01bddac74696b53d23e1a1bafb91ee89d2d91fe3a20e5e66).",
+    "label_text": {
+      "file": "IMDRF Adverse Event Terminology Release 2025, 'Annexes A-G consolidated Release2025.xlsx' (Annex approval January 2025)",
+      "url": "http://web.archive.org/web/20250316184945id_/https://www.imdrf.org/sites/default/files/2025-03/Annexes%20A-G%20consolidated%20Release2025.xlsx",
+      "sha256": "dcb6f3a8a57ea5fede88c6a3620b0e8131bf10d0dc1637e261589e7032a6d2ca",
+      "why": "The paper maps labels to 'hierarchical codes provided by the International Medical Device Regulatory Forum (IMDRF, 2025)', accessed 19-11-2025, 'as determined from official IMDRF annexes' (Section 2); the release's imdrf_terminology.json is gated. imdrf.org timed out when the file was fetched; the Wayback copy is the official file. All 1,154 codes are in Annexes A/E of Release 2025 with one consistent term/definition each. Confirmed once gated access was granted: the release's imdrf_terminology.json has identical term and definition for all 1,154 codes (0 differences), and labels.json equals the frozen vocabulary.",
+      "not_used": "FDA 'Annexes A-G August 11 2026.xlsx' (https://www.fda.gov/media/192166/download, sha256 c73f606d8ffbdcf715950cf342028b45a8008440255cd5467fa74315f2e42c76; IMDRF Release 2026) was checked: 87 of the 1,154 codes have a different term or definition than Release 2025, so it is not the paper's text."
+    }
+  },
+  "licence": "Dataset card: MIT. Content: openFDA MAUDE reports (paper App. A.1: CC0 1.0 Universal under the openFDA terms) and IMDRF terminology (freely available). Access is gated by a contact-sharing agreement, so no report text or gold is stored (respecting the gate): scripts/prepare_made.py writes only data/frozen/made/test_manifest.jsonl (idx + row SHA-256); items() rebuilds from data/raw/made/hf/test.jsonl. The IMDRF label text in prompts/made*.json comes from the public IMDRF workbook; the code paths in prompts/made_v2.json come from the release's code_to_parent_codes.json and are identical to the public workbook's CodeHierarchy paths.",
+  "split": {
+    "paper": "Table 1: test period 7/2024-6/2025 = 118,177 reports; 'Truncated test set' = 10,288, a stratified sample on which 'all evaluations' are performed (Section 2). Train 2015-2023 298,825; validation 1-6/2024 71,271.",
+    "release": "test.jsonl is documented as the 10,288-report evaluation set (GitHub README); the full 118,177-report test period is not released.",
+    "spec_uncertainty_resolution": "The paper names both counts. The scored set is the released test.jsonl = the paper's 10,288-report truncated test set (n_release 10,288 = paper Table 1), the only split with paper numbers. The 118,177-report full test period is not released.",
+    "test_n_expected": 10288,
+    "test_n_found": 10288,
+    "test_n_frozen": 10288
+  },
+  "english_only_verification": {
+    "evidence": "HF card 'language: en'; paper Limitations: 'the dataset is restricted to English'.",
+    "method": "prepare_made.py: langid.py 1.1.6 (normalised probabilities) on the event description; flag a report if the whole description is non-en, or any sentence of >= 8 words is non-en with p >= 0.99, or any non-Latin letter occurs (thresholds fixed before seeing the data). Every flagged report was read (see adjudication); only data/frozen/made/non_english.json removes rows.",
+    "performed": true,
+    "flagged": 55,
+    "excluded": 0,
+    "adjudication": "All 55 langid flags were read by an LLM (2026-09-26): citations/author lists, institutional affiliations (e.g. a German clinic name), product/lot codes, and short English descriptions misclassified by langid (per-report flags in data/frozen/made/language_screen.json). No non-English report text; 0 excluded.",
+    "effect_vs_paper_n": "none: scored N 10,288 = paper N"
+  },
+  "taxonomy": {
+    "levels": "51 top-level (3-char), 659 second-level (5-char), 444 third-level (7-char) codes; 477 A (Medical Device Problem), 677 E (Health Effects - Clinical Signs and Symptoms or Conditions).",
+    "hierarchy_v2": "prompts/made_v2.json uses the release's code_to_parent_codes.json (sha256 50bd69e0...; per code, the list of its IMDRF paths). Its paths equal the IMDRF Release 2025 workbook's CodeHierarchy paths for all 1,154 codes. 170 codes have several paths (Annex E is a DAG). parents = the nearest vocabulary code before the code on each of its paths (139 codes have more than one); ancestors = the vocabulary codes on the code's own paths (not transitive).",
+    "v1_difference": "v1 (prompts/made.json) closed ancestors transitively over all paths. It gave 5 codes an extra ancestor that the release map does not: E120203-E120206 got E03 (via E1202, which is listed under E03 and E12), and E233701 got E05 (via E2337). Parent sets, and therefore routing, are identical in v1 and v2.",
+    "gold_vs_hierarchy": "Gold was up-propagated from each coder-assigned code along its own paths (Section 2). So 36 gold sets are not closed if every gold label's ancestors are required: {'E1202 -> E03': 30, 'E2337 -> E05': 6}. For example, a report coded E120205 holds E1202 and E12 but not E03. This count is 36 under both v1 and the release map. The rule 'deepest gold codes (no gold descendant) plus their own-path ancestors' reproduces 10287 of 10288 gold sets. The exception is idx 21797525: it holds E1202 and E12 without a descendant, presumably because its coder code is outside the 1,154-code vocabulary.",
+    "routing_map": "The paper's App. A.7.1 inference shows the flat 1,154-label list with a code-prefix parent/grandparent rule, so it has no routing. Routing uses the release map's parents. A prefix-only map would misplace E1707 (listed only under E23) and drop the Annex E multi-parent paths."
+  },
+  "prompt": {
+    "file": "prompts/made_v2.json",
+    "sha256": "7bf555dc86ad6ea498544593d70d7a98b7b3fb49d8bf278760a31d32866060df",
+    "questions_identical_to": "prompts/made.json (v1, sha256 8454330d321e49b44c86078ec17029b8f6c9a059e7077f2a963795c12322db6f; kept unchanged)",
+    "generated_by": "scripts/prepare_made.py taxonomy (v1) then hierarchy (v2); deterministic",
+    "primitive": "noul per IMDRF code; hierarchical traversal via Task.next_requests",
+    "round_1_question_chars": 22756,
+    "all_questions_chars": 504158
+  },
+  "truncation": "Report text cut to its first 10,000 characters (the paper's limit for prompted models, made-benchmark prompts/README.md). 43 of 10,288 reports are longer (max 4,583,994 chars, idx 22041406, a pasted complaint table): n_truncated = 43. Token check: the largest truncated state is 2,915 cl100k tokens (10,131 UTF-8 bytes), and the largest possible question block under the per-request caps (<= 128 questions, <= 48,000 question chars) is <= 12,104 cl100k tokens. Jev's measured input_tokens on existing multi-noul runs (ttp, biorc800, legalseg) were 1.04-1.23 x cl100k of state+questions plus about 240-440 fixed tokens. Worst case: 15,019 cl100k -> about 18.9K Jev tokens; taking the byte count as the state bound (which holds for any byte-level tokenizer), about 27.8K, under 32,000. Largest request seen in the real-data simulations: 14,194 cl100k tokens.",
+  "offline_validation": "Real frozen test set (10,288 reports), no Jev calls. Gold-derived answers (0.99 on gold codes, 0.01 otherwise) through next_requests/predict: 32,220 requests (3.13 per report, at most 3 rounds, at most 119 questions per request). The predicted set equals the gold set for 10,287 of 10,288 reports (the exception is idx 21797525 +E03, see taxonomy.gold_vs_hierarchy). macro-F1 0.9827 = the ceiling of 1,134 codes with test positives out of 1,154 (codes without positives count F1 0, as in evaluate.py), J 0.99999, ECE+ 0.01. Our metric ports equal the official evaluate.py@9bff3ec on the real test file (numpy<2.4) to 0.0 absolute difference on macro-F1 (overall + 4 buckets), J, PRR, Spearman and ECE+, for both the gold-derived and a noisy answer generator (noisy: F1 0.358, J 0.322, PRR 0.613, rho -0.736, ECE+ 0.503). The earlier synthetic-release checks (items() hash verification, request serialisability, the prepare_made.py test stage) also passed.",
+  "deviations": [
+    "Label space decomposed by the IMDRF hierarchy (per-code nouls, adaptive rounds) instead of one prompt with all 1,154 labels.",
+    "Zero-shot, no kNN few-shot examples; fixed 0.5 threshold instead of per-label thresholds tuned on validation.",
+    "Label text from IMDRF Release 2025 (public workbook); confirmed identical to the release's imdrf_terminology.json.",
+    "Prompt v2 (release hierarchy) replaces v1 before any Jev run; v1 questions unchanged."
+  ],
+  "request_estimate": {
+    "note": "Adaptive, so the count depends on Jev's answers. Simulated on the real frozen test set. cl100k = tokens of JSON(state) + JSON(questions) (additive count, within 5 tokens of exact). Jev tokens = 1.1 x cl100k + 300 per request (central) or 1.23 x cl100k + 440 per request (upper), calibrated on Jev usage.input_tokens of the ttp/biorc800/legalseg runs. $0.042 per M input tokens.",
+    "floor_all_rejected": {
+      "requests": 10288,
+      "cl100k_M": 53.9,
+      "jev_tokens_M": [
+        62.4,
+        70.9
+      ],
+      "usd": [
+        2.62,
+        2.98
+      ]
+    },
+    "gold_derived_traversal": {
+      "requests": 32220,
+      "per_report": 3.13,
+      "cl100k_M": 150.2,
+      "jev_tokens_M": [
+        174.8,
+        198.9
+      ],
+      "usd": [
+        7.34,
+        8.35
+      ]
+    },
+    "noisy_over_accepting": {
+      "requests": 33066,
+      "per_report": 3.21,
+      "cl100k_M": 169.9,
+      "jev_tokens_M": [
+        196.8,
+        223.6
+      ],
+      "usd": [
+        8.27,
+        9.39
+      ]
+    },
+    "ceiling_all_accepted": {
+      "requests": 133744,
+      "per_report": 13,
+      "cl100k_M": 1231.5,
+      "jev_tokens_M": [
+        1394.8,
+        1573.6
+      ],
+      "usd": [
+        58.58,
+        66.09
+      ]
+    }
+  },
+  "freeze_steps": [
+    "uv run --with openpyxl python scripts/prepare_made.py taxonomy   -> prompts/made.json (v1), data/frozen/made/label_buckets.json",
+    "uv run --with huggingface_hub --with openpyxl python scripts/prepare_made.py hierarchy   -> prompts/made_v2.json (release hierarchy; used by the adapter)",
+    "uv run --with huggingface_hub --with langid==1.1.6 python scripts/prepare_made.py test   -> language_screen.json; with non_english.json: test_manifest.jsonl, excluded_non_english.jsonl, stats.json"
+  ],
+  "prediction_rule": "Accept a code if Jev P > 0.5. Predicted set = accepted codes plus the own-path ancestors (release map) of the deepest accepted codes, i.e. the accepted codes with no accepted descendant, which stand in for coder-assigned codes. Scores of added ancestors are raised to the deepest code's P."
+}

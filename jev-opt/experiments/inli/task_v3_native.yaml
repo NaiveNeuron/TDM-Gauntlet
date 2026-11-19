@@ -1,0 +1,54 @@
+# v3 jev-native-zero (third pre-registration): jev-native seed jev-native-2, the kind's best zero-shot TRAIN score
+# in v3-inli-P, run exactly as written: no readout, bias, cutoff/threshold fit or temperature.
+name: inli
+labels:
+  implied_entailment: 'Implicature: The hypothesis is a valid inference from the passage, but it is NOT
+    explicitly stated in the passage. Implied entailment: Requires some sort of an additional cognitive
+    step, such as logical reasoning, world knowledge, conversational pragmatics, or figurative language.'
+  explicit_entailment: 'Explicature: The hypothesis is a valid inference from the passage, and it is explicitly
+    stated in the passage. Explicit entailment: Follows directly from the text''s lexical semantics (e.g.
+    via synonymy and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging, or other endophora).'
+  neutral: 'Neutral: The hypothesis can neither be supported nor contradicted by the passage.'
+  contradiction: 'Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted
+    by the passage.'
+inputs:
+  premise: ''
+  hypothesis: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: accuracy
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: false
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: false
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: false
+  readout_folds: 5
+  readout_group: ^inli-(?:train|val|test)-(\d+)-
+  fit_parameters: false
+seed_program: seeds_v3/jev-native-2.yaml

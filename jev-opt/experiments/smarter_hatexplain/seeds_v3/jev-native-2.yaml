@@ -1,0 +1,33 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Question framed around the target of the language, with criteria stated as observable properties of `post`.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Does the language in `post` attack a group for a trait, insult or offend without attacking
+      such a group, or do neither?
+    state:
+    - post
+    options:
+      Normal:
+        criterion: 'Neither: nothing in `post` is rude, hurtful, derogatory, obscene or insulting, and
+          no group is attacked. This includes neutral or quoted mentions of groups.'
+      Offensive:
+        criterion: 'Offends, but not a group for a trait: `post` contains rude, hurtful, derogatory, obscene
+          or insulting wording meant to upset or embarrass, aimed at a person, at people in general, or
+          at no one. No group defined by race, ethnic origin, religion, disability, gender, age, sexual
+          orientation or similar trait is attacked.'
+      Hate:
+        criterion: 'Attacks a group for a trait: read in context, `post` attacks, demeans, offends, threatens
+          or insults a group defined by race, ethnic origin, religion, disability, gender, age, sexual
+          orientation or another trait. This includes insults to a person that are made because of their
+          group. Judge by context, not by the presence of particular words.'

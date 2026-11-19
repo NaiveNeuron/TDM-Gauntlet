@@ -1,0 +1,34 @@
+\paragraph{Task.} Zero-shot stance of an English tweet toward a noun-phrase or claim target:
+\textsc{favor}/\textsc{against}/\textsc{none}. Subtask~A tests unseen targets. Subtask~B has eight
+leave-one-domain-out test sets. Replaced predictor: fine-tuned BART-MNLI-ep. \jev{} chooses the stance.
+
+\paragraph{Data and freeze.} Drive archive linked from \texttt{<<m:ezstance:source.code_repo>>}
+(<<m:ezstance:source.code_commit|commit>>, archive SHA-256 <<m:ezstance:source.raw_zip_sha256|sha>>). No licence, so
+\texttt{scripts/prepare\_ezstance.py} stores only an ID + row-SHA-256 manifest. It re-downloads the archive, and
+the adapter verifies every row hash.
+
+\paragraph{Test set and English screen.} The release matches the paper's per-split $N$ (Tables~5, 13), but still
+contains non-English tweets. A langid/script/LLM screen with adjudication of every candidate excluded
+<<m:ezstance:frozen.files.data/frozen/ezstance/non_english_texts.json.n|int>> tweets (frozen hash list), i.e.\
+<<s:ezstance/subtaskA:n_excluded_non_english|int>> Subtask~A and <<s:ezstance/subtaskB:n_excluded_non_english|int>>
+Subtask~B rows. Scored $N$: A <<s:ezstance/subtaskA:n|int>>, B <<s:ezstance/subtaskB:n|int>>.
+
+\paragraph{Prompt.} One \textsc{choice} per (tweet, target). State = \{tweet, target\}. The question is routed by
+target type, which is release metadata (separate files): noun phrases use the annotator instruction of App.~C.1,
+claims the label definitions of App.~C.2 verbatim. Argmax, <<s:ezstance/subtaskA:n_truncated|int>> truncated.
+
+\paragraph{Metric.} Macro-F1 over the three classes for mixed (M), noun-phrase (NP) and claim (C) targets
+(Tables~7--8). The paper reports Subtask~B per domain only. Our single B number is the unweighted mean over the eight
+domains (derived, also for the paper's rows). B means for NP and C are
+<<s:ezstance/subtaskB:macro_f1_mean_over_domains_N|pct>> and <<s:ezstance/subtaskB:macro_f1_mean_over_domains_C|pct>>.
+
+<<metrics
+cols: ezstance/subtaskA=A; ezstance/subtaskB=B (mean)
+macro_f1 = Macro-F1 (M) | pct
+?N.macro_f1 = Macro-F1 (NP) | pct
+?C.macro_f1 = Macro-F1 (C) | pct
+>>
+<<papernums:ezstance/subtaskA=A;ezstance/subtaskB=B (mean)>>
+
+\paragraph{Deviations and status.} Complete, on the English-only subset. The paper's numbers include the excluded
+rows. <<m:ezstance:data_notes.0>> The paper's baselines are fine-tuned. \jev{} is zero-shot.

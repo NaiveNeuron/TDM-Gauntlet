@@ -1,0 +1,83 @@
+{
+  "task": "medreadme",
+  "paper": {
+    "title": "MedReadMe: A Systematic Study for Fine-grained Sentence Readability in Medical Domain",
+    "authors": "Chao Jiang, Wei Xu",
+    "venue": "EMNLP 2024 (main), pages 17293-17319",
+    "url": "https://aclanthology.org/2024.emnlp-main.958/",
+    "pdf": "https://aclanthology.org/2024.emnlp-main.958.pdf",
+    "pdf_sha256": "7b4ce1ae043235fd035ca89429cc37ae88d82b44ab5d2a150be43e5b90b0feac"
+  },
+  "source": {
+    "code_repo": "https://github.com/chaojiang06/medreadme",
+    "commit": "7c52205d18f16b80e3ffccb4e9da88b1942df310 (2025-09-01, 'Update README.md')",
+    "data_url": "https://raw.githubusercontent.com/chaojiang06/medreadme/7c52205d18f16b80e3ffccb4e9da88b1942df310/dataset/readability.csv",
+    "raw_files": {
+      "data/raw/medreadme/readability.csv": {
+        "sha256": "54082bb202d8916f296b37c9b304fd9f2c102920587ea6c346ea626be3d44ab1",
+        "rows": 4504,
+        "columns": "<unnamed row id 0..4503>,Sentence,Source,Side,Readability,split"
+      },
+      "dataset/jargon.json (repo, not used: span task out of scope)": {
+        "sha256": "426e43f8fa5b9d4fbba2c7b3fabad93f23d0ea7ccd4a45fb906e23f927ed1e1d"
+      }
+    },
+    "replaced_model_checkpoint": "https://huggingface.co/chaojiang06/medreadme_medical_sentence_readability_prediction_CWI (rev 9c01bfece9cab78e1923472effab2c01e46e4f84; RobertaForSequenceClassification, regression head)"
+  },
+  "licence": "None stated: the GitHub repo has no LICENSE file (GitHub API license=null) and the README gives none. The paper says the data is 'based on open-access medical resources' (Section 6); underlying sources mix CC-BY journals (PLOS, eLife), Cochrane and NIHR summaries, PNAS, Wikipedia (CC BY-SA) and Merck Manuals (MSD, proprietary). Treated as non-redistributable: scripts/prepare_medreadme.py writes only an ID + row SHA-256 manifest; gauntlet.tasks.medreadme.items() rebuilds sentences and ratings from data/raw and verifies every row hash.",
+  "frozen": {
+    "builder": "uv run --with langid==1.1.6 python scripts/prepare_medreadme.py (downloads the pinned CSV, verifies sha256, writes the manifest; deterministic)",
+    "files": {
+      "data/frozen/medreadme/test_manifest.jsonl": {
+        "sha256": "73fd28f97a1fcfb4d5a3c07adcf6b88a284237551f2fc9ffa65bc054923b18c7",
+        "n": 1140
+      },
+      "data/frozen/medreadme/stats.json": {
+        "sha256": "df3398c9f35e29fc01eb5c30597448b4dc4a356a4d2402ba4f33da0d9cda801b"
+      }
+    },
+    "ids": "medreadme-NNNN, NNNN = the CSV's unnamed first column (= 0-based data-row index)",
+    "row_hash": "sha256 of json.dumps(csv.DictReader row of raw strings, sort_keys=True, ensure_ascii=False, separators=(',', ':')) in UTF-8",
+    "sent_to_jev": "{sentence} only; Source, Side (complex/simple) and gold are never sent"
+  },
+  "split": {
+    "paper_statement": "Section 5 (p. 17299): 'The 4,520 sentences in our corpus is split into 2,587/784/1,140 for train, dev, and test sets.' Section 2.2 (p. 17296): 'The 1,924 sentences in the dev and test sets are double annotated'. The same split is used for readability prediction (Table 7 fine-tunes on train; alpha of the -Jar term tuned on dev; results on the test set, Section 4.2).",
+    "release": "The released CSV carries a `split` column: train 2,580 / dev 784 / test 1,140 = 4,504 rows. The authors' loader (code/sentence_readability_prediction/cwi.py) reads this column.",
+    "resolution": "Test is exactly the paper's 1,140 (and dev 784; dev+test = 1,924 as stated). The corpus total differs from the paper's 4,520: the release has 4,504, and the paper's own split sums to 4,511; the 7-row gap is entirely in train, which is not used here.",
+    "test_n": 1140,
+    "test_n_by_group": {
+      "Cochrane": 134,
+      "PNAS": 48,
+      "NIHR Series": 587,
+      "eLife": 60,
+      "PLOS Series": 253,
+      "Wiki": 32,
+      "MSD": 26
+    }
+  },
+  "gold": "Column Readability: CEFR-based 1 (easiest) .. 6 (hardest), '+'/'-' = +/-0.3 (Section 2.2, p. 17295), mean of two annotators on dev/test. Test values range 1.15-6.0 in 43 distinct values; mean 4.20.",
+  "english_verification": {
+    "metadata": "Paper: English medical texts (plain-language summaries/abstracts of English journals, English and Simple English Wikipedia, Merck Manuals consumer/professional).",
+    "method": "langid 1.1.6 (all languages, normalised probs) on every test sentence; census of non-ASCII characters; check for letters outside the Latin script. All flags inspected.",
+    "result": "langid flagged 7 sentences (medreadme-3367 es, -3368 fr, -3375 es, -3383 fr, -3406 fr, -3814 id, -4249 it), all English: four variants of one Cochrane comparison heading and three short English sentences. Non-Latin letters: Greek beta/alpha in 6 biomedical sentences (medreadme-3754, -3755, -3757, -3758, -3759, -4121). Non-ASCII otherwise typographic quotes/dashes, minus sign, one e-acute. No non-English or code-mixed rows; none dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "max_sentence_chars": 563,
+    "truncated_items": 0,
+    "duplicates": "13 test rows repeat another test sentence (short section headings such as 'Data collection and analysis', and Wiki complex/simple pairs whose sentence is identical on both sides; ratings identical within each duplicate set). 8 distinct test sentences (headings) also occur in train/dev. Kept as released: they are part of the paper's test split."
+  },
+  "metric": {
+    "primary": "pearson_mean_groups: Pearson r between predicted and gold readability per source group (Cochrane, PNAS, NIHR Series, eLife, PLOS Series, Wiki, MSD), averaged over the 7 groups (Tables 4 and 7 'Mean'); pearson_std_groups = sample SD over groups (ddof=1 reproduces the paper's '± Std', e.g. MedReadMe RoBERTa 0.833 ± 0.092).",
+    "group_definition": "NIHR and PLOS 'are aggregations of 5 sources for each' (Table 4 caption): sentences of the 5 journals are pooled into one group. The mean of the 5 journal-level correlations is the other reading; it is reported as pearson_by_source / pearson_mean_15_sources.",
+    "secondary": "spearman_by_group / spearman_mean_groups, pooled Pearson/Spearman over all 1,140, Pearson of the argmax level"
+  },
+  "offline_validation": "1,140 requests built, JSON-serialisable, 1,485-2,033 chars each (1,838,450 total). Gold-derived answers (probability split between the two adjacent levels so the expected level equals gold-1) -> Pearson 1.0 in every group, Spearman 1.0. Gaussian-noised gold (sd 0.6) -> 0.72. Uniform probabilities -> constant prediction -> correlations null (strict JSON). A one-character edit to a raw test row raises a SHA-256 mismatch.",
+  "deviations": [
+    "Zero-shot: the paper's LLM prompt (Appendix H, Table 15) is used verbatim minus its five dev-set examples; GPT-4 and Llama-3 in Table 7 are 5-shot.",
+    "Prediction is 1 + expected level under Jev's 6-level probabilities (continuous), since the gold is a continuous two-annotator mean; the paper's LLM baselines output a single rating.",
+    "Paper's supervised numbers are averages over five training runs; Jev is a single deterministic pass.",
+    "NIHR/PLOS groups pooled (Table 4 caption reading); journal-level mean reported as secondary."
+  ],
+  "replaced_model_check": "Offline sanity check of the scorer (not a Jev call): the authors' released checkpoint (HF rev 9c01bfe, run on CPU with transformers 4.46.3, max_length 512) scored with this adapter gives pearson_mean_groups 0.820 +/- 0.098 (Cochrane .848, PNAS .697, NIHR .865, eLife .879, PLOS .838, Wiki .673, MSD .938; pooled Pearson .880), vs. the paper's Table 7 MedReadMe RoBERTa-large 0.833 +/- 0.092 (5-run average). The released single checkpoint is not the exact Table 7 model (per-group values differ), so this confirms split and metric scale, not the NIHR/PLOS pooling choice (journal-mean reading gives NIHR .840, PLOS .741). Predictions kept in data/raw/medreadme/checkpoint_test_preds.json (gitignored)."
+}

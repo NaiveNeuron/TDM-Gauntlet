@@ -1,0 +1,65 @@
+{
+  "task": "edit_intent",
+  "paper": {
+    "title": "Are Large Language Models Good Classifiers? A Study on Edit Intent Classification in Scientific Document Revisions",
+    "authors": "Qian Ruan, Ilia Kuznetsov, Iryna Gurevych",
+    "venue": "EMNLP 2024 (main), pages 15049-15067",
+    "url": "https://aclanthology.org/2024.emnlp-main.839/",
+    "pdf_sha256": "800a291f515bf4bbeafb6289e005171c048af88fdf5ef24f011ebe20c9107b73"
+  },
+  "label_definition_source": {
+    "title": "Re3: A Holistic Framework and Dataset for Modeling Collaborative Document Revision (Ruan, Kuznetsov, Gurevych), ACL 2024, pages 4635-4655",
+    "url": "https://aclanthology.org/2024.acl-long.255/",
+    "pdf_sha256": "81b14569e835eff1c6ba6073cd15073d50a3d62523d9a25de898a886d10ba8b0",
+    "used": "Table 15 edit intent definitions (p. 4655), Table 11 EIC prompt (p. 4652), Section 5 add/delete observation (p. 4639)",
+    "code_repo": "https://github.com/UKPLab/re3 @ a312f93819e193c678af965d2cd161534ff7f59b (inspected only; not needed for the split)"
+  },
+  "source": {
+    "repo": "https://github.com/UKPLab/emnlp2024-llm-classifier",
+    "commit": "a714eb12bd20846bf373ad3c2800972e79658e71",
+    "licence": "Re3-Sci annotations CC-BY-NC 4.0 (Re3 paper p. 4644 and EMNLP paper Ethics statement; source corpora F1000RD and NLPeer ARR-22 also CC-BY-NC 4.0); code Apache-2.0. Non-commercial research redistribution of the frozen test file with attribution is permitted.",
+    "files": {
+      "data/Re3-Sci/tasks/edit_intent_classification/test.csv": {"sha256": "e784711574d82b73425396f42a636997371326c22e2e4f69fbf3ba00a73b471b", "bytes": 780755, "rows": 2312},
+      "data/Re3-Sci/tasks/edit_intent_classification/train.csv": {"sha256": "134d436556c906a7787c181e1cef282fd8b19aa13d7a2012cc431cbe87232a0e", "bytes": 2538583, "rows": 7478},
+      "data/Re3-Sci/tasks/edit_intent_classification/val.csv": {"sha256": "02cc9ce4a1c8c163514cf291dd2c498950b0711f934ec95565c84839a38944cd", "bytes": 589853, "rows": 1776}
+    },
+    "fields": "edit_index, id (node_ix_src===node_ix_tgt), doc_name, node_ix_src (new sentence id), node_ix_tgt (old sentence id), text_src (new sentence; empty for deletions), text_tgt (old sentence; empty for additions), label",
+    "split_provenance": "The paper's fine-tuning scripts load exactly these three CSVs (tasks/task_data_loader.py: load_dataset('csv', keep_default_na=False); test_type='test'). The full Re3-Sci release on TUdatalib (https://tudatalib.ulb.tu-darmstadt.de/handle/tudatalib/4300) was not downloaded: it is behind a bot challenge for curl and is not needed, since the split files are in the paper's code repo."
+  },
+  "frozen": {
+    "path": "data/frozen/edit_intent/test.jsonl",
+    "sha256": "58f506d00fc5be0f5ea821e23fb090ab1534b24db9c2b2f737026615f9a27ebd",
+    "builder": "scripts/prepare_edit_intent.py",
+    "fields": "id (re3sci-test-<edit_index>), edit_index, pair_id (release `id`), doc_name, node_ix_old, node_ix_new (not sent to Jev), old_text (= text_tgt), new_text (= text_src), edit_action (derived: Modify if both non-empty, Add if old empty, Delete if new empty), gold (= label). File order preserved; verified identical to the authors' pandas keep_default_na=False loading.",
+    "n": 2312,
+    "label_counts": {"Fact/Evidence": 1044, "Clarity": 520, "Grammar": 356, "Claim": 325, "Other": 67},
+    "action_counts": {"Modify": 1384, "Add": 651, "Delete": 277},
+    "label_by_action": {
+      "Modify": {"Grammar": 356, "Clarity": 520, "Fact/Evidence": 417, "Claim": 68, "Other": 23},
+      "Add": {"Fact/Evidence": 424, "Claim": 200, "Other": 27},
+      "Delete": {"Fact/Evidence": 203, "Claim": 57, "Other": 17}
+    }
+  },
+  "test_n_resolution": "Test N = 2,312, exactly as stated in the EMNLP paper Section 4.1 (p. 15053: 'training, validation, and test sets with 7,478/1,776/2,312 edits'). Train 7,478 and val 1,776 also match; total 11,566 = paper's 'comprises 11,566 high-quality human-labeled sentence edits from 314 document revisions'. Splits are document-disjoint (206/46/62 documents; 0 shared doc_name between test and train or val). Test docs: 37 NLPeer ARR-22 papers (1,495 edits) + 25 F1000RD papers (817 edits).",
+  "english_verification": {
+    "metadata": "Re3-Sci is built from F1000RD (F1000Research, English-language journal) and the ARR-22 subset of NLPeer (ACL Rolling Review submissions, English); neither paper mentions other languages.",
+    "method": "langid (all languages enabled) on every non-empty test sentence (3,696 texts: 2,035 new + 1,661 old); regex scan for characters outside Latin/Greek/math/punctuation blocks; all flagged texts inspected.",
+    "result": "3,661/3,696 texts classified 'en'. The 35 non-'en' flags (la 14, it 9, da 2, es 2, ro 2, de/sv/fi/el/no/fr 1 each) are all English: short section headings ('Experiments', 'Implementation Details.', 'Data availability', 'Seurat interaction'), citation-heavy sentences, and math/unit-heavy sentences. The single non-Latin-script hit is a LaTeX-extraction glyph in an English sentence ('(j \u0338= k)'). No non-English or code-mixed rows; no rows dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "both_sides_empty": 0,
+    "identical_old_new": 0,
+    "duplicate_edit_index": 0,
+    "test_old_new_pairs_identical_to_a_train_or_val_pair": 12,
+    "max_sentence_chars": 1667,
+    "max_state_json_chars": 1724,
+    "truncated_items": 0,
+    "addition_deletion_labels_in_train_val": "Add/Delete items in train+val (3,398) are only Fact/Evidence, Claim or Other (0 Grammar, 0 Clarity)"
+  },
+  "deviations": [
+    "None from the released test split: all 2,312 edits, verbatim text, released gold labels.",
+    "Jev sees the same text-only input as the paper's classifiers (old sentence, new sentence), plus an explicit edit_action field (Modify/Add/Delete) derived deterministically from which side is empty; no document context (the paper's models get none).",
+    "Additions/deletions (928 test items) are asked with a three-label question (Fact/Evidence, Claim, Other) instead of all five labels. Justification is a priori: Re3 Section 5 (p. 4639) states sentence additions/deletions 'are never intended for superficial language enhancement', the Grammar/Clarity definitions describe changes to existing wording, and 0/3,398 train+val additions/deletions carry Grammar or Clarity. Metrics are still computed over all five labels on all 2,312 items."
+  ]
+}

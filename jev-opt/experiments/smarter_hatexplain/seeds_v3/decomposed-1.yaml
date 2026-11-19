@@ -1,0 +1,48 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; first decide whether the post is clean or abusive, then split abusive posts by whether the target is a group defined by a protected trait.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Does the social media post in `post` use abusive language? `post` is lowercased and
+      tokenised, with placeholders such as <user> and <number>.
+    state:
+    - post
+    options:
+      clean:
+        criterion: The `post` uses no rude, hurtful, derogatory, obscene or insulting language, and it
+          does not attack, demean, threaten or insult any person or group. Strong opinions, news or neutral
+          mentions of groups belong here.
+        to:
+          label: Normal
+      abusive:
+        criterion: The `post` uses rude, hurtful, derogatory, obscene or insulting language, or it attacks,
+          demeans, offends, threatens or insults a person or group. Judge the context a word is used in,
+          not the bare presence of the word.
+        to:
+          node: label_target
+  label_target:
+    kind: choice
+    instructions: 'Who or what does the abusive language in `post` attack: a group defined by a trait,
+      or something else?'
+    state:
+    - post
+    options:
+      Offensive:
+        criterion: The rude, obscene or insulting language in `post` targets an individual (for example
+          a <user>) or no one in particular. It does not attack a group based on race, ethnic origin,
+          religion, disability, gender, age, sexual orientation or another trait.
+      Hate:
+        criterion: The `post` attacks, demeans, offends, threatens or insults a group based on race, ethnic
+          origin, religion, disability, gender, age, sexual orientation or another trait. This includes
+          attacking a person because of their membership in such a group. A slur used only casually, with
+          no group being attacked in context, belongs to Offensive instead.

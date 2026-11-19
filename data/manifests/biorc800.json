@@ -1,0 +1,72 @@
+{
+  "tasks": ["biorc800", "biorc800/dev"],
+  "task_roles": {
+    "biorc800": "scored test split (160 abstracts)",
+    "biorc800/dev": "released dev split, used ONLY to fit the paper's per-label thresholds for the secondary 'dev_tuned' protocol; not a reported result"
+  },
+  "paper": {
+    "title": "Multi-label Sequential Sentence Classification via Large Language Model",
+    "authors": "Mengfei Lan, Lecheng Zheng, Shufan Ming, Halil Kilicoglu",
+    "venue": "Findings of EMNLP 2024, pages 16086-16104",
+    "url": "https://aclanthology.org/2024.findings-emnlp.944/",
+    "pdf_sha256": "3d5b779f98a8b79e7e9e7a539d5db0155562cfb278f4571e9c13253679ef1200"
+  },
+  "source": {
+    "code_repo": "https://github.com/ScienceNLP-Lab/LLM-SSC",
+    "commit": "ae0986672ce1794c6edab028607a6fd88ab9ed28 (2025-10-26, HEAD at 2026-09-26); data_llm/biorc800/*.jsonl unchanged since e739283 (2024-10-02)",
+    "files": {
+      "data_llm/biorc800/test.jsonl": {"url": "https://raw.githubusercontent.com/ScienceNLP-Lab/LLM-SSC/ae0986672ce1794c6edab028607a6fd88ab9ed28/data_llm/biorc800/test.jsonl", "sha256": "3ee098dd04b1854c9a8a28d6327bda8586ab097baa4a9db27537f19d15fa3a1f", "abstracts": 160, "sentences": 1579},
+      "data_llm/biorc800/dev.jsonl": {"url": "https://raw.githubusercontent.com/ScienceNLP-Lab/LLM-SSC/ae0986672ce1794c6edab028607a6fd88ab9ed28/data_llm/biorc800/dev.jsonl", "sha256": "eeeb6fe22bfd50829490e9a5a8db721a1e74f49b908450c752c76735168ad264", "abstracts": 159, "sentences": 1590},
+      "data_llm/biorc800/train.jsonl": {"sha256": "f1683c199d9828e6e44f0da4c44a2e7568aed31b6c87075575b74d06f271ea68", "abstracts": 480, "sentences": 4735, "note": "not used"}
+    },
+    "row_format": "{abstract_id: str (PMID or PMC id), sentences: [str], labels: [[str]] (one non-empty label list per sentence, uppercase BACKGROUND/OBJECTIVE/METHODS/RESULTS/CONCLUSIONS/OTHER), stru_unstru: 'stru'|'unstru'}",
+    "annotation_guideline": {
+      "url": "https://docs.google.com/document/d/1hTlVTP0_3IW3ezXuCJtkz_j_Bv1rdMt2/ (linked from the LLM-SSC README; export?format=txt)",
+      "txt_sha256": "9003c4a11fbd0b307d0920062ff149ac30c1cf4ca26817f23d080dea5e717687",
+      "title": "Guidelines for annotating sequential categories of PubMed RCT abstracts (Third Round)",
+      "note": "Introduction and Points-to-Note text matches paper Appendix B (pp. 16097-16101). Google export bytes may not be stable; the quoted text is frozen in prompts/biorc800.json."
+    },
+    "licence": "None stated: the repo has no LICENSE file (GitHub API license=null) and the README states no data terms. Abstracts come from the PubMed Central Open Access subset (paper Section 3.1), whose articles carry mixed licences. Because the release grants no redistribution right, rows are NOT copied into data/frozen; only an ID + row SHA-256 manifest is frozen and items are rebuilt from data/raw."
+  },
+  "frozen": {
+    "builder": "uv run python scripts/prepare_biorc800.py (downloads the two files at the pinned commit to data/raw/biorc800/release/, checks SHA-256, writes manifests; deterministic, verified by two identical runs)",
+    "form": "ID + SHA-256 manifest; gauntlet.tasks.biorc800.items() rebuilds from data/raw and verifies every row hash and id",
+    "row_hash": "sha256 of json.dumps(released_row_dict, sort_keys=True, ensure_ascii=False, separators=(',', ':')) in UTF-8",
+    "ids": "item id = released abstract_id (unique across all 799 released abstracts)",
+    "manifests": {
+      "data/frozen/biorc800/test/manifest.jsonl": {"sha256": "6ac50df22d75ded222f43f498b028ef52336571866bf64594f1f5bf77a657242", "n": 160, "sentences": 1579},
+      "data/frozen/biorc800/dev/manifest.jsonl": {"sha256": "52664ca85c4ba3227e0fe511676b6a4c7df318e573f7c5e20b61831a0ef96891", "n": 159, "sentences": 1590}
+    },
+    "dev_thresholds": "data/frozen/biorc800/dev_thresholds.json, written by `scripts/prepare_biorc800.py fit-thresholds` from the biorc800/dev run (runs/biorc800/dev/predictions.jsonl) and fixed before the test run; not part of the frozen manifests",
+    "prompt": {"file": "prompts/biorc800.json", "sha256": "f9c8c0794fe1d9bddee35bd9e9a96a12845d6adfb8c13270c318202faaf2069c"},
+    "sent_to_jev": "state = {annotation_guideline (verbatim guideline text), abstract: [{sentence: k, text}]}; one noul per (sentence, label). stru_unstru and labels are never sent. Structured abstracts carry no section headings in the released sentences."
+  },
+  "test_n_resolution": "Release test = 160 abstracts / 1,579 sentences, 20 structured + 140 unstructured; label counts BACKGROUND 219, OBJECTIVE 164, METHODS 465, RESULTS 565, CONCLUSIONS 217, OTHER 22 (1,652 labels); all equal paper Table 6 (p. 16103) exactly, and 1,579 / 160 = 9.87 sentences per abstract = Table 6. 71 multi-label test sentences (69 two-label, 2 three-label). Train (480 abstracts) also matches Table 6 label counts exactly. The dev file has 159 abstracts / 1,590 sentences, one fewer than the paper's 160 (Table 6 dev counts are higher by B4 O1 M1 R1 C1), so the release totals 799 abstracts / 7,904 sentences vs the paper's 800 / 7,911; the missing abstract is a dev abstract, so the test set is complete. Multi-label sentences over the release: 263 train + 117 dev + 71 test = 451 vs 452 in Table 1 (the missing dev abstract).",
+  "english_verification": {
+    "metadata": "PubMed/PMC OA abstracts of English-language RCT reports; the paper describes an English annotation effort.",
+    "method": "langid 1.1.6 (all languages) on each of the 1,579 test sentences and on each full abstract; census of non-ASCII characters; every flag inspected.",
+    "result": "0 of 160 abstracts flagged. 7 sentences flagged (abstract ID, sentence, langid language), all English: 29954327 s16 (fr); 3823649 s8 (sk); 7541377 s10 (ro); 5702514 s1 (fr); 5244388 s7 (sk); 7432632 s9 (de); 5328395 s12 (sk). Four of them (3823649 s8, 5244388 s7, 7432632 s9, 5328395 s12) are trial-registration lines. The test file contains no non-ASCII characters. No rows dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "max_sentences_per_abstract": 19,
+    "max_sentence_chars": 658,
+    "max_abstract_chars": 2822,
+    "truncated_items": 0,
+    "empty_sentences": 0,
+    "sentences_without_label": 0,
+    "requests": "164 test requests: 156 abstracts in one request, 4 abstracts (>90K request chars) split into 2 sentence chunks each (frozen MAX_REQUEST_CHARS rule). Dev: 159 requests, none split.",
+    "guideline_example_leakage": "All sentences used as examples in the Google-Doc guideline come from train abstracts (checked by normalized string match against all splits). The paper's Appendix D example PMID 7231017 and the Figure 2 1-shot query (statin meta-analysis, abstract 5895306) are TEST abstracts; neither is used in the prompt."
+  },
+  "metric": {
+    "primary": "micro-F1 and macro-F1 (Table 3), sklearn f1_score on the 1,579 x 6 sentence-label indicator matrix, as in the release's evaluation(); zero_division=0",
+    "prediction_rule": "labels with Jev P(yes) >= 0.5 (fixed a priori); if none, arg-max label (release predict_thresholds)",
+    "secondary": "dev_tuned: the paper's per-label dynamic thresholds fit on dev (release find_best_thresholds); per-label F1/AUC, weighted F1, P/R, exact match"
+  },
+  "deviations": [
+    "Zero-shot Jev with a fixed 0.5 threshold is primary; the paper's LLM-SSC is LoRA-tuned Gemma-2b with 1-shot demonstrations and dev-tuned per-label thresholds. The dev-tuned-threshold protocol is reported as secondary (needs the biorc800/dev run first).",
+    "Released dev split has 159 of the paper's 160 abstracts; affects only the threshold fit, not the test set.",
+    "Annotation guideline included verbatim minus spreadsheet mechanics and multi-sentence worked examples (train abstracts), to stay zero-shot.",
+    "Four long test abstracts are asked in two requests (contiguous sentence halves, same full-abstract state) to stay well inside the 32K-token context; answers are independent per question, so context is unchanged."
+  ]
+}

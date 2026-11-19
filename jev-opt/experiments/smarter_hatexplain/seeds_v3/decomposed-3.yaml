@@ -1,0 +1,36 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Branch nouls; first ask about a group attack (hate), then ask about offensive language among the rest.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: branch
+    condition: In context, the `post` attacks, demeans, offends, threatens or insults a group of people
+      based on race, ethnic origin, religion, disability, gender, age, sexual orientation or another trait.
+      A slur or group name that appears without an attack on that group does not count.
+    state:
+    - post
+    if_true:
+      label: Hate
+    if_false:
+      node: label_offensive
+    threshold: 0.5
+  label_offensive:
+    kind: branch
+    condition: The `post` uses rude, hurtful, derogatory, obscene or insulting language to upset or embarrass
+      people.
+    state:
+    - post
+    if_true:
+      label: Offensive
+    if_false:
+      label: Normal
+    threshold: 0.5

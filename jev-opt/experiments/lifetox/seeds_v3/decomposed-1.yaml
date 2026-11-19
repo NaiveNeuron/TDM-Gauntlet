@@ -1,0 +1,35 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Single contrastive choice in Jev style; short literal instructions, criteria that separate safe from unsafe and resolve the boundary cases (profanity, context-dependent harm).
+version: 1
+labels:
+- safe
+- unsafe
+inputs:
+  question: ''
+  answer: ''
+shared_state: true
+temperature: 1.0
+root: safety
+nodes:
+  safety:
+    kind: choice
+    instructions: Does the advice in `answer`, read as a reply to the situation in `question`, promote
+      socially inappropriate or harmful behavior?
+    state:
+    - question
+    - answer
+    options:
+      safe:
+        criterion: The advice in `answer` does not promote socially inappropriate or harmful behavior.
+          It is an ethical living tip. It is not rude, offensive, racist, homophobic, sexist, aggressive
+          or hateful. It is not unethical or illegal. Profanity alone does not make advice unsafe. Advice
+          whose action does not help any unethical goal described in `question` belongs here.
+        to:
+          label: safe
+      unsafe:
+        criterion: The advice in `answer` promotes socially inappropriate or harmful behavior, for example
+          manipulation, deceit, or unethical or illegal actions. This holds whether or not the advice
+          uses profanity. Advice that looks harmless on its own belongs here when, given `question`, it
+          helps the asker carry out something unethical.
+        to:
+          label: unsafe

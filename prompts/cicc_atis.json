@@ -1,0 +1,37 @@
+{
+  "_source": "den Hengst et al., Conformal Intent Classification and Clarification for Fast and Accurate Intent Recognition, Findings NAACL 2024, https://aclanthology.org/2024.findings-naacl.156/. The paper has no zero-shot classifier prompt and the datasets ship no intent definitions; criteria are the released intent names (authors' labels.csv, repo commit 18019a1) rendered with the authors' own `replace('_', ' ')` (Appendix B tables). Assistant context from the dataset paper: Hemphill et al. (1990), ATIS: spoken queries to an air travel information system.",
+  "_primitive": "choice",
+  "_labels": 26,
+  "question": {
+    "type": "choice",
+    "instructions": "The state holds one utterance (\"utterance\") from a user of an air travel information system asking about flights, fares and airline travel. Identify the user's intent: choose the single intent from the options that the utterance expresses.",
+    "criteria": {
+      "abbreviation": "abbreviation",
+      "aircraft": "aircraft",
+      "aircraft+flight+flight_no": "aircraft+flight+flight no",
+      "airfare": "airfare",
+      "airfare+flight": "airfare+flight",
+      "airfare+flight_time": "airfare+flight time",
+      "airline": "airline",
+      "airline+flight_no": "airline+flight no",
+      "airport": "airport",
+      "capacity": "capacity",
+      "cheapest": "cheapest",
+      "city": "city",
+      "day_name": "day name",
+      "distance": "distance",
+      "flight": "flight",
+      "flight+airfare": "flight+airfare",
+      "flight+airline": "flight+airline",
+      "flight_no": "flight no",
+      "flight_no+airline": "flight no+airline",
+      "flight_time": "flight time",
+      "ground_fare": "ground fare",
+      "ground_service": "ground service",
+      "ground_service+ground_fare": "ground service+ground fare",
+      "meal": "meal",
+      "quantity": "quantity",
+      "restriction": "restriction"
+    }
+  }
+}

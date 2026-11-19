@@ -1,0 +1,28 @@
+\paragraph{Task.} Readability of single English sentences from medical texts. The gold label is a continuous
+CEFR-based rating (the mean of two annotators). The replaced predictor is the paper's fine-tuned RoBERTa-large
+regressor (Table~7). \jev{}'s expected level on the paper's key is the prediction.
+
+\paragraph{Data and test set.} Data: <<m:medreadme:source.code_repo|url>> at
+<<m:medreadme:source.commit|commit>> (\texttt{readability.csv}, SHA-256
+<<m:medreadme:source.raw_files.data/raw/medreadme/readability.csv.sha256|sha>>). The release has no licence
+and includes proprietary sources, so the prepare script stores only an ID + row-SHA-256 manifest. The test set is the
+paper's exact split, taken from the release's \texttt{split} column: $N=$ <<s:medreadme:n|int>>. The language
+screen dropped <<m:medreadme:english_verification.rows_dropped|int>> rows.
+
+\paragraph{Prompt and metric.} One \textsc{Score} question over the <<q:medreadme:question.criteria|len>> CEFR
+levels, with state \{sentence\}. The instruction and level descriptions are verbatim from the paper's LLM
+prompt (Table~15), without its dev-set examples. The prediction is $1+$ the expected level. The metric is
+Pearson $r$ within each of the <<s:medreadme:n_by_group|len>> source groups, averaged over groups. The NIHR and PLOS journals are pooled,
+following the Table~4 caption.
+<<metrics
+cols: medreadme=Test
+pearson_mean_groups = Pearson, mean of groups | pct
+pearson_std_groups = \quad sd over groups | pct
+pearson_mean_15_sources = Pearson, mean of journals | pct
+pearson_pooled = Pearson, pooled | pct
+>>
+<<papernums:medreadme=Test>>
+
+\paragraph{Deviations and status.} Complete. The paper's LLM rows are 5-shot and its supervised rows are
+means over several training runs, whereas \jev{} is zero-shot and makes a single pass. Running the authors' released
+checkpoint through our scorer gives a value close to the paper's (manifest \texttt{replaced\_model\_check}).

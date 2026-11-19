@@ -1,0 +1,48 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Guideline-aware version; the instructions carry the special event rules, and the criteria say how those rules map to options.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Give the temporal relation of Event 1 (<e1> in `context`, word `event_1`) to Event 2
+      (<e2> in `context`, word `event_2`), in that order. Treat modal, conditional, negated and hypothetical
+      events as if they occur. A property of a person or event lasts as long as that entity. Choose a
+      specific relation only if the writer clearly intends it (80% confidence).
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 is over before or exactly when Event 2 starts. There is no shared time, which
+          separates BEFORE from INCLUDES, IS_INCLUDED and SIMULTANEOUS.
+      AFTER:
+        criterion: Event 1 starts after or exactly when Event 2 is over. There is no shared time, which
+          separates AFTER from INCLUDES, IS_INCLUDED and SIMULTANEOUS.
+      INCLUDES:
+        criterion: Event 2 lies within Event 1, including Event 2 marking the start or end of Event 1.
+          This also covers Event 2 being an aspectual or manner event of the broader Event 1. Event 1
+          is the broader event.
+      IS_INCLUDED:
+        criterion: Event 1 lies within Event 2, including Event 1 marking the start or end of Event 2.
+          This also covers Event 1 being an aspectual or manner event of the broader Event 2. Event 2
+          is the broader event.
+      SIMULTANEOUS:
+        criterion: The two events cover the same interval, with neither one broader than the other.
+      VAGUE:
+        criterion: No specific relation is clearly intended by the writer. This also applies when exactly
+          one of the two events is generic (habitual or general) and the other is a specific occurrence.

@@ -1,0 +1,64 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Describe the levels by the proportion of the essay's body paragraphs that are relevant, explained and exemplified, using observable wording such as none, few, half, most and all.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: content
+nodes:
+  content:
+    kind: score
+    instructions: 'Rate the content of the `essay`, written in answer to `essay_prompt`. For each body
+      paragraph, check three things: is it relevant to the argument, is it developed with explanation,
+      and is it supported with an example. Rate content only. Ignore language and organization.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - No paragraph of the `essay` is relevant to an argument on `essay_prompt`.
+    - The `essay` is relevant to `essay_prompt`, but no paragraph contains a reason. There is only an
+      opinion or a restatement of the prompt.
+    - Paragraphs of the `essay` contain reasons, but none is explained or supported by an example.
+    - A few paragraphs of the `essay` explain a reason or give an example. The rest are bare claims or
+      off the argument.
+    - About half of the paragraphs of the `essay` are relevant, explained and supported by an example.
+      The others are thin.
+    - Most paragraphs of the `essay` are relevant and explained, but their examples are general or missing
+      in places.
+    - Most paragraphs of the `essay` are relevant, explained and supported by specific examples. One paragraph
+      is clearly weaker.
+    - All paragraphs of the `essay` are relevant, explained and supported by examples. One example or
+      reason is less strong than the rest.
+    - All paragraphs of the `essay` are well-developed and relevant to the argument, with strong reasons
+      and specific examples.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

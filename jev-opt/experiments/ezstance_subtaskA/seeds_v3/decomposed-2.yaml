@@ -1,0 +1,71 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Two-level hierarchy where a branch first decides whether any stance is expressed, and a second branch then decides its polarity.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: branch
+    condition: The author of `tweet` takes a clear position, either for or against, toward the noun-phrase
+      `target`, rather than being neutral toward it.
+    state:
+    - tweet
+    - target
+    if_true:
+      node: stance_np_polarity
+    if_false:
+      label: NONE
+    threshold: 0.5
+  stance_np_polarity:
+    kind: branch
+    condition: The author of `tweet` is in favor of `target`. The statement is false if the author is
+      against `target`.
+    state:
+    - tweet
+    - target
+    if_true:
+      label: FAVOR
+    if_false:
+      label: AGAINST
+    threshold: 0.5
+  stance:
+    kind: branch
+    condition: Based solely on `tweet`, we can know that the author definitely supports or definitely
+      opposes the point or message of the claim in `target`.
+    state:
+    - tweet
+    - target
+    if_true:
+      node: stance_polarity
+    if_false:
+      label: NONE
+    threshold: 0.5
+  stance_polarity:
+    kind: branch
+    condition: The author of `tweet` supports the point or message of the claim in `target`. The statement
+      is false if the author opposes it.
+    state:
+    - tweet
+    - target
+    if_true:
+      label: FAVOR
+    if_false:
+      label: AGAINST
+    threshold: 0.5

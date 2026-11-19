@@ -1,0 +1,15 @@
+{"id": "val-001", "message": "The lid was cracked on arrival.", "label": "complaint"}
+{"id": "val-002", "message": "Great headphones, I love the sound.", "label": "praise"}
+{"id": "val-003", "message": "How long does the battery last?", "label": "question"}
+{"id": "val-004", "message": "Delivery was late and the box was damaged.", "label": "complaint"}
+{"id": "val-005", "message": "Thanks for the excellent help!", "label": "praise"}
+{"id": "val-006", "message": "Where do I send the warranty card?", "label": "question"}
+{"id": "val-007", "message": "I am disappointed, please refund me.", "label": "complaint"}
+{"id": "val-008", "message": "Perfect fit, I am so happy.", "label": "praise"}
+{"id": "val-009", "message": "When does the sale end?", "label": "question"}
+{"id": "val-010", "message": "Awful smell, worst toaster I have owned.", "label": "complaint"}
+{"id": "val-011", "message": "Wonderful design, fantastic battery.", "label": "praise"}
+{"id": "val-012", "message": "Does the lamp need a special bulb?", "label": "question"}
+{"id": "val-013", "message": "The handle is broken already.", "label": "complaint"}
+{"id": "val-014", "message": "Amazing speed, delighted with this laptop.", "label": "praise"}
+{"id": "val-015", "message": "Which size should I order?", "label": "question"}

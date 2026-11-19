@@ -1,0 +1,587 @@
+{
+ "contempo-tbdense": {
+  "n": {
+   "fit": 400,
+   "val": 629,
+   "test": 1427
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 1214775
+   },
+   "seed.val": {
+    "requests": 629,
+    "chars": 1884427
+   },
+   "seed.test": {
+    "requests": 1427,
+    "chars": 4367270
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 412775
+   },
+   "top-single.val": {
+    "requests": 629,
+    "chars": 623282
+   },
+   "top-stacked.fit": {
+    "requests": 400,
+    "chars": 1623175
+   },
+   "top-stacked.val": {
+    "requests": 629,
+    "chars": 2526636
+   },
+   "top-single.test": {
+    "requests": 1427,
+    "chars": 1506135
+   },
+   "top-stacked.test": {
+    "requests": 1427,
+    "chars": 5824237
+   }
+  }
+ },
+ "ezstance-subtaskA": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 7666
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 403346
+   },
+   "seed.val": {
+    "requests": 1000,
+    "chars": 1030024
+   },
+   "seed.test": {
+    "requests": 7665,
+    "chars": 7881809
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 821466
+   },
+   "top-single.val": {
+    "requests": 1000,
+    "chars": 1936516
+   },
+   "top-stacked.fit": {
+    "requests": 320,
+    "chars": 636740
+   },
+   "top-stacked.val": {
+    "requests": 702,
+    "chars": 1382281
+   },
+   "top-single.test": {
+    "requests": 7665,
+    "chars": 14746170
+   },
+   "top-stacked.test": {
+    "requests": 5236,
+    "chars": 10373552
+   }
+  }
+ },
+ "smarter-implicit-hate": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 900
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 869391
+   },
+   "seed.val": {
+    "requests": 1000,
+    "chars": 2168486
+   },
+   "seed.test": {
+    "requests": 900,
+    "chars": 1954573
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 1099589
+   },
+   "top-single.val": {
+    "requests": 1000,
+    "chars": 2734643
+   },
+   "top-stacked.fit": {
+    "requests": 800,
+    "chars": 1325780
+   },
+   "top-stacked.val": {
+    "requests": 2000,
+    "chars": 3295129
+   },
+   "top-single.test": {
+    "requests": 900,
+    "chars": 2470226
+   },
+   "top-stacked.test": {
+    "requests": 1800,
+    "chars": 2977599
+   }
+  }
+ },
+ "edit-intent": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 2312
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 813419
+   },
+   "seed.val": {
+    "requests": 997,
+    "chars": 2027084
+   },
+   "seed.test": {
+    "requests": 2298,
+    "chars": 4681286
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 1040349
+   },
+   "top-single.val": {
+    "requests": 997,
+    "chars": 2533371
+   },
+   "top-stacked.fit": {
+    "requests": 400,
+    "chars": 614115
+   },
+   "top-stacked.val": {
+    "requests": 997,
+    "chars": 1528329
+   },
+   "top-single.test": {
+    "requests": 2298,
+    "chars": 6170482
+   },
+   "top-stacked.test": {
+    "requests": 2298,
+    "chars": 3530252
+   }
+  }
+ },
+ "inli": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 4000
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 645370
+   },
+   "seed.val": {
+    "requests": 999,
+    "chars": 1612573
+   },
+   "seed.test": {
+    "requests": 3997,
+    "chars": 6465908
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 499370
+   },
+   "top-single.val": {
+    "requests": 999,
+    "chars": 1247938
+   },
+   "top-stacked.fit": {
+    "requests": 925,
+    "chars": 3537361
+   },
+   "top-stacked.val": {
+    "requests": 2248,
+    "chars": 8754185
+   },
+   "top-single.test": {
+    "requests": 3997,
+    "chars": 5007003
+   },
+   "top-stacked.test": {
+    "requests": 8994,
+    "chars": 35108982
+   }
+  }
+ },
+ "dress-new-content": {
+  "n": {
+   "fit": 400,
+   "val": 376,
+   "test": 401
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 1312511
+   },
+   "seed.val": {
+    "requests": 372,
+    "chars": 1203779
+   },
+   "seed.test": {
+    "requests": 400,
+    "chars": 1308250
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 7866235
+   },
+   "top-single.val": {
+    "requests": 376,
+    "chars": 7285052
+   },
+   "top-stacked.fit": {
+    "requests": 800,
+    "chars": 14911432
+   },
+   "top-stacked.val": {
+    "requests": 752,
+    "chars": 13816616
+   },
+   "top-single.test": {
+    "requests": 401,
+    "chars": 7785015
+   },
+   "top-stacked.test": {
+    "requests": 802,
+    "chars": 14741825
+   }
+  }
+ },
+ "dress-new-organization": {
+  "n": {
+   "fit": 400,
+   "val": 376,
+   "test": 401
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 1443238
+   },
+   "seed.val": {
+    "requests": 373,
+    "chars": 1325859
+   },
+   "seed.test": {
+    "requests": 400,
+    "chars": 1435050
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 1995638
+   },
+   "top-single.val": {
+    "requests": 373,
+    "chars": 1840972
+   },
+   "top-stacked.fit": {
+    "requests": 1200,
+    "chars": 20307979
+   },
+   "top-stacked.val": {
+    "requests": 1125,
+    "chars": 18995411
+   },
+   "top-single.test": {
+    "requests": 400,
+    "chars": 1987450
+   },
+   "top-stacked.test": {
+    "requests": 1202,
+    "chars": 20256055
+   }
+  }
+ },
+ "dress-new-language": {
+  "n": {
+   "fit": 400,
+   "val": 376,
+   "test": 401
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 1403305
+   },
+   "seed.val": {
+    "requests": 373,
+    "chars": 1293035
+   },
+   "seed.test": {
+    "requests": 400,
+    "chars": 1399850
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 7484183
+   },
+   "top-single.val": {
+    "requests": 376,
+    "chars": 7015458
+   },
+   "top-stacked.fit": {
+    "requests": 400,
+    "chars": 8083383
+   },
+   "top-stacked.val": {
+    "requests": 376,
+    "chars": 7578706
+   },
+   "top-single.test": {
+    "requests": 401,
+    "chars": 7390282
+   },
+   "top-stacked.test": {
+    "requests": 401,
+    "chars": 7990980
+   }
+  }
+ },
+ "contempo-matres": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 837
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 399,
+    "chars": 946908
+   },
+   "seed.val": {
+    "requests": 984,
+    "chars": 2324600
+   },
+   "seed.test": {
+    "requests": 837,
+    "chars": 1980786
+   },
+   "top-single.fit": {
+    "requests": 399,
+    "chars": 738231
+   },
+   "top-single.val": {
+    "requests": 984,
+    "chars": 1809968
+   },
+   "top-stacked.fit": {
+    "requests": 1197,
+    "chars": 2504634
+   },
+   "top-stacked.val": {
+    "requests": 2952,
+    "chars": 6213494
+   },
+   "top-single.test": {
+    "requests": 837,
+    "chars": 1543035
+   },
+   "top-stacked.test": {
+    "requests": 2511,
+    "chars": 5169825
+   }
+  }
+ },
+ "lifetox": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 3000
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 723353
+   },
+   "seed.val": {
+    "requests": 1000,
+    "chars": 1782738
+   },
+   "seed.test": {
+    "requests": 3000,
+    "chars": 5405135
+   },
+   "top-single.fit": {
+    "requests": 1196,
+    "chars": 6365055
+   },
+   "top-single.val": {
+    "requests": 2973,
+    "chars": 15603530
+   },
+   "top-stacked.fit": {
+    "requests": 1141,
+    "chars": 786564
+   },
+   "top-stacked.val": {
+    "requests": 2672,
+    "chars": 1772103
+   },
+   "top-single.test": {
+    "requests": 8818,
+    "chars": 46087127
+   },
+   "top-stacked.test": {
+    "requests": 7725,
+    "chars": 5266935
+   }
+  }
+ },
+ "sciprompt-s2orc": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 5660
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 1078465
+   },
+   "seed.val": {
+    "requests": 1000,
+    "chars": 2703862
+   },
+   "seed.test": {
+    "requests": 5660,
+    "chars": 15382513
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 1174065
+   },
+   "top-single.val": {
+    "requests": 1000,
+    "chars": 2942862
+   },
+   "top-stacked.fit": {
+    "requests": 400,
+    "chars": 2714065
+   },
+   "top-stacked.val": {
+    "requests": 1000,
+    "chars": 6792862
+   },
+   "top-single.test": {
+    "requests": 5660,
+    "chars": 16735253
+   },
+   "top-stacked.test": {
+    "requests": 5660,
+    "chars": 38526253
+   }
+  }
+ },
+ "smarter-hatexplain": {
+  "n": {
+   "fit": 400,
+   "val": 1000,
+   "test": 1193
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 420340
+   },
+   "seed.val": {
+    "requests": 1000,
+    "chars": 1057290
+   },
+   "seed.test": {
+    "requests": 1192,
+    "chars": 1256165
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 861199
+   },
+   "top-single.val": {
+    "requests": 1000,
+    "chars": 2191715
+   },
+   "top-stacked.fit": {
+    "requests": 800,
+    "chars": 1148339
+   },
+   "top-stacked.val": {
+    "requests": 2000,
+    "chars": 2916005
+   },
+   "top-single.test": {
+    "requests": 1192,
+    "chars": 2595566
+   },
+   "top-stacked.test": {
+    "requests": 2384,
+    "chars": 3454795
+   }
+  }
+ },
+ "smarter-latent-hate": {
+  "n": {
+   "fit": 400,
+   "val": 895,
+   "test": 1019
+  },
+  "steps": {
+   "seed.fit": {
+    "requests": 400,
+    "chars": 379021
+   },
+   "seed.val": {
+    "requests": 895,
+    "chars": 846955
+   },
+   "seed.test": {
+    "requests": 1019,
+    "chars": 962222
+   },
+   "top-single.fit": {
+    "requests": 400,
+    "chars": 341421
+   },
+   "top-single.val": {
+    "requests": 895,
+    "chars": 762825
+   },
+   "top-stacked.fit": {
+    "requests": 800,
+    "chars": 1731343
+   },
+   "top-stacked.val": {
+    "requests": 1790,
+    "chars": 3864352
+   },
+   "top-single.test": {
+    "requests": 1019,
+    "chars": 866436
+   },
+   "top-stacked.test": {
+    "requests": 2038,
+    "chars": 4393178
+   }
+  }
+ }
+}

@@ -1,0 +1,40 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/inli.json), verbatim; generated, do not hand-edit.
+# One Choice, question id `relation`, state {premise, hypothesis} -- the gauntlet request.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: false
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: 'Given a premise and a hypothesis, your task is to label whether the hypothesis is a
+      valid inference from the premise. The state holds the premise ("premise"; called "the passage" in
+      the label definitions) and the hypothesis ("hypothesis"). Given a premise and a hypothesis, your
+      task is to label the hypothesis as one of the four labels: Implicature, Explicature, Contradiction,
+      or Neutral.'
+    state:
+    - premise
+    - hypothesis
+    options:
+      implied_entailment:
+        criterion: 'Implicature: The hypothesis is a valid inference from the passage, but it is NOT explicitly
+          stated in the passage. Implied entailment: Requires some sort of an additional cognitive step,
+          such as logical reasoning, world knowledge, conversational pragmatics, or figurative language.'
+      explicit_entailment:
+        criterion: 'Explicature: The hypothesis is a valid inference from the passage, and it is explicitly
+          stated in the passage. Explicit entailment: Follows directly from the text''s lexical semantics
+          (e.g. via synonymy and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging,
+          or other endophora).'
+      neutral:
+        criterion: 'Neutral: The hypothesis can neither be supported nor contradicted by the passage.'
+      contradiction:
+        criterion: 'Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted
+          by the passage.'

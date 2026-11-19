@@ -1,0 +1,81 @@
+# jev-tailored dev study (Jev-adapted GEPA), written by make_tailored_tasks.py from task_v3_organization.yaml:
+# same data, splits, metric, paper seed (the gauntlet prompt), 400-example stratified train fit slice, CV
+# grouping and jev-native seeds (seeds_v3_organization/, written from the task definition only). GEPA text
+# search per start (paper; the jev-native seed with the best zero-shot train score) with the Jev rulebook (T1),
+# acceptance on 64 stratified train examples by mean log P(gold) with a 2-point metric guard (T2), joint
+# rewrites of the most confused, least separable option pair (T3), minimal pairs (T4), candidates scored after
+# out-of-fold class biases / cutoffs (T6). GEPA merge off (merges would bypass T2). OMP budget
+# (max_reflection_cost) = the reflection spend of v1 study-dress-new-organization-program ($2.9752).
+name: dress-new-organization
+labels:
+  '1.0': '1.0 out of 5.0 (lowest score): the essay does not meet the organization rubric explanation.'
+  '1.5': 1.5 out of 5.0
+  '2.0': 2.0 out of 5.0
+  '2.5': 2.5 out of 5.0
+  '3.0': '3.0 out of 5.0 (midpoint): the essay partly meets the organization rubric explanation.'
+  '3.5': 3.5 out of 5.0
+  '4.0': 4.0 out of 5.0
+  '4.5': 4.5 out of 5.0
+  '5.0': '5.0 out of 5.0 (highest score): The argument is very effectively structured and developed, making it easy
+    for the reader to follow the ideas and understand how the writer is building the argument. Paragraphs use coherence
+    devices effectively while focusing on a single main idea.'
+inputs:
+  essay_prompt: ''
+  essay: ''
+ordinal: true
+data:
+  train: data/organization/train.jsonl
+  val: data/organization/val.jsonl
+  test: data/organization/test.jsonl
+primary_metric: qwk
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 40000
+  reflection_minibatch_size: 3
+  use_merge: false
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: false
+  readout_folds: 5
+  fit_parameters: true
+  max_reflection_cost: 2.98
+  tailored:
+    starts:
+    - paper
+    - jev-native
+    seeds:
+    - kind: jev-native
+      path: seeds_v3_organization/jev-native-1.yaml
+    - kind: jev-native
+      path: seeds_v3_organization/jev-native-2.yaml
+    - kind: jev-native
+      path: seeds_v3_organization/jev-native-3.yaml
+    rulebook: true
+    continuous_accept: true
+    accept_n: 64
+    accept_tol: 0.02
+    confusion_target: true
+    minimal_pairs: 4
+    max_examples: 8
+    max_jev_cost: 2.0
+    head: true
+seed_program: seed_organization.yaml

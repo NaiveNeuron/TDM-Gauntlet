@@ -1,0 +1,33 @@
+{
+  "_source": "Lan, Zheng, Ming & Kilicoglu, Multi-label Sequential Sentence Classification via Large Language Model, Findings of EMNLP 2024, pp. 16086-16104, https://aclanthology.org/2024.findings-emnlp.944/. Label inventory: Section 3.1 (p. 16090), 'Background, Objective, Methods, Results, Conclusions, and Other'; label order as the release's labels_to_ids (LLM-SSC@ae09866, peft_tuning_..._multi_label.py line 452: background, objective, method, result, conclusion, other). `annotation_guideline` is quoted verbatim from the BIORC800 annotation guideline linked in the LLM-SSC README (Google Doc 1hTlVTP0_3IW3ezXuCJtkz_j_Bv1rdMt2, 'Guidelines for annotating sequential categories of PubMed RCT abstracts (Third Round)'; txt export sha256 9003c4a1...), whose Introduction and 'Points to Note' bullets match the paper's Appendix B (pp. 16097-16101). The instruction's 'The paragraph is ... Select from rhetorical labels including ... plays rhetorical role in the paragraph' follows the paper's query prompt (Section 2.2, p. 16087; Figure 2; prompt_in_context_learning_multilabel.py line 225), with OTHER added to the list because it is in the guideline and the scored label set.",
+  "_primitive": "noul, one question per (sentence, label): 6 labels x every sentence of the abstract, all in ONE request per abstract over the same state. Mirrors the paper's per-label sigmoid output (Eq. 7) and its thresholding (Section 3.3).",
+  "_guideline_omissions": "Omitted from the guideline, verbatim text otherwise: annotation-spreadsheet mechanics (column names, sentence-split format, links, rounds, inter-annotator agreement procedure) and every multi-sentence worked example (the scoping-review, miR-31 and fish-species example abstracts and the 'Multilabel Samples' section). Those examples are labelled BIORC800 *train* sentences (verified: abstracts 26237111, 23258531, 20100241, 18639469, 24964716, 25055785, 26972210, 16844342, 19572309, 24211653 are all in train.jsonl); they are dropped to keep the prompt zero-shot. The short inline examples inside the retained bullets are kept because they are part of the rule text; none of them is a test sentence. The paper's Appendix D example (PMID 7231017) IS a test abstract and is not used anywhere.",
+  "labels": ["BACKGROUND", "OBJECTIVE", "METHODS", "RESULTS", "CONCLUSIONS", "OTHER"],
+  "annotation_guideline": {
+    "introduction": [
+      "We will annotate PubMed abstracts for sequential rhetorical categories: BACKGROUND, OBJECTIVE, METHODS, RESULTS, and CONCLUSIONS (BOMRC schema).",
+      "Each sentence needs to be annotated with one or more of the labels from [BACKGROUND, OBJECTIVE, METHODS, RESULTS, and CONCLUSIONS].",
+      "Note that the sentences in an abstract are usually in the order of BACKGROUND – OBJECTIVE- METHODS- RESULTS- CONCLUSIONS, though some categories may be missing. For each abstract, they are not necessarily standardized to the 5 categories above.",
+      "Also note that some sentences do not fit into any of these categories. You can mark these as OTHER. For example, a sentence about study funding can be marked as OTHER."
+    ],
+    "points_to_note": [
+      "With regards to the Objective/Background confusion, the presence of interrogative verbs, such as ‘evaluate’, ‘investigate’, ‘assess’, ‘aim’, or their derivational forms are strong clues for the Objective category.",
+      "Background sentences are often general statements about a disease, intervention, etc. (e.g., Diabetes mellitus is the common chronic metabolic disease’, ‘Regularity of laminar origin and termination of projections appears to be a common feature of corticocortical connections.’).",
+      "With regards to the Results/Conclusion confusion, we need to distinguish results obtained from the study (which often contain numbers, confidence intervals, etc.) from the implication/conclusion that can be drawn based on that result. One example we saw was a sentence about future work based on the results (‘The next step is external validation upon existence of independent trial data.’), which qualifies as Conclusion as it does not say anything about the results of this study.",
+      "One outlier was an abstract about a disease guideline. I expect we may see some meta-analysis/review abstracts that may be similar. In this case, I annotated sentences summarizing the guidelines/recommendations as Conclusion sentences, and the sentence that describes what the guidelines are about as the Objective sentence.",
+      "We try to annotate multi-label for each sentence. For example, if it is a sentence that sets the objective of the study but also mentions the method used, this should qualify as “OBJECTIVE, METHODS” sentence. (e.g., ‘We tested three models of this regularity, originally formulated for primate cerebral cortex, using quantitative data on the relative supragranular layer origins (SGN%) of 151 projections from 19 areas to four areas of cat extrastriate cortex.’ is an “OBJECTIVE, METHODS” sentence).",
+      "There may be some sentence splitting errors. Annotate such sentences, with the label of the actual sentence they would belong in.",
+      "In reviews/surveys, the sentences that use the evidence from other articles should be annotated as RESULTS.",
+      "However, if a sentence in the review abstract discusses a common finding shared by multiple previous papers or outlines the potential next steps for a topic, it should be annotated as “CONCLUSIONS”.",
+      "If the sentence starts with “we show that …” followed by some discussion of the experiment results, apply “OBJECTIVE, RESULTS”, or “RESULTS” to the sentence."
+    ]
+  },
+  "question": {
+    "type": "noul",
+    "instructions": "Multi-label sequential sentence classification of a biomedical (PubMed) abstract, annotated following `annotation_guideline`. The paragraph is `abstract`, whose sentences are numbered in order. Select from rhetorical labels including BACKGROUND, OBJECTIVE, METHODS, RESULTS, CONCLUSIONS and OTHER; a sentence can play one or more rhetorical roles, and its role depends on the surrounding sentences. Does sentence {number} (`abstract[{index}].text`), \"{sentence}\", play the rhetorical role {label} in the paragraph?",
+    "criteria": {
+      "true": "Yes: sentence {number} plays the rhetorical role {label} in the paragraph (it may also play other rhetorical roles).",
+      "false": "No: {label} is not one of the rhetorical roles sentence {number} plays in the paragraph."
+    }
+  }
+}

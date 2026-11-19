@@ -1,0 +1,63 @@
+# v2 dev study (second pre-registration). Generated from task.yaml: same data, seed and metric;
+# class-bias calibration + temperature fit on a 400-example train slice held out of reflection,
+# reflection pool 100, <=1500 chars per text slot, <=8000 chars per program, ensembles of top 3/5.
+# Demonstrations: 8 nearest train examples (class-balanced) by BAAI/bge-small-en-v1.5.
+name: edit-intent
+labels:
+  Grammar: 'Surface, fix grammar (Grammar): Correct grammatical errors, capitalization, punctuation, tense,
+    modality, spelling, typography, abbreviations or any errors related to grammar and/or conventions
+    to improve the language.'
+  Clarity: 'Surface, improve clarity (Clarity): Alter word choice, phrase usage, expressions and/or text
+    format to be more formal, concise and understandable without meaning changes, or to amplify meaning
+    for clarity.'
+  Fact/Evidence: 'Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify
+    or update the fact and/or evidence from third parties, or the author''s factual manipulations and
+    observations, or delete/modify erroneous/irrelevant ones.'
+  Claim: 'Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement, opinion,
+    idea of the authors, or their overall aim of the document.'
+  Other: 'Other: Revise the text in a way that is irrelevant to any other type of edit intent.'
+inputs:
+  edit_action: ''
+  old_text: ''
+  new_text: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 8000
+  ensemble_k:
+  - 3
+  - 5
+seed_program: seed.yaml
+seed_demos:
+  mode: knn
+  k: 8
+  balanced: true

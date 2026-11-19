@@ -1,0 +1,72 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Holistic observable levels; each level describes the overall structure, paragraph focus and linking a reader would see, anchored on the rubric wording.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: score
+    instructions: Score only the organization of the argumentative `essay` written in response to `essay_prompt`,
+      which is a 40-minute timed essay by an EFL undergraduate. Organization means how the argument is
+      structured and developed, whether the reader can follow the ideas, and whether paragraphs use coherence
+      devices while each paragraph focuses on a single main idea. Ignore the quality of the content and
+      the grammar.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - No discernible structure. The ideas are listed or jumbled with no introduction, body or conclusion,
+      there are no paragraph breaks or the breaks are random, there are almost no linking words, and the
+      reader cannot tell what the argument is.
+    - A position can barely be found. Paragraphing is mostly missing or arbitrary, the ideas repeat or
+      jump between topics, and linking words are rare or misused.
+    - Some structure is attempted, such as an opening statement, but most paragraphs mix several ideas.
+      Transitions are few, and the reader must work hard to follow the argument.
+    - Introduction, body and conclusion are partly present, but one of them is missing or very weak. Several
+      paragraphs lack a clear main idea, and linking words are basic and repetitive.
+    - All three parts are present and the position is identifiable. Some paragraphs focus on one idea
+      while others drift. Coherence devices are used but are sometimes mechanical or wrong, and the argument
+      is followable with some effort.
+    - The structure is clear and most paragraphs have one main idea. There are some lapses, such as an
+      abrupt jump, a weak conclusion or an undeveloped point. Linking words are generally correct.
+    - The structure is clear, with an introduction stating the position, focused body paragraphs and a
+      conclusion. Transitions are mostly effective. There are minor lapses, such as one paragraph with
+      a secondary idea or thin development.
+    - The structure is logical and well developed, and the argument is easy to follow. Every paragraph
+      centres on one idea and coherence devices are varied and apt, with only a single small lapse.
+    - The argument is very effectively structured and developed, so it is easy to follow and it is clear
+      how the writer builds the argument. Every paragraph focuses on a single main idea and uses coherence
+      devices effectively throughout.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

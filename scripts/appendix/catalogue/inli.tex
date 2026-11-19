@@ -1,0 +1,11 @@
+@task
+Given a short premise and a hypothesis, decide whether the hypothesis follows from it explicitly, follows only
+implicitly (it needs pragmatics, world knowledge or figurative reading), is unrelated, or is contradicted.
+@output
+One label from \{<<q:inli:question.criteria|keys>>\}.
+@example frozen test set (CC BY-SA 4.0, item \texttt{<<jl:data/frozen/inli/test.jsonl:772.id>>})
+Premise & <<jl:data/frozen/inli/test.jsonl:772.premise|c220>>
+Hypothesis & <<jl:data/frozen/inli/test.jsonl:772.hypothesis|c220>>
+Gold & <<jl:data/frozen/inli/test.jsonl:772.gold>>
+@sets
+inli = INLI test | premise--hypothesis pairs

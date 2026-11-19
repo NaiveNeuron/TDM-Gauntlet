@@ -1,0 +1,57 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; first decide whether the premise supports, contradicts or is silent on the hypothesis, then split supported cases into explicit vs implied.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: How does the `premise` bear on the truth of the `hypothesis`?
+    state:
+    - premise
+    - hypothesis
+    options:
+      supported:
+        criterion: 'The `hypothesis` is a valid inference from the `premise`: if the `premise` is true,
+          the `hypothesis` is true. This holds whether the `hypothesis` is stated outright or only inferred
+          through reasoning, world knowledge, pragmatics or figurative meaning. It does not cover cases
+          where the `premise` merely makes the `hypothesis` plausible without supporting it; those are
+          neither.'
+        to:
+          node: relation_entail
+      contradiction:
+        criterion: 'The `hypothesis` is not a valid inference from the `premise`, and the `premise` contradicts
+          it: if the `premise` is true, the `hypothesis` is false. It does not cover cases where the `premise`
+          just does not mention the matter; those are neither.'
+      neutral:
+        criterion: 'The `premise` neither supports nor contradicts the `hypothesis`: the `hypothesis`
+          could be true or false while the `premise` stays true. It covers claims the `premise` does not
+          address. It does not cover cases where the `hypothesis` follows from the `premise` (supported)
+          or is ruled out by it (contradiction).'
+  relation_entail:
+    kind: choice
+    instructions: The `hypothesis` follows from the `premise`. Is it explicitly stated in the `premise`,
+      or only implied?
+    state:
+    - premise
+    - hypothesis
+    options:
+      explicit_entailment:
+        criterion: 'The `hypothesis` is explicitly stated in the `premise`. It follows directly from the
+          wording and sentence structure: the same words, synonyms, a paraphrase, or pronouns and other
+          references resolved to what they point to in the `premise`. It needs no step beyond understanding
+          what the words and sentences say.'
+      implied_entailment:
+        criterion: 'The `hypothesis` is not explicitly stated in the `premise`. It needs an additional
+          cognitive step: logical reasoning, world knowledge, conversational pragmatics (what a speaker
+          implies), or interpreting figurative language. A paraphrase or synonym of stated content belongs
+          to the explicit option instead.'

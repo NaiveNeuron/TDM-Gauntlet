@@ -1,0 +1,11 @@
+@task
+Given two consecutive sentences from a research paper in psychology, engineering or public health (a linking phrase
+such as ``However'' was removed from the second), decide how the second relates to the first.
+@output
+One label from \{<<q:mismatched:question.criteria|keys>>\}.
+@example frozen test set (CC BY-SA 4.0, item \texttt{<<jl:data/frozen/mismatched/test.jsonl:1435.id>>})
+Sentence 1 & <<jl:data/frozen/mismatched/test.jsonl:1435.sentence1|c220>>
+Sentence 2 & <<jl:data/frozen/mismatched/test.jsonl:1435.sentence2|c220>>
+Gold & <<jl:data/frozen/mismatched/test.jsonl:1435.gold>>
+@sets
+mismatched = MisMatched test | sentence pairs

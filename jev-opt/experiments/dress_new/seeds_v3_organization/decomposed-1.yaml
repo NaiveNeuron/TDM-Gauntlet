@@ -1,0 +1,70 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Single score with nine observable level descriptions of organization (structure, paragraph focus, coherence devices), one outcome per level.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: score
+    instructions: Rate only the ORGANIZATION of the `essay`, an argumentative essay written in 40 minutes
+      by an undergraduate English-as-a-foreign-language student in response to `essay_prompt`. Organization
+      means how the argument is structured and developed, whether paragraphs each focus on one main idea,
+      and how well coherence devices (transitions, linking words, references back) connect ideas. Ignore
+      content quality and grammar or vocabulary errors unless they break the structure.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - 'No recognizable structure: no clear position or sequence, ideas jumbled or a single undivided block,
+      almost no linking words; the reader cannot follow how the argument is built.'
+    - 'Only fragments of structure: a position may appear, but ideas jump around, paragraphs mix unrelated
+      points, and linking words are missing or misused.'
+    - 'Weak structure: a basic opening or conclusion exists, but body ideas are listed without development,
+      several paragraphs mix main ideas, and connections are often unclear.'
+    - 'Some structure: introduction, body and conclusion are identifiable, but the order of points is
+      loose, some paragraphs lack a single focus, and linking devices are few or repetitive.'
+    - 'Partly organized: clear intro-body-conclusion and a stated position; most paragraphs have one main
+      idea, but development is thin or uneven and transitions are basic, so the reader must sometimes
+      work to follow.'
+    - 'Mostly organized: logical order of points and paragraphs mostly focused on one idea; coherence
+      devices are used but sometimes mechanical, and one part is underdeveloped or loosely connected.'
+    - 'Well organized: argument easy to follow with a clear line from position to conclusion; each paragraph
+      has a single main idea with support; transitions are appropriate with only occasional gaps.'
+    - 'Very well organized: every paragraph focused and developed, ideas build on each other clearly,
+      coherence devices are varied and effective; only a small lapse in flow or linking.'
+    - The argument is very effectively structured and developed, making it easy for the reader to follow
+      the ideas and understand how the writer is building the argument. Paragraphs use coherence devices
+      effectively while focusing on a single main idea.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

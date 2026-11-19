@@ -1,0 +1,21 @@
+@task
+Recognise what a user wants from a short request to a virtual assistant. The model's probabilities are turned into
+a set of candidate intents: the assistant answers directly if one intent remains, and asks a clarification
+question if a few remain.
+@output
+A probability for every intent in the dataset's inventory, e.g.\ <<q:cicc_c150:question.criteria|len>> for CLINC150
+and <<q:cicc_acid:question.criteria|len>> for ACID (intent names such as ``<<q:cicc_c150:question.criteria.order_checks>>''),
+from which conformal prediction sets are built. The paper's BANKING77 set is not compared
+(Table~\ref{tab:deviations}).
+@example CLINC150 released training split (CC BY 3.0), not a test item
+Utterance & <<csv:data/raw/cicc/repo/data/clinc150/bert/train_predictions.csv:0.text|c220>>
+Gold & <<csv:data/raw/cicc/repo/data/clinc150/bert/labels.csv:127.0>>
+@sets
+cicc/mtod = MTOD
+cicc/hwu64 = HWU64
+cicc/c150 = C150 (in-scope)
+cicc/acid = ACID
+cicc/atis = ATIS
+cicc/b77 = B77 (not comparable)
+cicc/c150_oos = C150 OOS rejection (supplementary) | | OOS F1
+cicc/b77_oos = B77 OOS rejection (supplementary) | | OOS F1

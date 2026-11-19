@@ -1,0 +1,106 @@
+{
+  "task": "smarter",
+  "subtasks": ["smarter/hatexplain", "smarter/latent_hate", "smarter/implicit_hate"],
+  "paper": {
+    "title": "SMARTER: A Data-efficient Framework to Improve Toxicity Detection with Explanation via Self-augmenting Large Language Models",
+    "authors": "Huy Nghiem, Hal Daumé III",
+    "venue": "ACL 2026 (long)",
+    "url": "https://aclanthology.org/2026.acl-long.1584/",
+    "pdf_sha256": "6513489dd501d7341989fc0eefa62dfe4bc2760f658cba5d660adf7e127dd9cc",
+    "code": {"repo": "https://github.com/hnghiem-nlp/hate_dpo_public", "commit": "3489b7e5501d89a75e467908d63b475a8a1ac69d", "licence": "MIT"}
+  },
+  "released_test_files": "None. The repo is code only (README: 'This repository does not include the datasets directly'; `.gitignore` excludes Data/). Its evaluation reads Data/testing/{domain}_test.csv, which is not published. Also checked: hnghiem-nlp/smarter_public (LICENSE only), hnghiem-nlp/hatespeech_explain_dpo (earlier code, no data), hnghiem-nlp/hatecot (HateCOT pre-training CSV: 8 other datasets, none of the three test domains), hnghiem-nlp/llm_hate (an earlier project's 8:1:1 split notebook built from private Google Drive files), hnghiem-nlp/define_your_terms (README only). The test sets are therefore reconstructed (see `reconstruction`).",
+  "sources": {
+    "hatexplain": {
+      "repo": "https://github.com/hate-alert/HateXplain",
+      "commit": "01d742279dac941981f53806154481c0e15ee686",
+      "file": "Data/dataset.json",
+      "sha256": "63bb3340fee0ec469b09690d04cb68f7c187787dd8b83807f071892c084967fb",
+      "bytes": 12256170,
+      "rows": 20148,
+      "licence": "MIT (repo LICENSE sha256 56fc351d0e8ebf939208f88cdb27e00833148b957b347a069f38ee88e5fc8db6); redistribution of the frozen test file permitted",
+      "raw_path": "data/raw/smarter/hatexplain/ (git clone)"
+    },
+    "latent_hatred": {
+      "repo": "https://github.com/SALT-NLP/implicit-hate (formerly GT-SALT/implicit-hate)",
+      "repo_commit": "0359b278ffd74b432d9cf6eadc142bdc238664b8",
+      "download_url": "https://www.dropbox.com/s/p1ctnsg3xlnupwr/implicit-hate-corpus.zip?dl=1 (public link in the repo README; unencrypted zip)",
+      "access_note": "The README asks users to 'first complete a short survey' (https://forms.gle/QxCpEbVp91Z35hWFA: name and institution; no terms to accept) and publishes the download link directly. The survey was not submitted; the linked zip is public and not password-protected.",
+      "zip_sha256": "140ba2af7e0e5e298caf6c587b965755c7e3e03e9d1fc85bf46dd39f2745aa29",
+      "zip_bytes": 1958021,
+      "members": {
+        "implicit_hate_v1_stg1_posts.tsv": {"sha256": "00811aca26d05ace390e7131eb311a3e9e0e39ecadb2b839a173d4f7e2ccea8b", "rows": 21480},
+        "implicit_hate_v1_stg1.tsv": {"sha256": "8c9380566263c58400ec8f18ac5de824858709c1d78078c92e4de7808f1bfac1", "rows": 21480},
+        "implicit_hate_v1_stg2_posts.tsv": {"sha256": "116522bdc3417d5fdca79f5290fd06ec3f517abc78d0bd33041c5485965a7005", "rows": 6346},
+        "implicit_hate_v1_stg2.tsv": {"sha256": "0ccbae02316208018415c3220c6d9f6213514b58e7b706de7d6426df112168fd", "rows": 6346},
+        "LICENSE": {"sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411", "text": "CC BY 4.0"}
+      },
+      "licence": "Corpus zip carries CC BY 4.0; repo MIT. Not redistributed anyway (tweets; the authors gate access behind a survey and withhold tweet IDs from the text files per Twitter guidelines): frozen files hold tweet ID, row index, gold and a per-row SHA-256; `items()` rebuilds text from the zip and verifies each hash.",
+      "raw_path": "data/raw/smarter/implicit-hate-corpus.zip",
+      "join": "Text files (`*_posts.tsv`: post, label) carry no IDs; the ID files (`stg1.tsv`, `stg2.tsv`) are row-aligned with them. Alignment verified: identical label column on every row, and csv-module parsing equals pandas.read_csv parsing for every post (0 differences, 0 NaN)."
+    }
+  },
+  "reconstruction": {
+    "builder": "scripts/prepare_smarter.py (uv inline deps pandas 2.2.3, scikit-learn 1.5.2, numpy 2.1.3, langid 1.1.6)",
+    "steps": [
+      "Pool: HateXplain = majority label of the 3 annotators, dropping the 919 posts with no majority (HateXplain's 'undecided'); text = post_tokens joined by spaces. Latent Hate = all 21,480 Stage-1 rows. Implicit Hate = 6,346 Stage-2 rows minus 80 'other' (outside Table 4's label space) = 6,266; gold = primary `implicit_class` (the secondary `extra_implicit_class` is ignored).",
+      "Paper Appendix B preprocessing on every post: '@handle' -> '<user>', URLs removed (only 54 Latent Hatred posts contain '@', 21 'http'; HateXplain is already anonymised by its release).",
+      "Split with the authors' `split_train_test` (copied verbatim; sklearn train_test_split twice, seed 123 = the function default), ratios from Table 4: 60:20:20, 60:20:20, 50:20:30. Test = the third part.",
+      "Per-class sample from the test split with the authors' `k_shot_sample(group_var='label', key_var='uid', k=K_test)`, K_test = 400/400/150 (Table 4), random_state = 42 (default --seed of Code/inference/model_inference.py; the evaluation job Code/script/analysis/run_cls_evaluation.job does not pass a seed). One change: a class with fewer than K rows contributes all its rows (the original raises ValueError).",
+      "Remove the adjudicated non-English rows listed in data/frozen/smarter/non_english.json."
+    ],
+    "split_sizes": {
+      "hatexplain": {"pool": 19229, "train_val_test": [11537, 3846, 3846], "test_split_label_counts": {"Normal": 1593, "Offensive": 1105, "Hate": 1148}},
+      "latent_hate": {"pool": 21480, "train_val_test": [12888, 4296, 4296], "test_split_label_counts": {"Not Hate": 2687, "Implicit Hate": 1390, "Explicit Hate": 219}},
+      "implicit_hate": {"pool": 6266, "train_val_test": [3133, 1253, 1880], "test_split_label_counts": {"White Grievance": 463, "Incitement to Violence": 389, "Stereotypes and Misinformation": 329, "Inferiority Language": 260, "Irony": 242, "Threatening and Intimidation": 197}}
+    },
+    "paper_table4_sizes_note": "Table 4 'Total Size' values are the source papers' counts, not the SMARTER pools: 20,148 = all HateXplain posts incl. 919 undecided; 19,112 and 4,153 are Latent Hatred's pre-expansion Stage-1 and Stage-2 counts (ElSherief et al. 2021, Sections 4.2.1-4.2.2, Table 2). The public release is the post-expansion corpus (21,480 Stage-1 rows incl. 548 SAP_ rows; 6,346 Stage-2 rows). Pre-expansion Implicit Hate had only 57 Threatening / 134 Irony posts, so 150/class from a 30% test split is only possible on the released expanded corpus, which is what is used here."
+  },
+  "frozen": {
+    "hatexplain": {
+      "path": "data/frozen/smarter/hatexplain.jsonl",
+      "sha256": "e57ed7ee63f51a046e347b98940dc38b410ac2117bfacc80eaa8b009b519a55f",
+      "fields": "id (hatexplain-<post_id>), uid, text (preprocessed post), gold, sha256 (of [text, gold])",
+      "n": 1193,
+      "label_counts": {"Normal": 398, "Offensive": 400, "Hate": 395},
+      "sampled_before_language_filter": 1200
+    },
+    "latent_hate": {
+      "path": "data/frozen/smarter/latent_hate.jsonl",
+      "sha256": "6253d28c193105cf9e2d85c1297b773887dd49959f669fb9062073da1a305454",
+      "fields": "id (latent_hate-<ID>), uid (tweet ID or SAP_ ID), row (0-based data row in stg1 files), gold, sha256 (of [preprocessed text, gold])",
+      "n": 1019,
+      "label_counts": {"Not Hate": 400, "Implicit Hate": 400, "Explicit Hate": 219},
+      "sampled_before_language_filter": 1019
+    },
+    "implicit_hate": {
+      "path": "data/frozen/smarter/implicit_hate.jsonl",
+      "sha256": "313a8e52a6566a205f009b0e2e8d7e3bb70da82d5d6237c9592cf4631fd1c93e",
+      "fields": "id (implicit_hate-<ID>), uid, row (0-based data row in stg2 files), gold, sha256",
+      "n": 900,
+      "label_counts": {"White Grievance": 150, "Incitement to Violence": 150, "Inferiority Language": 150, "Irony": 150, "Stereotypes and Misinformation": 150, "Threatening and Intimidation": 150},
+      "sampled_before_language_filter": 900
+    },
+    "non_english": {"path": "data/frozen/smarter/non_english.json", "sha256": "582dd595385492cb0405b4ea6d0d8967770ee49d02bbfa4eb03c5005bc6a5671"}
+  },
+  "test_n": {"hatexplain": 1193, "latent_hate": 1019, "implicit_hate": 900, "total": 3112},
+  "english_verification": {
+    "metadata": "HateXplain: English Gab/Twitter posts (Mathew et al. 2021). Latent Hatred: English tweets from U.S. extremist-group accounts plus English SBIC (SAP_) posts (ElSherief et al. 2021). Neither release has per-row language metadata.",
+    "method": "All 3,119 sampled test posts: langid 1.1.6 (all languages) + non-ASCII-letter ratio > 5% (78 flags: 37 HateXplain, 28 Latent Hate, 13 Implicit Hate); second pass: 2+ distinct German/Spanish/French/Dutch/Portuguese/Italian function words (8 flags, 7 already flagged, 1 English headline). Every flag judged from the text, before any Jev output.",
+    "result": "7 HateXplain Gab posts excluded (German x2, Dutch, Portuguese, Spanish/Portuguese, English+German code-mix, English+French translation; gold Hate 5, Normal 2). All Latent Hatred flags were short English posts/hashtags (false positives). African American English and slang are English and kept.",
+    "rows_dropped": {"hatexplain": 7, "latent_hate": 0, "implicit_hate": 0}
+  },
+  "data_checks": {
+    "max_post_chars": 801,
+    "truncated_items": 0,
+    "duplicate_ids": 0,
+    "release_artifacts_kept": "Latent Hatred posts keep the release's stray quote marks (e.g. row 0 of implicit_hate_v1_stg1_posts.tsv, ID 399886440588247041) and lowercasing; HateXplain keeps its tokenisation and placeholders (<user>, <number>, ...)."
+  },
+  "deviations": [
+    "Test sets are reconstructions, not the paper's rows: the paper's Data/testing files are unreleased. Same sources, label spaces, split ratios, seeds-from-code and K_test; exact row identity with the paper cannot be verified.",
+    "Implicit Hate is a 6-class task (Table 4, Figure 11) with 150 test items per class (Table 4): 900 items.",
+    "Latent Hate: Explicit Hate has 219 test items, not 400 (only 1,089 Explicit Hate posts exist in the release; a 20% split holds 219). Table 4's 400/class is infeasible for this class under the paper's own split; all 219 are used. N = 1,019.",
+    "HateXplain: the 919 no-majority ('undecided') posts are excluded before splitting (HateXplain's own convention; the paper does not state its aggregation rule). 7 non-English sampled posts removed (English-only rule): N = 1,193 (Normal 398, Offensive 400, Hate 395).",
+    "Implicit Hate 'other' (80 posts) excluded before splitting: outside the paper's 6-label space."
+  ]
+}

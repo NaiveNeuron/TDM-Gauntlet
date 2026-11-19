@@ -1,0 +1,70 @@
+{
+  "task": "smarter-latent-hate",
+  "task_path": "jev-opt/experiments/smarter_latent_hate/task_v3.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Contrastive criteria centred on the explicit/implicit boundary (direct wording vs coded meaning), with Not Hate defined by absence of any disparagement of a group-based characteristic.",
+          "digest": "776c23a27446d342",
+          "nodes": {
+            "label": "choice"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Minimal literal definitions from the paper, each paired with a single one-sentence boundary rule against its nearest neighbour.",
+          "digest": "7ef74840f9e42504",
+          "nodes": {
+            "label": "choice"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Framing by observable features in the text (target present? hostility literal or implied?), with each option stating what it excludes.",
+          "digest": "e0ab73558c6730bc",
+          "nodes": {
+            "label": "choice"
+          }
+        }
+      ],
+      "rejected": []
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Flat choice with contrastive criteria that separate each label from its nearest neighbour, stated literally about `post`.",
+          "digest": "c730300e135530fe",
+          "nodes": {
+            "label": "choice"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "Coarse-to-fine hierarchy; a branch first asks whether hatred is present at all, then a choice separates explicit from implicit.",
+          "digest": "73f4c1d99eb1a22f",
+          "nodes": {
+            "label": "branch",
+            "label_form": "choice"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "One-vs-rest; one independent true/false statement per label about `post`, and the most probable statement wins.",
+          "digest": "d55dfb61a6203e8b",
+          "nodes": {
+            "label": "one_vs_rest"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.083072
+}

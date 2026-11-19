@@ -1,0 +1,67 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Describe each level by which of the four rubric components (development, relevance to the argument, reasons, examples) are observably present and how strong they are.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: content
+nodes:
+  content:
+    kind: score
+    instructions: 'Score the CONTENT of the `essay`, an argumentative essay written for `essay_prompt`
+      by an EFL undergraduate in a 40-minute test. Content means: the paragraphs are developed, they are
+      relevant to the argument, and they are supported with strong reasons and examples. Judge only content.
+      Ignore organization, grammar and spelling.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - 'The `essay` does not meet the content rubric: it is off-topic for `essay_prompt`, or it states
+      no position, or it gives no reasons at all.'
+    - The `essay` takes a position on `essay_prompt`, but it offers only one vague claim or restates the
+      prompt. It has no example.
+    - The `essay` gives a position and one or two reasons. Each reason is a bare assertion that is not
+      explained, and there are no examples or only irrelevant ones.
+    - The `essay` gives several reasons. Most are undeveloped, examples are missing or generic, and some
+      sentences drift away from the argument.
+    - 'The `essay` partly meets the content rubric: its reasons are relevant, but only some are explained
+      or given an example. Paragraphs are thin.'
+    - The `essay` has relevant reasons, and most have some explanation. Examples appear but are generic
+      or weakly tied to the reason they support.
+    - The `essay` supports every main reason with an explanation and an example. One reason or paragraph
+      is shallow, or one example is weak.
+    - The `essay` has developed, relevant paragraphs with convincing reasons and specific examples. There
+      is at most a small gap, such as one example that is less specific.
+    - Every paragraph of the `essay` is well-developed and relevant to the argument, and each is supported
+      with strong reasons and specific, convincing examples.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

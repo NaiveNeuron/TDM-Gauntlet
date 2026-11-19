@@ -1,0 +1,2967 @@
+{
+ "_source": "v3 of prompts/ttp.json (Nguyen, Srndic & Neth, Findings EACL 2024). Round 1 is the v1 pointwise noul scan, question template copied verbatim. Round 2 (new, v3) reranks Jev's own round-1 top-k with one relative Choice, the retrieve-then-rerank pattern of TypeSafe's skill-suggestion cookbook (https://docs.typesafe.ai/cookbooks/skill_suggestion) and Infer-Retrieve-Rank (arXiv 2401.12178); the candidate set is still the paper's full 737-profile corpus (round 1 ranks all of it).",
+ "_primitive": "round 1: noul per candidate (all 737); round 2: choice over the round-1 top-k (k, and the mixing weight with round 1, fit on the v3 dev sample: data/frozen/ttp/v3_params.json)",
+ "_round1_prompt": "ttp.json",
+ "_round1_sha256": "780d502e0b36d2d97024edeccbe12a86dff25dcd1480d5c477ac8a2e4e66407b",
+ "_candidates_sha256": "d4a59802b54229e78bf64d83ffab91126b3f0fa5abaefdc4b20b5626b28f6bf2",
+ "question_template": {
+  "type": "noul",
+  "instructions": "TTP mapping: identifying MITRE ATT&CK attack patterns (TTPs) in cybersecurity writing. Is the following MITRE ATT&CK technique (TTP) explicitly or implicitly mentioned in `text`?\nTechnique {id}: {name}\nDescription: {description}"
+ },
+ "rerank": {
+  "type": "choice",
+  "instructions": "TTP mapping: identifying MITRE ATT&CK attack patterns (TTPs) in cybersecurity writing. Which one of the following MITRE ATT&CK techniques (TTPs) is most clearly mentioned, explicitly or implicitly, in `text`?",
+  "option_order": "ATT&CK ID order",
+  "short_description_rule": "first sentence of the release profile (leading deprecation notice skipped), cut to <= 200 characters at a word boundary"
+ },
+ "rerank_options": {
+  "T1001": {
+   "key": "T1001 Data Obfuscation",
+   "description": "adversaries may obfuscate command and control traffic to make it more difficult to detect."
+  },
+  "T1001.001": {
+   "key": "T1001.001 Data Obfuscation: Junk Data",
+   "description": "adversaries may add junk data to protocols used for command and control to make detection more difficult."
+  },
+  "T1001.002": {
+   "key": "T1001.002 Data Obfuscation: Steganography",
+   "description": "adversaries may use steganographic techniques to hide command and control traffic to make detection efforts more difficult."
+  },
+  "T1001.003": {
+   "key": "T1001.003 Data Obfuscation: Protocol Impersonation",
+   "description": "adversaries may impersonate legitimate protocols or web service traffic to disguise command and control activity and thwart analysis efforts."
+  },
+  "T1002": {
+   "key": "T1002 Data Compressed",
+   "description": "an adversary may compress data e.g., sensitive documents that is collected prior to exfiltration in order to make it portable and minimize the amount of data sent over the network."
+  },
+  "T1003": {
+   "key": "T1003 OS Credential Dumping",
+   "description": "adversaries may attempt to dump credentials to obtain account login and credential material, normally in the form of a hash or a clear text password, from the operating system and software."
+  },
+  "T1003.001": {
+   "key": "T1003.001 OS Credential Dumping: LSASS Memory",
+   "description": "adversaries may attempt to access credential material stored in the process memory of the local security authority subsystem service lsass."
+  },
+  "T1003.002": {
+   "key": "T1003.002 OS Credential Dumping: Security Account Manager",
+   "description": "adversaries may attempt to extract credential material from the security account manager sam database either through in-memory techniques or through the windows registry where the sam database is ..."
+  },
+  "T1003.003": {
+   "key": "T1003.003 OS Credential Dumping: NTDS",
+   "description": "adversaries may attempt to access or create a copy of the active directory domain database in order to steal credential information, as well as obtain other information about domain members such as ..."
+  },
+  "T1003.004": {
+   "key": "T1003.004 OS Credential Dumping: LSA Secrets",
+   "description": "adversaries with system access to a host may attempt to access local security authority lsa secrets, which can contain a variety of different credential materials, such as credentials for service ..."
+  },
+  "T1003.005": {
+   "key": "T1003.005 OS Credential Dumping: Cached Domain Credentials",
+   "description": "adversaries may attempt to access cached domain credentials used to allow authentication to occur in the event a domain controller is unavailable.citation: microsoft - cached creds on windows vista ..."
+  },
+  "T1003.006": {
+   "key": "T1003.006 OS Credential Dumping: DCSync",
+   "description": "adversaries may attempt to access credentials and other sensitive information by abusing a windows domain controller's application programming interface apicitation: microsoft drsr dec 2017 citation: ..."
+  },
+  "T1003.007": {
+   "key": "T1003.007 OS Credential Dumping: Proc Filesystem",
+   "description": "adversaries may gather credentials from information stored in the proc filesystem or /proc."
+  },
+  "T1003.008": {
+   "key": "T1003.008 OS Credential Dumping: /etc/passwd and /etc/shadow",
+   "description": "adversaries may attempt to dump the contents of /etc/passwd and /etc/shadow to enable offline password cracking."
+  },
+  "T1004": {
+   "key": "T1004 Winlogon Helper DLL",
+   "description": "winlogon.exe is a windows component responsible for actions at logon/logoff as well as the secure attention sequence sas triggered by ctrl-alt-delete."
+  },
+  "T1005": {
+   "key": "T1005 Data from Local System",
+   "description": "adversaries may search local system sources, such as file systems and configuration files or local databases, to find files of interest and sensitive data prior to exfiltration."
+  },
+  "T1006": {
+   "key": "T1006 Direct Volume Access",
+   "description": "adversaries may directly access a volume to bypass file access controls and file system monitoring."
+  },
+  "T1007": {
+   "key": "T1007 System Service Discovery",
+   "description": "adversaries may try to gather information about registered local system services."
+  },
+  "T1008": {
+   "key": "T1008 Fallback Channels",
+   "description": "adversaries may use fallback or alternate communication channels if the primary channel is compromised or inaccessible in order to maintain reliable command and control and to avoid data transfer ..."
+  },
+  "T1009": {
+   "key": "T1009 Binary Padding",
+   "description": "adversaries can use binary padding to add junk data and change the on-disk representation of malware without affecting the functionality or behavior of the binary."
+  },
+  "T1010": {
+   "key": "T1010 Application Window Discovery",
+   "description": "adversaries may attempt to get a listing of open application windows."
+  },
+  "T1011": {
+   "key": "T1011 Exfiltration Over Other Network Medium",
+   "description": "adversaries may attempt to exfiltrate data over a different network medium than the command and control channel."
+  },
+  "T1011.001": {
+   "key": "T1011.001 Exfiltration Over Other Network Medium: Exfiltration Over Bluetooth",
+   "description": "adversaries may attempt to exfiltrate data over bluetooth rather than the command and control channel."
+  },
+  "T1012": {
+   "key": "T1012 Query Registry",
+   "description": "adversaries may interact with the windows registry to gather information about the system, configuration, and installed software."
+  },
+  "T1013": {
+   "key": "T1013 Port Monitors",
+   "description": "a port monitor can be set through the citation: addmonitor api call to set a dll to be loaded at startup."
+  },
+  "T1014": {
+   "key": "T1014 Rootkit",
+   "description": "adversaries may use rootkits to hide the presence of programs, files, network connections, services, drivers, and other system components."
+  },
+  "T1015": {
+   "key": "T1015 Accessibility Features",
+   "description": "windows contains accessibility features that may be launched with a key combination before a user has logged in for example, when the user is on the windows logon screen."
+  },
+  "T1016": {
+   "key": "T1016 System Network Configuration Discovery",
+   "description": "adversaries may look for details about the network configuration and settings, such as ip and/or mac addresses, of systems they access or through information discovery of remote systems."
+  },
+  "T1016.001": {
+   "key": "T1016.001 System Network Configuration Discovery: Internet Connection Discovery",
+   "description": "adversaries may check for internet connectivity on compromised systems."
+  },
+  "T1017": {
+   "key": "T1017 Application Deployment Software",
+   "description": "adversaries may deploy malicious software to systems within a network using application deployment systems employed by enterprise administrators."
+  },
+  "T1018": {
+   "key": "T1018 Remote System Discovery",
+   "description": "adversaries may attempt to get a listing of other systems by ip address, hostname, or other logical identifier on a network that may be used for lateral movement from the current system."
+  },
+  "T1019": {
+   "key": "T1019 System Firmware",
+   "description": "the bios basic input/output system and the unified extensible firmware interface uefi or extensible firmware interface efi are examples of system firmware that operate as the software interface ..."
+  },
+  "T1020": {
+   "key": "T1020 Automated Exfiltration",
+   "description": "adversaries may exfiltrate data, such as sensitive documents, through the use of automated processing after being gathered during collection."
+  },
+  "T1020.001": {
+   "key": "T1020.001 Automated Exfiltration: Traffic Duplication",
+   "description": "adversaries may leverage traffic mirroring in order to automate data exfiltration over compromised network infrastructure."
+  },
+  "T1021": {
+   "key": "T1021 Remote Services",
+   "description": "adversaries may use valid accounts to log into a service specifically designed to accept remote connections, such as telnet, ssh, and vnc."
+  },
+  "T1021.001": {
+   "key": "T1021.001 Remote Services: Remote Desktop Protocol",
+   "description": "adversaries may use valid accounts to log into a computer using the remote desktop protocol rdp."
+  },
+  "T1021.002": {
+   "key": "T1021.002 Remote Services: SMB/Windows Admin Shares",
+   "description": "adversaries may use valid accounts to interact with a remote network share using server message block smb."
+  },
+  "T1021.003": {
+   "key": "T1021.003 Remote Services: Distributed Component Object Model",
+   "description": "adversaries may use valid accounts to interact with remote machines by taking advantage of distributed component object model dcom."
+  },
+  "T1021.004": {
+   "key": "T1021.004 Remote Services: SSH",
+   "description": "adversaries may use valid accounts to log into remote machines using secure shell ssh."
+  },
+  "T1021.005": {
+   "key": "T1021.005 Remote Services: VNC",
+   "description": "adversaries may use valid accounts to remotely control machines using virtual network computing vnc."
+  },
+  "T1021.006": {
+   "key": "T1021.006 Remote Services: Windows Remote Management",
+   "description": "adversaries may use valid accounts to interact with remote systems using windows remote management winrm."
+  },
+  "T1022": {
+   "key": "T1022 Data Encrypted",
+   "description": "data is encrypted before being exfiltrated in order to hide the information that is being exfiltrated from detection or to make the exfiltration less conspicuous upon inspection by a defender."
+  },
+  "T1023": {
+   "key": "T1023 Shortcut Modification",
+   "description": "shortcuts or symbolic links are ways of referencing other files or programs that will be opened or executed when the shortcut is clicked or executed by a system startup process."
+  },
+  "T1024": {
+   "key": "T1024 Custom Cryptographic Protocol",
+   "description": "adversaries may use a custom cryptographic protocol or algorithm to hide command and control traffic."
+  },
+  "T1025": {
+   "key": "T1025 Data from Removable Media",
+   "description": "adversaries may search connected removable media on computers they have compromised to find files of interest."
+  },
+  "T1026": {
+   "key": "T1026 Multiband Communication",
+   "description": "some adversaries may split communications between different protocols."
+  },
+  "T1027": {
+   "key": "T1027 Obfuscated Files or Information",
+   "description": "adversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or otherwise obfuscating its contents on the system or in transit."
+  },
+  "T1027.001": {
+   "key": "T1027.001 Obfuscated Files or Information: Binary Padding",
+   "description": "adversaries may use binary padding to add junk data and change the on-disk representation of malware."
+  },
+  "T1027.002": {
+   "key": "T1027.002 Obfuscated Files or Information: Software Packing",
+   "description": "adversaries may perform software packing or virtual machine software protection to conceal their code."
+  },
+  "T1027.003": {
+   "key": "T1027.003 Obfuscated Files or Information: Steganography",
+   "description": "adversaries may use steganography techniques in order to prevent the detection of hidden information."
+  },
+  "T1027.004": {
+   "key": "T1027.004 Obfuscated Files or Information: Compile After Delivery",
+   "description": "adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code."
+  },
+  "T1027.005": {
+   "key": "T1027.005 Obfuscated Files or Information: Indicator Removal from Tools",
+   "description": "adversaries may remove indicators from tools if they believe their malicious tool was detected, quarantined, or otherwise curtailed."
+  },
+  "T1027.006": {
+   "key": "T1027.006 Obfuscated Files or Information: HTML Smuggling",
+   "description": "adversaries may smuggle data and files past content filters by hiding malicious payloads inside of seemingly benign html files."
+  },
+  "T1027.007": {
+   "key": "T1027.007 Obfuscated Files or Information: Dynamic API Resolution",
+   "description": "adversaries may obfuscate then dynamically resolve api functions called by their malware in order to conceal malicious functionalities and impair defensive analysis."
+  },
+  "T1027.008": {
+   "key": "T1027.008 Obfuscated Files or Information: Stripped Payloads",
+   "description": "adversaries may attempt to make a payload difficult to analyze by removing symbols, strings, and other human readable information."
+  },
+  "T1027.009": {
+   "key": "T1027.009 Obfuscated Files or Information: Embedded Payloads",
+   "description": "adversaries may embed payloads within other files to conceal malicious content from defenses."
+  },
+  "T1028": {
+   "key": "T1028 Windows Remote Management",
+   "description": "windows remote management winrm is the name of both a windows service and a protocol that allows a user to interact with a remote system e.g., run an executable, modify the registry, modify services."
+  },
+  "T1029": {
+   "key": "T1029 Scheduled Transfer",
+   "description": "adversaries may schedule data exfiltration to be performed only at certain times of day or at certain intervals."
+  },
+  "T1030": {
+   "key": "T1030 Data Transfer Size Limits",
+   "description": "an adversary may exfiltrate data in fixed size chunks instead of whole files or limit packet sizes below certain thresholds."
+  },
+  "T1031": {
+   "key": "T1031 Modify Existing Service",
+   "description": "windows service configuration information, including the file path to the service's executable or recovery programs/commands, is stored in the registry."
+  },
+  "T1032": {
+   "key": "T1032 Standard Cryptographic Protocol",
+   "description": "adversaries may explicitly employ a known encryption algorithm to conceal command and control traffic rather than relying on any inherent protections provided by a communication protocol."
+  },
+  "T1033": {
+   "key": "T1033 System Owner/User Discovery",
+   "description": "adversaries may attempt to identify the primary user, currently logged in user, set of users that commonly uses a system, or whether a user is actively using the system."
+  },
+  "T1034": {
+   "key": "T1034 Path Interception",
+   "description": "path interception occurs when an executable is placed in a specific path so that it is executed by an application instead of the intended target."
+  },
+  "T1035": {
+   "key": "T1035 Service Execution",
+   "description": "adversaries may execute a binary, command, or script via a method that interacts with windows services, such as the service control manager."
+  },
+  "T1036": {
+   "key": "T1036 Masquerading",
+   "description": "adversaries may attempt to manipulate features of their artifacts to make them appear legitimate or benign to users and/or security tools."
+  },
+  "T1036.001": {
+   "key": "T1036.001 Masquerading: Invalid Code Signature",
+   "description": "adversaries may attempt to mimic features of valid code signatures to increase the chance of deceiving a user, analyst, or tool."
+  },
+  "T1036.002": {
+   "key": "T1036.002 Masquerading: Right-to-Left Override",
+   "description": "adversaries may abuse the right-to-left override rtlo or rlo character u+202e to disguise a string and/or file name to make it appear benign."
+  },
+  "T1036.003": {
+   "key": "T1036.003 Masquerading: Rename System Utilities",
+   "description": "adversaries may rename legitimate system utilities to try to evade security mechanisms concerning the usage of those utilities."
+  },
+  "T1036.004": {
+   "key": "T1036.004 Masquerading: Masquerade Task or Service",
+   "description": "adversaries may attempt to manipulate the name of a task or service to make it appear legitimate or benign."
+  },
+  "T1036.005": {
+   "key": "T1036.005 Masquerading: Match Legitimate Name or Location",
+   "description": "adversaries may match or approximate the name or location of legitimate files or resources when naming/placing them."
+  },
+  "T1036.006": {
+   "key": "T1036.006 Masquerading: Space after Filename",
+   "description": "adversaries can hide a program's true filetype by changing the extension of a file."
+  },
+  "T1036.007": {
+   "key": "T1036.007 Masquerading: Double File Extension",
+   "description": "adversaries may abuse a double extension in the filename as a means of masquerading the true file type."
+  },
+  "T1037": {
+   "key": "T1037 Boot or Logon Initialization Scripts",
+   "description": "adversaries may use scripts automatically executed at boot or logon initialization to establish persistence."
+  },
+  "T1037.001": {
+   "key": "T1037.001 Boot or Logon Initialization Scripts: Logon Script (Windows)",
+   "description": "adversaries may use windows logon scripts automatically executed at logon initialization to establish persistence."
+  },
+  "T1037.002": {
+   "key": "T1037.002 Boot or Logon Initialization Scripts: Login Hook",
+   "description": "adversaries may use a login hook to establish persistence executed upon user logon."
+  },
+  "T1037.003": {
+   "key": "T1037.003 Boot or Logon Initialization Scripts: Network Logon Script",
+   "description": "adversaries may use network logon scripts automatically executed at logon initialization to establish persistence."
+  },
+  "T1037.004": {
+   "key": "T1037.004 Boot or Logon Initialization Scripts: RC Scripts",
+   "description": "adversaries may establish persistence by modifying rc scripts which are executed during a unix-like system’s startup."
+  },
+  "T1037.005": {
+   "key": "T1037.005 Boot or Logon Initialization Scripts: Startup Items",
+   "description": "adversaries may use startup items automatically executed at boot initialization to establish persistence."
+  },
+  "T1038": {
+   "key": "T1038 DLL Search Order Hijacking",
+   "description": "windows systems use a common method to look for required dlls to load into a program."
+  },
+  "T1039": {
+   "key": "T1039 Data from Network Shared Drive",
+   "description": "adversaries may search network shares on computers they have compromised to find files of interest."
+  },
+  "T1040": {
+   "key": "T1040 Network Sniffing",
+   "description": "adversaries may sniff network traffic to capture information about an environment, including authentication material passed over the network."
+  },
+  "T1041": {
+   "key": "T1041 Exfiltration Over C2 Channel",
+   "description": "adversaries may steal data by exfiltrating it over an existing command and control channel."
+  },
+  "T1042": {
+   "key": "T1042 Change Default File Association",
+   "description": "when a file is opened, the default program used to open the file also called the file association or handler is checked."
+  },
+  "T1043": {
+   "key": "T1043 Commonly Used Port",
+   "description": "adversaries may communicate over a commonly used port to bypass firewalls or network detection systems and to blend with normal network activity to avoid more detailed inspection."
+  },
+  "T1044": {
+   "key": "T1044 File System Permissions Weakness",
+   "description": "processes may automatically execute specific binaries as part of their functionality or to perform other actions."
+  },
+  "T1045": {
+   "key": "T1045 Software Packing",
+   "description": "software packing is a method of compressing or encrypting an executable."
+  },
+  "T1046": {
+   "key": "T1046 Network Service Discovery",
+   "description": "adversaries may attempt to get a listing of services running on remote hosts and local network infrastructure devices, including those that may be vulnerable to remote software exploitation."
+  },
+  "T1047": {
+   "key": "T1047 Windows Management Instrumentation",
+   "description": "adversaries may abuse windows management instrumentation wmi to execute malicious commands and payloads."
+  },
+  "T1048": {
+   "key": "T1048 Exfiltration Over Alternative Protocol",
+   "description": "adversaries may steal data by exfiltrating it over a different protocol than that of the existing command and control channel."
+  },
+  "T1048.001": {
+   "key": "T1048.001 Exfiltration Over Alternative Protocol: Exfiltration Over Symmetric Encrypted Non-C2 Protocol",
+   "description": "adversaries may steal data by exfiltrating it over a symmetrically encrypted network protocol other than that of the existing command and control channel."
+  },
+  "T1048.002": {
+   "key": "T1048.002 Exfiltration Over Alternative Protocol: Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+   "description": "adversaries may steal data by exfiltrating it over an asymmetrically encrypted network protocol other than that of the existing command and control channel."
+  },
+  "T1048.003": {
+   "key": "T1048.003 Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted Non-C2 Protocol",
+   "description": "adversaries may steal data by exfiltrating it over an un-encrypted network protocol other than that of the existing command and control channel."
+  },
+  "T1049": {
+   "key": "T1049 System Network Connections Discovery",
+   "description": "adversaries may attempt to get a listing of network connections to or from the compromised system they are currently accessing or from remote systems by querying for information over the network."
+  },
+  "T1050": {
+   "key": "T1050 New Service",
+   "description": "when operating systems boot up, they can start programs or applications called services that perform background system functions."
+  },
+  "T1051": {
+   "key": "T1051 Shared Webroot",
+   "description": "adversaries may add malicious content to an internally accessible website through an open network file share that contains the website's webroot or web content directory citation: microsoft web root ..."
+  },
+  "T1052": {
+   "key": "T1052 Exfiltration Over Physical Medium",
+   "description": "adversaries may attempt to exfiltrate data via a physical medium, such as a removable drive."
+  },
+  "T1052.001": {
+   "key": "T1052.001 Exfiltration Over Physical Medium: Exfiltration over USB",
+   "description": "adversaries may attempt to exfiltrate data over a usb connected physical device."
+  },
+  "T1053": {
+   "key": "T1053 Scheduled Task/Job",
+   "description": "adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code."
+  },
+  "T1053.001": {
+   "key": "T1053.001 Scheduled Task/Job: At (Linux)",
+   "description": "adversaries may abuse the at utility to perform task scheduling for initial, recurring, or future execution of malicious code."
+  },
+  "T1053.002": {
+   "key": "T1053.002 Scheduled Task/Job: At",
+   "description": "adversaries may abuse the at utility to perform task scheduling for initial or recurring execution of malicious code."
+  },
+  "T1053.003": {
+   "key": "T1053.003 Scheduled Task/Job: Cron",
+   "description": "adversaries may abuse the cron utility to perform task scheduling for initial or recurring execution of malicious code.citation: 20 macos common tools and techniques the cron utility is a time-based ..."
+  },
+  "T1053.004": {
+   "key": "T1053.004 Scheduled Task/Job: Launchd",
+   "description": "this technique is deprecated due to the inaccurate usage."
+  },
+  "T1053.005": {
+   "key": "T1053.005 Scheduled Task/Job: Scheduled Task",
+   "description": "adversaries may abuse the windows task scheduler to perform task scheduling for initial or recurring execution of malicious code."
+  },
+  "T1053.006": {
+   "key": "T1053.006 Scheduled Task/Job: Systemd Timers",
+   "description": "adversaries may abuse systemd timers to perform task scheduling for initial or recurring execution of malicious code."
+  },
+  "T1053.007": {
+   "key": "T1053.007 Scheduled Task/Job: Container Orchestration Job",
+   "description": "adversaries may abuse task scheduling functionality provided by container orchestration tools such as kubernetes to schedule deployment of containers configured to execute malicious code."
+  },
+  "T1054": {
+   "key": "T1054 Indicator Blocking",
+   "description": "an adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed."
+  },
+  "T1055": {
+   "key": "T1055 Process Injection",
+   "description": "adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.001": {
+   "key": "T1055.001 Process Injection: Dynamic-link Library Injection",
+   "description": "adversaries may inject dynamic-link libraries dlls into processes in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.002": {
+   "key": "T1055.002 Process Injection: Portable Executable Injection",
+   "description": "adversaries may inject portable executables pe into processes in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.003": {
+   "key": "T1055.003 Process Injection: Thread Execution Hijacking",
+   "description": "adversaries may inject malicious code into hijacked processes in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.004": {
+   "key": "T1055.004 Process Injection: Asynchronous Procedure Call",
+   "description": "adversaries may inject malicious code into processes via the asynchronous procedure call apc queue in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.005": {
+   "key": "T1055.005 Process Injection: Thread Local Storage",
+   "description": "adversaries may inject malicious code into processes via thread local storage tls callbacks in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.008": {
+   "key": "T1055.008 Process Injection: Ptrace System Calls",
+   "description": "adversaries may inject malicious code into processes via ptrace process trace system calls in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.009": {
+   "key": "T1055.009 Process Injection: Proc Memory",
+   "description": "adversaries may inject malicious code into processes via the /proc filesystem in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.011": {
+   "key": "T1055.011 Process Injection: Extra Window Memory Injection",
+   "description": "adversaries may inject malicious code into process via extra window memory ewm in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.012": {
+   "key": "T1055.012 Process Injection: Process Hollowing",
+   "description": "adversaries may inject malicious code into suspended and hollowed processes in order to evade process-based defenses."
+  },
+  "T1055.013": {
+   "key": "T1055.013 Process Injection: Process Doppelgänging",
+   "description": "adversaries may inject malicious code into process via process doppelgänging in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.014": {
+   "key": "T1055.014 Process Injection: VDSO Hijacking",
+   "description": "adversaries may inject malicious code into processes via vdso hijacking in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1055.015": {
+   "key": "T1055.015 Process Injection: ListPlanting",
+   "description": "adversaries may abuse list-view controls to inject malicious code into hijacked processes in order to evade process-based defenses as well as possibly elevate privileges."
+  },
+  "T1056": {
+   "key": "T1056 Input Capture",
+   "description": "adversaries may use methods of capturing user input to obtain credentials or collect information."
+  },
+  "T1056.001": {
+   "key": "T1056.001 Input Capture: Keylogging",
+   "description": "adversaries may log user keystrokes to intercept credentials as the user types them."
+  },
+  "T1056.002": {
+   "key": "T1056.002 Input Capture: GUI Input Capture",
+   "description": "adversaries may mimic common operating system gui components to prompt users for credentials with a seemingly legitimate prompt."
+  },
+  "T1056.003": {
+   "key": "T1056.003 Input Capture: Web Portal Capture",
+   "description": "adversaries may install code on externally facing portals, such as a vpn login page, to capture and transmit credentials of users who attempt to log into the service."
+  },
+  "T1056.004": {
+   "key": "T1056.004 Input Capture: Credential API Hooking",
+   "description": "adversaries may hook into windows application programming interface api functions to collect user credentials."
+  },
+  "T1057": {
+   "key": "T1057 Process Discovery",
+   "description": "adversaries may attempt to get information about running processes on a system."
+  },
+  "T1058": {
+   "key": "T1058 Service Registry Permissions Weakness",
+   "description": "windows stores local service configuration information in the registry under hklm\\\\system\\\\currentcontrolset\\\\services."
+  },
+  "T1059": {
+   "key": "T1059 Command and Scripting Interpreter",
+   "description": "adversaries may abuse command and script interpreters to execute commands, scripts, or binaries."
+  },
+  "T1059.001": {
+   "key": "T1059.001 Command and Scripting Interpreter: PowerShell",
+   "description": "adversaries may abuse powershell commands and scripts for execution."
+  },
+  "T1059.002": {
+   "key": "T1059.002 Command and Scripting Interpreter: AppleScript",
+   "description": "adversaries may abuse applescript for execution."
+  },
+  "T1059.003": {
+   "key": "T1059.003 Command and Scripting Interpreter: Windows Command Shell",
+   "description": "adversaries may abuse the windows command shell for execution."
+  },
+  "T1059.004": {
+   "key": "T1059.004 Command and Scripting Interpreter: Unix Shell",
+   "description": "adversaries may abuse unix shell commands and scripts for execution."
+  },
+  "T1059.005": {
+   "key": "T1059.005 Command and Scripting Interpreter: Visual Basic",
+   "description": "adversaries may abuse visual basic vb for execution."
+  },
+  "T1059.006": {
+   "key": "T1059.006 Command and Scripting Interpreter: Python",
+   "description": "adversaries may abuse python commands and scripts for execution."
+  },
+  "T1059.007": {
+   "key": "T1059.007 Command and Scripting Interpreter: JavaScript",
+   "description": "adversaries may abuse various implementations of javascript for execution."
+  },
+  "T1059.008": {
+   "key": "T1059.008 Command and Scripting Interpreter: Network Device CLI",
+   "description": "adversaries may abuse scripting or built-in command line interpreters cli on network devices to execute malicious command and payloads."
+  },
+  "T1060": {
+   "key": "T1060 Registry Run Keys / Startup Folder",
+   "description": "adversaries may achieve persistence by adding a program to a startup folder or referencing it with a registry run key."
+  },
+  "T1061": {
+   "key": "T1061 Graphical User Interface",
+   "description": "the graphical user interfaces gui is a common way to interact with an operating system."
+  },
+  "T1062": {
+   "key": "T1062 Hypervisor",
+   "description": "a type-1 hypervisor is a software layer that sits between the guest operating systems and system's hardware."
+  },
+  "T1063": {
+   "key": "T1063 Security Software Discovery",
+   "description": "adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on the system."
+  },
+  "T1064": {
+   "key": "T1064 Scripting",
+   "description": "adversaries may use scripts to aid in operations and perform multiple actions that would otherwise be manual."
+  },
+  "T1065": {
+   "key": "T1065 Uncommonly Used Port",
+   "description": "adversaries may conduct c2 communications over a non-standard port to bypass proxies and firewalls that have been improperly configured."
+  },
+  "T1066": {
+   "key": "T1066 Indicator Removal from Tools",
+   "description": "if a malicious tool is detected and quarantined or otherwise curtailed, an adversary may be able to determine why the malicious tool was detected the indicator, modify the tool by removing the ..."
+  },
+  "T1067": {
+   "key": "T1067 Bootkit",
+   "description": "a bootkit is a malware variant that modifies the boot sectors of a hard drive, including the master boot record mbr and volume boot record vbr."
+  },
+  "T1068": {
+   "key": "T1068 Exploitation for Privilege Escalation",
+   "description": "adversaries may exploit software vulnerabilities in an attempt to elevate privileges."
+  },
+  "T1069": {
+   "key": "T1069 Permission Groups Discovery",
+   "description": "adversaries may attempt to find group and permission settings."
+  },
+  "T1069.001": {
+   "key": "T1069.001 Permission Groups Discovery: Local Groups",
+   "description": "adversaries may attempt to find local system groups and permission settings."
+  },
+  "T1069.002": {
+   "key": "T1069.002 Permission Groups Discovery: Domain Groups",
+   "description": "adversaries may attempt to find domain-level groups and permission settings."
+  },
+  "T1069.003": {
+   "key": "T1069.003 Permission Groups Discovery: Cloud Groups",
+   "description": "adversaries may attempt to find cloud groups and permission settings."
+  },
+  "T1070": {
+   "key": "T1070 Indicator Removal",
+   "description": "adversaries may delete or modify artifacts generated within systems to remove evidence of their presence or hinder defenses."
+  },
+  "T1070.001": {
+   "key": "T1070.001 Indicator Removal: Clear Windows Event Logs",
+   "description": "adversaries may clear windows event logs to hide the activity of an intrusion."
+  },
+  "T1070.002": {
+   "key": "T1070.002 Indicator Removal: Clear Linux or Mac System Logs",
+   "description": "adversaries may clear system logs to hide evidence of an intrusion."
+  },
+  "T1070.003": {
+   "key": "T1070.003 Indicator Removal: Clear Command History",
+   "description": "in addition to clearing system logs, an adversary may clear the command history of a compromised account to conceal the actions undertaken during an intrusion."
+  },
+  "T1070.004": {
+   "key": "T1070.004 Indicator Removal: File Deletion",
+   "description": "adversaries may delete files left behind by the actions of their intrusion activity."
+  },
+  "T1070.005": {
+   "key": "T1070.005 Indicator Removal: Network Share Connection Removal",
+   "description": "adversaries may remove share connections that are no longer useful in order to clean up traces of their operation."
+  },
+  "T1070.006": {
+   "key": "T1070.006 Indicator Removal: Timestomp",
+   "description": "adversaries may modify file time attributes to hide new or changes to existing files."
+  },
+  "T1070.007": {
+   "key": "T1070.007 Indicator Removal: Clear Network Connection History and Configurations",
+   "description": "adversaries may clear or remove evidence of malicious network connections in order to clean up traces of their operations."
+  },
+  "T1070.008": {
+   "key": "T1070.008 Indicator Removal: Clear Mailbox Data",
+   "description": "adversaries may modify mail application data to remove evidence of their activity."
+  },
+  "T1070.009": {
+   "key": "T1070.009 Indicator Removal: Clear Persistence",
+   "description": "adversaries may clear artifacts associated with previously established persistence on a host system to remove evidence of their activity."
+  },
+  "T1071": {
+   "key": "T1071 Application Layer Protocol",
+   "description": "adversaries may communicate using application layer protocols to avoid detection/network filtering by blending in with existing traffic."
+  },
+  "T1071.001": {
+   "key": "T1071.001 Application Layer Protocol: Web Protocols",
+   "description": "adversaries may communicate using application layer protocols associated with web traffic to avoid detection/network filtering by blending in with existing traffic."
+  },
+  "T1071.002": {
+   "key": "T1071.002 Application Layer Protocol: File Transfer Protocols",
+   "description": "adversaries may communicate using application layer protocols associated with transferring files to avoid detection/network filtering by blending in with existing traffic."
+  },
+  "T1071.003": {
+   "key": "T1071.003 Application Layer Protocol: Mail Protocols",
+   "description": "adversaries may communicate using application layer protocols associated with electronic mail delivery to avoid detection/network filtering by blending in with existing traffic."
+  },
+  "T1071.004": {
+   "key": "T1071.004 Application Layer Protocol: DNS",
+   "description": "adversaries may communicate using the domain name system dns application layer protocol to avoid detection/network filtering by blending in with existing traffic."
+  },
+  "T1072": {
+   "key": "T1072 Software Deployment Tools",
+   "description": "adversaries may gain access to and use third-party software suites installed within an enterprise network, such as administration, monitoring, and deployment systems, to move laterally through the ..."
+  },
+  "T1073": {
+   "key": "T1073 DLL Side-Loading",
+   "description": "programs may specify dlls that are loaded at runtime."
+  },
+  "T1074": {
+   "key": "T1074 Data Staged",
+   "description": "adversaries may stage collected data in a central location or directory prior to exfiltration."
+  },
+  "T1074.001": {
+   "key": "T1074.001 Data Staged: Local Data Staging",
+   "description": "adversaries may stage collected data in a central location or directory on the local system prior to exfiltration."
+  },
+  "T1074.002": {
+   "key": "T1074.002 Data Staged: Remote Data Staging",
+   "description": "adversaries may stage data collected from multiple systems in a central location or directory on one system prior to exfiltration."
+  },
+  "T1075": {
+   "key": "T1075 Pass the Hash",
+   "description": "pass the hash pth is a method of authenticating as a user without having access to the user's cleartext password."
+  },
+  "T1076": {
+   "key": "T1076 Remote Desktop Protocol",
+   "description": "remote desktop is a common feature in operating systems."
+  },
+  "T1077": {
+   "key": "T1077 Windows Admin Shares",
+   "description": "windows systems have hidden network shares that are accessible only to administrators and provide the ability for remote file copy and other administrative functions."
+  },
+  "T1078": {
+   "key": "T1078 Valid Accounts",
+   "description": "adversaries may obtain and abuse credentials of existing accounts as a means of gaining initial access, persistence, privilege escalation, or defense evasion."
+  },
+  "T1078.001": {
+   "key": "T1078.001 Valid Accounts: Default Accounts",
+   "description": "adversaries may obtain and abuse credentials of a default account as a means of gaining initial access, persistence, privilege escalation, or defense evasion."
+  },
+  "T1078.002": {
+   "key": "T1078.002 Valid Accounts: Domain Accounts",
+   "description": "adversaries may obtain and abuse credentials of a domain account as a means of gaining initial access, persistence, privilege escalation, or defense evasion.citation: technet credential theft domain ..."
+  },
+  "T1078.003": {
+   "key": "T1078.003 Valid Accounts: Local Accounts",
+   "description": "adversaries may obtain and abuse credentials of a local account as a means of gaining initial access, persistence, privilege escalation, or defense evasion."
+  },
+  "T1078.004": {
+   "key": "T1078.004 Valid Accounts: Cloud Accounts",
+   "description": "adversaries may obtain and abuse credentials of a cloud account as a means of gaining initial access, persistence, privilege escalation, or defense evasion."
+  },
+  "T1079": {
+   "key": "T1079 Multilayer Encryption",
+   "description": "an adversary performs c2 communications using multiple layers of encryption, typically but not exclusively tunneling a custom encryption scheme within a protocol encryption scheme such as https or ..."
+  },
+  "T1080": {
+   "key": "T1080 Taint Shared Content",
+   "description": "adversaries may deliver payloads to remote systems by adding content to shared storage locations, such as network drives or internal code repositories."
+  },
+  "T1081": {
+   "key": "T1081 Credentials in Files",
+   "description": "adversaries may search local file systems and remote file shares for files containing passwords."
+  },
+  "T1082": {
+   "key": "T1082 System Information Discovery",
+   "description": "an adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture."
+  },
+  "T1083": {
+   "key": "T1083 File and Directory Discovery",
+   "description": "adversaries may enumerate files and directories or may search in specific locations of a host or network share for certain information within a file system."
+  },
+  "T1084": {
+   "key": "T1084 Windows Management Instrumentation Event Subscription",
+   "description": "windows management instrumentation wmi can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs."
+  },
+  "T1085": {
+   "key": "T1085 Rundll32",
+   "description": "the rundll32.exe program can be called to execute an arbitrary binary."
+  },
+  "T1086": {
+   "key": "T1086 PowerShell",
+   "description": "powershell is a powerful interactive command-line interface and scripting environment included in the windows operating system."
+  },
+  "T1087": {
+   "key": "T1087 Account Discovery",
+   "description": "adversaries may attempt to get a listing of accounts on a system or within an environment."
+  },
+  "T1087.001": {
+   "key": "T1087.001 Account Discovery: Local Account",
+   "description": "adversaries may attempt to get a listing of local system accounts."
+  },
+  "T1087.002": {
+   "key": "T1087.002 Account Discovery: Domain Account",
+   "description": "adversaries may attempt to get a listing of domain accounts."
+  },
+  "T1087.003": {
+   "key": "T1087.003 Account Discovery: Email Account",
+   "description": "adversaries may attempt to get a listing of email addresses and accounts."
+  },
+  "T1087.004": {
+   "key": "T1087.004 Account Discovery: Cloud Account",
+   "description": "adversaries may attempt to get a listing of cloud accounts."
+  },
+  "T1088": {
+   "key": "T1088 Bypass User Account Control",
+   "description": "windows user account control uac allows a program to elevate its privileges to perform a task under administrator-level permissions by prompting the user for confirmation."
+  },
+  "T1089": {
+   "key": "T1089 Disabling Security Tools",
+   "description": "adversaries may disable security tools to avoid possible detection of their tools and activities."
+  },
+  "T1090": {
+   "key": "T1090 Proxy",
+   "description": "adversaries may use a connection proxy to direct network traffic between systems or act as an intermediary for network communications to a command and control server to avoid direct connections to ..."
+  },
+  "T1090.001": {
+   "key": "T1090.001 Proxy: Internal Proxy",
+   "description": "adversaries may use an internal proxy to direct command and control traffic between two or more systems in a compromised environment."
+  },
+  "T1090.002": {
+   "key": "T1090.002 Proxy: External Proxy",
+   "description": "adversaries may use an external proxy to act as an intermediary for network communications to a command and control server to avoid direct connections to their infrastructure."
+  },
+  "T1090.003": {
+   "key": "T1090.003 Proxy: Multi-hop Proxy",
+   "description": "to disguise the source of malicious traffic, adversaries may chain together multiple proxies."
+  },
+  "T1090.004": {
+   "key": "T1090.004 Proxy: Domain Fronting",
+   "description": "adversaries may take advantage of routing schemes in content delivery networks cdns and other services which host multiple domains to obfuscate the intended destination of https traffic or traffic ..."
+  },
+  "T1091": {
+   "key": "T1091 Replication Through Removable Media",
+   "description": "adversaries may move onto systems, possibly those on disconnected or air-gapped networks, by copying malware to removable media and taking advantage of autorun features when the media is inserted ..."
+  },
+  "T1092": {
+   "key": "T1092 Communication Through Removable Media",
+   "description": "adversaries can perform command and control between compromised hosts on potentially disconnected networks using removable media to transfer commands from system to system."
+  },
+  "T1093": {
+   "key": "T1093 Process Hollowing",
+   "description": "process hollowing occurs when a process is created in a suspended state then its memory is unmapped and replaced with malicious code."
+  },
+  "T1094": {
+   "key": "T1094 Custom Command and Control Protocol",
+   "description": "adversaries may communicate using a custom command and control protocol instead of encapsulating commands/data in an existing application layer protocol."
+  },
+  "T1095": {
+   "key": "T1095 Non-Application Layer Protocol",
+   "description": "adversaries may use a non-application layer protocol for communication between host and c2 server or among infected hosts within a network."
+  },
+  "T1096": {
+   "key": "T1096 NTFS File Attributes",
+   "description": "every new technology file system ntfs formatted partition contains a master file table mft that maintains a record for every file/directory on the partition."
+  },
+  "T1097": {
+   "key": "T1097 Pass the Ticket",
+   "description": "pass the ticket ptt is a method of authenticating to a system using kerberos tickets without having access to an account's password."
+  },
+  "T1098": {
+   "key": "T1098 Account Manipulation",
+   "description": "adversaries may manipulate accounts to maintain access to victim systems."
+  },
+  "T1098.001": {
+   "key": "T1098.001 Account Manipulation: Additional Cloud Credentials",
+   "description": "adversaries may add adversary-controlled credentials to a cloud account to maintain persistent access to victim accounts and instances within the environment."
+  },
+  "T1098.002": {
+   "key": "T1098.002 Account Manipulation: Additional Email Delegate Permissions",
+   "description": "adversaries may grant additional permission levels to maintain persistent access to an adversary-controlled email account."
+  },
+  "T1098.003": {
+   "key": "T1098.003 Account Manipulation: Additional Cloud Roles",
+   "description": "an adversary may add additional roles or permissions to an adversary-controlled cloud account to maintain persistent access to a tenant."
+  },
+  "T1098.004": {
+   "key": "T1098.004 Account Manipulation: SSH Authorized Keys",
+   "description": "adversaries may modify the ssh authorized_keys file to maintain persistence on a victim host."
+  },
+  "T1098.005": {
+   "key": "T1098.005 Account Manipulation: Device Registration",
+   "description": "adversaries may register a device to an adversary-controlled account."
+  },
+  "T1099": {
+   "key": "T1099 Timestomp",
+   "description": "adversaries may take actions to hide the deployment of new, or modification of existing files to obfuscate their activities."
+  },
+  "T1100": {
+   "key": "T1100 Web Shell",
+   "description": "a web shell is a web script that is placed on an openly accessible web server to allow an adversary to use the web server as a gateway into a network."
+  },
+  "T1101": {
+   "key": "T1101 Security Support Provider",
+   "description": "windows security support provider ssp dlls are loaded into the local security authority lsa process at system start."
+  },
+  "T1102": {
+   "key": "T1102 Web Service",
+   "description": "adversaries may use an existing, legitimate external web service as a means for relaying data to/from a compromised system."
+  },
+  "T1102.001": {
+   "key": "T1102.001 Web Service: Dead Drop Resolver",
+   "description": "adversaries may use an existing, legitimate external web service to host information that points to additional command and control c2 infrastructure."
+  },
+  "T1102.002": {
+   "key": "T1102.002 Web Service: Bidirectional Communication",
+   "description": "adversaries may use an existing, legitimate external web service as a means for sending commands to and receiving output from a compromised system over the web service channel."
+  },
+  "T1102.003": {
+   "key": "T1102.003 Web Service: One-Way Communication",
+   "description": "adversaries may use an existing, legitimate external web service as a means for sending commands to a compromised system without receiving return output over the web service channel."
+  },
+  "T1103": {
+   "key": "T1103 AppInit DLLs",
+   "description": "dynamic-link libraries dlls that are specified in the appinit_dlls value in the registry keys hkey_local_machine\\\\software\\\\microsoft\\\\windows nt\\\\currentversion\\\\windows or ..."
+  },
+  "T1104": {
+   "key": "T1104 Multi-Stage Channels",
+   "description": "adversaries may create multiple stages for command and control that are employed under different conditions or for certain functions."
+  },
+  "T1105": {
+   "key": "T1105 Ingress Tool Transfer",
+   "description": "adversaries may transfer tools or other files from an external system into a compromised environment."
+  },
+  "T1106": {
+   "key": "T1106 Native API",
+   "description": "adversaries may interact with the native os application programming interface api to execute behaviors."
+  },
+  "T1107": {
+   "key": "T1107 File Deletion",
+   "description": "adversaries may delete files left behind by the actions of their intrusion activity."
+  },
+  "T1108": {
+   "key": "T1108 Redundant Access",
+   "description": "adversaries may use more than one remote access tool with varying command and control protocols or credentialed access to remote services so they can maintain access if an access mechanism is ..."
+  },
+  "T1109": {
+   "key": "T1109 Component Firmware",
+   "description": "some adversaries may employ sophisticated means to compromise computer components and install malicious firmware that will execute adversary code outside of the operating system and main system ..."
+  },
+  "T1110": {
+   "key": "T1110 Brute Force",
+   "description": "adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained."
+  },
+  "T1110.001": {
+   "key": "T1110.001 Brute Force: Password Guessing",
+   "description": "adversaries with no prior knowledge of legitimate credentials within the system or environment may guess passwords to attempt access to accounts."
+  },
+  "T1110.002": {
+   "key": "T1110.002 Brute Force: Password Cracking",
+   "description": "adversaries may use password cracking to attempt to recover usable credentials, such as plaintext passwords, when credential material such as password hashes are obtained."
+  },
+  "T1110.003": {
+   "key": "T1110.003 Brute Force: Password Spraying",
+   "description": "adversaries may use a single or small list of commonly used passwords against many different accounts to attempt to acquire valid account credentials."
+  },
+  "T1110.004": {
+   "key": "T1110.004 Brute Force: Credential Stuffing",
+   "description": "adversaries may use credentials obtained from breach dumps of unrelated accounts to gain access to target accounts through credential overlap."
+  },
+  "T1111": {
+   "key": "T1111 Multi-Factor Authentication Interception",
+   "description": "adversaries may target multi-factor authentication mfa mechanisms, i.e., smart cards, token generators, etc. to gain access to credentials that can be used to access systems, services, and network ..."
+  },
+  "T1112": {
+   "key": "T1112 Modify Registry",
+   "description": "adversaries may interact with the windows registry to hide configuration information within registry keys, remove information as part of cleaning up, or as part of other techniques to aid in ..."
+  },
+  "T1113": {
+   "key": "T1113 Screen Capture",
+   "description": "adversaries may attempt to take screen captures of the desktop to gather information over the course of an operation."
+  },
+  "T1114": {
+   "key": "T1114 Email Collection",
+   "description": "adversaries may target user email to collect sensitive information."
+  },
+  "T1114.001": {
+   "key": "T1114.001 Email Collection: Local Email Collection",
+   "description": "adversaries may target user email on local systems to collect sensitive information."
+  },
+  "T1114.002": {
+   "key": "T1114.002 Email Collection: Remote Email Collection",
+   "description": "adversaries may target an exchange server, office 365, or google workspace to collect sensitive information."
+  },
+  "T1114.003": {
+   "key": "T1114.003 Email Collection: Email Forwarding Rule",
+   "description": "adversaries may setup email forwarding rules to collect sensitive information."
+  },
+  "T1115": {
+   "key": "T1115 Clipboard Data",
+   "description": "adversaries may collect data stored in the clipboard from users copying information within or between applications."
+  },
+  "T1116": {
+   "key": "T1116 Code Signing",
+   "description": "code signing provides a level of authenticity on a binary from the developer and a guarantee that the binary has not been tampered with."
+  },
+  "T1117": {
+   "key": "T1117 Regsvr32",
+   "description": "regsvr32.exe is a command-line program used to register and unregister object linking and embedding controls, including dynamic link libraries dlls, on windows systems."
+  },
+  "T1118": {
+   "key": "T1118 InstallUtil",
+   "description": "installutil is a command-line utility that allows for installation and uninstallation of resources by executing specific installer components specified in .net binaries."
+  },
+  "T1119": {
+   "key": "T1119 Automated Collection",
+   "description": "once established within a system or network, an adversary may use automated techniques for collecting internal data."
+  },
+  "T1120": {
+   "key": "T1120 Peripheral Device Discovery",
+   "description": "adversaries may attempt to gather information about attached peripheral devices and components connected to a computer system.citation: peripheral discovery linuxcitation: peripheral discovery macos ..."
+  },
+  "T1121": {
+   "key": "T1121 Regsvcs/Regasm",
+   "description": "regsvcs and regasm are windows command-line utilities that are used to register .net component object model com assemblies."
+  },
+  "T1122": {
+   "key": "T1122 Component Object Model Hijacking",
+   "description": "the component object model com is a system within windows to enable interaction between software components through the operating system."
+  },
+  "T1123": {
+   "key": "T1123 Audio Capture",
+   "description": "an adversary can leverage a computer's peripheral devices e.g., microphones and webcams or applications e.g., voice and video call services to capture audio recordings for the purpose of listening ..."
+  },
+  "T1124": {
+   "key": "T1124 System Time Discovery",
+   "description": "an adversary may gather the system time and/or time zone from a local or remote system."
+  },
+  "T1125": {
+   "key": "T1125 Video Capture",
+   "description": "an adversary can leverage a computer's peripheral devices e.g., integrated cameras or webcams or applications e.g., video call services to capture video recordings for the purpose of gathering ..."
+  },
+  "T1126": {
+   "key": "T1126 Network Share Connection Removal",
+   "description": "adversaries may remove share connections that are no longer useful in order to clean up traces of their operation."
+  },
+  "T1127": {
+   "key": "T1127 Trusted Developer Utilities Proxy Execution",
+   "description": "adversaries may take advantage of trusted developer utilities to proxy execution of malicious payloads."
+  },
+  "T1127.001": {
+   "key": "T1127.001 Trusted Developer Utilities Proxy Execution: MSBuild",
+   "description": "adversaries may use msbuild to proxy execution of code through a trusted windows utility."
+  },
+  "T1128": {
+   "key": "T1128 Netsh Helper DLL",
+   "description": "netsh.exe also referred to as netshell is a command-line scripting utility used to interact with the network configuration of a system."
+  },
+  "T1129": {
+   "key": "T1129 Shared Modules",
+   "description": "adversaries may execute malicious payloads via loading shared modules."
+  },
+  "T1130": {
+   "key": "T1130 Install Root Certificate",
+   "description": "root certificates are used in public key cryptography to identify a root certificate authority ca."
+  },
+  "T1131": {
+   "key": "T1131 Authentication Package",
+   "description": "windows authentication package dlls are loaded by the local security authority lsa process at system start."
+  },
+  "T1132": {
+   "key": "T1132 Data Encoding",
+   "description": "adversaries may encode data to make the content of command and control traffic more difficult to detect."
+  },
+  "T1132.001": {
+   "key": "T1132.001 Data Encoding: Standard Encoding",
+   "description": "adversaries may encode data with a standard data encoding system to make the content of command and control traffic more difficult to detect."
+  },
+  "T1132.002": {
+   "key": "T1132.002 Data Encoding: Non-Standard Encoding",
+   "description": "adversaries may encode data with a non-standard data encoding system to make the content of command and control traffic more difficult to detect."
+  },
+  "T1133": {
+   "key": "T1133 External Remote Services",
+   "description": "adversaries may leverage external-facing remote services to initially access and/or persist within a network."
+  },
+  "T1134": {
+   "key": "T1134 Access Token Manipulation",
+   "description": "adversaries may modify access tokens to operate under a different user or system security context to perform actions and bypass access controls."
+  },
+  "T1134.001": {
+   "key": "T1134.001 Access Token Manipulation: Token Impersonation/Theft",
+   "description": "adversaries may duplicate then impersonate another user's token to escalate privileges and bypass access controls."
+  },
+  "T1134.002": {
+   "key": "T1134.002 Access Token Manipulation: Create Process with Token",
+   "description": "adversaries may create a new process with a different token to escalate privileges and bypass access controls."
+  },
+  "T1134.003": {
+   "key": "T1134.003 Access Token Manipulation: Make and Impersonate Token",
+   "description": "adversaries may make and impersonate tokens to escalate privileges and bypass access controls."
+  },
+  "T1134.004": {
+   "key": "T1134.004 Access Token Manipulation: Parent PID Spoofing",
+   "description": "adversaries may spoof the parent process identifier ppid of a new process to evade process-monitoring defenses or to elevate privileges."
+  },
+  "T1134.005": {
+   "key": "T1134.005 Access Token Manipulation: SID-History Injection",
+   "description": "adversaries may use sid-history injection to escalate privileges and bypass access controls."
+  },
+  "T1135": {
+   "key": "T1135 Network Share Discovery",
+   "description": "adversaries may look for folders and drives shared on remote systems as a means of identifying sources of information to gather as a precursor for collection and to identify potential systems of ..."
+  },
+  "T1136": {
+   "key": "T1136 Create Account",
+   "description": "adversaries may create an account to maintain access to victim systems."
+  },
+  "T1136.001": {
+   "key": "T1136.001 Create Account: Local Account",
+   "description": "adversaries may create a local account to maintain access to victim systems."
+  },
+  "T1136.002": {
+   "key": "T1136.002 Create Account: Domain Account",
+   "description": "adversaries may create a domain account to maintain access to victim systems."
+  },
+  "T1136.003": {
+   "key": "T1136.003 Create Account: Cloud Account",
+   "description": "adversaries may create a cloud account to maintain access to victim systems."
+  },
+  "T1137": {
+   "key": "T1137 Office Application Startup",
+   "description": "adversaries may leverage microsoft office-based applications for persistence between startups."
+  },
+  "T1137.001": {
+   "key": "T1137.001 Office Application Startup: Office Template Macros",
+   "description": "adversaries may abuse microsoft office templates to obtain persistence on a compromised system."
+  },
+  "T1137.002": {
+   "key": "T1137.002 Office Application Startup: Office Test",
+   "description": "adversaries may abuse the microsoft office \"office test\" registry key to obtain persistence on a compromised system."
+  },
+  "T1137.003": {
+   "key": "T1137.003 Office Application Startup: Outlook Forms",
+   "description": "adversaries may abuse microsoft outlook forms to obtain persistence on a compromised system."
+  },
+  "T1137.004": {
+   "key": "T1137.004 Office Application Startup: Outlook Home Page",
+   "description": "adversaries may abuse microsoft outlook's home page feature to obtain persistence on a compromised system."
+  },
+  "T1137.005": {
+   "key": "T1137.005 Office Application Startup: Outlook Rules",
+   "description": "adversaries may abuse microsoft outlook rules to obtain persistence on a compromised system."
+  },
+  "T1137.006": {
+   "key": "T1137.006 Office Application Startup: Add-ins",
+   "description": "adversaries may abuse microsoft office add-ins to obtain persistence on a compromised system."
+  },
+  "T1138": {
+   "key": "T1138 Application Shimming",
+   "description": "the microsoft windows application compatibility infrastructure/framework application shim was created to allow for backward compatibility of software as the operating system codebase changes over ..."
+  },
+  "T1139": {
+   "key": "T1139 Bash History",
+   "description": "bash keeps track of the commands users type on the command-line with the \"history\" utility."
+  },
+  "T1140": {
+   "key": "T1140 Deobfuscate/Decode Files or Information",
+   "description": "adversaries may use obfuscated files or information to hide artifacts of an intrusion from analysis."
+  },
+  "T1141": {
+   "key": "T1141 Input Prompt",
+   "description": "when programs are executed that need additional privileges than are present in the current user context, it is common for the operating system to prompt the user for proper credentials to authorize ..."
+  },
+  "T1142": {
+   "key": "T1142 Keychain",
+   "description": "keychains are the built-in way for macos to keep track of users' passwords and credentials for many services and features such as wifi passwords, websites, secure notes, certificates, and kerberos."
+  },
+  "T1143": {
+   "key": "T1143 Hidden Window",
+   "description": "adversaries may implement hidden windows to conceal malicious activity from the plain sight of users."
+  },
+  "T1144": {
+   "key": "T1144 Gatekeeper Bypass",
+   "description": "in macos and os x, when applications or programs are downloaded from the internet, there is a special attribute set on the file called com.apple.quarantine."
+  },
+  "T1145": {
+   "key": "T1145 Private Keys",
+   "description": "private cryptographic keys and certificates are used for authentication, encryption/decryption, and digital signatures."
+  },
+  "T1146": {
+   "key": "T1146 Clear Command History",
+   "description": "in addition to clearing system logs, an adversary may clear the command history of a compromised account to conceal the actions undertaken during an intrusion."
+  },
+  "T1147": {
+   "key": "T1147 Hidden Users",
+   "description": "every user account in macos has a userid associated with it."
+  },
+  "T1148": {
+   "key": "T1148 HISTCONTROL",
+   "description": "the histcontrol environment variable keeps track of what should be saved by the history command and eventually into the ~/.bash_history file when a user logs out."
+  },
+  "T1149": {
+   "key": "T1149 LC_MAIN Hijacking",
+   "description": "as of os x 10.8, mach-o binaries introduced a new header called lc_main that points to the binary’s entry point for execution."
+  },
+  "T1150": {
+   "key": "T1150 Plist Modification",
+   "description": "property list plist files contain all of the information that macos and os x uses to configure applications and services."
+  },
+  "T1151": {
+   "key": "T1151 Space after Filename",
+   "description": "adversaries can hide a program's true filetype by changing the extension of a file."
+  },
+  "T1152": {
+   "key": "T1152 Launchctl",
+   "description": "launchctl controls the macos launchd process which handles things like launch agents and launch daemons, but can execute other commands or programs itself."
+  },
+  "T1153": {
+   "key": "T1153 Source",
+   "description": "the source command loads functions into the current shell or executes files in the current context."
+  },
+  "T1154": {
+   "key": "T1154 Trap",
+   "description": "the trap command allows programs and shells to specify commands that will be executed upon receiving interrupt signals."
+  },
+  "T1155": {
+   "key": "T1155 AppleScript",
+   "description": "macos and os x applications send appleevent messages to each other for interprocess communications ipc."
+  },
+  "T1156": {
+   "key": "T1156 Malicious Shell Modification",
+   "description": "adversaries may establish persistence through executing malicious commands triggered by a user’s shell."
+  },
+  "T1157": {
+   "key": "T1157 Dylib Hijacking",
+   "description": "macos and os x use a common method to look for required dynamic libraries dylib to load into a program based on search paths."
+  },
+  "T1158": {
+   "key": "T1158 Hidden Files and Directories",
+   "description": "to prevent normal users from accidentally changing special files on a system, most operating systems have the concept of a ‘hidden’ file."
+  },
+  "T1159": {
+   "key": "T1159 Launch Agent",
+   "description": "per apple’s developer documentation, when a user logs in, a per-user launchd process is started which loads the parameters for each launch-on-demand user agent from the property list plist files ..."
+  },
+  "T1160": {
+   "key": "T1160 Launch Daemon",
+   "description": "per apple’s developer documentation, when macos and os x boot up, launchd is run to finish system initialization."
+  },
+  "T1161": {
+   "key": "T1161 LC_LOAD_DYLIB Addition",
+   "description": "mach-o binaries have a series of headers that are used to perform certain operations when a binary is loaded."
+  },
+  "T1162": {
+   "key": "T1162 Login Item",
+   "description": "macos provides the option to list specific applications to run when a user logs in."
+  },
+  "T1163": {
+   "key": "T1163 Rc.common",
+   "description": "during the boot process, macos executes source /etc/rc.common, which is a shell script containing various utility functions."
+  },
+  "T1164": {
+   "key": "T1164 Re-opened Applications",
+   "description": "starting in mac os x 10.7 lion, users can specify certain applications to be re-opened when a user reboots their machine."
+  },
+  "T1165": {
+   "key": "T1165 Startup Items",
+   "description": "per apple’s documentation, startup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system ..."
+  },
+  "T1166": {
+   "key": "T1166 Setuid and Setgid",
+   "description": "when the setuid or setgid bits are set on linux or macos for an application, this means that the application will run with the privileges of the owning user or group respectively citation: setuid man ..."
+  },
+  "T1167": {
+   "key": "T1167 Securityd Memory",
+   "description": "in os x prior to el capitan, users with root access can read plaintext keychain passwords of logged-in users because apple’s keychain implementation allows these credentials to be cached so that ..."
+  },
+  "T1168": {
+   "key": "T1168 Local Job Scheduling",
+   "description": "on linux and macos systems, multiple methods are supported for creating pre-scheduled and periodic background jobs: cron, citation: die.net linux crontab man page at, citation: die.net linux at man ..."
+  },
+  "T1169": {
+   "key": "T1169 Sudo",
+   "description": "the sudoers file, /etc/sudoers, describes which users can run which commands and from which terminals."
+  },
+  "T1170": {
+   "key": "T1170 Mshta",
+   "description": "mshta.exe is a utility that executes microsoft html applications hta."
+  },
+  "T1171": {
+   "key": "T1171 LLMNR/NBT-NS Poisoning and Relay",
+   "description": "link-local multicast name resolution llmnr and netbios name service nbt-ns are microsoft windows components that serve as alternate methods of host identification."
+  },
+  "T1172": {
+   "key": "T1172 Domain Fronting",
+   "description": "domain fronting takes advantage of routing schemes in content delivery networks cdns and other services which host multiple domains to obfuscate the intended destination of https traffic or traffic ..."
+  },
+  "T1173": {
+   "key": "T1173 Dynamic Data Exchange",
+   "description": "windows dynamic data exchange dde is a client-server protocol for one-time and/or continuous inter-process communication ipc between applications."
+  },
+  "T1174": {
+   "key": "T1174 Password Filter DLL",
+   "description": "windows password filters are password policy enforcement mechanisms for both domain and local accounts."
+  },
+  "T1175": {
+   "key": "T1175 Component Object Model and Distributed COM",
+   "description": "adversaries may use the windows component object model com and distributed component object model dcom for local code execution or to execute on remote systems as part of lateral movement."
+  },
+  "T1176": {
+   "key": "T1176 Browser Extensions",
+   "description": "adversaries may abuse internet browser extensions to establish persistent access to victim systems."
+  },
+  "T1177": {
+   "key": "T1177 LSASS Driver",
+   "description": "the windows security subsystem is a set of components that manage and enforce the security policy for a computer or domain."
+  },
+  "T1178": {
+   "key": "T1178 SID-History Injection",
+   "description": "the windows security identifier sid is a unique value that identifies a user or group account."
+  },
+  "T1179": {
+   "key": "T1179 Hooking",
+   "description": "windows processes often leverage application programming interface api functions to perform tasks that require reusable system resources."
+  },
+  "T1180": {
+   "key": "T1180 Screensaver",
+   "description": "screensavers are programs that execute after a configurable time of user inactivity and consist of portable executable pe files with a .scr file extension.citation: wikipedia screensaver the windows ..."
+  },
+  "T1181": {
+   "key": "T1181 Extra Window Memory Injection",
+   "description": "before creating a window, graphical windows-based processes must prescribe to or register a windows class, which stipulate appearance and behavior via windows procedures, which are functions that ..."
+  },
+  "T1182": {
+   "key": "T1182 AppCert DLLs",
+   "description": "dynamic-link libraries dlls that are specified in the appcertdlls registry key under hkey_local_machine\\\\system\\\\currentcontrolset\\\\control\\\\session manager are loaded into every process that calls ..."
+  },
+  "T1183": {
+   "key": "T1183 Image File Execution Options Injection",
+   "description": "image file execution options ifeo enable a developer to attach a debugger to an application."
+  },
+  "T1184": {
+   "key": "T1184 SSH Hijacking",
+   "description": "secure shell ssh is a standard means of remote access on linux and macos systems."
+  },
+  "T1185": {
+   "key": "T1185 Browser Session Hijacking",
+   "description": "adversaries may take advantage of security vulnerabilities and inherent functionality in browser software to change content, modify user-behaviors, and intercept information as part of various ..."
+  },
+  "T1186": {
+   "key": "T1186 Process Doppelgänging",
+   "description": "windows transactional ntfs txf was introduced in vista as a method to perform safe file operations."
+  },
+  "T1187": {
+   "key": "T1187 Forced Authentication",
+   "description": "adversaries may gather credential material by invoking or forcing a user to automatically provide authentication information through a mechanism in which they can intercept."
+  },
+  "T1188": {
+   "key": "T1188 Multi-hop Proxy",
+   "description": "to disguise the source of malicious traffic, adversaries may chain together multiple proxies."
+  },
+  "T1189": {
+   "key": "T1189 Drive-by Compromise",
+   "description": "adversaries may gain access to a system through a user visiting a website over the normal course of browsing."
+  },
+  "T1190": {
+   "key": "T1190 Exploit Public-Facing Application",
+   "description": "adversaries may attempt to take advantage of a weakness in an internet-facing computer or program using software, data, or commands in order to cause unintended or unanticipated behavior."
+  },
+  "T1191": {
+   "key": "T1191 CMSTP",
+   "description": "the microsoft connection manager profile installer cmstp.exe is a command-line program used to install connection manager service profiles."
+  },
+  "T1192": {
+   "key": "T1192 Spearphishing Link",
+   "description": "spearphishing with a link is a specific variant of spearphishing."
+  },
+  "T1193": {
+   "key": "T1193 Spearphishing Attachment",
+   "description": "spearphishing attachment is a specific variant of spearphishing."
+  },
+  "T1194": {
+   "key": "T1194 Spearphishing via Service",
+   "description": "spearphishing via service is a specific variant of spearphishing."
+  },
+  "T1195": {
+   "key": "T1195 Supply Chain Compromise",
+   "description": "adversaries may manipulate products or product delivery mechanisms prior to receipt by a final consumer for the purpose of data or system compromise."
+  },
+  "T1195.001": {
+   "key": "T1195.001 Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+   "description": "adversaries may manipulate software dependencies and development tools prior to receipt by a final consumer for the purpose of data or system compromise."
+  },
+  "T1195.002": {
+   "key": "T1195.002 Supply Chain Compromise: Compromise Software Supply Chain",
+   "description": "adversaries may manipulate application software prior to receipt by a final consumer for the purpose of data or system compromise."
+  },
+  "T1195.003": {
+   "key": "T1195.003 Supply Chain Compromise: Compromise Hardware Supply Chain",
+   "description": "adversaries may manipulate hardware components in products prior to receipt by a final consumer for the purpose of data or system compromise."
+  },
+  "T1196": {
+   "key": "T1196 Control Panel Items",
+   "description": "windows control panel items are utilities that allow users to view and adjust computer settings."
+  },
+  "T1197": {
+   "key": "T1197 BITS Jobs",
+   "description": "adversaries may abuse bits jobs to persistently execute code and perform various background tasks."
+  },
+  "T1198": {
+   "key": "T1198 SIP and Trust Provider Hijacking",
+   "description": "in user mode, windows authenticode citation: microsoft authenticode digital signatures are used to verify a file's origin and integrity, variables that may be used to establish trust in signed code ..."
+  },
+  "T1199": {
+   "key": "T1199 Trusted Relationship",
+   "description": "adversaries may breach or otherwise leverage organizations who have access to intended victims."
+  },
+  "T1200": {
+   "key": "T1200 Hardware Additions",
+   "description": "adversaries may introduce computer accessories, networking hardware, or other computing devices into a system or network that can be used as a vector to gain access."
+  },
+  "T1201": {
+   "key": "T1201 Password Policy Discovery",
+   "description": "adversaries may attempt to access detailed information about the password policy used within an enterprise network or cloud environment."
+  },
+  "T1202": {
+   "key": "T1202 Indirect Command Execution",
+   "description": "adversaries may abuse utilities that allow for command execution to bypass security restrictions that limit the use of command-line interpreters."
+  },
+  "T1203": {
+   "key": "T1203 Exploitation for Client Execution",
+   "description": "adversaries may exploit software vulnerabilities in client applications to execute code."
+  },
+  "T1204": {
+   "key": "T1204 User Execution",
+   "description": "an adversary may rely upon specific actions by a user in order to gain execution."
+  },
+  "T1204.001": {
+   "key": "T1204.001 User Execution: Malicious Link",
+   "description": "an adversary may rely upon a user clicking a malicious link in order to gain execution."
+  },
+  "T1204.002": {
+   "key": "T1204.002 User Execution: Malicious File",
+   "description": "an adversary may rely upon a user opening a malicious file in order to gain execution."
+  },
+  "T1204.003": {
+   "key": "T1204.003 User Execution: Malicious Image",
+   "description": "adversaries may rely on a user running a malicious image to facilitate execution."
+  },
+  "T1205": {
+   "key": "T1205 Traffic Signaling",
+   "description": "adversaries may use traffic signaling to hide open ports or other malicious functionality used for persistence or command and control."
+  },
+  "T1205.001": {
+   "key": "T1205.001 Traffic Signaling: Port Knocking",
+   "description": "adversaries may use port knocking to hide open ports used for persistence or command and control."
+  },
+  "T1205.002": {
+   "key": "T1205.002 Traffic Signaling: Socket Filters",
+   "description": "adversaries may attach filters to a network socket to monitor then activate backdoors used for persistence or command and control."
+  },
+  "T1206": {
+   "key": "T1206 Sudo Caching",
+   "description": "the sudo command \"allows a system administrator to delegate authority to give certain users or groups of users the ability to run some or all commands as root or another user while providing an audit ..."
+  },
+  "T1207": {
+   "key": "T1207 Rogue Domain Controller",
+   "description": "adversaries may register a rogue domain controller to enable manipulation of active directory data."
+  },
+  "T1208": {
+   "key": "T1208 Kerberoasting",
+   "description": "service principal names spns are used to uniquely identify each instance of a windows service."
+  },
+  "T1209": {
+   "key": "T1209 Time Providers",
+   "description": "the windows time service w32time enables time synchronization across and within domains."
+  },
+  "T1210": {
+   "key": "T1210 Exploitation of Remote Services",
+   "description": "adversaries may exploit remote services to gain unauthorized access to internal systems once inside of a network."
+  },
+  "T1211": {
+   "key": "T1211 Exploitation for Defense Evasion",
+   "description": "adversaries may exploit a system or application vulnerability to bypass security features."
+  },
+  "T1212": {
+   "key": "T1212 Exploitation for Credential Access",
+   "description": "adversaries may exploit software vulnerabilities in an attempt to collect credentials."
+  },
+  "T1213": {
+   "key": "T1213 Data from Information Repositories",
+   "description": "adversaries may leverage information repositories to mine valuable information."
+  },
+  "T1213.001": {
+   "key": "T1213.001 Data from Information Repositories: Confluence",
+   "description": "adversaries may leverage confluence repositories to mine valuable information."
+  },
+  "T1213.002": {
+   "key": "T1213.002 Data from Information Repositories: Sharepoint",
+   "description": "adversaries may leverage the sharepoint repository as a source to mine valuable information."
+  },
+  "T1213.003": {
+   "key": "T1213.003 Data from Information Repositories: Code Repositories",
+   "description": "adversaries may leverage code repositories to collect valuable information."
+  },
+  "T1214": {
+   "key": "T1214 Credentials in Registry",
+   "description": "the windows registry stores configuration information that can be used by the system or other programs."
+  },
+  "T1215": {
+   "key": "T1215 Kernel Modules and Extensions",
+   "description": "loadable kernel modules or lkms are pieces of code that can be loaded and unloaded into the kernel upon demand."
+  },
+  "T1216": {
+   "key": "T1216 System Script Proxy Execution",
+   "description": "adversaries may use trusted scripts, often signed with certificates, to proxy the execution of malicious files."
+  },
+  "T1216.001": {
+   "key": "T1216.001 System Script Proxy Execution: PubPrn",
+   "description": "adversaries may use pubprn to proxy execution of malicious remote files."
+  },
+  "T1217": {
+   "key": "T1217 Browser Bookmark Discovery",
+   "description": "adversaries may enumerate browser bookmarks to learn more about compromised hosts."
+  },
+  "T1218": {
+   "key": "T1218 System Binary Proxy Execution",
+   "description": "adversaries may bypass process and/or signature-based defenses by proxying execution of malicious content with signed, or otherwise trusted, binaries."
+  },
+  "T1218.001": {
+   "key": "T1218.001 System Binary Proxy Execution: Compiled HTML File",
+   "description": "adversaries may abuse compiled html files .chm to conceal malicious code."
+  },
+  "T1218.002": {
+   "key": "T1218.002 System Binary Proxy Execution: Control Panel",
+   "description": "adversaries may abuse control.exe to proxy execution of malicious payloads."
+  },
+  "T1218.003": {
+   "key": "T1218.003 System Binary Proxy Execution: CMSTP",
+   "description": "adversaries may abuse cmstp to proxy execution of malicious code."
+  },
+  "T1218.004": {
+   "key": "T1218.004 System Binary Proxy Execution: InstallUtil",
+   "description": "adversaries may use installutil to proxy execution of code through a trusted windows utility."
+  },
+  "T1218.005": {
+   "key": "T1218.005 System Binary Proxy Execution: Mshta",
+   "description": "adversaries may abuse mshta.exe to proxy execution of malicious .hta files and javascript or vbscript through a trusted windows utility."
+  },
+  "T1218.007": {
+   "key": "T1218.007 System Binary Proxy Execution: Msiexec",
+   "description": "adversaries may abuse msiexec.exe to proxy execution of malicious payloads."
+  },
+  "T1218.008": {
+   "key": "T1218.008 System Binary Proxy Execution: Odbcconf",
+   "description": "adversaries may abuse odbcconf.exe to proxy execution of malicious payloads."
+  },
+  "T1218.009": {
+   "key": "T1218.009 System Binary Proxy Execution: Regsvcs/Regasm",
+   "description": "adversaries may abuse regsvcs and regasm to proxy execution of code through a trusted windows utility."
+  },
+  "T1218.010": {
+   "key": "T1218.010 System Binary Proxy Execution: Regsvr32",
+   "description": "adversaries may abuse regsvr32.exe to proxy execution of malicious code."
+  },
+  "T1218.011": {
+   "key": "T1218.011 System Binary Proxy Execution: Rundll32",
+   "description": "adversaries may abuse rundll32.exe to proxy execution of malicious code."
+  },
+  "T1218.012": {
+   "key": "T1218.012 System Binary Proxy Execution: Verclsid",
+   "description": "adversaries may abuse verclsid.exe to proxy execution of malicious code."
+  },
+  "T1218.013": {
+   "key": "T1218.013 System Binary Proxy Execution: Mavinject",
+   "description": "adversaries may abuse mavinject.exe to proxy execution of malicious code."
+  },
+  "T1218.014": {
+   "key": "T1218.014 System Binary Proxy Execution: MMC",
+   "description": "adversaries may abuse mmc.exe to proxy execution of malicious .msc files."
+  },
+  "T1219": {
+   "key": "T1219 Remote Access Software",
+   "description": "an adversary may use legitimate desktop support and remote access software, such as team viewer, anydesk, go2assist, logmein, ammyyadmin, etc, to establish an interactive command and control channel ..."
+  },
+  "T1220": {
+   "key": "T1220 XSL Script Processing",
+   "description": "adversaries may bypass application control and obscure execution of code by embedding scripts inside xsl files."
+  },
+  "T1221": {
+   "key": "T1221 Template Injection",
+   "description": "adversaries may create or modify references in user document templates to conceal malicious code or force authentication attempts."
+  },
+  "T1222": {
+   "key": "T1222 File and Directory Permissions Modification",
+   "description": "adversaries may modify file or directory permissions/attributes to evade access control lists acls and access protected files.citation: hybrid analysis icacls1 june 2018citation: hybrid analysis ..."
+  },
+  "T1222.001": {
+   "key": "T1222.001 File and Directory Permissions Modification: Windows File and Directory Permissions Modification",
+   "description": "adversaries may modify file or directory permissions/attributes to evade access control lists acls and access protected files.citation: hybrid analysis icacls1 june 2018citation: hybrid analysis ..."
+  },
+  "T1222.002": {
+   "key": "T1222.002 File and Directory Permissions Modification: Linux and Mac File and Directory Permissions Modification",
+   "description": "adversaries may modify file or directory permissions/attributes to evade access control lists acls and access protected files.citation: hybrid analysis icacls1 june 2018citation: hybrid analysis ..."
+  },
+  "T1223": {
+   "key": "T1223 Compiled HTML File",
+   "description": "compiled html files .chm are commonly distributed as part of the microsoft html help system."
+  },
+  "T1480": {
+   "key": "T1480 Execution Guardrails",
+   "description": "adversaries may use execution guardrails to constrain execution or actions based on adversary supplied and environment specific conditions that are expected to be present on the target."
+  },
+  "T1480.001": {
+   "key": "T1480.001 Execution Guardrails: Environmental Keying",
+   "description": "adversaries may environmentally key payloads or other features of malware to evade defenses and constraint execution to a specific target environment."
+  },
+  "T1482": {
+   "key": "T1482 Domain Trust Discovery",
+   "description": "adversaries may attempt to gather information on domain trust relationships that may be used to identify lateral movement opportunities in windows multi-domain/forest environments."
+  },
+  "T1483": {
+   "key": "T1483 Domain Generation Algorithms",
+   "description": "adversaries may make use of domain generation algorithms dgas to dynamically identify a destination for command and control traffic rather than relying on a list of static ip addresses or domains."
+  },
+  "T1484": {
+   "key": "T1484 Domain Policy Modification",
+   "description": "adversaries may modify the configuration settings of a domain to evade defenses and/or escalate privileges in domain environments."
+  },
+  "T1484.001": {
+   "key": "T1484.001 Domain Policy Modification: Group Policy Modification",
+   "description": "adversaries may modify group policy objects gpos to subvert the intended discretionary access controls for a domain, usually with the intention of escalating privileges on the domain."
+  },
+  "T1484.002": {
+   "key": "T1484.002 Domain Policy Modification: Domain Trust Modification",
+   "description": "adversaries may add new domain trusts or modify the properties of existing domain trusts to evade defenses and/or elevate privileges."
+  },
+  "T1485": {
+   "key": "T1485 Data Destruction",
+   "description": "adversaries may destroy data and files on specific systems or in large numbers on a network to interrupt availability to systems, services, and network resources."
+  },
+  "T1486": {
+   "key": "T1486 Data Encrypted for Impact",
+   "description": "adversaries may encrypt data on target systems or on large numbers of systems in a network to interrupt availability to system and network resources."
+  },
+  "T1487": {
+   "key": "T1487 Disk Structure Wipe",
+   "description": "adversaries may corrupt or wipe the disk data structures on hard drive necessary to boot systems; targeting specific critical systems as well as a large number of systems in a network to interrupt ..."
+  },
+  "T1488": {
+   "key": "T1488 Disk Content Wipe",
+   "description": "adversaries may erase the contents of storage devices on specific systems as well as large numbers of systems in a network to interrupt availability to system and network resources."
+  },
+  "T1489": {
+   "key": "T1489 Service Stop",
+   "description": "adversaries may stop or disable services on a system to render those services unavailable to legitimate users."
+  },
+  "T1490": {
+   "key": "T1490 Inhibit System Recovery",
+   "description": "adversaries may delete or remove built-in operating system data and turn off services designed to aid in the recovery of a corrupted system to prevent recovery.citation: talos olympic destroyer ..."
+  },
+  "T1491": {
+   "key": "T1491 Defacement",
+   "description": "adversaries may modify visual content available internally or externally to an enterprise network, thus affecting the integrity of the original content."
+  },
+  "T1491.001": {
+   "key": "T1491.001 Defacement: Internal Defacement",
+   "description": "an adversary may deface systems internal to an organization in an attempt to intimidate or mislead users, thus discrediting the integrity of the systems."
+  },
+  "T1491.002": {
+   "key": "T1491.002 Defacement: External Defacement",
+   "description": "an adversary may deface systems external to an organization in an attempt to deliver messaging, intimidate, or otherwise mislead an organization or users."
+  },
+  "T1492": {
+   "key": "T1492 Stored Data Manipulation",
+   "description": "adversaries may insert, delete, or manipulate data at rest in order to manipulate external outcomes or hide activity.citation: fireeye apt38 oct 2018citation: doj lazarus sony 2018 by manipulating ..."
+  },
+  "T1493": {
+   "key": "T1493 Transmitted Data Manipulation",
+   "description": "adversaries may alter data en route to storage or other systems in order to manipulate external outcomes or hide activity.citation: fireeye apt38 oct 2018citation: doj lazarus sony 2018 by ..."
+  },
+  "T1494": {
+   "key": "T1494 Runtime Data Manipulation",
+   "description": "adversaries may modify systems in order to manipulate the data as it is accessed and displayed to an end user.citation: fireeye apt38 oct 2018citation: doj lazarus sony 2018 by manipulating runtime ..."
+  },
+  "T1495": {
+   "key": "T1495 Firmware Corruption",
+   "description": "adversaries may overwrite or corrupt the flash memory contents of system bios or other firmware in devices attached to a system in order to render them inoperable or unable to boot, thus denying the ..."
+  },
+  "T1496": {
+   "key": "T1496 Resource Hijacking",
+   "description": "adversaries may leverage the resources of co-opted systems in order to solve resource intensive problems, which may impact system and/or hosted service availability."
+  },
+  "T1497": {
+   "key": "T1497 Virtualization/Sandbox Evasion",
+   "description": "adversaries may employ various means to detect and avoid virtualization and analysis environments."
+  },
+  "T1497.001": {
+   "key": "T1497.001 Virtualization/Sandbox Evasion: System Checks",
+   "description": "adversaries may employ various system checks to detect and avoid virtualization and analysis environments."
+  },
+  "T1497.002": {
+   "key": "T1497.002 Virtualization/Sandbox Evasion: User Activity Based Checks",
+   "description": "adversaries may employ various user activity checks to detect and avoid virtualization and analysis environments."
+  },
+  "T1497.003": {
+   "key": "T1497.003 Virtualization/Sandbox Evasion: Time Based Evasion",
+   "description": "adversaries may employ various time-based methods to detect and avoid virtualization and analysis environments."
+  },
+  "T1498": {
+   "key": "T1498 Network Denial of Service",
+   "description": "adversaries may perform network denial of service dos attacks to degrade or block the availability of targeted resources to users."
+  },
+  "T1498.001": {
+   "key": "T1498.001 Network Denial of Service: Direct Network Flood",
+   "description": "adversaries may attempt to cause a denial of service dos by directly sending a high-volume of network traffic to a target."
+  },
+  "T1498.002": {
+   "key": "T1498.002 Network Denial of Service: Reflection Amplification",
+   "description": "adversaries may attempt to cause a denial of service dos by reflecting a high-volume of network traffic to a target."
+  },
+  "T1499": {
+   "key": "T1499 Endpoint Denial of Service",
+   "description": "adversaries may perform endpoint denial of service dos attacks to degrade or block the availability of services to users."
+  },
+  "T1499.001": {
+   "key": "T1499.001 Endpoint Denial of Service: OS Exhaustion Flood",
+   "description": "adversaries may launch a denial of service dos attack targeting an endpoint's operating system os."
+  },
+  "T1499.002": {
+   "key": "T1499.002 Endpoint Denial of Service: Service Exhaustion Flood",
+   "description": "adversaries may target the different network services provided by systems to conduct a denial of service dos."
+  },
+  "T1499.003": {
+   "key": "T1499.003 Endpoint Denial of Service: Application Exhaustion Flood",
+   "description": "adversaries may target resource intensive features of applications to cause a denial of service dos, denying availability to those applications."
+  },
+  "T1499.004": {
+   "key": "T1499.004 Endpoint Denial of Service: Application or System Exploitation",
+   "description": "adversaries may exploit software vulnerabilities that can cause an application or system to crash and deny availability to users."
+  },
+  "T1500": {
+   "key": "T1500 Compile After Delivery",
+   "description": "adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code."
+  },
+  "T1501": {
+   "key": "T1501 Systemd Service",
+   "description": "systemd services can be used to establish persistence on a linux system."
+  },
+  "T1502": {
+   "key": "T1502 Parent PID Spoofing",
+   "description": "adversaries may spoof the parent process identifier ppid of a new process to evade process-monitoring defenses or to elevate privileges."
+  },
+  "T1503": {
+   "key": "T1503 Credentials from Web Browsers",
+   "description": "adversaries may acquire credentials from web browsers by reading files specific to the target browser."
+  },
+  "T1504": {
+   "key": "T1504 PowerShell Profile",
+   "description": "adversaries may gain persistence and elevate privileges in certain situations by abusing powershell profiles."
+  },
+  "T1505": {
+   "key": "T1505 Server Software Component",
+   "description": "adversaries may abuse legitimate extensible development features of servers to establish persistent access to systems."
+  },
+  "T1505.001": {
+   "key": "T1505.001 Server Software Component: SQL Stored Procedures",
+   "description": "adversaries may abuse sql stored procedures to establish persistent access to systems."
+  },
+  "T1505.002": {
+   "key": "T1505.002 Server Software Component: Transport Agent",
+   "description": "adversaries may abuse microsoft transport agents to establish persistent access to systems."
+  },
+  "T1505.003": {
+   "key": "T1505.003 Server Software Component: Web Shell",
+   "description": "adversaries may backdoor web servers with web shells to establish persistent access to systems."
+  },
+  "T1505.004": {
+   "key": "T1505.004 Server Software Component: IIS Components",
+   "description": "adversaries may install malicious components that run on internet information services iis web servers to establish persistence."
+  },
+  "T1505.005": {
+   "key": "T1505.005 Server Software Component: Terminal Services DLL",
+   "description": "adversaries may abuse components of terminal services to enable persistent access to systems."
+  },
+  "T1506": {
+   "key": "T1506 Web Session Cookie",
+   "description": "adversaries can use stolen session cookies to authenticate to web applications and services."
+  },
+  "T1514": {
+   "key": "T1514 Elevated Execution with Prompt",
+   "description": "adversaries may leverage the authorizationexecutewithprivileges api to escalate privileges by prompting the user for credentials.citation: appledocs authorizationexecutewithprivileges the purpose of ..."
+  },
+  "T1518": {
+   "key": "T1518 Software Discovery",
+   "description": "adversaries may attempt to get a listing of software and software versions that are installed on a system or in a cloud environment."
+  },
+  "T1518.001": {
+   "key": "T1518.001 Software Discovery: Security Software Discovery",
+   "description": "adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on a system or in a cloud environment."
+  },
+  "T1519": {
+   "key": "T1519 Emond",
+   "description": "adversaries may use event monitor daemon emond to establish persistence by scheduling malicious commands to run on predictable event triggers."
+  },
+  "T1522": {
+   "key": "T1522 Cloud Instance Metadata API",
+   "description": "adversaries may attempt to access the cloud instance metadata api to collect credentials and other sensitive data."
+  },
+  "T1525": {
+   "key": "T1525 Implant Internal Image",
+   "description": "adversaries may implant cloud or container images with malicious code to establish persistence after gaining access to an environment."
+  },
+  "T1526": {
+   "key": "T1526 Cloud Service Discovery",
+   "description": "an adversary may attempt to enumerate the cloud services running on a system after gaining access."
+  },
+  "T1527": {
+   "key": "T1527 Application Access Token",
+   "description": "adversaries may use application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems."
+  },
+  "T1528": {
+   "key": "T1528 Steal Application Access Token",
+   "description": "adversaries can steal application access tokens as a means of acquiring credentials to access remote systems and resources."
+  },
+  "T1529": {
+   "key": "T1529 System Shutdown/Reboot",
+   "description": "adversaries may shutdown/reboot systems to interrupt access to, or aid in the destruction of, those systems."
+  },
+  "T1530": {
+   "key": "T1530 Data from Cloud Storage",
+   "description": "adversaries may access data from improperly secured cloud storage."
+  },
+  "T1531": {
+   "key": "T1531 Account Access Removal",
+   "description": "adversaries may interrupt availability of system and network resources by inhibiting access to accounts utilized by legitimate users."
+  },
+  "T1534": {
+   "key": "T1534 Internal Spearphishing",
+   "description": "adversaries may use internal spearphishing to gain access to additional information or exploit other users within the same organization after they already have access to accounts or systems within ..."
+  },
+  "T1535": {
+   "key": "T1535 Unused/Unsupported Cloud Regions",
+   "description": "adversaries may create cloud instances in unused geographic service regions in order to evade detection."
+  },
+  "T1536": {
+   "key": "T1536 Revert Cloud Instance",
+   "description": "an adversary may revert changes made to a cloud instance after they have performed malicious activities in attempt to evade detection and remove evidence of their presence."
+  },
+  "T1537": {
+   "key": "T1537 Transfer Data to Cloud Account",
+   "description": "adversaries may exfiltrate data by transferring the data, including backups of cloud environments, to another cloud account they control on the same service to avoid typical file transfers/downloads ..."
+  },
+  "T1538": {
+   "key": "T1538 Cloud Service Dashboard",
+   "description": "an adversary may use a cloud service dashboard gui with stolen credentials to gain useful information from an operational cloud environment, such as specific services, resources, and features."
+  },
+  "T1539": {
+   "key": "T1539 Steal Web Session Cookie",
+   "description": "an adversary may steal web application or service session cookies and use them to gain access to web applications or internet services as an authenticated user without needing credentials."
+  },
+  "T1542": {
+   "key": "T1542 Pre-OS Boot",
+   "description": "adversaries may abuse pre-os boot mechanisms as a way to establish persistence on a system."
+  },
+  "T1542.001": {
+   "key": "T1542.001 Pre-OS Boot: System Firmware",
+   "description": "adversaries may modify system firmware to persist on systems.the bios basic input/output system and the unified extensible firmware interface uefi or extensible firmware interface efi are examples of ..."
+  },
+  "T1542.002": {
+   "key": "T1542.002 Pre-OS Boot: Component Firmware",
+   "description": "adversaries may modify component firmware to persist on systems."
+  },
+  "T1542.003": {
+   "key": "T1542.003 Pre-OS Boot: Bootkit",
+   "description": "adversaries may use bootkits to persist on systems."
+  },
+  "T1542.004": {
+   "key": "T1542.004 Pre-OS Boot: ROMMONkit",
+   "description": "adversaries may abuse the rom monitor rommon by loading an unauthorized firmware with adversary code to provide persistent access and manipulate device behavior that is difficult to detect."
+  },
+  "T1542.005": {
+   "key": "T1542.005 Pre-OS Boot: TFTP Boot",
+   "description": "adversaries may abuse netbooting to load an unauthorized network device operating system from a trivial file transfer protocol tftp server."
+  },
+  "T1543": {
+   "key": "T1543 Create or Modify System Process",
+   "description": "adversaries may create or modify system-level processes to repeatedly execute malicious payloads as part of persistence."
+  },
+  "T1543.001": {
+   "key": "T1543.001 Create or Modify System Process: Launch Agent",
+   "description": "adversaries may create or modify launch agents to repeatedly execute malicious payloads as part of persistence."
+  },
+  "T1543.002": {
+   "key": "T1543.002 Create or Modify System Process: Systemd Service",
+   "description": "adversaries may create or modify systemd services to repeatedly execute malicious payloads as part of persistence."
+  },
+  "T1543.003": {
+   "key": "T1543.003 Create or Modify System Process: Windows Service",
+   "description": "adversaries may create or modify windows services to repeatedly execute malicious payloads as part of persistence."
+  },
+  "T1543.004": {
+   "key": "T1543.004 Create or Modify System Process: Launch Daemon",
+   "description": "adversaries may create or modify launch daemons to execute malicious payloads as part of persistence."
+  },
+  "T1546": {
+   "key": "T1546 Event Triggered Execution",
+   "description": "adversaries may establish persistence and/or elevate privileges using system mechanisms that trigger execution based on specific events."
+  },
+  "T1546.001": {
+   "key": "T1546.001 Event Triggered Execution: Change Default File Association",
+   "description": "adversaries may establish persistence by executing malicious content triggered by a file type association."
+  },
+  "T1546.002": {
+   "key": "T1546.002 Event Triggered Execution: Screensaver",
+   "description": "adversaries may establish persistence by executing malicious content triggered by user inactivity."
+  },
+  "T1546.003": {
+   "key": "T1546.003 Event Triggered Execution: Windows Management Instrumentation Event Subscription",
+   "description": "adversaries may establish persistence and elevate privileges by executing malicious content triggered by a windows management instrumentation wmi event subscription."
+  },
+  "T1546.004": {
+   "key": "T1546.004 Event Triggered Execution: Unix Shell Configuration Modification",
+   "description": "adversaries may establish persistence through executing malicious commands triggered by a user’s shell."
+  },
+  "T1546.005": {
+   "key": "T1546.005 Event Triggered Execution: Trap",
+   "description": "adversaries may establish persistence by executing malicious content triggered by an interrupt signal."
+  },
+  "T1546.006": {
+   "key": "T1546.006 Event Triggered Execution: LC_LOAD_DYLIB Addition",
+   "description": "adversaries may establish persistence by executing malicious content triggered by the execution of tainted binaries."
+  },
+  "T1546.007": {
+   "key": "T1546.007 Event Triggered Execution: Netsh Helper DLL",
+   "description": "adversaries may establish persistence by executing malicious content triggered by netsh helper dlls."
+  },
+  "T1546.008": {
+   "key": "T1546.008 Event Triggered Execution: Accessibility Features",
+   "description": "adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by accessibility features."
+  },
+  "T1546.009": {
+   "key": "T1546.009 Event Triggered Execution: AppCert DLLs",
+   "description": "adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by appcert dlls loaded into processes."
+  },
+  "T1546.010": {
+   "key": "T1546.010 Event Triggered Execution: AppInit DLLs",
+   "description": "adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by appinit dlls loaded into processes."
+  },
+  "T1546.011": {
+   "key": "T1546.011 Event Triggered Execution: Application Shimming",
+   "description": "adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by application shims."
+  },
+  "T1546.012": {
+   "key": "T1546.012 Event Triggered Execution: Image File Execution Options Injection",
+   "description": "adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by image file execution options ifeo debuggers."
+  },
+  "T1546.013": {
+   "key": "T1546.013 Event Triggered Execution: PowerShell Profile",
+   "description": "adversaries may gain persistence and elevate privileges by executing malicious content triggered by powershell profiles."
+  },
+  "T1546.014": {
+   "key": "T1546.014 Event Triggered Execution: Emond",
+   "description": "adversaries may gain persistence and elevate privileges by executing malicious content triggered by the event monitor daemon emond."
+  },
+  "T1546.015": {
+   "key": "T1546.015 Event Triggered Execution: Component Object Model Hijacking",
+   "description": "adversaries may establish persistence by executing malicious content triggered by hijacked references to component object model com objects."
+  },
+  "T1546.016": {
+   "key": "T1546.016 Event Triggered Execution: Installer Packages",
+   "description": "adversaries may establish persistence and elevate privileges by using an installer to trigger the execution of malicious content."
+  },
+  "T1547": {
+   "key": "T1547 Boot or Logon Autostart Execution",
+   "description": "adversaries may configure system settings to automatically execute a program during system boot or logon to maintain persistence or gain higher-level privileges on compromised systems."
+  },
+  "T1547.001": {
+   "key": "T1547.001 Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder",
+   "description": "adversaries may achieve persistence by adding a program to a startup folder or referencing it with a registry run key."
+  },
+  "T1547.002": {
+   "key": "T1547.002 Boot or Logon Autostart Execution: Authentication Package",
+   "description": "adversaries may abuse authentication packages to execute dlls when the system boots."
+  },
+  "T1547.003": {
+   "key": "T1547.003 Boot or Logon Autostart Execution: Time Providers",
+   "description": "adversaries may abuse time providers to execute dlls when the system boots."
+  },
+  "T1547.004": {
+   "key": "T1547.004 Boot or Logon Autostart Execution: Winlogon Helper DLL",
+   "description": "adversaries may abuse features of winlogon to execute dlls and/or executables when a user logs in."
+  },
+  "T1547.005": {
+   "key": "T1547.005 Boot or Logon Autostart Execution: Security Support Provider",
+   "description": "adversaries may abuse security support providers ssps to execute dlls when the system boots."
+  },
+  "T1547.006": {
+   "key": "T1547.006 Boot or Logon Autostart Execution: Kernel Modules and Extensions",
+   "description": "adversaries may modify the kernel to automatically execute programs on system boot."
+  },
+  "T1547.007": {
+   "key": "T1547.007 Boot or Logon Autostart Execution: Re-opened Applications",
+   "description": "adversaries may modify plist files to automatically run an application when a user logs in."
+  },
+  "T1547.008": {
+   "key": "T1547.008 Boot or Logon Autostart Execution: LSASS Driver",
+   "description": "adversaries may modify or add lsass drivers to obtain persistence on compromised systems."
+  },
+  "T1547.009": {
+   "key": "T1547.009 Boot or Logon Autostart Execution: Shortcut Modification",
+   "description": "adversaries may create or modify shortcuts that can execute a program during system boot or user login."
+  },
+  "T1547.010": {
+   "key": "T1547.010 Boot or Logon Autostart Execution: Port Monitors",
+   "description": "adversaries may use port monitors to run an adversary supplied dll during system boot for persistence or privilege escalation."
+  },
+  "T1547.011": {
+   "key": "T1547.011 Boot or Logon Autostart Execution: Plist Modification",
+   "description": "adversaries can modify property list files plist files to execute their code as part of establishing persistence."
+  },
+  "T1547.012": {
+   "key": "T1547.012 Boot or Logon Autostart Execution: Print Processors",
+   "description": "adversaries may abuse print processors to run malicious dlls during system boot for persistence and/or privilege escalation."
+  },
+  "T1547.013": {
+   "key": "T1547.013 Boot or Logon Autostart Execution: XDG Autostart Entries",
+   "description": "adversaries may modify xdg autostart entries to execute programs or commands during system boot."
+  },
+  "T1547.014": {
+   "key": "T1547.014 Boot or Logon Autostart Execution: Active Setup",
+   "description": "adversaries may achieve persistence by adding a registry key to the active setup of the local machine."
+  },
+  "T1547.015": {
+   "key": "T1547.015 Boot or Logon Autostart Execution: Login Items",
+   "description": "adversaries may add login items to execute upon user login to gain persistence or escalate privileges."
+  },
+  "T1548": {
+   "key": "T1548 Abuse Elevation Control Mechanism",
+   "description": "adversaries may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions."
+  },
+  "T1548.001": {
+   "key": "T1548.001 Abuse Elevation Control Mechanism: Setuid and Setgid",
+   "description": "an adversary may abuse configurations where an application has the setuid or setgid bits set in order to get code running in a different and possibly more privileged user’s context."
+  },
+  "T1548.002": {
+   "key": "T1548.002 Abuse Elevation Control Mechanism: Bypass User Account Control",
+   "description": "adversaries may bypass uac mechanisms to elevate process privileges on system."
+  },
+  "T1548.003": {
+   "key": "T1548.003 Abuse Elevation Control Mechanism: Sudo and Sudo Caching",
+   "description": "adversaries may perform sudo caching and/or use the sudoers file to elevate privileges."
+  },
+  "T1548.004": {
+   "key": "T1548.004 Abuse Elevation Control Mechanism: Elevated Execution with Prompt",
+   "description": "adversaries may leverage the authorizationexecutewithprivileges api to escalate privileges by prompting the user for credentials.citation: appledocs authorizationexecutewithprivileges the purpose of ..."
+  },
+  "T1550": {
+   "key": "T1550 Use Alternate Authentication Material",
+   "description": "adversaries may use alternate authentication material, such as password hashes, kerberos tickets, and application access tokens, in order to move laterally within an environment and bypass normal ..."
+  },
+  "T1550.001": {
+   "key": "T1550.001 Use Alternate Authentication Material: Application Access Token",
+   "description": "adversaries may use stolen application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems."
+  },
+  "T1550.002": {
+   "key": "T1550.002 Use Alternate Authentication Material: Pass the Hash",
+   "description": "adversaries may “pass the hash” using stolen password hashes to move laterally within an environment, bypassing normal system access controls."
+  },
+  "T1550.003": {
+   "key": "T1550.003 Use Alternate Authentication Material: Pass the Ticket",
+   "description": "adversaries may “pass the ticket” using stolen kerberos tickets to move laterally within an environment, bypassing normal system access controls."
+  },
+  "T1550.004": {
+   "key": "T1550.004 Use Alternate Authentication Material: Web Session Cookie",
+   "description": "adversaries can use stolen session cookies to authenticate to web applications and services."
+  },
+  "T1552": {
+   "key": "T1552 Unsecured Credentials",
+   "description": "adversaries may search compromised systems to find and obtain insecurely stored credentials."
+  },
+  "T1552.001": {
+   "key": "T1552.001 Unsecured Credentials: Credentials In Files",
+   "description": "adversaries may search local file systems and remote file shares for files containing insecurely stored credentials."
+  },
+  "T1552.002": {
+   "key": "T1552.002 Unsecured Credentials: Credentials in Registry",
+   "description": "adversaries may search the registry on compromised systems for insecurely stored credentials."
+  },
+  "T1552.003": {
+   "key": "T1552.003 Unsecured Credentials: Bash History",
+   "description": "adversaries may search the bash command history on compromised systems for insecurely stored credentials."
+  },
+  "T1552.004": {
+   "key": "T1552.004 Unsecured Credentials: Private Keys",
+   "description": "adversaries may search for private key certificate files on compromised systems for insecurely stored credentials."
+  },
+  "T1552.005": {
+   "key": "T1552.005 Unsecured Credentials: Cloud Instance Metadata API",
+   "description": "adversaries may attempt to access the cloud instance metadata api to collect credentials and other sensitive data."
+  },
+  "T1552.006": {
+   "key": "T1552.006 Unsecured Credentials: Group Policy Preferences",
+   "description": "adversaries may attempt to find unsecured credentials in group policy preferences gpp."
+  },
+  "T1552.007": {
+   "key": "T1552.007 Unsecured Credentials: Container API",
+   "description": "adversaries may gather credentials via apis within a containers environment."
+  },
+  "T1553": {
+   "key": "T1553 Subvert Trust Controls",
+   "description": "adversaries may undermine security controls that will either warn users of untrusted activity or prevent execution of untrusted programs."
+  },
+  "T1553.001": {
+   "key": "T1553.001 Subvert Trust Controls: Gatekeeper Bypass",
+   "description": "adversaries may modify file attributes and subvert gatekeeper functionality to evade user prompts and execute untrusted programs."
+  },
+  "T1553.002": {
+   "key": "T1553.002 Subvert Trust Controls: Code Signing",
+   "description": "adversaries may create, acquire, or steal code signing materials to sign their malware or tools."
+  },
+  "T1553.003": {
+   "key": "T1553.003 Subvert Trust Controls: SIP and Trust Provider Hijacking",
+   "description": "adversaries may tamper with sip and trust provider components to mislead the operating system and application control tools when conducting signature validation checks."
+  },
+  "T1553.004": {
+   "key": "T1553.004 Subvert Trust Controls: Install Root Certificate",
+   "description": "adversaries may install a root certificate on a compromised system to avoid warnings when connecting to adversary controlled web servers."
+  },
+  "T1553.005": {
+   "key": "T1553.005 Subvert Trust Controls: Mark-of-the-Web Bypass",
+   "description": "adversaries may abuse specific file formats to subvert mark-of-the-web motw controls."
+  },
+  "T1553.006": {
+   "key": "T1553.006 Subvert Trust Controls: Code Signing Policy Modification",
+   "description": "adversaries may modify code signing policies to enable execution of unsigned or self-signed code."
+  },
+  "T1554": {
+   "key": "T1554 Compromise Client Software Binary",
+   "description": "adversaries may modify client software binaries to establish persistent access to systems."
+  },
+  "T1555": {
+   "key": "T1555 Credentials from Password Stores",
+   "description": "adversaries may search for common password storage locations to obtain user credentials."
+  },
+  "T1555.001": {
+   "key": "T1555.001 Credentials from Password Stores: Keychain",
+   "description": "adversaries may acquire credentials from keychain."
+  },
+  "T1555.002": {
+   "key": "T1555.002 Credentials from Password Stores: Securityd Memory",
+   "description": "an adversary may obtain root access allowing them to read securityd’s memory, then they can scan through memory to find the correct sequence of keys in relatively few tries to decrypt the user’s ..."
+  },
+  "T1555.003": {
+   "key": "T1555.003 Credentials from Password Stores: Credentials from Web Browsers",
+   "description": "adversaries may acquire credentials from web browsers by reading files specific to the target browser.citation: talos olympic destroyer 2018 web browsers commonly save credentials such as website ..."
+  },
+  "T1555.004": {
+   "key": "T1555.004 Credentials from Password Stores: Windows Credential Manager",
+   "description": "adversaries may acquire credentials from the windows credential manager."
+  },
+  "T1555.005": {
+   "key": "T1555.005 Credentials from Password Stores: Password Managers",
+   "description": "adversaries may acquire user credentials from third-party password managers.citation: ise password manager february 2019 password managers are applications designed to store user credentials, ..."
+  },
+  "T1556": {
+   "key": "T1556 Modify Authentication Process",
+   "description": "adversaries may modify authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts."
+  },
+  "T1556.001": {
+   "key": "T1556.001 Modify Authentication Process: Domain Controller Authentication",
+   "description": "adversaries may patch the authentication process on a domain controller to bypass the typical authentication mechanisms and enable access to accounts."
+  },
+  "T1556.002": {
+   "key": "T1556.002 Modify Authentication Process: Password Filter DLL",
+   "description": "adversaries may register malicious password filter dynamic link libraries dlls into the authentication process to acquire user credentials as they are validated."
+  },
+  "T1556.003": {
+   "key": "T1556.003 Modify Authentication Process: Pluggable Authentication Modules",
+   "description": "adversaries may modify pluggable authentication modules pam to access user credentials or enable otherwise unwarranted access to accounts."
+  },
+  "T1556.004": {
+   "key": "T1556.004 Modify Authentication Process: Network Device Authentication",
+   "description": "adversaries may use patch system image to hard code a password in the operating system, thus bypassing of native authentication mechanisms for local accounts on network devices."
+  },
+  "T1556.005": {
+   "key": "T1556.005 Modify Authentication Process: Reversible Encryption",
+   "description": "an adversary may abuse active directory authentication encryption properties to gain access to credentials on windows systems."
+  },
+  "T1556.006": {
+   "key": "T1556.006 Modify Authentication Process: Multi-Factor Authentication",
+   "description": "adversaries may disable or modify multi-factor authentication mfa mechanisms to enable persistent access to compromised accounts."
+  },
+  "T1556.007": {
+   "key": "T1556.007 Modify Authentication Process: Hybrid Identity",
+   "description": "adversaries may patch, modify, or otherwise backdoor cloud authentication processes that are tied to on-premises user identities in order to bypass typical authentication mechanisms, access ..."
+  },
+  "T1557": {
+   "key": "T1557 Adversary-in-the-Middle",
+   "description": "adversaries may attempt to position themselves between two or more networked devices using an adversary-in-the-middle aitm technique to support follow-on behaviors such as network sniffing or ..."
+  },
+  "T1557.001": {
+   "key": "T1557.001 Adversary-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay",
+   "description": "by responding to llmnr/nbt-ns network traffic, adversaries may spoof an authoritative source for name resolution to force communication with an adversary controlled system."
+  },
+  "T1557.002": {
+   "key": "T1557.002 Adversary-in-the-Middle: ARP Cache Poisoning",
+   "description": "adversaries may poison address resolution protocol arp caches to position themselves between the communication of two or more networked devices."
+  },
+  "T1557.003": {
+   "key": "T1557.003 Adversary-in-the-Middle: DHCP Spoofing",
+   "description": "adversaries may redirect network traffic to adversary-owned systems by spoofing dynamic host configuration protocol dhcp traffic and acting as a malicious dhcp server on the victim network."
+  },
+  "T1558": {
+   "key": "T1558 Steal or Forge Kerberos Tickets",
+   "description": "adversaries may attempt to subvert kerberos authentication by stealing or forging kerberos tickets to enable pass the ticket."
+  },
+  "T1558.001": {
+   "key": "T1558.001 Steal or Forge Kerberos Tickets: Golden Ticket",
+   "description": "adversaries who have the krbtgt account password hash may forge kerberos ticket-granting tickets tgt, also known as a golden ticket.citation: adsecurity kerberos gt aug 2015 golden tickets enable ..."
+  },
+  "T1558.002": {
+   "key": "T1558.002 Steal or Forge Kerberos Tickets: Silver Ticket",
+   "description": "adversaries who have the password hash of a target service account e.g. sharepoint, mssql may forge kerberos ticket granting service tgs tickets, also known as silver tickets."
+  },
+  "T1558.003": {
+   "key": "T1558.003 Steal or Forge Kerberos Tickets: Kerberoasting",
+   "description": "adversaries may abuse a valid kerberos ticket-granting ticket tgt or sniff network traffic to obtain a ticket-granting service tgs ticket that may be vulnerable to brute force.citation: empire ..."
+  },
+  "T1558.004": {
+   "key": "T1558.004 Steal or Forge Kerberos Tickets: AS-REP Roasting",
+   "description": "adversaries may reveal credentials of accounts that have disabled kerberos preauthentication by password cracking kerberos messages.citation: harmj0y roasting as-reps jan 2017 preauthentication ..."
+  },
+  "T1559": {
+   "key": "T1559 Inter-Process Communication",
+   "description": "adversaries may abuse inter-process communication ipc mechanisms for local code or command execution."
+  },
+  "T1559.001": {
+   "key": "T1559.001 Inter-Process Communication: Component Object Model",
+   "description": "adversaries may use the windows component object model com for local code execution."
+  },
+  "T1559.002": {
+   "key": "T1559.002 Inter-Process Communication: Dynamic Data Exchange",
+   "description": "adversaries may use windows dynamic data exchange dde to execute arbitrary commands."
+  },
+  "T1559.003": {
+   "key": "T1559.003 Inter-Process Communication: XPC Services",
+   "description": "adversaries can provide malicious content to an xpc service daemon for local code execution."
+  },
+  "T1560": {
+   "key": "T1560 Archive Collected Data",
+   "description": "an adversary may compress and/or encrypt data that is collected prior to exfiltration."
+  },
+  "T1560.001": {
+   "key": "T1560.001 Archive Collected Data: Archive via Utility",
+   "description": "adversaries may use utilities to compress and/or encrypt collected data prior to exfiltration."
+  },
+  "T1560.002": {
+   "key": "T1560.002 Archive Collected Data: Archive via Library",
+   "description": "an adversary may compress or encrypt data that is collected prior to exfiltration using 3rd party libraries."
+  },
+  "T1560.003": {
+   "key": "T1560.003 Archive Collected Data: Archive via Custom Method",
+   "description": "an adversary may compress or encrypt data that is collected prior to exfiltration using a custom method."
+  },
+  "T1561": {
+   "key": "T1561 Disk Wipe",
+   "description": "adversaries may wipe or corrupt raw disk data on specific systems or in large numbers in a network to interrupt availability to system and network resources."
+  },
+  "T1561.001": {
+   "key": "T1561.001 Disk Wipe: Disk Content Wipe",
+   "description": "adversaries may erase the contents of storage devices on specific systems or in large numbers in a network to interrupt availability to system and network resources."
+  },
+  "T1561.002": {
+   "key": "T1561.002 Disk Wipe: Disk Structure Wipe",
+   "description": "adversaries may corrupt or wipe the disk data structures on a hard drive necessary to boot a system; targeting specific critical systems or in large numbers in a network to interrupt availability to ..."
+  },
+  "T1562": {
+   "key": "T1562 Impair Defenses",
+   "description": "adversaries may maliciously modify components of a victim environment in order to hinder or disable defensive mechanisms."
+  },
+  "T1562.001": {
+   "key": "T1562.001 Impair Defenses: Disable or Modify Tools",
+   "description": "adversaries may modify and/or disable security tools to avoid possible detection of their malware/tools and activities."
+  },
+  "T1562.002": {
+   "key": "T1562.002 Impair Defenses: Disable Windows Event Logging",
+   "description": "adversaries may disable windows event logging to limit data that can be leveraged for detections and audits."
+  },
+  "T1562.003": {
+   "key": "T1562.003 Impair Defenses: Impair Command History Logging",
+   "description": "adversaries may impair command history logging to hide commands they run on a compromised system."
+  },
+  "T1562.004": {
+   "key": "T1562.004 Impair Defenses: Disable or Modify System Firewall",
+   "description": "adversaries may disable or modify system firewalls in order to bypass controls limiting network usage."
+  },
+  "T1562.006": {
+   "key": "T1562.006 Impair Defenses: Indicator Blocking",
+   "description": "an adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed."
+  },
+  "T1562.007": {
+   "key": "T1562.007 Impair Defenses: Disable or Modify Cloud Firewall",
+   "description": "adversaries may disable or modify a firewall within a cloud environment to bypass controls that limit access to cloud resources."
+  },
+  "T1562.008": {
+   "key": "T1562.008 Impair Defenses: Disable Cloud Logs",
+   "description": "an adversary may disable cloud logging capabilities and integrations to limit what data is collected on their activities and avoid detection."
+  },
+  "T1562.009": {
+   "key": "T1562.009 Impair Defenses: Safe Mode Boot",
+   "description": "adversaries may abuse windows safe mode to disable endpoint defenses."
+  },
+  "T1562.010": {
+   "key": "T1562.010 Impair Defenses: Downgrade Attack",
+   "description": "adversaries may downgrade or use a version of system features that may be outdated, vulnerable, and/or does not support updated security controls such as logging."
+  },
+  "T1563": {
+   "key": "T1563 Remote Service Session Hijacking",
+   "description": "adversaries may take control of preexisting sessions with remote services to move laterally in an environment."
+  },
+  "T1563.001": {
+   "key": "T1563.001 Remote Service Session Hijacking: SSH Hijacking",
+   "description": "adversaries may hijack a legitimate user's ssh session to move laterally within an environment."
+  },
+  "T1563.002": {
+   "key": "T1563.002 Remote Service Session Hijacking: RDP Hijacking",
+   "description": "adversaries may hijack a legitimate user’s remote desktop session to move laterally within an environment."
+  },
+  "T1564": {
+   "key": "T1564 Hide Artifacts",
+   "description": "adversaries may attempt to hide artifacts associated with their behaviors to evade detection."
+  },
+  "T1564.001": {
+   "key": "T1564.001 Hide Artifacts: Hidden Files and Directories",
+   "description": "adversaries may set files and directories to be hidden to evade detection mechanisms."
+  },
+  "T1564.002": {
+   "key": "T1564.002 Hide Artifacts: Hidden Users",
+   "description": "adversaries may use hidden users to hide the presence of user accounts they create or modify."
+  },
+  "T1564.003": {
+   "key": "T1564.003 Hide Artifacts: Hidden Window",
+   "description": "adversaries may use hidden windows to conceal malicious activity from the plain sight of users."
+  },
+  "T1564.004": {
+   "key": "T1564.004 Hide Artifacts: NTFS File Attributes",
+   "description": "adversaries may use ntfs file attributes to hide their malicious data in order to evade detection."
+  },
+  "T1564.005": {
+   "key": "T1564.005 Hide Artifacts: Hidden File System",
+   "description": "adversaries may use a hidden file system to conceal malicious activity from users and security tools."
+  },
+  "T1564.006": {
+   "key": "T1564.006 Hide Artifacts: Run Virtual Instance",
+   "description": "adversaries may carry out malicious operations using a virtual instance to avoid detection."
+  },
+  "T1564.007": {
+   "key": "T1564.007 Hide Artifacts: VBA Stomping",
+   "description": "adversaries may hide malicious visual basic for applications vba payloads embedded within ms office documents by replacing the vba source code with benign data.citation: fireeye vba stomp feb 2020 ms ..."
+  },
+  "T1564.008": {
+   "key": "T1564.008 Hide Artifacts: Email Hiding Rules",
+   "description": "adversaries may use email rules to hide inbound emails in a compromised user's mailbox."
+  },
+  "T1564.009": {
+   "key": "T1564.009 Hide Artifacts: Resource Forking",
+   "description": "adversaries may abuse resource forks to hide malicious code or executables to evade detection and bypass security applications."
+  },
+  "T1564.010": {
+   "key": "T1564.010 Hide Artifacts: Process Argument Spoofing",
+   "description": "adversaries may attempt to hide process command-line arguments by overwriting process memory."
+  },
+  "T1565": {
+   "key": "T1565 Data Manipulation",
+   "description": "adversaries may insert, delete, or manipulate data in order to influence external outcomes or hide activity, thus threatening the integrity of the data."
+  },
+  "T1565.001": {
+   "key": "T1565.001 Data Manipulation: Stored Data Manipulation",
+   "description": "adversaries may insert, delete, or manipulate data at rest in order to influence external outcomes or hide activity, thus threatening the integrity of the data.citation: fireeye apt38 oct ..."
+  },
+  "T1565.002": {
+   "key": "T1565.002 Data Manipulation: Transmitted Data Manipulation",
+   "description": "adversaries may alter data en route to storage or other systems in order to manipulate external outcomes or hide activity, thus threatening the integrity of the data.citation: fireeye apt38 oct ..."
+  },
+  "T1565.003": {
+   "key": "T1565.003 Data Manipulation: Runtime Data Manipulation",
+   "description": "adversaries may modify systems in order to manipulate the data as it is accessed and displayed to an end user, thus threatening the integrity of the data.citation: fireeye apt38 oct 2018citation: doj ..."
+  },
+  "T1566": {
+   "key": "T1566 Phishing",
+   "description": "adversaries may send phishing messages to gain access to victim systems."
+  },
+  "T1566.001": {
+   "key": "T1566.001 Phishing: Spearphishing Attachment",
+   "description": "adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems."
+  },
+  "T1566.002": {
+   "key": "T1566.002 Phishing: Spearphishing Link",
+   "description": "adversaries may send spearphishing emails with a malicious link in an attempt to gain access to victim systems."
+  },
+  "T1566.003": {
+   "key": "T1566.003 Phishing: Spearphishing via Service",
+   "description": "adversaries may send spearphishing messages via third-party services in an attempt to gain access to victim systems."
+  },
+  "T1567": {
+   "key": "T1567 Exfiltration Over Web Service",
+   "description": "adversaries may use an existing, legitimate external web service to exfiltrate data rather than their primary command and control channel."
+  },
+  "T1567.001": {
+   "key": "T1567.001 Exfiltration Over Web Service: Exfiltration to Code Repository",
+   "description": "adversaries may exfiltrate data to a code repository rather than over their primary command and control channel."
+  },
+  "T1567.002": {
+   "key": "T1567.002 Exfiltration Over Web Service: Exfiltration to Cloud Storage",
+   "description": "adversaries may exfiltrate data to a cloud storage service rather than over their primary command and control channel."
+  },
+  "T1568": {
+   "key": "T1568 Dynamic Resolution",
+   "description": "adversaries may dynamically establish connections to command and control infrastructure to evade common detections and remediations."
+  },
+  "T1568.001": {
+   "key": "T1568.001 Dynamic Resolution: Fast Flux DNS",
+   "description": "adversaries may use fast flux dns to hide a command and control channel behind an array of rapidly changing ip addresses linked to a single domain resolution."
+  },
+  "T1568.002": {
+   "key": "T1568.002 Dynamic Resolution: Domain Generation Algorithms",
+   "description": "adversaries may make use of domain generation algorithms dgas to dynamically identify a destination domain for command and control traffic rather than relying on a list of static ip addresses or ..."
+  },
+  "T1568.003": {
+   "key": "T1568.003 Dynamic Resolution: DNS Calculation",
+   "description": "adversaries may perform calculations on addresses returned in dns results to determine which port and ip address to use for command and control, rather than relying on a predetermined port number or ..."
+  },
+  "T1569": {
+   "key": "T1569 System Services",
+   "description": "adversaries may abuse system services or daemons to execute commands or programs."
+  },
+  "T1569.001": {
+   "key": "T1569.001 System Services: Launchctl",
+   "description": "adversaries may abuse launchctl to execute commands or programs."
+  },
+  "T1569.002": {
+   "key": "T1569.002 System Services: Service Execution",
+   "description": "adversaries may abuse the windows service control manager to execute malicious commands or payloads."
+  },
+  "T1570": {
+   "key": "T1570 Lateral Tool Transfer",
+   "description": "adversaries may transfer tools or other files between systems in a compromised environment."
+  },
+  "T1571": {
+   "key": "T1571 Non-Standard Port",
+   "description": "adversaries may communicate using a protocol and port paring that are typically not associated."
+  },
+  "T1572": {
+   "key": "T1572 Protocol Tunneling",
+   "description": "adversaries may tunnel network communications to and from a victim system within a separate protocol to avoid detection/network filtering and/or enable access to otherwise unreachable systems."
+  },
+  "T1573": {
+   "key": "T1573 Encrypted Channel",
+   "description": "adversaries may employ a known encryption algorithm to conceal command and control traffic rather than relying on any inherent protections provided by a communication protocol."
+  },
+  "T1573.001": {
+   "key": "T1573.001 Encrypted Channel: Symmetric Cryptography",
+   "description": "adversaries may employ a known symmetric encryption algorithm to conceal command and control traffic rather than relying on any inherent protections provided by a communication protocol."
+  },
+  "T1573.002": {
+   "key": "T1573.002 Encrypted Channel: Asymmetric Cryptography",
+   "description": "adversaries may employ a known asymmetric encryption algorithm to conceal command and control traffic rather than relying on any inherent protections provided by a communication protocol."
+  },
+  "T1574": {
+   "key": "T1574 Hijack Execution Flow",
+   "description": "adversaries may execute their own malicious payloads by hijacking the way operating systems run programs."
+  },
+  "T1574.001": {
+   "key": "T1574.001 Hijack Execution Flow: DLL Search Order Hijacking",
+   "description": "adversaries may execute their own malicious payloads by hijacking the search order used to load dlls."
+  },
+  "T1574.002": {
+   "key": "T1574.002 Hijack Execution Flow: DLL Side-Loading",
+   "description": "adversaries may execute their own malicious payloads by side-loading dlls."
+  },
+  "T1574.004": {
+   "key": "T1574.004 Hijack Execution Flow: Dylib Hijacking",
+   "description": "adversaries may execute their own payloads by placing a malicious dynamic library dylib with an expected name in a path a victim application searches at runtime."
+  },
+  "T1574.005": {
+   "key": "T1574.005 Hijack Execution Flow: Executable Installer File Permissions Weakness",
+   "description": "adversaries may execute their own malicious payloads by hijacking the binaries used by an installer."
+  },
+  "T1574.006": {
+   "key": "T1574.006 Hijack Execution Flow: Dynamic Linker Hijacking",
+   "description": "adversaries may execute their own malicious payloads by hijacking environment variables the dynamic linker uses to load shared libraries."
+  },
+  "T1574.007": {
+   "key": "T1574.007 Hijack Execution Flow: Path Interception by PATH Environment Variable",
+   "description": "adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries."
+  },
+  "T1574.008": {
+   "key": "T1574.008 Hijack Execution Flow: Path Interception by Search Order Hijacking",
+   "description": "adversaries may execute their own malicious payloads by hijacking the search order used to load other programs."
+  },
+  "T1574.009": {
+   "key": "T1574.009 Hijack Execution Flow: Path Interception by Unquoted Path",
+   "description": "adversaries may execute their own malicious payloads by hijacking vulnerable file path references."
+  },
+  "T1574.010": {
+   "key": "T1574.010 Hijack Execution Flow: Services File Permissions Weakness",
+   "description": "adversaries may execute their own malicious payloads by hijacking the binaries used by services."
+  },
+  "T1574.011": {
+   "key": "T1574.011 Hijack Execution Flow: Services Registry Permissions Weakness",
+   "description": "adversaries may execute their own malicious payloads by hijacking the registry entries used by services."
+  },
+  "T1574.012": {
+   "key": "T1574.012 Hijack Execution Flow: COR_PROFILER",
+   "description": "adversaries may leverage the cor_profiler environment variable to hijack the execution flow of programs that load the .net clr."
+  },
+  "T1574.013": {
+   "key": "T1574.013 Hijack Execution Flow: KernelCallbackTable",
+   "description": "adversaries may abuse the kernelcallbacktable of a process to hijack its execution flow in order to run their own payloads.citation: lazarus apt january 2022citation: finfisher exposed the ..."
+  },
+  "T1578": {
+   "key": "T1578 Modify Cloud Compute Infrastructure",
+   "description": "an adversary may attempt to modify a cloud account's compute service infrastructure to evade defenses."
+  },
+  "T1578.001": {
+   "key": "T1578.001 Modify Cloud Compute Infrastructure: Create Snapshot",
+   "description": "an adversary may create a snapshot or data backup within a cloud account to evade defenses."
+  },
+  "T1578.002": {
+   "key": "T1578.002 Modify Cloud Compute Infrastructure: Create Cloud Instance",
+   "description": "an adversary may create a new instance or virtual machine vm within the compute service of a cloud account to evade defenses."
+  },
+  "T1578.003": {
+   "key": "T1578.003 Modify Cloud Compute Infrastructure: Delete Cloud Instance",
+   "description": "an adversary may delete a cloud instance after they have performed malicious activities in an attempt to evade detection and remove evidence of their presence."
+  },
+  "T1578.004": {
+   "key": "T1578.004 Modify Cloud Compute Infrastructure: Revert Cloud Instance",
+   "description": "an adversary may revert changes made to a cloud instance after they have performed malicious activities in attempt to evade detection and remove evidence of their presence."
+  },
+  "T1580": {
+   "key": "T1580 Cloud Infrastructure Discovery",
+   "description": "an adversary may attempt to discover infrastructure and resources that are available within an infrastructure-as-a-service iaas environment."
+  },
+  "T1583": {
+   "key": "T1583 Acquire Infrastructure",
+   "description": "adversaries may buy, lease, or rent infrastructure that can be used during targeting."
+  },
+  "T1583.001": {
+   "key": "T1583.001 Acquire Infrastructure: Domains",
+   "description": "adversaries may acquire domains that can be used during targeting."
+  },
+  "T1583.002": {
+   "key": "T1583.002 Acquire Infrastructure: DNS Server",
+   "description": "adversaries may set up their own domain name system dns servers that can be used during targeting."
+  },
+  "T1583.003": {
+   "key": "T1583.003 Acquire Infrastructure: Virtual Private Server",
+   "description": "adversaries may rent virtual private servers vpss that can be used during targeting."
+  },
+  "T1583.004": {
+   "key": "T1583.004 Acquire Infrastructure: Server",
+   "description": "adversaries may buy, lease, or rent physical servers that can be used during targeting."
+  },
+  "T1583.005": {
+   "key": "T1583.005 Acquire Infrastructure: Botnet",
+   "description": "adversaries may buy, lease, or rent a network of compromised systems that can be used during targeting."
+  },
+  "T1583.006": {
+   "key": "T1583.006 Acquire Infrastructure: Web Services",
+   "description": "adversaries may register for web services that can be used during targeting."
+  },
+  "T1583.007": {
+   "key": "T1583.007 Acquire Infrastructure: Serverless",
+   "description": "adversaries may purchase and configure serverless cloud infrastructure, such as cloudflare workers or aws lambda functions, that can be used during targeting."
+  },
+  "T1584": {
+   "key": "T1584 Compromise Infrastructure",
+   "description": "adversaries may compromise third-party infrastructure that can be used during targeting."
+  },
+  "T1584.001": {
+   "key": "T1584.001 Compromise Infrastructure: Domains",
+   "description": "adversaries may hijack domains and/or subdomains that can be used during targeting."
+  },
+  "T1584.002": {
+   "key": "T1584.002 Compromise Infrastructure: DNS Server",
+   "description": "adversaries may compromise third-party dns servers that can be used during targeting."
+  },
+  "T1584.003": {
+   "key": "T1584.003 Compromise Infrastructure: Virtual Private Server",
+   "description": "adversaries may compromise third-party virtual private servers vpss that can be used during targeting."
+  },
+  "T1584.004": {
+   "key": "T1584.004 Compromise Infrastructure: Server",
+   "description": "adversaries may compromise third-party servers that can be used during targeting."
+  },
+  "T1584.005": {
+   "key": "T1584.005 Compromise Infrastructure: Botnet",
+   "description": "adversaries may compromise numerous third-party systems to form a botnet that can be used during targeting."
+  },
+  "T1584.006": {
+   "key": "T1584.006 Compromise Infrastructure: Web Services",
+   "description": "adversaries may compromise access to third-party web services that can be used during targeting."
+  },
+  "T1584.007": {
+   "key": "T1584.007 Compromise Infrastructure: Serverless",
+   "description": "adversaries may compromise serverless cloud infrastructure, such as cloudflare workers or aws lambda functions, that can be used during targeting."
+  },
+  "T1585": {
+   "key": "T1585 Establish Accounts",
+   "description": "adversaries may create and cultivate accounts with services that can be used during targeting."
+  },
+  "T1585.001": {
+   "key": "T1585.001 Establish Accounts: Social Media Accounts",
+   "description": "adversaries may create and cultivate social media accounts that can be used during targeting."
+  },
+  "T1585.002": {
+   "key": "T1585.002 Establish Accounts: Email Accounts",
+   "description": "adversaries may create email accounts that can be used during targeting."
+  },
+  "T1585.003": {
+   "key": "T1585.003 Establish Accounts: Cloud Accounts",
+   "description": "adversaries may create accounts with cloud providers that can be used during targeting."
+  },
+  "T1586": {
+   "key": "T1586 Compromise Accounts",
+   "description": "adversaries may compromise accounts with services that can be used during targeting."
+  },
+  "T1586.001": {
+   "key": "T1586.001 Compromise Accounts: Social Media Accounts",
+   "description": "adversaries may compromise social media accounts that can be used during targeting."
+  },
+  "T1586.002": {
+   "key": "T1586.002 Compromise Accounts: Email Accounts",
+   "description": "adversaries may compromise email accounts that can be used during targeting."
+  },
+  "T1586.003": {
+   "key": "T1586.003 Compromise Accounts: Cloud Accounts",
+   "description": "adversaries may compromise cloud accounts that can be used during targeting."
+  },
+  "T1587": {
+   "key": "T1587 Develop Capabilities",
+   "description": "adversaries may build capabilities that can be used during targeting."
+  },
+  "T1587.001": {
+   "key": "T1587.001 Develop Capabilities: Malware",
+   "description": "adversaries may develop malware and malware components that can be used during targeting."
+  },
+  "T1587.002": {
+   "key": "T1587.002 Develop Capabilities: Code Signing Certificates",
+   "description": "adversaries may create self-signed code signing certificates that can be used during targeting."
+  },
+  "T1587.003": {
+   "key": "T1587.003 Develop Capabilities: Digital Certificates",
+   "description": "adversaries may create self-signed ssl/tls certificates that can be used during targeting."
+  },
+  "T1587.004": {
+   "key": "T1587.004 Develop Capabilities: Exploits",
+   "description": "adversaries may develop exploits that can be used during targeting."
+  },
+  "T1588": {
+   "key": "T1588 Obtain Capabilities",
+   "description": "adversaries may buy and/or steal capabilities that can be used during targeting."
+  },
+  "T1588.001": {
+   "key": "T1588.001 Obtain Capabilities: Malware",
+   "description": "adversaries may buy, steal, or download malware that can be used during targeting."
+  },
+  "T1588.002": {
+   "key": "T1588.002 Obtain Capabilities: Tool",
+   "description": "adversaries may buy, steal, or download software tools that can be used during targeting."
+  },
+  "T1588.003": {
+   "key": "T1588.003 Obtain Capabilities: Code Signing Certificates",
+   "description": "adversaries may buy and/or steal code signing certificates that can be used during targeting."
+  },
+  "T1588.004": {
+   "key": "T1588.004 Obtain Capabilities: Digital Certificates",
+   "description": "adversaries may buy and/or steal ssl/tls certificates that can be used during targeting."
+  },
+  "T1588.005": {
+   "key": "T1588.005 Obtain Capabilities: Exploits",
+   "description": "adversaries may buy, steal, or download exploits that can be used during targeting."
+  },
+  "T1588.006": {
+   "key": "T1588.006 Obtain Capabilities: Vulnerabilities",
+   "description": "adversaries may acquire information about vulnerabilities that can be used during targeting."
+  },
+  "T1589": {
+   "key": "T1589 Gather Victim Identity Information",
+   "description": "adversaries may gather information about the victim's identity that can be used during targeting."
+  },
+  "T1589.001": {
+   "key": "T1589.001 Gather Victim Identity Information: Credentials",
+   "description": "adversaries may gather credentials that can be used during targeting."
+  },
+  "T1589.002": {
+   "key": "T1589.002 Gather Victim Identity Information: Email Addresses",
+   "description": "adversaries may gather email addresses that can be used during targeting."
+  },
+  "T1589.003": {
+   "key": "T1589.003 Gather Victim Identity Information: Employee Names",
+   "description": "adversaries may gather employee names that can be used during targeting."
+  },
+  "T1590": {
+   "key": "T1590 Gather Victim Network Information",
+   "description": "adversaries may gather information about the victim's networks that can be used during targeting."
+  },
+  "T1590.001": {
+   "key": "T1590.001 Gather Victim Network Information: Domain Properties",
+   "description": "adversaries may gather information about the victim's network domains that can be used during targeting."
+  },
+  "T1590.002": {
+   "key": "T1590.002 Gather Victim Network Information: DNS",
+   "description": "adversaries may gather information about the victim's dns that can be used during targeting."
+  },
+  "T1590.003": {
+   "key": "T1590.003 Gather Victim Network Information: Network Trust Dependencies",
+   "description": "adversaries may gather information about the victim's network trust dependencies that can be used during targeting."
+  },
+  "T1590.004": {
+   "key": "T1590.004 Gather Victim Network Information: Network Topology",
+   "description": "adversaries may gather information about the victim's network topology that can be used during targeting."
+  },
+  "T1590.005": {
+   "key": "T1590.005 Gather Victim Network Information: IP Addresses",
+   "description": "adversaries may gather the victim's ip addresses that can be used during targeting."
+  },
+  "T1590.006": {
+   "key": "T1590.006 Gather Victim Network Information: Network Security Appliances",
+   "description": "adversaries may gather information about the victim's network security appliances that can be used during targeting."
+  },
+  "T1591": {
+   "key": "T1591 Gather Victim Org Information",
+   "description": "adversaries may gather information about the victim's organization that can be used during targeting."
+  },
+  "T1591.001": {
+   "key": "T1591.001 Gather Victim Org Information: Determine Physical Locations",
+   "description": "adversaries may gather the victim's physical locations that can be used during targeting."
+  },
+  "T1591.002": {
+   "key": "T1591.002 Gather Victim Org Information: Business Relationships",
+   "description": "adversaries may gather information about the victim's business relationships that can be used during targeting."
+  },
+  "T1591.003": {
+   "key": "T1591.003 Gather Victim Org Information: Identify Business Tempo",
+   "description": "adversaries may gather information about the victim's business tempo that can be used during targeting."
+  },
+  "T1591.004": {
+   "key": "T1591.004 Gather Victim Org Information: Identify Roles",
+   "description": "adversaries may gather information about identities and roles within the victim organization that can be used during targeting."
+  },
+  "T1592": {
+   "key": "T1592 Gather Victim Host Information",
+   "description": "adversaries may gather information about the victim's hosts that can be used during targeting."
+  },
+  "T1592.001": {
+   "key": "T1592.001 Gather Victim Host Information: Hardware",
+   "description": "adversaries may gather information about the victim's host hardware that can be used during targeting."
+  },
+  "T1592.002": {
+   "key": "T1592.002 Gather Victim Host Information: Software",
+   "description": "adversaries may gather information about the victim's host software that can be used during targeting."
+  },
+  "T1592.003": {
+   "key": "T1592.003 Gather Victim Host Information: Firmware",
+   "description": "adversaries may gather information about the victim's host firmware that can be used during targeting."
+  },
+  "T1592.004": {
+   "key": "T1592.004 Gather Victim Host Information: Client Configurations",
+   "description": "adversaries may gather information about the victim's client configurations that can be used during targeting."
+  },
+  "T1593": {
+   "key": "T1593 Search Open Websites/Domains",
+   "description": "adversaries may search freely available websites and/or domains for information about victims that can be used during targeting."
+  },
+  "T1593.001": {
+   "key": "T1593.001 Search Open Websites/Domains: Social Media",
+   "description": "adversaries may search social media for information about victims that can be used during targeting."
+  },
+  "T1593.002": {
+   "key": "T1593.002 Search Open Websites/Domains: Search Engines",
+   "description": "adversaries may use search engines to collect information about victims that can be used during targeting."
+  },
+  "T1593.003": {
+   "key": "T1593.003 Search Open Websites/Domains: Code Repositories",
+   "description": "adversaries may search public code repositories for information about victims that can be used during targeting."
+  },
+  "T1594": {
+   "key": "T1594 Search Victim-Owned Websites",
+   "description": "adversaries may search websites owned by the victim for information that can be used during targeting."
+  },
+  "T1595": {
+   "key": "T1595 Active Scanning",
+   "description": "adversaries may execute active reconnaissance scans to gather information that can be used during targeting."
+  },
+  "T1595.001": {
+   "key": "T1595.001 Active Scanning: Scanning IP Blocks",
+   "description": "adversaries may scan victim ip blocks to gather information that can be used during targeting."
+  },
+  "T1595.002": {
+   "key": "T1595.002 Active Scanning: Vulnerability Scanning",
+   "description": "adversaries may scan victims for vulnerabilities that can be used during targeting."
+  },
+  "T1595.003": {
+   "key": "T1595.003 Active Scanning: Wordlist Scanning",
+   "description": "adversaries may iteratively probe infrastructure using brute-forcing and crawling techniques."
+  },
+  "T1596": {
+   "key": "T1596 Search Open Technical Databases",
+   "description": "adversaries may search freely available technical databases for information about victims that can be used during targeting."
+  },
+  "T1596.001": {
+   "key": "T1596.001 Search Open Technical Databases: DNS/Passive DNS",
+   "description": "adversaries may search dns data for information about victims that can be used during targeting."
+  },
+  "T1596.002": {
+   "key": "T1596.002 Search Open Technical Databases: WHOIS",
+   "description": "adversaries may search public whois data for information about victims that can be used during targeting."
+  },
+  "T1596.003": {
+   "key": "T1596.003 Search Open Technical Databases: Digital Certificates",
+   "description": "adversaries may search public digital certificate data for information about victims that can be used during targeting."
+  },
+  "T1596.004": {
+   "key": "T1596.004 Search Open Technical Databases: CDNs",
+   "description": "adversaries may search content delivery network cdn data about victims that can be used during targeting."
+  },
+  "T1596.005": {
+   "key": "T1596.005 Search Open Technical Databases: Scan Databases",
+   "description": "adversaries may search within public scan databases for information about victims that can be used during targeting."
+  },
+  "T1597": {
+   "key": "T1597 Search Closed Sources",
+   "description": "adversaries may search and gather information about victims from closed sources that can be used during targeting."
+  },
+  "T1597.001": {
+   "key": "T1597.001 Search Closed Sources: Threat Intel Vendors",
+   "description": "adversaries may search private data from threat intelligence vendors for information that can be used during targeting."
+  },
+  "T1597.002": {
+   "key": "T1597.002 Search Closed Sources: Purchase Technical Data",
+   "description": "adversaries may purchase technical information about victims that can be used during targeting."
+  },
+  "T1598": {
+   "key": "T1598 Phishing for Information",
+   "description": "adversaries may send phishing messages to elicit sensitive information that can be used during targeting."
+  },
+  "T1598.001": {
+   "key": "T1598.001 Phishing for Information: Spearphishing Service",
+   "description": "adversaries may send spearphishing messages via third-party services to elicit sensitive information that can be used during targeting."
+  },
+  "T1598.002": {
+   "key": "T1598.002 Phishing for Information: Spearphishing Attachment",
+   "description": "adversaries may send spearphishing messages with a malicious attachment to elicit sensitive information that can be used during targeting."
+  },
+  "T1598.003": {
+   "key": "T1598.003 Phishing for Information: Spearphishing Link",
+   "description": "adversaries may send spearphishing messages with a malicious link to elicit sensitive information that can be used during targeting."
+  },
+  "T1599": {
+   "key": "T1599 Network Boundary Bridging",
+   "description": "adversaries may bridge network boundaries by compromising perimeter network devices or internal devices responsible for network segmentation."
+  },
+  "T1599.001": {
+   "key": "T1599.001 Network Boundary Bridging: Network Address Translation Traversal",
+   "description": "adversaries may bridge network boundaries by modifying a network device’s network address translation nat configuration."
+  },
+  "T1600": {
+   "key": "T1600 Weaken Encryption",
+   "description": "adversaries may compromise a network device’s encryption capability in order to bypass encryption that would otherwise protect data communications."
+  },
+  "T1600.001": {
+   "key": "T1600.001 Weaken Encryption: Reduce Key Space",
+   "description": "adversaries may reduce the level of effort required to decrypt data transmitted over the network by reducing the cipher strength of encrypted communications.citation: cisco synful knock evolution ..."
+  },
+  "T1600.002": {
+   "key": "T1600.002 Weaken Encryption: Disable Crypto Hardware",
+   "description": "adversaries disable a network device’s dedicated hardware encryption, which may enable them to leverage weaknesses in software encryption in order to reduce the effort involved in collecting, ..."
+  },
+  "T1601": {
+   "key": "T1601 Modify System Image",
+   "description": "adversaries may make changes to the operating system of embedded network devices to weaken defenses and provide new capabilities for themselves."
+  },
+  "T1601.001": {
+   "key": "T1601.001 Modify System Image: Patch System Image",
+   "description": "adversaries may modify the operating system of a network device to introduce new capabilities or weaken existing defenses.citation: killing the myth of cisco ios rootkits citation: killing ios ..."
+  },
+  "T1601.002": {
+   "key": "T1601.002 Modify System Image: Downgrade System Image",
+   "description": "adversaries may install an older version of the operating system of a network device to weaken security."
+  },
+  "T1602": {
+   "key": "T1602 Data from Configuration Repository",
+   "description": "adversaries may collect data related to managed devices from configuration repositories."
+  },
+  "T1602.001": {
+   "key": "T1602.001 Data from Configuration Repository: SNMP (MIB Dump)",
+   "description": "adversaries may target the management information base mib to collect and/or mine valuable information in a network managed using simple network management protocol snmp."
+  },
+  "T1602.002": {
+   "key": "T1602.002 Data from Configuration Repository: Network Device Configuration Dump",
+   "description": "adversaries may access network configuration files to collect sensitive data about the device and the network."
+  },
+  "T1606": {
+   "key": "T1606 Forge Web Credentials",
+   "description": "adversaries may forge credential materials that can be used to gain access to web applications or internet services."
+  },
+  "T1606.001": {
+   "key": "T1606.001 Forge Web Credentials: Web Cookies",
+   "description": "adversaries may forge web cookies that can be used to gain access to web applications or internet services."
+  },
+  "T1606.002": {
+   "key": "T1606.002 Forge Web Credentials: SAML Tokens",
+   "description": "an adversary may forge saml tokens with any permissions claims and lifetimes if they possess a valid saml token-signing certificate.citation: microsoft solarwinds steps the default lifetime of a saml ..."
+  },
+  "T1608": {
+   "key": "T1608 Stage Capabilities",
+   "description": "adversaries may upload, install, or otherwise set up capabilities that can be used during targeting."
+  },
+  "T1608.001": {
+   "key": "T1608.001 Stage Capabilities: Upload Malware",
+   "description": "adversaries may upload malware to third-party or adversary controlled infrastructure to make it accessible during targeting."
+  },
+  "T1608.002": {
+   "key": "T1608.002 Stage Capabilities: Upload Tool",
+   "description": "adversaries may upload tools to third-party or adversary controlled infrastructure to make it accessible during targeting."
+  },
+  "T1608.003": {
+   "key": "T1608.003 Stage Capabilities: Install Digital Certificate",
+   "description": "adversaries may install ssl/tls certificates that can be used during targeting."
+  },
+  "T1608.004": {
+   "key": "T1608.004 Stage Capabilities: Drive-by Target",
+   "description": "adversaries may prepare an operational environment to infect systems that visit a website over the normal course of browsing."
+  },
+  "T1608.005": {
+   "key": "T1608.005 Stage Capabilities: Link Target",
+   "description": "adversaries may put in place resources that are referenced by a link that can be used during targeting."
+  },
+  "T1608.006": {
+   "key": "T1608.006 Stage Capabilities: SEO Poisoning",
+   "description": "adversaries may poison mechanisms that influence search engine optimization seo to further lure staged capabilities towards potential victims."
+  },
+  "T1609": {
+   "key": "T1609 Container Administration Command",
+   "description": "adversaries may abuse a container administration service to execute commands within a container."
+  },
+  "T1610": {
+   "key": "T1610 Deploy Container",
+   "description": "adversaries may deploy a container into an environment to facilitate execution or evade defenses."
+  },
+  "T1611": {
+   "key": "T1611 Escape to Host",
+   "description": "adversaries may break out of a container to gain access to the underlying host."
+  },
+  "T1612": {
+   "key": "T1612 Build Image on Host",
+   "description": "adversaries may build a container image directly on a host to bypass defenses that monitor for the retrieval of malicious images from a public registry."
+  },
+  "T1613": {
+   "key": "T1613 Container and Resource Discovery",
+   "description": "adversaries may attempt to discover containers and other resources that are available within a containers environment."
+  },
+  "T1614": {
+   "key": "T1614 System Location Discovery",
+   "description": "adversaries may gather information in an attempt to calculate the geographical location of a victim host."
+  },
+  "T1614.001": {
+   "key": "T1614.001 System Location Discovery: System Language Discovery",
+   "description": "adversaries may attempt to gather information about the system language of a victim in order to infer the geographical location of that host."
+  },
+  "T1615": {
+   "key": "T1615 Group Policy Discovery",
+   "description": "adversaries may gather information on group policy settings to identify paths for privilege escalation, security measures applied within a domain, and to discover patterns in domain objects that can ..."
+  },
+  "T1619": {
+   "key": "T1619 Cloud Storage Object Discovery",
+   "description": "adversaries may enumerate objects in cloud storage infrastructure."
+  },
+  "T1620": {
+   "key": "T1620 Reflective Code Loading",
+   "description": "adversaries may reflectively load code into a process in order to conceal the execution of malicious payloads."
+  },
+  "T1621": {
+   "key": "T1621 Multi-Factor Authentication Request Generation",
+   "description": "adversaries may attempt to bypass multi-factor authentication mfa mechanisms and gain access to accounts by generating mfa requests sent to users."
+  },
+  "T1622": {
+   "key": "T1622 Debugger Evasion",
+   "description": "adversaries may employ various means to detect and avoid debuggers."
+  },
+  "T1647": {
+   "key": "T1647 Plist File Modification",
+   "description": "adversaries may modify property list files plist files to enable other malicious activity, while also potentially evading and bypassing system defenses."
+  },
+  "T1648": {
+   "key": "T1648 Serverless Execution",
+   "description": "adversaries may abuse serverless computing, integration, and automation services to execute arbitrary code in cloud environments."
+  },
+  "T1649": {
+   "key": "T1649 Steal or Forge Authentication Certificates",
+   "description": "adversaries may steal or forge certificates used for authentication to access remote systems or resources."
+  }
+ }
+}

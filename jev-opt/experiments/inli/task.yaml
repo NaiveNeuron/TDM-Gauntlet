@@ -1,0 +1,35 @@
+# INLI (Havaldar et al., ACL 2025): four-way implied-entailment NLI.
+# Data: `uv run jev-opt/experiments/inli/prepare.py` (see ../README.md).
+# Metric: accuracy (paper Table 6 / gauntlet primary; splits are exactly label-balanced).
+name: inli
+labels:   # descriptions: the gauntlet prompt's criteria (prompts/inli.json)
+  "implied_entailment": "Implicature: The hypothesis is a valid inference from the passage, but it is NOT explicitly stated in the passage. Implied entailment: Requires some sort of an additional cognitive step, such as logical reasoning, world knowledge, conversational pragmatics, or figurative language."
+  "explicit_entailment": "Explicature: The hypothesis is a valid inference from the passage, and it is explicitly stated in the passage. Explicit entailment: Follows directly from the text's lexical semantics (e.g. via synonymy and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging, or other endophora)."
+  "neutral": "Neutral: The hypothesis can neither be supported nor contradicted by the passage."
+  "contradiction": "Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted by the passage."
+inputs:   # empty descriptions: the seed instructions describe the state, as in the gauntlet prompt
+  premise: ""
+  hypothesis: ""
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: accuracy
+objectives: [quality, calibration, cheap, tokens]
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 16
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000   # ~14.0 full-val equivalents (val n=1000) per optimizing condition
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive: [64, 256]
+  fit_examples: 64
+  calibrate: true
+seed_program: seed.yaml

@@ -1,0 +1,95 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria per field, each naming what it covers and which nearest neighbour takes the boundary cases instead.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`? Exactly one field applies.
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: The `abstract` designs, builds, controls or tests devices, structures, circuits, machines
+          or industrial processes. Software and algorithms belong to Computer Science. New materials belong
+          to Materials Science.
+      Chemistry:
+        criterion: The `abstract` studies molecules, reactions, synthesis, catalysis or chemical analysis.
+          Bulk material properties belong to Materials Science. Biomolecules in living systems belong
+          to Biology.
+      Computer Science:
+        criterion: The `abstract` studies algorithms, software, data, networks, machine learning or computing
+          systems. Hardware and electrical design belong to Engineering. Pure proofs belong to Mathematics.
+      Business:
+        criterion: The `abstract` studies firms, management, marketing, accounting, organizations or entrepreneurship.
+          Markets and policy at the level of a whole economy belong to Economics.
+      Political Science:
+        criterion: The `abstract` studies government, elections, policy-making, international relations,
+          law or political power. Social groups without a political focus belong to Sociology.
+      Environmental Science:
+        criterion: The `abstract` studies pollution, climate, ecosystems under human impact, water quality
+          or sustainability. Rock and earth processes belong to Geology. Organisms belong to Biology.
+      Physics:
+        criterion: The `abstract` studies matter, energy, particles, fields, optics, astrophysics or quantum
+          phenomena. Applied material properties belong to Materials Science.
+      Economics:
+        criterion: The `abstract` studies markets, prices, growth, trade, finance or economic policy.
+          The management of single firms belongs to Business.
+      Geography:
+        criterion: The `abstract` studies places, spatial patterns, land use, urban or regional areas,
+          or GIS mapping. Earth's physical rock processes belong to Geology.
+      Medicine:
+        criterion: The `abstract` studies disease, patients, clinical treatment, diagnosis or public health.
+          Basic biological mechanisms without a clinical focus belong to Biology.
+      Psychology:
+        criterion: The `abstract` studies mind, behavior, cognition, emotion or mental health in individuals.
+          Clinical psychiatric treatment belongs to Medicine. Group and society patterns belong to Sociology.
+      Art:
+        criterion: The `abstract` studies visual art, music, literature, design, film or performance as
+          creative works. Their past contexts belong to History.
+      Materials Science:
+        criterion: The `abstract` studies the synthesis, structure or properties of materials such as
+          alloys, polymers, ceramics, nanomaterials or composites. Reaction chemistry belongs to Chemistry.
+      Mathematics:
+        criterion: The `abstract` presents theorems, proofs, equations or statistical and numerical theory
+          as its main result. Computing applications belong to Computer Science.
+      Sociology:
+        criterion: The `abstract` studies society, social groups, communities, inequality, culture or
+          education. Politics belongs to Political Science. Individual minds belong to Psychology.
+      Geology:
+        criterion: The `abstract` studies rocks, minerals, earthquakes, tectonics, sediments or Earth's
+          history. Human-caused environmental impact belongs to Environmental Science.
+      Philosophy:
+        criterion: The `abstract` makes conceptual arguments on ethics, knowledge, logic, metaphysics,
+          mind or religion. Empirical studies of minds belong to Psychology.
+      Biology:
+        criterion: The `abstract` studies living organisms, genes, cells, proteins, evolution or ecology.
+          Patient and disease treatment belongs to Medicine.
+      History:
+        criterion: The `abstract` studies past events, periods, people or archives. Analysis of artworks
+          belongs to Art.

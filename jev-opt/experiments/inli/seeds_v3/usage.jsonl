@@ -1,0 +1,3 @@
+{"source":"omp","role":"structural","spec":"current","provider":"anthropic","model":"claude-opus-5-5","input":4,"output":1533,"cache_read":0,"cache_write":2271,"cost_total":0.048844,"stop_reason":"stop","at":"2026-09-27T18:34:20.032Z"}
+{"source":"omp","role":"structural","spec":"current","provider":"anthropic","model":"claude-opus-5-5","input":4,"output":1495,"cache_read":0,"cache_write":2379,"cost_total":0.048948000000000005,"stop_reason":"stop","at":"2026-09-27T18:34:34.518Z"}
+{"source":"omp","role":"structural","spec":"current","provider":"anthropic","model":"claude-opus-5-5","input":4,"output":1732,"cache_read":0,"cache_write":2415,"cost_total":0.05397600000000001,"stop_reason":"stop","at":"2026-09-27T18:34:49.047Z"}

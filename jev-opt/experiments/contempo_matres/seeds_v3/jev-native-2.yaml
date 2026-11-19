@@ -1,0 +1,39 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Two-possibility framing; each option is defined by which of the two start orders the text allows, matching the paper's A1/A2 mapping without asking for a procedure.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: 'Event 1 is the word in <e1>...</e1> in `context` (`event_1`); Event 2 is the word in
+      <e2>...</e2> (`event_2`). Which start orders does `context` allow: "Event 1 starts before Event
+      2" and "Event 2 starts before Event 1"? Only start times count, not end times.'
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: '`context` allows "Event 1 starts before Event 2" and excludes "Event 2 starts before
+          Event 1". This differs from VAGUE, where both orders are allowed.'
+      AFTER:
+        criterion: '`context` excludes "Event 1 starts before Event 2" and allows "Event 2 starts before
+          Event 1". This differs from VAGUE, where both orders are allowed.'
+      EQUAL:
+        criterion: '`context` excludes both orders: neither event can start before the other, so they
+          start at the same time. This differs from BEFORE and AFTER, where one order is allowed.'
+      VAGUE:
+        criterion: '`context` allows both orders: Event 1 could start before Event 2, and Event 2 could
+          start before Event 1. This differs from BEFORE, AFTER and EQUAL, where at least one order is
+          excluded.'

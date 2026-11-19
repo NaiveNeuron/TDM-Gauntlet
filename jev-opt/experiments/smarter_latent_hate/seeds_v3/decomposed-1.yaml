@@ -1,0 +1,33 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Flat choice with contrastive criteria that separate each label from its nearest neighbour, stated literally about `post`.
+version: 1
+labels:
+- Not Hate
+- Explicit Hate
+- Implicit Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Which category fits the Twitter post in `post`? User mentions are replaced by <user>
+      and URLs are removed.
+    state:
+    - post
+    options:
+      Not Hate:
+        criterion: '`post` expresses no hatred, prejudice or discrimination toward individuals or groups
+          based on their characteristics, whether openly or in coded or indirect form. Rudeness, insults
+          or disagreement that do not target a person or group for their characteristics belong here.'
+      Explicit Hate:
+        criterion: '`post` openly and directly expresses hatred or prejudice toward individuals or groups
+          based on their characteristics, for example through direct slurs, open attacks or explicit calls
+          against the group. If the hatred is only implied, coded or indirect, choose Implicit Hate instead.'
+      Implicit Hate:
+        criterion: '`post` disparages a person or group on the basis of protected characteristics like
+          race, gender or cultural identity through coded or indirect language, such as insinuation, stereotypes,
+          irony, euphemisms or dog whistles, without openly stating hatred. If the hatred is stated openly
+          and directly, choose Explicit Hate instead.'

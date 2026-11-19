@@ -1,0 +1,114 @@
+{
+  "task": "expl_rank",
+  "paper": {
+    "title": "Explanation Quality Assessment as Ranking with Listwise Rewards",
+    "authors": "Thomas Bailleux, Tanmoy Mukherjee, Emmanuel Lonca, Pierre Marquis, Zied Bouraoui",
+    "venue": "Findings of ACL 2026, pages 36123-36135",
+    "url": "https://aclanthology.org/2026.findings-acl.1800/",
+    "pdf_sha256": "234912b3d7bac03a039180b9e08aa15552f63d531d84dd51f3db46040881e227",
+    "arxiv": "https://arxiv.org/abs/2604.24176 (v1 PDF sha256 51e4fd1f0c77c3d12bc2ea9b1573882e8df058459b0ef567e8a42a05fa12a726; Table 20 and App. D numbers identical to the ACL version)"
+  },
+  "source": {
+    "data": {
+      "repo": "https://github.com/OanaMariaCamburu/e-SNLI",
+      "commit": "7b585a3f077fdea899780eb0473940522ae44a2e",
+      "file": "dataset/esnli_dev.csv",
+      "sha256": "d7a656d196eea18fd827d6f5486b00f5d4cf469dbf13a252cc211495a186bcb4",
+      "rows": 9842,
+      "licence": "e-SNLI repository: MIT (LICENSE, (c) 2019 Oana-Maria Camburu). Premise/hypothesis text is SNLI (Bowman et al. 2015), CC BY-SA 4.0. Redistribution permitted with attribution: scripts/prepare_expl_rank.py writes the frozen set as full-row JSONL.",
+      "columns_used": "pairID, gold_label, Sentence1 (premise), Sentence2 (hypothesis), Explanation_1 (the gold-tier candidate). Explanation_2/3 and highlight columns unused."
+    },
+    "paper_code": {
+      "repo": "https://github.com/Tankiit/PPO_Learning_to_rank",
+      "commits_inspected": {
+        "ARR (default branch)": "713c28b4eabf1a15e2cc51ca44bc4f32703c2744 (2026-06-05)",
+        "Oct-2026": "fec746b30be74e5c5eadece43176cc582ff5c580 (2026-09-24)"
+      },
+      "finding": "No graded dataset files are released on either branch, despite the paper's 'Code and graded datasets are available'. The Table 10 templates and Algorithm 1 scorer are not in the code at any revision (git grep over all history for the Table 10 strings finds only a placeholder). The ARR-branch builder create_dataset.py produces different candidates ('[good] {premise} {label} {hypothesis}' placeholders when generation is off, integer grades 4..0, a deleted HF source presencesw/esnli, and a process-salted Python hash() for query ids). The Oct-2026 branch's src/arr/data.py (arr-esnli-v1, for a later resubmission) uses the paper's Eq. 5-9 ranges but different templates, a non-wrong-label poor tier and no Algorithm 1 adjustments. Metric code used by the adapter: src/evaluation/metrics.py and explanation-ranking/src/explrank/metrics/pairwise.py @ 713c28b.",
+      "files_sha256": {
+        "create_dataset.py": "dc0c57edab839c85a5947fd0b2c49e332ad1ac0cdc0ee96c2e58fa90a4af9490",
+        "evaluate_model.py": "0ca7f8e6e4653bc246e4dc47b99566a03cb26ce0a09b2d7c1fed1a155f61f97b"
+      }
+    }
+  },
+  "construction": {
+    "builder": "scripts/prepare_expl_rank.py (deterministic; asserts the raw SHA-256 and N=9,842; two runs give identical output bytes)",
+    "items": "Every e-SNLI validation pair (9,842; label counts entailment 3,329 / contradiction 3,278 / neutral 3,235). Query = (premise, hypothesis, gold label), as the paper's q = (p, h, y).",
+    "candidates": {
+      "gold": "Human e-SNLI Explanation_1 (paper Sec. 4 'Graded Dataset Construction', App. D).",
+      "good/fair/poor/nonsense (entailment, contradiction)": "Paper Table 10 verbatim (the '[Wrong!]' marks are table annotations and are not part of the text). Label-specific but instance-independent: the same four strings recur for every item with that label.",
+      "good/fair/poor/nonsense (neutral)": "Not given in the paper; written for this audit in the Table 10 register: good 'The premise neither entails nor contradicts the hypothesis because it does not provide enough information to establish it.' (relation phrase from the authors' arr-esnli-v1 builder), fair 'The premise does not decide the hypothesis.' (authors' arr-esnli-v1 short relation), poor 'This is an entailment because the premise and hypothesis are similar.' (wrong label, as Table 10's poor rows), nonsense = the entailment nonsense sentence.",
+      "order": "Candidates listed in a per-item SHA-256 order (tier-blind) as c0..c4; this order is also the tie-break for equal predicted scores."
+    },
+    "gold_scores": {
+      "rule": "Paper Algorithm 1 (App. B): s ~ U(q_min, q_max) with the overlapping Eq. 5-9 ranges (gold [0.70,1.00], good [0.50,0.85], fair [0.30,0.70], poor [0.10,0.50], nonsense [0.00,0.30]); +0.05 if the label is mentioned; +0.03 if a reasoning keyword occurs; +0.02 if |words(e) ∩ (words(p) ∪ words(h))| / |words(p) ∪ words(h)| > 0.3; -0.10 for gold/good with < 15 words; -0.30 for gibberish in non-nonsense tiers; clip to [0,1]; rounded to 6 decimals.",
+      "choices_fixed_here": {
+        "uniform_draw": "U = low + (high-low) * int(SHA-256('uniform' | 'expl_rank-v1' | pairID | tier | text)) / (2^256-1) ('deterministic random seeds (hash of content)'; the paper's hash is unspecified).",
+        "words": "lower-cased regex [a-z0-9]+(?:['’][a-z]+)?",
+        "label_mentioned": "label stem substring, case-insensitive: entail / contradict / neutral",
+        "reasoning_keywords": "the authors' own connector list, evaluate_model.py L455 @ 713c28b: because, since, therefore, thus, so, hence, as, when, if",
+        "gibberish": "alphabetic token of >= 5 letters with no vowel (aeiouy), or a letter repeated 4+ times in a row (paper leaves it undefined; fires on 0 candidates)"
+      },
+      "flag_rates": {
+        "gold": {"label_match": 0.0033, "reasoning": 0.2156, "overlap": 0.6782, "too_short": 0.6774, "gibberish": 0.0},
+        "good": {"label_match": 0.6713, "reasoning": 1.0, "overlap": 0.0, "too_short": 0.6713, "gibberish": 0.0},
+        "fair": {"label_match": 0.0, "reasoning": 0.0, "overlap": 0.0, "too_short": 0.0, "gibberish": 0.0},
+        "poor": {"label_match": 0.0, "reasoning": 1.0, "overlap": 0.0141, "too_short": 0.0, "gibberish": 0.0},
+        "nonsense": {"label_match": 0.0, "reasoning": 0.3331, "overlap": 0.0, "too_short": 0.0, "gibberish": 0.0}
+      },
+      "mean_score_by_tier": {"gold": 0.8021, "good": 0.6698, "fair": 0.5003, "poor": 0.3285, "nonsense": 0.1598},
+      "reconstruction_check_vs_paper": "Ambiguity (items whose Algorithm 1 scores violate the tier order) 55.85% vs paper Table 11 'Graded SNLI' 54%. Tier-order oracle scored against the rebuilt scores: NDCG@3 0.9897, NDCG@5 0.9940, Spearman 0.9307 vs paper Table 12 'Overlapping (ours)' 0.9861 / 0.9928 / 0.8740."
+    },
+    "pairwise200": "The paper's 200 held-out pairwise-agreement queries (App. D) are unidentified. Frozen stand-in: the 200 pairIDs with the smallest SHA-256('expl_rank-v1' | 'pairwise200' | pairID) (entailment 74 / contradiction 61 / neutral 65), flagged pairwise200=true."
+  },
+  "frozen": {
+    "path": "data/frozen/expl_rank/test.jsonl.gz",
+    "sha256": "974b2a271fdb42889448dcf426806c24a7e4564b4e251c8967b07b5f5d4545b1",
+    "format": "gzip JSONL (mtime 0), one row per e-SNLI validation pair in file order: id (esnli-dev-<pairID>), pair_id, premise, hypothesis, label, candidates [{id, text}] in frozen order, gold {cid: {tier, grade (gold 4 ... nonsense 0), score (Algorithm 1)}}, pairwise200 (bool). gold is never sent to Jev.",
+    "n": 9842,
+    "n_pairwise200": 200,
+    "truncated_items": 0
+  },
+  "test_n_resolution": "Paper Table 20: 'E-SNLI validation set performance (10k queries)'; the official e-SNLI validation split has 9,842 pairs, all with a non-empty Explanation_1, so N = 9,842 (the paper's '10k' is a rounding). App. D pairwise agreement: 200 queries x 10 pairs = 2,000 tests; here the frozen 200-query subset above. The paper's cross-set evaluation (MultiNLI 700, Delta-NLI 1,785, WinoWhy 573, Tables 21-23) is not built: it is outside this benchmark's scope (e-SNLI + 200 pairwise), those sets have no human gold explanation (MultiNLI) or unidentified subsets, and no graded files were released.",
+  "english_verification": {
+    "metadata": "SNLI premises are English Flickr30k captions; hypotheses and explanations were written by English-speaking crowdworkers (Bowman et al. 2015; Camburu et al. 2018).",
+    "method": "langid.py (all languages) on all 29,526 strings (premise, hypothesis, Explanation_1 of every row) plus a non-ASCII check: 491 flags = 400 unique strings, every one read. Second screen: share of tokens found in /usr/share/dict/{american,british}-english < 0.6: 3 strings flagged.",
+    "result": "All flags are English: short captions misread by langid ('Dog herding cows', 'A human knitting.', 'Yoga implies exercising.'), curly or acute apostrophes (can’t, can´t), typos ('People are onthe beac', 'competetion'). No non-English or code-mixed text; no rows dropped.",
+    "rows_dropped": 0
+  },
+  "jev": {
+    "prompt": "prompts/expl_rank.json",
+    "primitive": "score, 5 ordered levels (nonsense 0 ... gold 4), one question per candidate",
+    "request_structure": "1 request per item: state {premise, hypothesis, relation}; 5 independent score questions (c0..c4), candidate text inside each question's instructions. 9,842 requests / 49,210 questions.",
+    "prediction": "candidate score = Jev expected level sum_i i*p_i (from probabilities; falls back to the returned score); ranking by descending score, exact ties -> frozen candidate order.",
+    "size": "77,141,148 request chars in total (mean 7,838, max 8,270 per request); far below the 32K-token context."
+  },
+  "metrics": {
+    "primary": "Against the Algorithm 1 scores, as the authors' src/evaluation/metrics.py: NDCG@5 (gain 2^s - 1, log2 discount), MAP (relevant = score above the per-query median, i.e. the top 2), MRR (reciprocal rank of the top-scored candidate), Kendall tau-b and Spearman rho per query and averaged (queries with constant predictions skipped, count reported). Plus NDCG@1/@3, pairwise agreement (explrank.metrics.pairwise, strict: predicted ties count wrong) on all items and on the frozen 200 (App. D), separation ratio std(pred/4)/std(true).",
+    "secondary": "The same metrics against the designed tier order (grades 4..0), mean expected level per tier, and the share of items where the human explanation is ranked first.",
+    "offline_checks": {
+      "oracle (Algorithm 1 scores)": "all primary metrics 1.0",
+      "tier-order oracle": "NDCG@5 0.994, MAP 0.9695, MRR 0.8988, Kendall 0.8671, Spearman 0.9307, pairwise 0.9336 (200-subset 0.933)",
+      "uniform random": "NDCG@5 0.842, MAP 0.594, MRR 0.458, Kendall 0.004, Spearman 0.004, pairwise 0.502",
+      "constant": "NDCG@5 0.843, MAP 0.595, MRR 0.457, correlations skipped on all 9,842 items, pairwise 0.0"
+    }
+  },
+  "paper_numbers": {
+    "table_20_esnli_validation": {
+      "ListNet": {"ndcg@5": 0.924, "map": 0.856, "mrr": 0.891, "kendall_tau": 0.634, "spearman": 0.812},
+      "ApproxNDCG": {"ndcg@5": 0.887, "map": 0.821, "mrr": 0.856, "kendall_tau": 0.589, "spearman": 0.728},
+      "RankNet": {"ndcg@5": 0.868, "map": 0.798, "mrr": 0.834, "kendall_tau": 0.556, "spearman": 0.689},
+      "MSE": {"ndcg@5": 0.801, "map": 0.723, "mrr": 0.756, "kendall_tau": 0.412, "spearman": 0.523}
+    },
+    "app_d_pairwise_agreement_200": {"ListNet": 0.87, "RankNet": 0.76, "MSE": 0.62},
+    "notes": "Table 20 does not name the encoder. Other tables disagree: Table 1 (ListNet) RoBERTa NDCG@5 0.996 / MAP 1.000 / rho 0.920 and 1.000 for all 4-bit decoders; Tables 13-14 DeBERTa-v3 ListNet NDCG@5 0.912."
+  },
+  "deviations": [
+    "Graded candidates and gold scores are rebuilt from the paper text (Table 10, Algorithm 1, Eqs. 5-9) because neither the data nor the construction code was released. Unspecified details fixed a priori (see construction.gold_scores.choices_fixed_here). The rebuild matches the paper's reported ambiguity (55.85% vs 54%) and overlapping-range oracle NDCG@5 (0.994 vs 0.9928).",
+    "Neutral items (3,235 of 9,842) use good/fair/poor/nonsense templates written for this audit; Table 10 covers only entailment and contradiction.",
+    "The 200 pairwise-agreement queries are a frozen hash-selected stand-in; the paper does not identify its 200.",
+    "N = 9,842 (full official e-SNLI validation) vs the paper's rounded '10k'.",
+    "Cross-set evaluations (Tables 21-23) are not built (outside this benchmark's scope; no graded data released).",
+    "Comparability caveat: the paper's Table 20 values do not fit the stated construction and the authors' metric code. Under our rebuild a uniformly random ranker already gets NDCG@5 0.842 (above the paper's MSE 0.801), and a synthetic ranker with the paper's MSE Spearman (~0.52) gets NDCG@5 ~0.93; the paper also reports MRR > MAP in every row, while the authors' metric code gives MAP > MRR for such rankers. Rank correlations and pairwise agreement are the most comparable numbers; NDCG@5/MAP/MRR comparisons are indicative only."
+  ]
+}

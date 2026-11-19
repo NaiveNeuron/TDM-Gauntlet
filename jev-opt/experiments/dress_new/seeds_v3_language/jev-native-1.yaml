@@ -1,0 +1,66 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Error-impact ladder; each level describes observable frequency and effect of grammar, spelling and punctuation errors together with vocabulary range.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: score
+    instructions: Score only the language of `essay`, a 40-minute timed argumentative essay by an undergraduate
+      English-as-a-foreign-language student answering `essay_prompt`. Language means vocabulary and collocations,
+      grammar and usage, spelling and punctuation. Ignore content, argument quality and organization.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - Errors in grammar, word choice, spelling or punctuation occur in nearly every sentence, and many
+      sentences cannot be understood. Vocabulary is very basic and repetitive.
+    - Errors occur in most sentences, and several sentences are hard to understand. Vocabulary is basic,
+      with frequent wrong word choices.
+    - Errors are frequent throughout, and some sentences need rereading to be understood. Vocabulary is
+      limited and often repeated, and word combinations are often unnatural.
+    - Errors are frequent, but most sentences can be understood on first reading. Vocabulary is simple,
+      with some unnatural word combinations.
+    - Errors appear regularly in grammar, spelling or punctuation, but meaning is almost always clear.
+      Vocabulary is adequate but plain, with occasional unnatural word combinations.
+    - Errors appear in some sentences and never block meaning. Vocabulary shows some variety, and most
+      word combinations are natural.
+    - A few errors appear, none blocking meaning. Vocabulary is varied, with mostly natural collocations
+      and some less common words used correctly.
+    - Only isolated minor slips in grammar, spelling or punctuation. Vocabulary is wide and precise, and
+      collocations are natural.
+    - Grammar, usage, spelling and punctuation are correct throughout. Vocabulary is wide and sophisticated,
+      and collocations are consistently natural and precise.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

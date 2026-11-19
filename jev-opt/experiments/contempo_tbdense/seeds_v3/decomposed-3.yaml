@@ -1,0 +1,76 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Branch cascade; a VAGUE gate, then an overlap gate, then flat choices whose criteria contrast each option with its nearest neighbour.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: branch
+    condition: The text in `context` makes the time order or overlap between the event marked <e1> (`event_1`)
+      and the event marked <e2> (`event_2`) clear enough that a reader would infer one specific relation
+      with 80% confidence, treating negated or hypothetical events as occurring, and neither event is
+      generic while the other is specific.
+    state:
+    - context
+    - event_1
+    - event_2
+    if_true:
+      node: relation_overlap_gate
+    if_false:
+      label: VAGUE
+    threshold: 0.5
+  relation_overlap_gate:
+    kind: branch
+    condition: 'In `context`, the time interval of the event marked <e1> (`event_1`) overlaps the time
+      interval of the event marked <e2> (`event_2`): one happens during the other, starts or ends the
+      other, or both happen at the same time.'
+    state:
+    - context
+    - event_1
+    - event_2
+    if_true:
+      node: relation_contain
+    if_false:
+      node: relation_seq
+    threshold: 0.5
+  relation_seq:
+    kind: choice
+    instructions: 'In `context`, which event happens first: the one marked <e1> (`event_1`) or the one
+      marked <e2> (`event_2`)?'
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: 'Event 1 comes first: it ends before Event 2 begins, including immediately before.'
+      AFTER:
+        criterion: 'Event 2 comes first: Event 1 begins after Event 2 ends, including immediately after.'
+  relation_contain:
+    kind: choice
+    instructions: In `context`, how does the interval of the event marked <e1> (`event_1`) relate to the
+      interval of the event marked <e2> (`event_2`)?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      INCLUDES:
+        criterion: 'Event 1 is the broader event: Event 2 happens inside it, or starts or ends it.'
+      IS_INCLUDED:
+        criterion: 'Event 2 is the broader event: Event 1 happens inside it, or starts or ends it. This
+          includes Event 1 being an aspect or manner of Event 2.'
+      SIMULTANEOUS:
+        criterion: Both events span the same interval. Neither event is broader than the other.

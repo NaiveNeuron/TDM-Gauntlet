@@ -1,0 +1,56 @@
+# v3 jev-native-zero (third pre-registration): jev-native seed jev-native-1, the kind's best zero-shot TRAIN score
+# in v3-dress-new-organization-P, run exactly as written: no readout, bias, cutoff/threshold fit or temperature.
+name: dress-new-organization
+labels:
+  '1.0': '1.0 out of 5.0 (lowest score): the essay does not meet the organization rubric explanation.'
+  '1.5': 1.5 out of 5.0
+  '2.0': 2.0 out of 5.0
+  '2.5': 2.5 out of 5.0
+  '3.0': '3.0 out of 5.0 (midpoint): the essay partly meets the organization rubric explanation.'
+  '3.5': 3.5 out of 5.0
+  '4.0': 4.0 out of 5.0
+  '4.5': 4.5 out of 5.0
+  '5.0': '5.0 out of 5.0 (highest score): The argument is very effectively structured and developed, making
+    it easy for the reader to follow the ideas and understand how the writer is building the argument.
+    Paragraphs use coherence devices effectively while focusing on a single main idea.'
+inputs:
+  essay_prompt: ''
+  essay: ''
+ordinal: true
+data:
+  train: data/organization/train.jsonl
+  val: data/organization/val.jsonl
+  test: data/organization/test.jsonl
+primary_metric: qwk
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 5300
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: false
+  fit_holdout: true
+  reflection_pool: 100
+  class_bias: false
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: false
+  readout_folds: 5
+  fit_parameters: false
+seed_program: seeds_v3_organization/jev-native-1.yaml

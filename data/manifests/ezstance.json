@@ -1,0 +1,96 @@
+{
+  "task": ["ezstance/subtaskA", "ezstance/subtaskB"],
+  "paper": {
+    "title": "EZ-STANCE: A Large Dataset for English Zero-Shot Stance Detection",
+    "authors": "Chenye Zhao, Cornelia Caragea",
+    "venue": "ACL 2024 (long), pages 15697-15714",
+    "url": "https://aclanthology.org/2024.acl-long.838/",
+    "pdf_sha256": "280ed6a3bbbbb34921ccaedeadb3092b07219e628336cd1dc3708e195066352b"
+  },
+  "source": {
+    "code_repo": "https://github.com/chenyez/EZ-STANCE",
+    "code_commit": "b53dc64ce29622dd845c933972fdfbc17a0210ba (2025-04-17, HEAD of main at download)",
+    "data_url": "https://drive.google.com/file/d/1WxysM2VwjcZkHnCDMe7P9bwA8VW7IU01/view (linked from the repo README)",
+    "download_tool": "uvx gdown 1WxysM2VwjcZkHnCDMe7P9bwA8VW7IU01 (gdown 6.4.0), 2026-09-26",
+    "raw_zip": "data/raw/ezstance/ezstance_data.zip",
+    "raw_zip_sha256": "4683d124c8c8dde1b1282c3f534efa6c0b92e22335a8821249ef1d63cb26455b",
+    "raw_zip_bytes": 144762215,
+    "licence": "None stated: the GitHub repo has no LICENSE file and the GitHub API reports license=null; the README only asks users to cite the paper. Texts are tweets (Twitter/X terms). Treated as not redistributable: the frozen files hold no tweet text or target.",
+    "columns_used": "Text (preprocessed tweet, the column the paper's models use per README note 1), Target 1, Stance 1 (AGAINST/FAVOR/NONE); Subtask B files also carry Domain and In Use (all released test rows have In Use = 1). Ori Text (raw tweet), Keywords and seen? are not used.",
+    "label_order": "AGAINST=0, FAVOR=1, NONE=2 (EMNLP2024_ezstance/src/utils/preprocessing.py); the paper's F1macro is the unweighted mean of these three per-class F1s (utils/evaluation.py compute_f1).",
+    "test_member_sha256": {
+      "subtaskA/claim/raw_test_all_onecol.csv": "48f8b728eae90bc46d060cedee60af50242089ac5210efe67f2596a51e5e5d59",
+      "subtaskA/mixed/raw_test_all_onecol.csv": "d70cc2ff9abbef7d9f9a57a6ba1882f32b1f319c6502955110c904ad2431a990",
+      "subtaskA/noun_phrase/raw_test_all_onecol.csv": "c7a3ab039ec9084c4233deb3e7085b4f59c230e7f4c8d7b36b5b6ea5e2034e86",
+      "subtaskB/claim/consumption_and_entertainment_domain/raw_test_all_onecol.csv": "d8c4caabfa972843db5b498adf5d375fdefbb1a4fa6dbf47a2e4e971f78a275e",
+      "subtaskB/claim/covid19_domain/raw_test_all_onecol.csv": "9d8e8920efe1cfbd2d22edd9ee1fb7516565669a9bf81e9dc76b7c4cc620ff01",
+      "subtaskB/claim/education_and_culture_domain/raw_test_all_onecol.csv": "83fb84fe33152bc468364a337c1c18a20eb8be6f9230ffe1276612898d980a6b",
+      "subtaskB/claim/environmental_protection_domain/raw_test_all_onecol.csv": "18d3ae480a99f34c98351747e942c9d66dfc19cb4f625a1d0fcbfde523ceb664",
+      "subtaskB/claim/politic/raw_test_all_onecol.csv": "f688ccbe5edbe335a6330e75fec1dad76a7a59f13fe08ac93cf51c01df1317c6",
+      "subtaskB/claim/rights_domain/raw_test_all_onecol.csv": "689abdb7af8628eb6ab340884b85d8f975e60ed6a7e36b3983f16e5e26f81a60",
+      "subtaskB/claim/sports_domain/raw_test_all_onecol.csv": "24edd1a7607ff7da6b2f483d2529b180f39c9620c902a9f7440f2fe554bc9c69",
+      "subtaskB/claim/world_event_domain/raw_test_all_onecol.csv": "bf59fc326fc5d87e6100429747ad30b15057618cae330c38c15566dc3b2339d1",
+      "subtaskB/mixed/consumption_and_entertainment_domain/raw_test_all_onecol.csv": "f4aef8370837ca92d51ad62439106550ed5a006ce7ca13b5d31c3f9366e27983",
+      "subtaskB/mixed/covid19_domain/raw_test_all_onecol.csv": "1e694ad78f0289ea6b20eebb07db10d297d79ad7a6b3e258956f86b1954393bd",
+      "subtaskB/mixed/education_and_culture_domain/raw_test_all_onecol.csv": "4f22b07e738ecb99e744975f8b66413510ab1af06314e92f0ccc482ec3480d59",
+      "subtaskB/mixed/environmental_protection_domain/raw_test_all_onecol.csv": "4db09ef280404d87ca622be67ab6c18ba9ceb62896f25d35199a4e6e664ae934",
+      "subtaskB/mixed/politic/raw_test_all_onecol.csv": "294ec82b3e8330d4424253a005ba11531695a8dae40e6a7b2a06a461893fb012",
+      "subtaskB/mixed/rights_domain/raw_test_all_onecol.csv": "06f2c38965e2e4da54b9eec780ce6cf0408a49d523356ce83468e4924ef1e387",
+      "subtaskB/mixed/sports_domain/raw_test_all_onecol.csv": "f38cfbd120bf5417d8899c36fccecd08346aad6e83f14939f4cd4585e652aa31",
+      "subtaskB/mixed/world_event_domain/raw_test_all_onecol.csv": "1265f67f04fc39186fee7d04adc7f13077779bd07db3e5897588af092d6f82cc",
+      "subtaskB/noun_phrase/consumption_and_entertainment_domain/raw_test_all_onecol.csv": "9b896553204a7603d7c8a78e0fe5f7d5b9fbcfbd8a3bd2d536193f629108715c",
+      "subtaskB/noun_phrase/covid19_domain/raw_test_all_onecol.csv": "ab2b62ee2ec78f88d73b30c213f53f6ae520c037333f24db98a5f612591aea4b",
+      "subtaskB/noun_phrase/education_and_culture_domain/raw_test_all_onecol.csv": "5cdbb52381e621b75dc6b89194c1467120470acc7346adf42894b30740f975b8",
+      "subtaskB/noun_phrase/environmental_protection_domain/raw_test_all_onecol.csv": "44996c5c39cd9c1be9d6889e57f7cb7cd4983eb6be4285f235cc10da38b6a3e3",
+      "subtaskB/noun_phrase/politic/raw_test_all_onecol.csv": "58ad7f138629de39625f5c0781d1756bca6553a67a8ec8b3be62dfc3b25dc2d7",
+      "subtaskB/noun_phrase/rights_domain/raw_test_all_onecol.csv": "2197f6ccc8cd1b0f3fd6aa3ac6f518701c48b2fe76f6ffd04912e4a04d0f120d",
+      "subtaskB/noun_phrase/sports_domain/raw_test_all_onecol.csv": "0133a6bd3f651849ac62455fc33cca909b203d5abc3a6a226888b9550f4e422f",
+      "subtaskB/noun_phrase/world_event_domain/raw_test_all_onecol.csv": "9c5508fc9345fe2600c094d45e870c26e60b65d00ddef458d0ee49fc7c6b9aca"
+    },
+    "unused_release_parts": "train/val CSVs; the prompt/ subfolders (noun-phrase targets rewritten with the paper's NLI templates for BART-MNLI-ep training); the mixed/ test files (verified to equal the union of noun_phrase/ and claim/ files, so the target type is taken from those)."
+  },
+  "splits_in_release": {
+    "subtaskA": "target-based ZSSD: one train/val/test split; test = noun_phrase 2,663 + claim 5,135 = mixed 7,798 (matches paper Table 5).",
+    "subtaskB": "domain-based ZSSD: 8 leave-one-domain-out splits; the test set of each is (almost all) data from the held-out domain. Test N (noun_phrase + claim = mixed), all matching paper Table 13: CE covid19_domain 2,639+3,819=6,458; WE world_event_domain 2,286+3,252=5,538; EdC education_and_culture_domain 2,109+3,078=5,187; EnC consumption_and_entertainment_domain 2,702+4,053=6,755; S sports_domain 1,807+2,661=4,468; R rights_domain 2,468+3,405=5,873; EP environmental_protection_domain 2,071+2,772=4,843; P politic 2,890+3,999=6,889. Total 46,011; the eight test sets are pairwise disjoint.",
+    "overlap": "6,630 of the 7,798 Subtask A test pairs also occur in some Subtask B test set; requests are identical for identical (tweet, target, target type), so the Jev cache serves them once."
+  },
+  "english_verification": {
+    "paper": "Appendix B: tweets were filtered to 'keep only tweets in English'; annotators' native language was English (Section 3.2). Claim targets are annotator-written English sentences.",
+    "method": "All 9,296 unique test tweets (Text) were screened: (1) langid.py 1.1.6 on the whole text (37 non-en) and on 8-token windows (non-en with p>0.999); (2) count of non-Latin-script letters >= 2; (3) two independent LLM screening passes (a general-purpose chat LLM, not Jev/TypeSafe; batches of 40, different random batching) asking for tweets containing any non-English sentence/clause/multi-word phrase, code-mixed text, or pidgin/creole/patois. The 268 candidates from the union were then judged from the text alone (no labels, no Jev outputs).",
+    "rule": "Exclude a tweet if it contains a non-English sentence, clause or multi-word phrase (including quoted/retweeted tweets, Twitter UI labels in another language, and link-preview titles), code-mixed text with non-English grammar or function words (Hinglish, Taglish, Manglish, Sheng, ...), or English-lexifier pidgin/creole/patois (Nigerian/Ghanaian Pidgin, Jamaican/Trinidadian creole), under the benchmark's English-only rule. Keep proper names in any script, handles, hashtags, single loanwords/particles (e.g. 'Aiyah', 'la', 'da'), and names of events/titles.",
+    "result": "152 tweets excluded (hash list: data/frozen/ezstance/non_english_texts.json). Targets were not screened for exclusion: they are annotator-written; langid flags on the 40,754 unique targets are short names/phrases.",
+    "rows_excluded": {
+      "subtaskA": {"noun_phrase": 45, "claim": 87, "total": 132},
+      "subtaskB": {
+        "CE": {"noun_phrase": 37, "claim": 60},
+        "WE": {"noun_phrase": 61, "claim": 78},
+        "EdC": {"noun_phrase": 18, "claim": 27},
+        "EnC": {"noun_phrase": 84, "claim": 132},
+        "S": {"noun_phrase": 15, "claim": 21},
+        "R": {"noun_phrase": 28, "claim": 39},
+        "EP": {"noun_phrase": 20, "claim": 33},
+        "P": {"noun_phrase": 36, "claim": 48},
+        "total": 737
+      }
+    }
+  },
+  "frozen": {
+    "builder": "scripts/prepare_ezstance.py (deterministic; re-downloads the zip if absent and asserts its SHA-256, the per-split N of paper Tables 5/13, and mixed == noun_phrase + claim)",
+    "format": "JSONL, one row per test pair: id, member (CSV path in the zip), row (0-based data-row index), target_type, domain (Subtask B), gold, sha256 = SHA-256 of JSON [Text, Target 1, Stance 1] (compact separators, UTF-8). No text is stored; ezstance.py rebuilds items from the zip and checks every row hash.",
+    "files": {
+      "data/frozen/ezstance/subtaskA.jsonl": {"sha256": "9ced2a53c6d4c4bc0bdb37f80090cb905616f0cf8e0eb6b1d71e07a594e7849d", "n": 7666, "noun_phrase": 2618, "claim": 5048, "labels": {"AGAINST": 2434, "FAVOR": 2624, "NONE": 2608}},
+      "data/frozen/ezstance/subtaskB.jsonl": {"sha256": "8dbc47fa7175c9b4f5c92fe3772972cb51b119d6b43aa695db1430d3823cd45b", "n": 45274, "per_domain_M_N_C": {"CE": [6361, 2602, 3759], "WE": [5399, 2225, 3174], "EdC": [5142, 2091, 3051], "EnC": [6539, 2618, 3921], "S": [4432, 1792, 2640], "R": [5806, 2440, 3366], "EP": [4790, 2051, 2739], "P": [6805, 2854, 3951]}, "labels": {"AGAINST": 14468, "FAVOR": 15707, "NONE": 15099}},
+      "data/frozen/ezstance/excluded_non_english.jsonl": {"sha256": "76a26f6adcef7abdd1b33321a1600d86d74d540f077af5af892bf5022fb50dcf", "n": 869},
+      "data/frozen/ezstance/non_english_texts.json": {"sha256": "68fe34a5c47ed89933987f9c7d46eab7619c9ee785b145d3486504e79cb7488a", "n": 152}
+    },
+    "prompt": {"file": "prompts/ezstance.json", "sha256": "3ee2ad675a7492f8ef43244198b10ed69f60796daf5dd285a2de42f45cb286bf"}
+  },
+  "data_notes": [
+    "Duplicate (tweet, target, target type) keys with conflicting gold labels: 1 in the frozen Subtask A set, 11 in Subtask B. Kept as released. Any single predictor gets at most one of each pair right.",
+    "Truncation rule (frozen in ezstance.py): tweet and target each cut to 36,000 chars; the longest state is 1,279 chars, so 0 items are truncated."
+  ],
+  "deviations": [
+    "Rows whose tweet contains non-English, code-mixed or pidgin/creole text are excluded under the English-only rule, so the scored N is 7,666 (Subtask A, paper 7,798) and 45,274 (Subtask B, paper 46,011); per-domain and per-target-type N are listed above. The paper's reported numbers are on the full sets.",
+    "Subtask B aggregate 'macro_f1' is the unweighted mean over the eight domains of mixed-target macro-F1; the paper reports only per-domain values (Table 8)."
+  ]
+}

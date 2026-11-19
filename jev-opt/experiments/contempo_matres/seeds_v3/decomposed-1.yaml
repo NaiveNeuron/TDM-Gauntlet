@@ -1,0 +1,43 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Flat choice with short literal instructions and contrastive criteria that separate each label from its nearest neighbour.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- EQUAL
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: In `context`, the trigger of Event 1 is marked <e1>...</e1> and also given in `event_1`;
+      the trigger of Event 2 is marked <e2>...</e2> and also given in `event_2`. Each trigger stands for
+      its whole event, and both events lie on the main story line of the news text. Considering only when
+      each event STARTS (ignore end times), which option describes the start of Event 1 relative to the
+      start of Event 2?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 starts before Event 2 starts. The text allows Event 1 to start first and rules
+          out Event 2 starting first. If the text also leaves room for Event 2 to start first, choose
+          VAGUE instead. If the starts coincide, choose EQUAL instead.
+      AFTER:
+        criterion: Event 1 starts after Event 2 starts. The text allows Event 2 to start first and rules
+          out Event 1 starting first. If the text also leaves room for Event 1 to start first, choose
+          VAGUE instead. If the starts coincide, choose EQUAL instead.
+      EQUAL:
+        criterion: Event 1 and Event 2 start at the same time. The text rules out either start being before
+          the other. If either one could start first, this does not apply.
+      VAGUE:
+        criterion: The text leaves the order of the two start times open. Event 1 could start first and
+          Event 2 could also start first. If the text fixes which one starts first, choose BEFORE or AFTER
+          instead.

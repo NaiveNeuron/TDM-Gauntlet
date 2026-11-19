@@ -1,0 +1,62 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/contempo_tbdense.json), verbatim; generated, do not hand-edit.
+# One Choice, question id `relation`, state {context, event_1, event_2} -- the gauntlet request.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: false
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: 'Temporal relation classification between two events in a news text (TimeBank-Dense
+      scheme). The state holds "context": one sentence or two consecutive sentences from an English news
+      article, in which the trigger word of Event 1 is wrapped in <e1>...</e1> and the trigger word of
+      Event 2 is wrapped in <e2>...</e2>; "event_1" and "event_2" repeat the two trigger words. Each trigger
+      stands for the whole event it describes, viewed as a time interval. Choose the relation of Event
+      1 (<e1>) to Event 2 (<e2>), in that order, from 6 relations: before, after, includes, is included,
+      simultaneous, and vague. A relation like starts is a special case of includes if events are viewed
+      as open intervals, and immediately before is a special case of before. Annotation guidelines: The
+      80% confidence rule: choose a specific non-vague relation if you are 80% confident that it was the
+      writer''s intent that a reader infer that relation; otherwise the relation is VAGUE. Modal and conditional
+      events: interpreted with a possible worlds analysis. The core event was treated as having occurred,
+      whether or not the text implied that it had occurred. Negated events and hypotheticals are treated
+      similarly. One assumes the event does occur, and all other events are ordered accordingly. Aspectual
+      events: annotated as IS INCLUDED in their event arguments. For instance, events that describe the
+      manner in which another event is performed are considered encompassed by the broader event. Events
+      that attribute a property to a person or event are interpreted to end when the entity ends. Generic
+      events can be ordered with respect to each other, but must be VAGUE with respect to nearby non-generic
+      events.'
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: 'BEFORE: Event 1 happens before Event 2; Event 1 ends before Event 2 begins (including
+          immediately before).'
+      AFTER:
+        criterion: 'AFTER: Event 1 happens after Event 2; Event 1 begins after Event 2 ends (including
+          immediately after).'
+      INCLUDES:
+        criterion: 'INCLUDES: the time interval of Event 1 contains the time interval of Event 2; Event
+          2 happens during Event 1 (including Event 2 starting or ending Event 1).'
+      IS_INCLUDED:
+        criterion: 'IS_INCLUDED: the time interval of Event 1 is contained in the time interval of Event
+          2; Event 1 happens during Event 2 (including Event 1 starting or ending Event 2).'
+      SIMULTANEOUS:
+        criterion: 'SIMULTANEOUS: Event 1 and Event 2 occupy the same time interval; they happen at the
+          same time.'
+      VAGUE:
+        criterion: 'VAGUE: no specific relation above can be chosen with 80% confidence that it was the
+          writer''s intent that a reader infer it; the text leaves the temporal relation between the two
+          events underspecified.'

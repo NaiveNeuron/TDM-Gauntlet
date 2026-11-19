@@ -1,0 +1,65 @@
+# jev-native seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Levels defined by which rubric components (followable structure, single-idea paragraphs, coherence devices) are met, stated as counts of met components.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: score
+    instructions: 'Judge the organization of `essay` (an answer to `essay_prompt`) against three components:
+      (A) the overall argument is structured so the reader can follow how the writer builds it; (B) each
+      paragraph focuses on a single main idea; (C) paragraphs use coherence devices (transitions, reference
+      words, linking sentences) effectively. Pick the level that describes the essay. Do not judge content
+      or grammar.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - A, B and C are all absent. The text has no followable argument structure, no focused paragraphs
+      and no working coherence devices.
+    - All three components are absent except for faint traces, such as one linking word or one short focused
+      passage.
+    - One component is weakly present, and the other two are absent.
+    - Two components are weakly present, or one component is clearly present, and the reader still struggles
+      to follow the argument.
+    - All three components are partly present. The argument can be followed, but with gaps, drifting paragraphs
+      or clumsy linking.
+    - Two components are clearly met, and the third is only partly met.
+    - All three components are clearly met, but there are noticeable lapses, such as a weak transition,
+      an underdeveloped paragraph or a thin conclusion.
+    - All three components are met well, with only one minor lapse.
+    - All three components are met very effectively, and the essay has no lapses in structure, paragraph
+      focus or coherence.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

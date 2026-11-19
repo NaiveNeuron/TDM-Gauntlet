@@ -1,0 +1,15 @@
+@task
+Given the abstract of a scientific paper, choose its research field or topic from a fixed list. Four datasets range
+from broad disciplines to fine-grained NLP topics.
+@output
+One label per abstract, from <<q:sciprompt_arxiv:question.criteria|len>> arXiv categories,
+<<q:sciprompt_s2orc:question.criteria|len>> S2ORC fields, <<q:sciprompt_sdpra:question.criteria|len>>
+SDPRA computer-science domains or <<q:sciprompt_emerging_nlp:question.criteria|len>> Emerging-NLP topics, depending on the dataset.
+@example frozen SDPRA test set, CC BY 4.0, item \texttt{<<jl:data/frozen/sciprompt/sdpra.jsonl:25.id>>}
+Abstract & <<jl:data/frozen/sciprompt/sdpra.jsonl:25.abstract|c220>>
+Gold & <<jl:data/frozen/sciprompt/sdpra.jsonl:25.gold>>
+@sets
+sciprompt/arxiv = arXiv | abstracts
+sciprompt/s2orc = S2ORC | abstracts
+sciprompt/sdpra = SDPRA | abstracts
+sciprompt/emerging_nlp = Emerging-NLP | abstracts

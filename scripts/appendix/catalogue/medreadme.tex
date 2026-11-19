@@ -1,0 +1,11 @@
+@task
+Rate how hard a single sentence from a medical text is to read, on a scale based on the CEFR language levels.
+@output
+A readability score per sentence, the mean of the annotators' ratings on <<q:medreadme:question.criteria|len>>
+CEFR-based levels from easiest to hardest.
+@example released training split, not a test item (sentence from a PLOS journal)
+Sentence & <<csv:data/raw/medreadme/readability.csv:23.Sentence|c220>>
+Journal & <<csv:data/raw/medreadme/readability.csv:23.Source>>
+Gold & <<csv:data/raw/medreadme/readability.csv:23.Readability>>
+@sets
+medreadme = MedReadMe test | sentences

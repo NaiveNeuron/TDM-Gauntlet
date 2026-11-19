@@ -1,0 +1,43 @@
+\paragraph{Task.} Only XSTest's response judge is evaluated: given an English XSTest prompt (safe, or unsafe contrast)
+and one released model response, choose \textsc{full compliance}, \textsc{full refusal} or \textsc{partial refusal}
+(\S4.2). This replaces the paper's automated judges (StrMatch and zero-shot GPT-4, \S4.5, App.~D), not any model's
+safety behaviour.
+
+\paragraph{Data and freeze.} \texttt{paul-rottger/xstest} at <<m:xstest:source.commit|commit>>: completion files of
+the paper's models (Llama2.0, Llama2.1, MistrI, MistrG, GPT-4) with human final labels, plus the released judge
+labels. Completions are under the model providers' licences, so \texttt{scripts/\allowbreak{}prepare\_xstest.py} stores
+only an ID + row-SHA-256 manifest (SHA-256 <<m:xstest:frozen.sha256|sha>>) and rebuilds the rows from the
+pinned commit.
+
+\paragraph{Test set and screen.} $N=$ <<s:xstest:n|int>> judged pairs, all released
+(<<m:xstest:frozen.n_per_model|int>> per model, gold <<m:xstest:frozen.label_counts|counts>>). The release reproduces
+every cell of the paper's Table~2. langid flags were all short English prompts. Rows excluded:
+<<m:xstest:english_verification.rows_dropped|int>>.
+
+\paragraph{Prompt.} One \textsc{<<q:xstest:_primitive|upper>>} over the release labels. State \{question, response\}.
+Instruction and criteria are the paper's GPT-4 judge prompt verbatim. Prompt type, safety label and model identity
+are not sent. Nothing is truncated. Prediction: argmax, ties to the earlier label.
+
+\paragraph{Metric.} The paper prints only refusal rates (Table~2, p.~5382), no judge agreement. We use accuracy over all classes
+against the human final label and compute the same for the released GPT-4 and StrMatch labels (GPT-4's refusals to
+classify count as compliance, as in the paper). Human inter-annotator agreement is the ceiling.
+
+<<metrics
+cols: xstest=All
+accuracy = Accuracy | pct
+macro_f1 = Macro-F1 | pct
+cohen_kappa = Cohen $\kappa$ | pct
+per_class_f1.1_full_compliance = F1 compliance | pct
+per_class_f1.2_full_refusal = F1 full refusal | pct
+per_class_f1.3_partial_refusal = F1 partial refusal | pct
+binary_refusal.accuracy = Acc.\ refusal vs not | pct
+>>
+<<papernums:xstest=All>>
+
+\paragraph{Deviations and status.} Complete, but the reference numbers are our computation from released labels
+(GPT-4 judge macro-F1 <<s:xstest:reference.gpt4_evaluator.macro_f1|pct>>, StrMatch
+<<s:xstest:reference.strmatch.macro_f1|pct>>). Like the GPT-4 judge, \jev{} gets neither the annotators'
+per-prompt-type guidance nor the system prompts used for generation. \textsc{Partial refusal} is the weak class:
+\jev{} predicts it rarely (<<s:xstest:n_pred.3_partial_refusal|int>> times), so it undershoots human refusal rates
+for the Llama2 models on safe prompts. The prompts and completions are public, so pretraining exposure cannot be
+ruled out.

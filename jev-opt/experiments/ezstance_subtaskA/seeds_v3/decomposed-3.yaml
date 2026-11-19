@@ -1,0 +1,61 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One_vs_rest with one independent true/false statement per label, each judged on its own.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: one_vs_rest
+    instructions: Judge whether the statement about the author of `tweet` and the noun-phrase `target`
+      is true.
+    state:
+    - tweet
+    - target
+    options:
+      FAVOR:
+        criterion: The author of `tweet` is in favor of `target`.
+      AGAINST:
+        criterion: The author of `tweet` is against `target`.
+      NONE:
+        criterion: The author of `tweet` is neutral toward `target`, taking neither a favorable nor an
+          opposing position toward it.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}
+  stance:
+    kind: one_vs_rest
+    instructions: Judge from `tweet` alone whether the statement about the author and the claim in `target`
+      is true.
+    state:
+    - tweet
+    - target
+    options:
+      FAVOR:
+        criterion: Based solely on `tweet`, the author is definitely in favor of the point or message
+          of the claim in `target`.
+      AGAINST:
+        criterion: Based solely on `tweet`, the author is definitely against the point or message of the
+          claim in `target`.
+      NONE:
+        criterion: Based solely on `tweet`, we cannot know whether the author definitely supports or opposes
+          the point or message of the claim in `target`.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

@@ -1,0 +1,232 @@
+{
+  "_source": "v2 (names only). Task text: Mtumbuka & Schockaert (2024) Section 3 (p. 6005), quoted. The paper's classifier uses no label text (labels are class indices: fmtumbuka/RelationEmbeddings@66d3c9a datapipeline/relational_dataset.py `relation_type_idx = self._relation_types.index(...)`, MLP softmax per Section 3.2; Limitations: 'we do not attempt to model the relation labels'), so options are label names with null descriptions. Inventory: the paper's NYT_RELATION_TYPES (56 incl. NA). Option names: the Freebase relation paths verbatim; NA shown as 'NA (no relation)'.",
+  "task": "We consider the standard sentence-level relation extraction setting, where we are given a sentence in which two entities are highlighted, which we refer to as the head entity and tail entity. The goal is to predict which relationship holds between these two entities, given a pre-defined set of candidate relation labels. The relation labels are Freebase relations (/domain/type/property): the head entity is the subject and the tail entity is the value. Choose NA (no relation) when none of the listed relations holds from the head entity to the tail entity. In each question the head entity is marked <e1>...</e1> and the tail entity <e2>...</e2>.",
+  "question": "Which relation holds from the head entity to the tail entity in this sentence?\n{marked_sentence}\nHead entity: {head}\nTail entity: {tail}",
+  "negative_label": "NA",
+  "labels": [
+    {
+      "label": "NA",
+      "key": "NA (no relation)"
+    },
+    {
+      "label": "/broadcast/content/location",
+      "key": "/broadcast/content/location"
+    },
+    {
+      "label": "/broadcast/producer/location",
+      "key": "/broadcast/producer/location"
+    },
+    {
+      "label": "/business/business_location/parent_company",
+      "key": "/business/business_location/parent_company"
+    },
+    {
+      "label": "/business/company/advisors",
+      "key": "/business/company/advisors"
+    },
+    {
+      "label": "/business/company/founders",
+      "key": "/business/company/founders"
+    },
+    {
+      "label": "/business/company/industry",
+      "key": "/business/company/industry"
+    },
+    {
+      "label": "/business/company/locations",
+      "key": "/business/company/locations"
+    },
+    {
+      "label": "/business/company/major_shareholders",
+      "key": "/business/company/major_shareholders"
+    },
+    {
+      "label": "/business/company/place_founded",
+      "key": "/business/company/place_founded"
+    },
+    {
+      "label": "/business/company_advisor/companies_advised",
+      "key": "/business/company_advisor/companies_advised"
+    },
+    {
+      "label": "/business/company_shareholder/major_shareholder_of",
+      "key": "/business/company_shareholder/major_shareholder_of"
+    },
+    {
+      "label": "/business/person/company",
+      "key": "/business/person/company"
+    },
+    {
+      "label": "/business/shopping_center/owner",
+      "key": "/business/shopping_center/owner"
+    },
+    {
+      "label": "/business/shopping_center_owner/shopping_centers_owned",
+      "key": "/business/shopping_center_owner/shopping_centers_owned"
+    },
+    {
+      "label": "/film/film/featured_film_locations",
+      "key": "/film/film/featured_film_locations"
+    },
+    {
+      "label": "/film/film_festival/location",
+      "key": "/film/film_festival/location"
+    },
+    {
+      "label": "/film/film_location/featured_in_films",
+      "key": "/film/film_location/featured_in_films"
+    },
+    {
+      "label": "/location/administrative_division/country",
+      "key": "/location/administrative_division/country"
+    },
+    {
+      "label": "/location/br_state/capital",
+      "key": "/location/br_state/capital"
+    },
+    {
+      "label": "/location/cn_province/capital",
+      "key": "/location/cn_province/capital"
+    },
+    {
+      "label": "/location/country/administrative_divisions",
+      "key": "/location/country/administrative_divisions"
+    },
+    {
+      "label": "/location/country/capital",
+      "key": "/location/country/capital"
+    },
+    {
+      "label": "/location/de_state/capital",
+      "key": "/location/de_state/capital"
+    },
+    {
+      "label": "/location/fr_region/capital",
+      "key": "/location/fr_region/capital"
+    },
+    {
+      "label": "/location/in_state/administrative_capital",
+      "key": "/location/in_state/administrative_capital"
+    },
+    {
+      "label": "/location/in_state/judicial_capital",
+      "key": "/location/in_state/judicial_capital"
+    },
+    {
+      "label": "/location/in_state/legislative_capital",
+      "key": "/location/in_state/legislative_capital"
+    },
+    {
+      "label": "/location/it_region/capital",
+      "key": "/location/it_region/capital"
+    },
+    {
+      "label": "/location/jp_prefecture/capital",
+      "key": "/location/jp_prefecture/capital"
+    },
+    {
+      "label": "/location/location/contains",
+      "key": "/location/location/contains"
+    },
+    {
+      "label": "/location/mx_state/capital",
+      "key": "/location/mx_state/capital"
+    },
+    {
+      "label": "/location/neighborhood/neighborhood_of",
+      "key": "/location/neighborhood/neighborhood_of"
+    },
+    {
+      "label": "/location/province/capital",
+      "key": "/location/province/capital"
+    },
+    {
+      "label": "/location/us_county/county_seat",
+      "key": "/location/us_county/county_seat"
+    },
+    {
+      "label": "/location/us_state/capital",
+      "key": "/location/us_state/capital"
+    },
+    {
+      "label": "/people/deceased_person/place_of_burial",
+      "key": "/people/deceased_person/place_of_burial"
+    },
+    {
+      "label": "/people/deceased_person/place_of_death",
+      "key": "/people/deceased_person/place_of_death"
+    },
+    {
+      "label": "/people/ethnicity/geographic_distribution",
+      "key": "/people/ethnicity/geographic_distribution"
+    },
+    {
+      "label": "/people/ethnicity/included_in_group",
+      "key": "/people/ethnicity/included_in_group"
+    },
+    {
+      "label": "/people/ethnicity/includes_groups",
+      "key": "/people/ethnicity/includes_groups"
+    },
+    {
+      "label": "/people/ethnicity/people",
+      "key": "/people/ethnicity/people"
+    },
+    {
+      "label": "/people/family/country",
+      "key": "/people/family/country"
+    },
+    {
+      "label": "/people/family/members",
+      "key": "/people/family/members"
+    },
+    {
+      "label": "/people/person/children",
+      "key": "/people/person/children"
+    },
+    {
+      "label": "/people/person/ethnicity",
+      "key": "/people/person/ethnicity"
+    },
+    {
+      "label": "/people/person/nationality",
+      "key": "/people/person/nationality"
+    },
+    {
+      "label": "/people/person/place_lived",
+      "key": "/people/person/place_lived"
+    },
+    {
+      "label": "/people/person/place_of_birth",
+      "key": "/people/person/place_of_birth"
+    },
+    {
+      "label": "/people/person/profession",
+      "key": "/people/person/profession"
+    },
+    {
+      "label": "/people/person/religion",
+      "key": "/people/person/religion"
+    },
+    {
+      "label": "/people/place_of_interment/interred_here",
+      "key": "/people/place_of_interment/interred_here"
+    },
+    {
+      "label": "/people/profession/people_with_this_profession",
+      "key": "/people/profession/people_with_this_profession"
+    },
+    {
+      "label": "/sports/sports_team/location",
+      "key": "/sports/sports_team/location"
+    },
+    {
+      "label": "/sports/sports_team_location/teams",
+      "key": "/sports/sports_team_location/teams"
+    },
+    {
+      "label": "/time/event/locations",
+      "key": "/time/event/locations"
+    }
+  ]
+}

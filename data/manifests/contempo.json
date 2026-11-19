@@ -1,0 +1,116 @@
+{
+  "task": ["contempo/matres", "contempo/tbdense"],
+  "paper": {
+    "title": "ConTempo: A Unified Temporally Contrastive Framework for Temporal Relation Extraction",
+    "venue": "Findings of ACL 2024, pages 1521-1533",
+    "url": "https://aclanthology.org/2024.findings-acl.89/",
+    "pdf_sha256": "2409e361bb1c16d7f9e9377aba7807ede600889e6b65d6d70aad3653dac7f930",
+    "code": "Paper footnote 1 points to https://github.com/frankniujc/contempo (code + CleanMATRES). That URL returns 404 (checked 2026-09-26; Wayback captures of 2024-08-15 and 2024-08-16 are also 404; not in the author's 34 public repos). The paper's own input construction and CleanMATRES labels are therefore unavailable."
+  },
+  "sources": {
+    "matres_annotations": {
+      "url": "https://github.com/qiangning/MATRES",
+      "commit": "ccac302b546401a1e55f2bd6097913083b5cd8d6",
+      "file": "platinum.txt",
+      "sha256": "346be061630c01e8ac2624e16ed46b24506bf152334b0dee275ada7943d70daa",
+      "format": "docid, verb1, verb2, eiid1, eiid2, relation (TempEval-3 eiids)",
+      "licence": "No licence file or statement in the repository."
+    },
+    "te3_platinum_text": {
+      "url": "https://github.com/qiangning/StructTempRel-EMNLP17/tree/master/data/TempEval3/Evaluation/te3-platinum",
+      "commit": "d6518a5a79d940d749c95ee5b72830714b132238",
+      "note": "TempEval-3 (UzZaman et al., SemEval 2013) annotated English test data, 20 .tml docs. The official te3-platinumstandard.tar.gz (cs.york.ac.uk/semeval-2013/task1) now returns 410 and has no Wayback capture; this copy is the one the MATRES README links to (\"Update Jan 2022\").",
+      "licence": "No licence stated by TempEval-3 or the copy; source texts are 2013 AP/CNN/NYT/WSJ news articles (copyrighted)."
+    },
+    "timebank_text": {
+      "url": "https://www.cs.york.ac.uk/semeval-2013/task1/data/uploads/datasets/tbaq-2013-03.zip",
+      "retrieved_from": "http://web.archive.org/web/20170608170617id_/https://www.cs.york.ac.uk/semeval-2013/task1/data/uploads/datasets/tbaq-2013-03.zip (live URL returns 410)",
+      "sha256": "70b51fb6e4a83a1addac62f5bb938676aa063aaed83ab92ef54ee2a2de292ed7",
+      "used": "TBAQ-cleaned/TimeBank/*.tml for the 9 TB-Dense test docs (identical to the StructTempRel copy for these docs)",
+      "licence": "TimeBank 1.2 is an LDC corpus (LDC2006T08); TempEval-3 redistributed the cleaned version without stating a licence. Source texts are 1998 news wire (copyrighted)."
+    },
+    "tbdense_annotations": {
+      "url": "https://www.usna.edu/Users/cs/nchamber/caevo/TimebankDense.full.txt",
+      "retrieved_from": "http://web.archive.org/web/20170501060438id_/https://www.usna.edu/Users/cs/nchamber/caevo/TimebankDense.full.txt (live URL returns 404)",
+      "sha256": "f37a124b45ff7f43a4694caf3176a75f9ba1bd7714b777de4909dfd0142bf999",
+      "note": "Byte-identical to StructTempRel-EMNLP17/data/TempEval3/TimebankDense.full.txt. 12,715 relations over 36 docs (= Cassidy et al. 2014 Table 2). Codes: b, a, i, ii, s, v.",
+      "licence": "No licence stated."
+    },
+    "cross_checks_only": {
+      "rujunhan/TEDataProcessing@41d81ef19739bd70a98f2b8ee784d468e57f3361 TBDPairs.txt": "420e60a6bc69bd1408f53514e48b929ca65e1e75dbade284153f3db108554f56",
+      "rujunhan/EMNLP-2019@3a6291f6fd70d85fdc2571b1d7a17904edd1cec9 data/tbd/test.pickle": "1ed267c7e50a700745585af4e5a05ebe7b795c3656470a33f391b7dbe3fcf545",
+      "wenhycs/EMNLP2021-Utilizing-Relative-Event-Time... data/testset-temprel.xml (Ning et al. 2019 MATRES preprocessing)": "ea7913233b893d69003bc00ec600eb59c4ec7990753f7a5ebb180f941aec49ca"
+    },
+    "sentence_splitter": {
+      "package": "nltk==3.9.1 (uv run --with; not added to the project lockfile)",
+      "model": "punkt_tab english, downloaded by nltk.download('punkt_tab') into data/raw/contempo/nltk_data; punkt_tab.zip sha256 e57f64187974277726a3417ca6f181ec5403676c717672eef6a748a7b20e0106; per-file hashes in data/frozen/contempo/raw_sha256.json"
+    }
+  },
+  "frozen": {
+    "redistribution": "Not redistributed: source texts are copyrighted news with no redistribution licence. Included in the repository: ID + SHA-256 per built row (data/frozen/contempo/{matres,tbdense}_test_ids.jsonl) and SHA-256 of every raw input file (data/frozen/contempo/raw_sha256.json). Rows are rebuilt into data/raw/contempo/built/ (gitignored) by `uv run --with nltk==3.9.1 python scripts/prepare_contempo.py`; `items()` refuses rows whose hash differs.",
+    "builder": "scripts/prepare_contempo.py (--freeze writes manifests; default rebuilds and verifies)",
+    "row_fields": "id, doc_id, event1, event2 (trigger text), context (sentence(s) with <e1>..</e1>, <e2>..</e2>), sentence_distance, gold",
+    "matres": {
+      "path": "data/frozen/contempo/matres_test_ids.jsonl",
+      "id_format": "<docid>:ei<eiid1>:ei<eiid2>",
+      "n": 837,
+      "docs": 20,
+      "label_counts": {"BEFORE": 424, "AFTER": 269, "EQUAL": 31, "VAGUE": 113},
+      "sentence_distance": {"0": 253, "1": 582, "2": 2}
+    },
+    "tbdense": {
+      "path": "data/frozen/contempo/tbdense_test_ids.jsonl",
+      "id_format": "<docid>:<eid1>:<eid2>",
+      "n": 1427,
+      "docs": 9,
+      "test_docs": ["APW19980227.0489", "APW19980227.0494", "APW19980308.0201", "APW19980418.0210", "CNN19980126.1600.1104", "CNN19980213.2130.0155", "NYT19980402.0453", "PRI19980115.2000.0186", "PRI19980306.2000.1675"],
+      "label_counts": {"BEFORE": 384, "AFTER": 274, "INCLUDES": 56, "IS_INCLUDED": 53, "SIMULTANEOUS": 22, "VAGUE": 638},
+      "sentence_distance": {"0": 499, "1": 922, "2": 6}
+    }
+  },
+  "test_n_resolution": {
+    "matres": "837 = all rows of MATRES GitHub platinum.txt (20 Platinum docs); ConTempo Appendix C: 'Ning et al. (2018b) released a version on GitHub that contains 837 relations in the Platinum test set ... We use Ning et al.'s (2018b)'. Label counts 424/269/31/113 equal the column totals of ConTempo Table 5 (BEFORE 424, AFTER 269, EQUAL 31, VAGUE 113). The Ning et al. 2019 preprocessed file (used by Relative Time code) also has 837 pairs but a slightly different label distribution (427/271/30/109); the GitHub version is used, as in the paper.",
+    "tbdense": "1,427 = event-event pairs of TimebankDense.full.txt in the 9 standard test docs whose two events both exist in TempEval-3 TBAQ-cleaned TimeBank. The full file has 1,785 E-E test pairs (8,130 E-E overall); 358 test pairs (2,042 overall) involve event IDs added only by TB-Dense annotators (e.g. e2078) and are excluded by the standard split: the remaining 6,088 E-E pairs are exactly the 6,088 E-E rows of rujunhan/TEDataProcessing TBDPairs.txt, and the 1,427 test (id, label) pairs are set-identical to its test-doc E-E rows. Train/dev/test 4,032/629/1,427 and test labels (VAGUE 638, BEFORE 384, AFTER 274, INCLUDES 56, IS_INCLUDED 53, SIMULTANEOUS 22) match Han et al. 2019's released test.pickle exactly."
+  },
+  "input_construction": {
+    "rule": "Context = the sentences from the one containing the earlier event through the one containing the later event (MATRES and TB-Dense pairs lie in the same or adjacent sentences), whitespace-normalised, triggers wrapped in <e1>..</e1> / <e2>..</e2>. Event 1/2 order and gold direction as in the released annotation line. No DCT, no document beyond these sentences.",
+    "why": "ConTempo code unavailable. This is the standard sentence-level input of the baselines ConTempo reproduces (Ning et al. 2019 preprocessing used by Wen & Ji 2021 Relative Time; Han et al. 2019). The ConTempo unified framework additionally uses document-level GNN features and GPT-3 duration descriptions; Jev gets neither.",
+    "sentence_split": "TimeML TEXT split at line breaks, then NLTK Punkt within each line. Checked against Ning et al. 2019's MATRES preprocessing (wenhycs testset-temprel.xml, CogComp sentence splitter): all 837 pairs present; SENTDIFF agrees on 835/837; the 2 differences (nyt_20130321_cyprus ei10-ei13, ei10-ei15) come from Punkt splitting after 'G.D.P.', which only adds a sentence boundary inside an otherwise identical context. Same over-split after 'Sgt.' gives the 6 TB-Dense distance-2 pairs.",
+    "max_context_chars": 607,
+    "truncated": 0
+  },
+  "english_verification": {
+    "metadata": "TimeBank and TempEval-3 Platinum are English news (wire and broadcast transcripts); TempEval-3 separates English and Spanish tracks and these are the English files. The 4 APW test docs carry a LANG:ENGLISH wire profile; the CNN/NYT/PRI docs have no language field.",
+    "method": "All 2,264 built contexts checked: non-ASCII characters (0 contexts contain any); English function-word ratio per context (min 0.105); the lowest-ratio contexts inspected (all English, e.g. item CNN_20130322_1003:ei55:ei57).",
+    "rows_dropped": 0
+  },
+  "metric": {
+    "primary": "micro-F1 over non-VAGUE labels (VAGUE predictions never count as true positives; VAGUE gold never counts toward recall). Paper Section 4.1 (p. 1527): 'The VAGUE labels are computed into the F1s for both MATRES and TBD but are regarded as negative labels.' Applied to both tasks. Implemented as sklearn f1_score(labels=non-VAGUE labels, average='micro').",
+    "supplementary": "accuracy (= micro-F1 with VAGUE as an ordinary class), macro-F1 over all labels, per-class F1, confusion matrix"
+  },
+  "paper_results": {
+    "source": "ConTempo Table 3 (p. 1528), F1 x100; ConTempo rows are means over 3 seeds; * = reproduced by the ConTempo authors under their evaluation settings",
+    "columns": ["CleanMATRES", "MATRES", "TBD"],
+    "rows": {
+      "ConTempo + Unified Framework (proposed)": [92.66, 83.17, 68.56],
+      "ConTempo Baseline": [91.35, 82.01, 67.78],
+      "Endpoint Comparisons (Huang et al., 2023)": [null, 82.6, 68.1],
+      "TIMERS (Mathur et al., 2021)": [null, 82.3, 67.8],
+      "MulCo* (Yao et al., 2022)": [91.34, 82.08, 67.51],
+      "Relative Time* (Wen and Ji, 2021)": [89.61, 81.63, 66.81],
+      "SCS-EERE* (Man et al., 2022)": [91.25, 80.98, 65.92],
+      "Joint Constrained Learning (Wang et al., 2020)": [null, 78.8, null],
+      "LSTM (Cheng and Miyao, 2017)": [null, 73.4, 62.2],
+      "Fine-tuned GPT 3.5": [73.41, 55.27, 61.71],
+      "ChatGPT 4 (CoT)": [80.76, 56.70, 65.14],
+      "ChatGPT 4": [76.47, 41.64, 67.58],
+      "ChatGPT 3.5 (CoT)": [66.97, 35.54, 57.14],
+      "ChatGPT 3.5": [65.29, 25.94, 53.06]
+    }
+  },
+  "deviations": [
+    "CleanMATRES (paper's re-annotated MATRES test labels, Table 3 first column) is not evaluated: it was to be released at github.com/frankniujc/contempo, which does not exist publicly. Only original MATRES and TB-Dense are scored.",
+    "Paper's exact input pipeline unknown (code not released); standard sentence-window input used instead (see input_construction).",
+    "TB-Dense SIMULTANEOUS is named EQUAL in ConTempo Table 1; label renamed only, same class (data code 's')."
+  ]
+}

@@ -1,0 +1,40 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Contrastive criteria that name the nearest neighbour of each option and say which cases belong to it instead.
+version: 1
+labels:
+- implied_entailment
+- explicit_entailment
+- neutral
+- contradiction
+inputs:
+  premise: ''
+  hypothesis: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: Which relation holds between the `premise` (the passage) and the `hypothesis`?
+    state:
+    - premise
+    - hypothesis
+    options:
+      implied_entailment:
+        criterion: 'The `hypothesis` must be true if the `premise` is true, but the `premise` does not
+          state it in its own words, synonyms or a paraphrase. Getting to it needs an extra step: logical
+          reasoning, world knowledge, conversational pragmatics, or reading figurative language. If a
+          paraphrase or pronoun resolution alone is enough, choose explicit_entailment instead.'
+      explicit_entailment:
+        criterion: The `hypothesis` is stated in the `premise`. It follows from word meaning alone (same
+          words, synonyms, paraphrase) and sentence structure (resolving pronouns, bridging, other references
+          back to the text). If it needs reasoning, world knowledge, pragmatics or figurative reading,
+          choose implied_entailment instead.
+      neutral:
+        criterion: The `premise` neither supports nor contradicts the `hypothesis`. The `hypothesis` could
+          be true or false given the `premise`. If the `premise` rules the `hypothesis` out, choose contradiction
+          instead. If the `premise` makes it true, choose an entailment option instead.
+      contradiction:
+        criterion: 'The `premise` contradicts the `hypothesis`: if the `premise` is true, the `hypothesis`
+          is false. This covers contradictions that are stated directly and ones that need reasoning.
+          If the `premise` only fails to support the `hypothesis`, choose neutral instead.'

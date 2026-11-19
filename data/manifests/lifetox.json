@@ -1,0 +1,50 @@
+{
+  "task": "lifetox",
+  "paper": {
+    "title": "LifeTox: Unveiling Implicit Toxicity in Life Advice",
+    "venue": "NAACL 2024 (short), pages 688-698",
+    "url": "https://aclanthology.org/2024.naacl-short.60/",
+    "pdf_sha256": "4036525325599362d08a959c62f75776072fa8d2b51180109d329ae2ebea80ff"
+  },
+  "source": {
+    "hf_dataset": "mbkim/LifeTox",
+    "url": "https://huggingface.co/datasets/mbkim/LifeTox",
+    "hf_revision": "412ac6285d2047a99fe5fd17ac848a52d5da3bea",
+    "licence": "MIT (HF dataset card `license: mit`); redistribution of the frozen test file permitted",
+    "files": {
+      "LifeTox_test.jsonl": {"sha256": "d45a1495315ca34cbeb7d9dc3d3fce53e5fe28c15e5faf7b2735587b3d769d7e", "bytes": 2257799, "rows": 3000},
+      "LifeTox_train.jsonl": {"sha256": "028cb0d67d4244486d456ecc85d18fec5a6fd2a791ffad9eca2003810d794383", "bytes": 60934658, "rows": 84508},
+      "README.md": {"sha256": "ee87259f6a483271ef519a8be82f14469f89175d9bce976d7fac16c73d6b15b9"}
+    },
+    "fields": "query (post title + body), response (one comment), is_safe (bool), score (upvotes)"
+  },
+  "frozen": {
+    "path": "data/frozen/lifetox/test.jsonl",
+    "sha256": "26e190351660821a877b0f87c417898d85d941e7e07c858452dcc348ee4f7cd7",
+    "builder": "scripts/prepare_lifetox.py",
+    "fields": "id (lifetox-test-NNNN = 0-based line index), query, response (verbatim), gold (is_safe True->safe, False->unsafe), upvotes (release `score`; not sent to Jev)",
+    "n": 3000,
+    "label_counts": {"safe": 1500, "unsafe": 1500}
+  },
+  "test_n_resolution": "Test N = 3,000 (1,500 safe / 1,500 unsafe), from the released LifeTox_test.jsonl; matches paper Appendix A.2 (p. 696): 'resulting in a total of 3000 instances: 1500 from LPT and 1500 from ULPT'. Release total 87,508 = 84,508 train + 3,000 test vs paper 87,510; release safe = 64,760 + 1,500 = 66,260 (= paper), unsafe = 19,748 + 1,500 = 21,248 (paper 21,250). The two missing rows are therefore unsafe TRAIN rows; the test file is complete.",
+  "english_verification": {
+    "metadata": "HF card `language: en`; source is two English-language subreddits (r/LifeProTips, r/UnethicalLifeProTips).",
+    "method": "langid 1.1.6 (all languages) on every test query and response, plus non-ASCII character ratio > 5%; all 84 flagged fields inspected.",
+    "result": "All 84 flags are false positives on short English strings (e.g. 'Accutane.', 'Sunglasses', 'Deal drugs.'), bare URLs, emoji/emoticons ('ඞ' amogus meme, '( ͡° ͜ʖ ͡°)'), and one query 'cheating in algebra tests nan'. No non-English or code-mixed rows found; no rows dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "duplicate_query_response_pairs_in_test": 0,
+    "empty_fields": 0,
+    "distinct_test_queries": 1984,
+    "test_pairs_also_in_train": 20,
+    "test_queries_also_in_train": 2957,
+    "queries_with_release_nan_suffix": 709,
+    "max_field_chars": 8571,
+    "truncated_items": 0
+  },
+  "deviations": [
+    "None from the released test file. Inputs kept verbatim, including the literal ' nan' suffix on 709 queries whose post body was empty (a preprocessing artefact of the release that the paper's models also saw).",
+    "Train/test overlap (20 identical pairs; 2,957/3,000 test rows share a query with train) is a property of the release and irrelevant to zero-shot Jev; noted only because it favours the fine-tuned baseline."
+  ]
+}

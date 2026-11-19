@@ -1,0 +1,25 @@
+{
+  "_source": "Label names and definitions verbatim from the Re3-Sci annotation scheme, Ruan et al., 'Re3: A Holistic Framework and Dataset for Modeling Collaborative Document Revision', ACL 2024, Table 15 'Edit intent definitions' (p. 4655; https://aclanthology.org/2024.acl-long.255/), prefixed with the Surface/Semantic grouping from the same table and the short label glosses ('fix grammar', 'improve clarity', 'change factual information', 'change claim or statement') from Table 11. Instruction sentences 'Your task is to analyze the revision intent behind the difference between the two texts ... please answer with 'Other'.' and 'What is the intent of the revision?' are verbatim from the Re3 Llama2 system/task instruction, Table 11 (p. 4652), which the EMNLP 2024 paper (Ruan, Kuznetsov, Gurevych, https://aclanthology.org/2024.emnlp-main.839/, Appendix B p. 15062) reuses for its GPT-4 baselines. The statement that sentence additions/deletions 'typically pertain to improving factual content or claims, but are never intended for superficial language enhancement' is verbatim from Re3 Section 5 (p. 4639); the label restriction it motivates was verified on the released train/val splits only (0 of 3,398 train+val additions/deletions are Grammar or Clarity). No test examples and no guideline examples are included.",
+  "_primitive": "choice",
+  "_routing": "Items with both old and new sentence non-empty (edit_action 'Modify') use 'modify' (all five labels). Items with one side empty (edit_action 'Add' or 'Delete') use 'add_delete' (Fact/Evidence, Claim, Other).",
+  "modify": {
+    "type": "choice",
+    "instructions": "You will read two versions of a sentence from a scientific paper revision. The state holds one sentence-level edit: \"old_text\" is the sentence in the old version of the paper and \"new_text\" is the corresponding revised sentence in the new version (\"edit_action\" is \"Modify\"). Your task is to analyze the revision intent behind the difference between the two texts. The intent can be one of the following labels: fix grammar (Grammar), improve clarity (Clarity), change claim or statement (Claim), change factual information (Fact/Evidence). Grammar and Clarity are more about surface language improvements, while Fact/Evidence and Claim are more about meaning changes. If none of the above labels are relevant, please answer with 'Other'. Read the old and new texts. What is the intent of the revision?",
+    "criteria": {
+      "Grammar": "Surface, fix grammar (Grammar): Correct grammatical errors, capitalization, punctuation, tense, modality, spelling, typography, abbreviations or any errors related to grammar and/or conventions to improve the language.",
+      "Clarity": "Surface, improve clarity (Clarity): Alter word choice, phrase usage, expressions and/or text format to be more formal, concise and understandable without meaning changes, or to amplify meaning for clarity.",
+      "Fact/Evidence": "Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify or update the fact and/or evidence from third parties, or the author's factual manipulations and observations, or delete/modify erroneous/irrelevant ones.",
+      "Claim": "Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement, opinion, idea of the authors, or their overall aim of the document.",
+      "Other": "Other: Revise the text in a way that is irrelevant to any other type of edit intent."
+    }
+  },
+  "add_delete": {
+    "type": "choice",
+    "instructions": "You will read a sentence that was added to or deleted from a scientific paper during revision. The state holds one sentence-level edit: if \"edit_action\" is \"Add\", \"old_text\" is empty and \"new_text\" is the sentence added in the new version of the paper; if \"edit_action\" is \"Delete\", \"new_text\" is empty and \"old_text\" is the sentence removed from the old version. Your task is to analyze the revision intent behind the difference between the two texts. Additions and deletions of sentences typically pertain to improving factual content or claims, but are never intended for superficial language enhancement, so the intent is one of the following labels: change claim or statement (Claim), change factual information (Fact/Evidence). If none of the above labels are relevant, please answer with 'Other'. What is the intent of the revision?",
+    "criteria": {
+      "Fact/Evidence": "Semantic, change factual information (Fact/Evidence): Add, elaborate, extend, verify or update the fact and/or evidence from third parties, or the author's factual manipulations and observations, or delete/modify erroneous/irrelevant ones.",
+      "Claim": "Semantic, change claim or statement (Claim): Change/Add/Delete the claim, statement, opinion, idea of the authors, or their overall aim of the document.",
+      "Other": "Other: Revise the text in a way that is irrelevant to any other type of edit intent."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@task
+Label each sentence of a biomedical abstract with the role or roles it plays in the abstract, such as stating the
+background, the methods or the results.
+@output
+One or more of \{<<q:biorc800:labels|list>>\} per sentence.
+@example released training split (no licence stated), not a test item
+Previous & <<jl:data/raw/biorc800/LLM-SSC/data_llm/biorc800/train.jsonl:2.sentences.7|c90>>
+Sentence & <<jl:data/raw/biorc800/LLM-SSC/data_llm/biorc800/train.jsonl:2.sentences.8|c220>>
+Gold & <<jl:data/raw/biorc800/LLM-SSC/data_llm/biorc800/train.jsonl:2.labels.8|list>>
+@sets
+biorc800 = BIORC800 test | abstracts
+biorc800/dev = BIORC800 dev (threshold fit only, not scored against the paper) | abstracts | micro-F1

@@ -1,0 +1,48 @@
+{
+  "task": "dress_new",
+  "status": "FROZEN",
+  "paper": {
+    "title": "DREsS: Dataset for Rubric-based Essay Scoring on EFL Writing",
+    "venue": "ACL 2025 (long), pages 13439-13454",
+    "url": "https://aclanthology.org/2025.acl-long.659/",
+    "pdf": "https://aclanthology.org/2025.acl-long.659.pdf",
+    "pdf_sha256": "bf7f53bc26f5baedab34462c62327ff2386dd3d842a66a9bcc312884448e8aba"
+  },
+  "source": {
+    "project_page": "https://haneul-yoo.github.io/dress/",
+    "access": "Download section: 'Please submit the consent form. You will be redirected to the accessible link to DREsS.' Consent form: https://forms.gle/WCSzhyRkr4jgeeYS7 ('[DREsS] Consent Form') with required fields Name, Affiliation, Position, 'Please describe the purpose of data access and the data usage plan', and a required 'Agree' to: 'Please note that we do not allow personal sharing of this dataset; the granted users may only access the dataset.' Contact: haneul.yoo@kaist.ac.kr. The download link is not recorded here: each user must submit the consent form and accept its terms.",
+    "hf_or_github_mirror": "none official. GitHub search (DREsS essay scoring) and haneul-yoo's public repos (csicl, csrt, cucu, HUE) contain no DREsS code or data; HF dataset search 'dress' has no DREsS entry. The paper releases no split file or split code.",
+    "expected_files": "DREsS_New (2,279 rows), DREsS_Std., DREsS_CASE. Documented columns (project page): id (int), source (DREsS_Std. only), prompt (str), essay (str), score (float: content, organization, language, total). Loader accepts .tsv/.csv/.jsonl/.json whose filename contains 'dress_new' and columns id, prompt, essay, content, organization, language[, total].",
+    "revision": null,
+    "raw_sha256": null
+  },
+  "licence": "Paper datasheet E.4: 'The dataset will be distributed under the MIT license', but access requires the consent form, whose terms forbid personal sharing. Treated as non-redistributable: only an ID + row-SHA-256 manifest is frozen (data/frozen/dress_new/test_ids.jsonl); items() rebuilds essays and scores from data/raw/dress_new/.",
+  "split": {
+    "paper_statement": "Appendix A (p. 13451): 'We split DREsS_New into training, validation, and test sets in a 6:2:2 ratio with a random seed of 22.' DREsS_New is used exclusively for validation and test in Tables 3-5.",
+    "frozen_rule": "sklearn.model_selection.train_test_split(numpy.arange(n_rows), test_size=0.2, random_state=22) over all rows in released file order, with test rows sorted by file order. For n_rows=2279 this yields 456 test rows (ceil(0.2*2279)), verified offline.",
+    "caveat": "Reconstruction of an unreleased split; the authors' exact implementation (library, shuffling of a DataFrame vs. indices, any pre-sorting or filtering) is unknown, so test membership may differ from the paper's. The test N of 456 is the count implied by sklearn's ceil rule, not a number printed in the paper.",
+    "test_n_expected": 456,
+    "test_n_found": null
+  },
+  "english_only_verification": "Latin-script screen over prompt+essay of all test rows: 5 rows with <0.5% non-Latin letters (inspected: English essays with stray symbols); 0 dropped.",
+  "exclusions_frozen_a_priori": [
+    "test rows with an empty essay or any missing rubric score",
+    "test rows with > 5% non-Latin-script letters"
+  ],
+  "offline_validation": "Synthetic DREsS_New-format TSV with 2,279 rows: split gives 456 test rows; the injected Hangul row was dropped (455 frozen); 455 requests JSON-serialisable, max state 3,769 chars, question block 4,239 chars/request; gold-derived answers -> QWK 1.0 for all rubrics and total; constant answers -> QWK 0.0; uniform probabilities -> lowest level (tie-break); edited raw row -> sha256 mismatch error.",
+  "deviations": [
+    "Data are available only through the consent form and are not redistributed.",
+    "Exact paper test split not released; frozen seed-22 sklearn reconstruction used."
+  ],
+  "raw_sha256": {
+    "DREsS_New.tsv": "901c4b505cfd57b3ff4dace2926c0a02423a692cac335475311487162509d140"
+  },
+  "source_obtained": "Google Drive folder reached after submitting the consent form (folder link not recorded): DREsS_New.tsv, DREsS_Std.tsv, DREsS_CASE_*.tsv, README",
+  "test_n_found": {
+    "split_rows": 456,
+    "scored": 401,
+    "dropped_empty_essay": 55,
+    "release_rows": 2279,
+    "release_rows_with_empty_essay": 300
+  }
+}

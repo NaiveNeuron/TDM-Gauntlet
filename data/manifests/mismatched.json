@@ -1,0 +1,52 @@
+{
+  "task": "mismatched",
+  "paper": {
+    "title": "A MISMATCHED Benchmark for Scientific Natural Language Inference",
+    "authors": "Firoz Shaik, Mobashir Sadat, Nikita Gautam, Doina Caragea, Cornelia Caragea",
+    "venue": "Findings of ACL 2025, pages 21524-21538",
+    "url": "https://aclanthology.org/2025.findings-acl.1109/",
+    "pdf_sha256": "8b57f9466c3ed424b2d3fd897992d17f66ca1ce7adfafc40a2fd1efc1585b66b"
+  },
+  "source": {
+    "code_repo": "https://github.com/fshaik8/MisMatched @ 8d5037227c9d680a2282e2bdc41ec66ef382910e (2025-08-06)",
+    "data_url": "https://drive.google.com/file/d/15GSYcakchdRmKlNoWIigGbCoI7eQLAUR/view (README link; direct: https://drive.usercontent.google.com/download?id=15GSYcakchdRmKlNoWIigGbCoI7eQLAUR&export=download&confirm=t)",
+    "licence": "CC BY-SA 4.0 (repo README 'License' section: 'MisMatched is licensed with Attribution-ShareAlike 4.0 International'). Redistribution with attribution under the same licence is permitted, so the test rows are frozen as JSONL; data/frozen/mismatched/test.jsonl stays under CC BY-SA 4.0, attribution to Shaik et al. (2025).",
+    "zip": {"file": "data/raw/mismatched/mismatched.zip", "sha256": "82c558869b851506b3e85bd5cee86f2f78088babca0c006098db47b9b690494f", "bytes": 355330, "members": {"test.tsv": "2024-10-23 00:14", "dev.tsv": "2024-10-23 00:13"}},
+    "files": {
+      "test.tsv": {"sha256": "7b3e5e92e2e97018e7f7848c80c887da46ca7c0ae5ab8f274aa54c27cfb07366", "bytes": 948851, "rows": 2400},
+      "dev.tsv": {"sha256": "73a6302745e77c456056394d7d10f6328a999845f3328e86d1ada99d157402f3", "bytes": 118226, "rows": 300, "note": "not used (no thresholds or tuning)"}
+    },
+    "columns": "sample_ID_F (unique, 'test_<n>'), sentence1, sentence2, label (contrasting/reasoning/entailing/neutral), sample_ID (per-domain index; 10 values repeat across domains), Domain (Psychology/Engineering/Public Health), paper_id"
+  },
+  "frozen": {
+    "path": "data/frozen/mismatched/test.jsonl",
+    "sha256": "78428d91e6a7427aad16cab82d57fb5757752eda3fd69a365959d81fb2f45360",
+    "builder": "scripts/prepare_mismatched.py (downloads + verifies zip and test.tsv hashes; deterministic, re-run gives identical bytes)",
+    "fields": "id (mismatched-<sample_ID_F>), sample_ID_F, sample_ID, domain, paper_id, sentence1, sentence2 (verbatim), label_release (as released), gold (paper class name; 'entailing' -> 'entailment'). File order preserved. Parsed with csv.DictReader(delimiter='\\t'), verified field-for-field identical to the authors' pd.read_csv(sep='\\t') loading on all 2,400 rows.",
+    "n": 2400,
+    "counts": "200 per domain x class: Psychology/Engineering/Public Health 800 each; contrasting/reasoning/entailment/neutral 600 each",
+    "sent_to_jev": "{Sentence1, Sentence2}; domain, paper_id and ids are not sent (the paper's classifiers get only the two sentences)."
+  },
+  "prompt": {"path": "prompts/mismatched.json", "sha256": "069d1cad8166d9ee184ec52dbfc1f22b1471ee402a8d4fce8c8d6707e240f0fa"},
+  "test_n_resolution": "Test N = 2,400 = paper Table 2 (p. 21527: Test 2400; 800 per domain). Balanced 200 per domain x class, consistent with Section 3.2 'balanced over classes' and the Appendix F Table 16 confusion matrix (600 per true class). Dev 300 (100 per domain) also matches. Papers are disjoint between test and dev (0 shared paper_id; unique paper_id in test: Psychology 658, Engineering 705, Public Health 785). No duplicate (sentence1, sentence2) pairs within test or between test and dev.",
+  "metric_resolution": "Per-domain and overall macro-F1 over the four classes. 'Overall' is macro-F1 on the pooled 2,400 predictions (authors' MisMatched_Zero_Shot.py and Training_and_testing_utils_transformers.py: f1_score/precision_recall_fscore_support(average='macro') over all rows), not the mean of the domain scores; Table 8 per-class F1s (80.94/75.09/78.44/78.22) average to the reported overall 78.17, and our metric on the Table 16 SciBERT confusion matrix gives 77.92 (one of the three runs averaged in Table 4). Labels are fixed to the four classes (labels= argument) so a never-predicted class counts as F1 0.",
+  "english_verification": {
+    "metadata": "Paper Section 3.1 (p. 21526-21527): sources are Web of Science abstracts (Kowsari et al. 2017) for Psychology/Engineering and WoS/NLM/PubMed abstracts and full texts for Public Health; 'non-English and duplicate texts were removed' during pre-processing.",
+    "method": "langid 1.1.6 (all languages, normalised probabilities) on every sentence1 and sentence2 of the 2,400 test rows (4,800 texts), flagging non-'en' or P(en) < 0.9; census of every non-ASCII character; all flags inspected.",
+    "result": "6 flags (4 non-'en': de, it, la, ca; 2 low-confidence 'en'), all English scientific sentences: 'power generating units play crucial role.', 'WSMoL showed bacteriostatic and bactericidal activities against Escherichia coli and Salmonella enterica serovar Enteritidis.', a fragment listing Latin plant binomials ('f. nakaiana (Araki) H. Ohba, Punica granatum L., ...'), 'current models feature severe drawbacks.', 'An automotive 48V:7V application is considered.', 'solids size had little effect on PM disinfection.'. Non-ASCII characters: typographic dashes/quotes, minus sign, beta, fi/fl ligatures, and the Turkish place name 'Taşlıçiftlik' inside an English sentence. No non-English or code-mixed rows; no rows dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "max_sentence1_chars": 872,
+    "max_sentence2_chars": 750,
+    "max_request_json_chars": 2401,
+    "truncated_items": 0,
+    "empty_fields": 0,
+    "sentence2_lowercase_start": "2,379 of 2,400 (all classes alike: neutral 595, reasoning 598, contrasting 597, entailment 589), so letter case is not a label cue"
+  },
+  "deviations": [
+    "None from the released test split: all 2,400 pairs, verbatim text, released gold labels (label 'entailing' renamed to the paper's 'entailment').",
+    "Replaced predictors are fine-tuned on SciNLI/MSciNLI training sets (out-of-domain); Jev is zero-shot with no training data, which matches the paper's zero-shot LLM setting.",
+    "Prompt: instruction and option texts verbatim from the authors' zero-shot prompt (code wording of the Phi-3/Llama-3 prompt, which fixes Table 3's 'made Sentence2' typo); each option is additionally annotated with its class name and the Table 11 linking phrases that define the class under distant supervision, and the instruction states (Section 3.2 / Table 1 caption) that a leading linking phrase was deleted from Sentence2. No exemplars."
+  ]
+}

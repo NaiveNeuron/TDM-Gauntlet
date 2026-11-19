@@ -1,0 +1,11 @@
+@task
+Given one sentence from an old draft of a scientific paper and its revised version (one side is empty when a
+sentence was added or deleted), decide why the authors made the edit.
+@output
+One label per edit from \{<<q:edit_intent:modify.criteria|keys>>\}.
+@example frozen test set (CC-BY-NC 4.0, item \texttt{<<jl:data/frozen/edit_intent/test.jsonl:2159.id>>})
+Old & <<jl:data/frozen/edit_intent/test.jsonl:2159.old_text|c220>>
+New & <<jl:data/frozen/edit_intent/test.jsonl:2159.new_text|c220>>
+Gold & <<jl:data/frozen/edit_intent/test.jsonl:2159.gold>>
+@sets
+edit_intent = Re3-Sci test | edits

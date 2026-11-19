@@ -1,0 +1,74 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Minimal one-sentence criteria naming the central object studied, so each option is a single literal condition.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: choice
+    instructions: What is the central object of study in `abstract`? Choose the Semantic Scholar field
+      it belongs to.
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: The central object is an engineered device, structure or technical process.
+      Chemistry:
+        criterion: The central object is a chemical substance or reaction.
+      Computer Science:
+        criterion: The central object is a computational method, software or computer system.
+      Business:
+        criterion: The central object is a firm or its management.
+      Political Science:
+        criterion: The central object is government, politics or policy.
+      Environmental Science:
+        criterion: The central object is the natural environment and human impact on it.
+      Physics:
+        criterion: The central object is a physical law or phenomenon.
+      Economics:
+        criterion: The central object is an economy, market or economic behavior.
+      Geography:
+        criterion: The central object is a place or spatial pattern on Earth.
+      Medicine:
+        criterion: The central object is human health, disease or clinical care.
+      Psychology:
+        criterion: The central object is individual mind or behavior.
+      Art:
+        criterion: The central object is an artwork or creative practice.
+      Materials Science:
+        criterion: The central object is a material and its properties.
+      Mathematics:
+        criterion: The central object is a mathematical structure or proof.
+      Sociology:
+        criterion: The central object is society or social groups.
+      Geology:
+        criterion: The central object is the solid Earth, its rocks or its processes.
+      Philosophy:
+        criterion: The central object is a conceptual or philosophical argument.
+      Biology:
+        criterion: The central object is a living organism or a biological mechanism.
+      History:
+        criterion: The central object is the past and its events.

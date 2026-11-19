@@ -1,0 +1,16 @@
+{
+  "_source": "Nghiem & Daume, SMARTER: A Data-efficient Framework to Improve Toxicity Detection with Explanation via Self-augmenting Large Language Models, ACL 2026 (long), https://aclanthology.org/2026.acl-long.1584/. Instruction sentence verbatim from Figure 6 (p. 34324, the paper's classification prompt without explanation; the repo's CLS_PROMPT_NO_EXP in Code/utils/prompt_templates.py @3489b7e), with {categories} filled as the repo's format_label_block does (labels joined by ', ' in Table 4 order); the 'Provide your response in the following format' line is dropped because Jev answers in a typed choice. Label names from Table 4 (p. 34320). Criteria quote the Table 10 definitions (p. 34328, 'collected from their original publications') verbatim, prefixed by the Table 10 category name; only PDF line-break hyphenation and typographic quotes are normalised. The state sentences are ours: the first describes Appendix B preprocessing; the second states the task population (Section 4.1: the fine-grained labels are assigned to the Implicit Hate category's tweets) using the Table 10 Implicit Hate definition. Table 10 orders the six categories differently from Table 4; Table 4 order is used for the label list.",
+  "_primitive": "choice",
+  "question": {
+    "type": "choice",
+    "instructions": "By considering their corresponding Definitions, label the following post with only one of these categories: White Grievance, Incitement to Violence, Inferiority Language, Irony, Stereotypes and Misinformation, Threatening and Intimidation. The state holds one social media post (\"post\"); user mentions are replaced by <user> and URLs are removed. Every post in this task was annotated as implicit hate (coded or indirect language that disparages a person or group on the basis of protected characteristics); the label is its fine-grained implicit hate category.",
+    "criteria": {
+      "White Grievance": "White Grievance: includes frustration over a minority groups' perceived privilege and casting majority groups as the real victims of racism. This language is linked to extremist behavior and support for violence.",
+      "Incitement to Violence": "Incitement to Violence: includes flaunting in group unity and power or elevating known hate groups and ideologies",
+      "Inferiority Language": "Inferiority Language: implies one group or individual is inferior to another, and it can include dehumanization, denial of a person's humanity, and toxic language that compares the target with disease, insects, animals. Related to assaults on human dignity, dominance, and declarations of superiority of the in group.",
+      "Irony": "Irony: refers to the use of sarcasm , humor, and satire to attack or demean a protected class or individual.",
+      "Stereotypes and Misinformation": "Stereotypes And Misinformation: associate a protected class with negative attributes such as crime, or terrorism. includes misinformation that feeds stereotypes and vice versa, like Holocaust denial and other forms of historical negationism.",
+      "Threatening and Intimidation": "Threatening And Intimidation: conveys a speaker's commitment to a target's pain, injury, damage, loss or violation of rights, threats related to implicit violation of rights and freedoms, removal of opportunities, and more subtle forms of intimidation."
+    }
+  }
+}

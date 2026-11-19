@@ -1,0 +1,65 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Single score whose nine levels each describe an observable language situation (error frequency and effect on meaning, vocabulary range), anchored to the rubric wording at 1.0, 3.0 and 5.0.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: score
+    instructions: Rate only the language of the `essay` (vocabulary and collocations, grammar and usage,
+      spelling and punctuation). The `essay` is a 40-minute timed argumentative essay by an undergraduate
+      English-as-a-foreign-language student, answering `essay_prompt`. Ignore content and organization.
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - 'Does not meet the language rubric: errors in grammar, word choice, spelling or punctuation are
+      in most sentences and often make meaning unclear; vocabulary is very basic and repetitive.'
+    - Errors are in most sentences and sometimes make meaning unclear; vocabulary is basic, with frequent
+      wrong word forms or collocations.
+    - Errors are frequent and a few sentences are hard to understand; vocabulary is limited and repetitive,
+      with several unnatural collocations.
+    - Errors are frequent but meaning is usually recoverable; vocabulary is simple, with some unnatural
+      collocations.
+    - 'Partly meets the language rubric: some sentences are correct and others have errors; errors rarely
+      block understanding; vocabulary is adequate but plain.'
+    - Most sentences are correct; recurring errors of one or two kinds remain; vocabulary is adequate,
+      with occasional varied words or collocations.
+    - Errors are occasional and never block understanding; vocabulary is varied, with mostly natural collocations.
+    - Only a few small slips in grammar, spelling or punctuation; vocabulary is wide and collocations
+      are natural and precise.
+    - 'Fully meets the rubric: sophisticated control of a wide range of vocabulary and collocations; grammar
+      and usage rules followed throughout; spelling and punctuation correct throughout.'
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

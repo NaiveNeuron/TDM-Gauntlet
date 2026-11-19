@@ -1,0 +1,71 @@
+{
+  "task": "smarter-hatexplain",
+  "task_path": "jev-opt/experiments/smarter_hatexplain/task_v3.yaml",
+  "kinds": {
+    "jev-native": {
+      "files": [
+        {
+          "file": "jev-native-1.yaml",
+          "rationale": "Contrastive criteria that state what separates each label from its nearest neighbour, with the group-target test as the Hate/Offensive boundary.",
+          "digest": "8f88bdc13f474300",
+          "nodes": {
+            "label": "choice"
+          }
+        },
+        {
+          "file": "jev-native-2.yaml",
+          "rationale": "Question framed around the target of the language, with criteria stated as observable properties of `post`.",
+          "digest": "ff1e12d9cf20e97b",
+          "nodes": {
+            "label": "choice"
+          }
+        },
+        {
+          "file": "jev-native-3.yaml",
+          "rationale": "Minimal literal phrasing that keeps the paper's definitions and adds only boundary rules between neighbouring labels.",
+          "digest": "93bade97dbb9016e",
+          "nodes": {
+            "label": "choice"
+          }
+        }
+      ],
+      "rejected": []
+    },
+    "decomposed": {
+      "files": [
+        {
+          "file": "decomposed-1.yaml",
+          "rationale": "Coarse-to-fine hierarchy; first decide whether the post is clean or abusive, then split abusive posts by whether the target is a group defined by a protected trait.",
+          "digest": "b4ec801e6ff43685",
+          "nodes": {
+            "label": "choice",
+            "label_target": "choice"
+          }
+        },
+        {
+          "file": "decomposed-2.yaml",
+          "rationale": "One-vs-rest; each label is judged as an independent true/false statement with contrastive boundaries.",
+          "digest": "1591e4889e324a90",
+          "nodes": {
+            "label": "one_vs_rest"
+          }
+        },
+        {
+          "file": "decomposed-3.yaml",
+          "rationale": "Branch nouls; first ask about a group attack (hate), then ask about offensive language among the rest.",
+          "digest": "11b7dbbb9bcf57aa",
+          "nodes": {
+            "label": "branch",
+            "label_offensive": "branch"
+          }
+        }
+      ],
+      "rejected": []
+    }
+  },
+  "writer_input": "task/label definitions and the paper seed program; no data examples, no gold labels",
+  "optimizer_models_seen": [
+    "anthropic/claude-opus-5-5"
+  ],
+  "optimizer_cost": 0.083084
+}

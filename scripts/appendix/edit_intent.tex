@@ -1,0 +1,36 @@
+\paragraph{Task.} One sentence-level edit from a Re3-Sci scientific paper revision (old and new sentence, one side
+empty for additions/deletions) is labelled Grammar, Clarity, Fact/Evidence, Claim or Other. Replaced predictor: the
+paper's fine-tuned SeqC LLM classifiers. \jev{} chooses the intent.
+
+\paragraph{Data and test set.} \texttt{test.csv} from \texttt{<<m:edit_intent:source.repo>>} at
+<<m:edit_intent:source.commit|commit>> (CC-BY-NC 4.0), frozen as JSONL by \texttt{scripts/\allowbreak{}prepare\_edit\_intent.py} (SHA-256
+<<m:edit_intent:frozen.sha256|sha>>). $N=$ <<s:edit_intent:n|int>>, the paper's exact document-disjoint test split
+(by action: <<m:edit_intent:frozen.action_counts|counts>>). English screen (langid, script scan, review of
+flags): <<m:edit_intent:english_verification.rows_dropped|int>> rows dropped.
+
+\paragraph{Prompt.} One \textsc{choice} per edit. State = \{edit\_action, old\_text, new\_text\}, the paper's
+text-only input. Label definitions verbatim from Re3 Table~15, instruction from Re3 Table~11. Modify edits get all
+five labels. Additions/deletions get \{Fact/Evidence, Claim, Other\}, fixed a priori from the edit type (Re3 \S5:
+such edits are never surface edits). Argmax, ties to the alphabetically first label, <<s:edit_intent:n_truncated|int>>
+truncated.
+
+\paragraph{Metric.} Macro-F1 and accuracy over all five labels on all edits (paper Table~2).
+
+<<metrics
+cols: edit_intent=Test
+macro_f1 = Macro-F1 | pct
+accuracy = Accuracy | pct
+per_class_f1.Grammar = F1 Grammar | pct
+per_class_f1.Clarity = F1 Clarity | pct
+per_class_f1.Fact/Evidence = F1 Fact/Evid. | pct
+per_class_f1.Claim = F1 Claim | pct
+per_class_f1.Other = F1 Other | pct
+---
+by_action.modify.macro_f1 = Modify macro-F1 | pct
+by_action.add_delete.macro_f1 = Add/Del.\ macro-F1 | pct
+>>
+<<papernums:edit_intent=Test>>
+
+\paragraph{Deviations and status.} Complete. The only protocol change is the three-label question for
+additions/deletions. No test addition or deletion carries Grammar or Clarity, and scoring still uses all five labels.
+The paper's models are fine-tuned on the training split. \jev{} is zero-shot.

@@ -1,0 +1,35 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest; each label is judged as an independent true/false statement with contrastive boundaries.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: one_vs_rest
+    instructions: Judge the social media post in `post` (lowercased and tokenised, with placeholders such
+      as <user> and <number>).
+    state:
+    - post
+    options:
+      Normal:
+        criterion: The `post` contains no rude, hurtful, derogatory, obscene or insulting language, and
+          it does not attack, demean or threaten any person or group based on race, ethnic origin, religion,
+          disability, gender, age, sexual orientation or another trait.
+      Offensive:
+        criterion: The `post` uses rude, hurtful, derogatory, obscene or insulting language to upset or
+          embarrass people, but it does not attack a group based on race, ethnic origin, religion, disability,
+          gender, age, sexual orientation or another trait.
+      Hate:
+        criterion: In context, the `post` attacks, demeans, offends, threatens or insults a group based
+          on race, ethnic origin, religion, disability, gender, age, sexual orientation or another trait.
+          The presence of a word alone does not make this true; how the word is used decides it.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

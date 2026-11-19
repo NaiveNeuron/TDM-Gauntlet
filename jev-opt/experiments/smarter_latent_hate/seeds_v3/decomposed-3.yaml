@@ -1,0 +1,33 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest; one independent true/false statement per label about `post`, and the most probable statement wins.
+version: 1
+labels:
+- Not Hate
+- Explicit Hate
+- Implicit Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: one_vs_rest
+    instructions: Judge the statement about the Twitter post in `post`. User mentions are replaced by
+      <user> and URLs are removed.
+    state:
+    - post
+    options:
+      Not Hate:
+        criterion: '`post` involves no hatred, prejudice or discrimination toward individuals or groups
+          based on their characteristics, neither openly nor in coded or indirect form.'
+      Explicit Hate:
+        criterion: '`post` openly and directly expresses hatred or prejudice toward individuals or groups
+          based on their characteristics.'
+      Implicit Hate:
+        criterion: '`post` disparages a person or group on the basis of protected characteristics like
+          race, gender or cultural identity using coded or indirect language rather than open, direct
+          hatred.'
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

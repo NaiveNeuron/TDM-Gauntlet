@@ -1,0 +1,66 @@
+# jev-zero seed = the gauntlet's frozen prompt (prompts/dress_new.json), verbatim; generated, do not hand-edit.
+# One Score (question id `organization`, the gauntlet's organization question) over state {essay_prompt, essay}; the gauntlet asks all three rubrics in one request. cutoffs round the expected level (fitted on train in every condition).
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: false
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: score
+    instructions: 'Please score the essay on the rubric ORGANIZATION. The state holds an essay prompt
+      ("essay_prompt") and an argumentative essay written in response to it ("essay") by an undergraduate
+      English-as-a-foreign-language student during a 40-minute timed in-class writing test; the course
+      instructor scores each essay on three rubrics (content, organization, and language) from 1.0 to
+      5.0 in increments of 0.5. The float values of scores are within [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
+      4.5, 5.0]. Rubric explanation for organization: "The argument is very effectively structured and
+      developed, making it easy for the reader to follow the ideas and understand how the writer is building
+      the argument. Paragraphs use coherence devices effectively while focusing on a single main idea."
+      Score only the organization rubric: how fully the essay meets this explanation. Content and language
+      are scored separately.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - '1.0 out of 5.0 (lowest score): the essay does not meet the organization rubric explanation.'
+    - 1.5 out of 5.0
+    - 2.0 out of 5.0
+    - 2.5 out of 5.0
+    - '3.0 out of 5.0 (midpoint): the essay partly meets the organization rubric explanation.'
+    - 3.5 out of 5.0
+    - 4.0 out of 5.0
+    - 4.5 out of 5.0
+    - '5.0 out of 5.0 (highest score): The argument is very effectively structured and developed, making
+      it easy for the reader to follow the ideas and understand how the writer is building the argument.
+      Paragraphs use coherence devices effectively while focusing on a single main idea.'
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5
+    - 4.5
+    - 5.5
+    - 6.5
+    - 7.5

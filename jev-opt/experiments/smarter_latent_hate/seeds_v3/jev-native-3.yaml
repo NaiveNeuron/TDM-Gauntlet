@@ -1,0 +1,34 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Framing by observable features in the text (target present? hostility literal or implied?), with each option stating what it excludes.
+version: 1
+labels:
+- Not Hate
+- Explicit Hate
+- Implicit Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Does the Twitter post in `post` target people because of a characteristic such as race,
+      gender, religion or cultural identity? If it does, is the hostility stated openly or only implied?
+      In `post`, user mentions appear as <user> and URLs are removed.
+    state:
+    - post
+    options:
+      Not Hate:
+        criterion: The `post` contains no hatred, prejudice or discrimination toward people because of
+          a characteristic. Neutral, positive or critical posts belong here, as do posts that quote or
+          condemn hate, as long as they do not themselves disparage a group.
+      Explicit Hate:
+        criterion: The `post` itself directly and openly expresses hatred or prejudice toward people because
+          of a characteristic, using plainly hostile words aimed at them. A post whose hostility depends
+          on hints, code words or stereotypes is not explicit.
+      Implicit Hate:
+        criterion: The `post` disparages people because of a protected characteristic such as race, gender
+          or cultural identity, but does so indirectly. Examples of indirect means are coded terms, insinuations,
+          stereotypes, irony, or framing a group as a threat or as inferior without openly hateful words.
+          A post with plainly hostile words aimed at the group is explicit, not implicit.

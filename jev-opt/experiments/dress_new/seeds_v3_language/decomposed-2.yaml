@@ -1,0 +1,84 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; choose a band (low, middle, high) by error impact, then a fine choice inside that band with contrastive criteria.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: language
+nodes:
+  language:
+    kind: choice
+    instructions: Which band describes the language (vocabulary, grammar, spelling, punctuation) of the
+      `essay`, a timed EFL essay answering `essay_prompt`? Ignore content and organization.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      low:
+        criterion: Errors are in most sentences and sometimes block understanding; vocabulary is basic.
+          Belongs to middle instead if meaning is almost always clear despite errors.
+        to:
+          node: language_low
+      middle:
+        criterion: Meaning is almost always clear, but errors are noticeable and repeated; vocabulary
+          is adequate but plain. Belongs to high instead if errors are only occasional and vocabulary
+          is varied.
+        to:
+          node: language_mid
+      high:
+        criterion: Errors are occasional or absent and never block understanding; vocabulary is varied,
+          with natural collocations.
+        to:
+          node: language_high
+  language_low:
+    kind: choice
+    instructions: How badly do language errors in the `essay` affect understanding?
+    state:
+    - essay
+    options:
+      '1.0':
+        criterion: Meaning is often unclear; almost no sentence is error-free; vocabulary is very basic.
+      '1.5':
+        criterion: Meaning is unclear in many sentences but some passages are clear; vocabulary is basic.
+      '2.0':
+        criterion: Meaning is unclear in only a few sentences; most sentences still have errors; vocabulary
+          is limited.
+  language_mid:
+    kind: choice
+    instructions: How frequent are language errors in the `essay`, and how varied is its vocabulary?
+    state:
+    - essay
+    options:
+      '2.5':
+        criterion: Errors are in most sentences, though meaning is recoverable; vocabulary is simple and
+          repetitive.
+      '3.0':
+        criterion: Roughly as many sentences are correct as have errors; vocabulary is adequate but plain.
+      '3.5':
+        criterion: Most sentences are correct; a few error types recur; some varied vocabulary.
+  language_high:
+    kind: choice
+    instructions: How close is the language of the `essay` to error-free, sophisticated use?
+    state:
+    - essay
+    options:
+      '4.0':
+        criterion: Occasional errors in grammar, spelling or punctuation; vocabulary is varied but mostly
+          common.
+      '4.5':
+        criterion: Only a few small slips; vocabulary is wide and collocations are natural.
+      '5.0':
+        criterion: Grammar, usage, spelling and punctuation correct throughout; sophisticated, wide-ranging
+          vocabulary and collocations.

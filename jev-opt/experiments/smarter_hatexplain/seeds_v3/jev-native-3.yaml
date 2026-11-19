@@ -1,0 +1,29 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Minimal literal phrasing that keeps the paper's definitions and adds only boundary rules between neighbouring labels.
+version: 1
+labels:
+- Normal
+- Offensive
+- Hate
+inputs:
+  post: ''
+shared_state: true
+temperature: 1.0
+root: label
+nodes:
+  label:
+    kind: choice
+    instructions: Label the post in `post` as Normal, Offensive or Hate.
+    state:
+    - post
+    options:
+      Normal:
+        criterion: '`post` is neither hate speech nor offensive language.'
+      Offensive:
+        criterion: '`post` uses rude, hurtful, derogatory, obscene or insulting language to upset or embarrass
+          people, and it does not target a group based on race, ethnic origin, religion, disability, gender,
+          age, sexual orientation or other traits.'
+      Hate:
+        criterion: '`post` uses language that attacks, demeans, offends, threatens or insults a group
+          based on race, ethnic origin, religion, disability, gender, age, sexual orientation or other
+          traits. The context in which words are used decides, not the presence of certain words.'

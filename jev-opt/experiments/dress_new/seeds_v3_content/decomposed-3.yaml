@@ -1,0 +1,84 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Branch noul on reaching the midpoint, then separate ordered scores for the lower half and the upper half.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: content
+nodes:
+  content:
+    kind: branch
+    condition: The `essay` takes a position relevant to `essay_prompt` and supports it with at least some
+      reasons that are explained, not only stated.
+    state:
+    - essay_prompt
+    - essay
+    if_true:
+      node: content_upper
+    if_false:
+      node: content_lower
+    threshold: 0.5
+  content_lower:
+    kind: score
+    instructions: 'Rate the content of `essay` as a response to `essay_prompt`: its relevance and the
+      support it gives for its argument. Ignore organization and language.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - 'The essay does not meet the content rubric: it is off-topic, has no position, or has almost no
+      content.'
+    - The essay is on topic with a vague opinion and at most one undeveloped reason.
+    - The essay has a clear position, but its reasons are only bare assertions without examples.
+    - The essay has a clear position with one or two briefly explained reasons and vague or no examples.
+    outcomes:
+    - label: '1.0'
+    - label: '1.5'
+    - label: '2.0'
+    - label: '2.5'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+  content_upper:
+    kind: score
+    instructions: 'Rate the content of `essay` as a response to `essay_prompt`: how well-developed and
+      relevant its paragraphs are, and how strong its reasons and examples are. Ignore organization and
+      language.'
+    state:
+    - essay_prompt
+    - essay
+    levels:
+    - 'The essay partly meets the content rubric: its reasons are relevant but shallowly developed, and
+      its examples are generic or missing for most reasons.'
+    - Most reasons in the essay are explained, and at least one has a concrete example, but some paragraphs
+      stay shallow.
+    - The essay is relevant throughout, and most reasons have explanation and a concrete example, with
+      minor gaps in depth.
+    - The essay is well-developed, with strong reasons and specific examples. At most one point is slightly
+      less supported.
+    - Every paragraph is well-developed and relevant to the argument, supported with strong reasons and
+      specific, convincing examples.
+    outcomes:
+    - label: '3.0'
+    - label: '3.5'
+    - label: '4.0'
+    - label: '4.5'
+    - label: '5.0'
+    cutoffs:
+    - 0.5
+    - 1.5
+    - 2.5
+    - 3.5

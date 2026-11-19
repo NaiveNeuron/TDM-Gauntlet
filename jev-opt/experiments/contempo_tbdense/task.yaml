@@ -1,0 +1,39 @@
+# ConTempo TB-Dense (Niu et al., Findings ACL 2024): temporal relation of Event 1 to Event 2.
+# Data: `uv run jev-opt/experiments/contempo_tbdense/prepare.py` (see ../README.md).
+# Metric: paper/gauntlet micro-F1 with VAGUE as the negative label (negative_label).
+name: contempo-tbdense
+labels:   # descriptions: the gauntlet prompt's criteria (prompts/contempo_tbdense.json)
+  "BEFORE": "BEFORE: Event 1 happens before Event 2; Event 1 ends before Event 2 begins (including immediately before)."
+  "AFTER": "AFTER: Event 1 happens after Event 2; Event 1 begins after Event 2 ends (including immediately after)."
+  "INCLUDES": "INCLUDES: the time interval of Event 1 contains the time interval of Event 2; Event 2 happens during Event 1 (including Event 2 starting or ending Event 1)."
+  "IS_INCLUDED": "IS_INCLUDED: the time interval of Event 1 is contained in the time interval of Event 2; Event 1 happens during Event 2 (including Event 1 starting or ending Event 2)."
+  "SIMULTANEOUS": "SIMULTANEOUS: Event 1 and Event 2 occupy the same time interval; they happen at the same time."
+  "VAGUE": "VAGUE: no specific relation above can be chosen with 80% confidence that it was the writer's intent that a reader infer it; the text leaves the temporal relation between the two events underspecified."
+inputs:   # empty descriptions: the seed instructions describe the state, as in the gauntlet prompt
+  context: ""
+  event_1: ""
+  event_2: ""
+negative_label: VAGUE
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: micro_f1
+objectives: [quality, calibration, cheap, tokens]
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 16
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 8900   # ~14.1 full-val equivalents (val n=629) per optimizing condition
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive: [64, 256]
+  fit_examples: 64
+  calibrate: true
+seed_program: seed.yaml

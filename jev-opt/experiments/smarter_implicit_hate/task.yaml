@@ -1,0 +1,35 @@
+# SMARTER implicit hate (Nghiem & Daume, ACL 2026): six fine-grained implicit-hate categories.
+# Data: `uv run jev-opt/experiments/smarter_implicit_hate/prepare.py` (see ../README.md). Metric: macro-F1.
+name: smarter-implicit-hate
+labels:   # descriptions: the gauntlet prompt's criteria (prompts/smarter_implicit_hate.json)
+  "White Grievance": "White Grievance: includes frustration over a minority groups' perceived privilege and casting majority groups as the real victims of racism. This language is linked to extremist behavior and support for violence."
+  "Incitement to Violence": "Incitement to Violence: includes flaunting in group unity and power or elevating known hate groups and ideologies"
+  "Inferiority Language": "Inferiority Language: implies one group or individual is inferior to another, and it can include dehumanization, denial of a person's humanity, and toxic language that compares the target with disease, insects, animals. Related to assaults on human dignity, dominance, and declarations of superiority of the in group."
+  "Irony": "Irony: refers to the use of sarcasm , humor, and satire to attack or demean a protected class or individual."
+  "Stereotypes and Misinformation": "Stereotypes And Misinformation: associate a protected class with negative attributes such as crime, or terrorism. includes misinformation that feeds stereotypes and vice versa, like Holocaust denial and other forms of historical negationism."
+  "Threatening and Intimidation": "Threatening And Intimidation: conveys a speaker's commitment to a target's pain, injury, damage, loss or violation of rights, threats related to implicit violation of rights and freedoms, removal of opportunities, and more subtle forms of intimidation."
+inputs:   # empty descriptions: the seed instructions describe the state, as in the gauntlet prompt
+  post: ""
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: macro_f1
+objectives: [quality, calibration, cheap, tokens]
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 16
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 14000   # ~14.0 full-val equivalents (val n=1000) per optimizing condition
+  reflection_minibatch_size: 3
+  use_merge: true
+  seed: 0
+  progressive: [64, 256]
+  fit_examples: 64
+  calibrate: true
+seed_program: seed.yaml

@@ -1,0 +1,92 @@
+{
+  "task": ["nav_unknown/clinc150", "nav_unknown/banking77"],
+  "paper": {
+    "title": "Navigating the Unknown: Intent Classification and Out-of-Distribution Detection Using Large Language Models",
+    "authors": "Yusuf Sali, Sitki Can Toraman",
+    "venue": "Findings of EMNLP 2025, pages 14652-14664",
+    "url": "https://aclanthology.org/2025.findings-emnlp.791/",
+    "pdf_sha256": "d71b9decc1f145e5650dddeea5558003aa793bab91c0af0ac2ca5f485923feb2",
+    "code": "None released: the Anthology page lists no code/software attachment, the PDF has no repository link, and GitHub/web searches (2026-09-26) found none."
+  },
+  "source": {
+    "clinc150": {
+      "repo": "https://github.com/clinc/oos-eval",
+      "commit": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+      "licence": "CC BY 3.0 Unported (repo LICENSE); redistribution permitted with attribution",
+      "files": {
+        "data/data_full.json": {"sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0", "test": 4500, "train": 15000, "val": 3000, "oos_test": 1000}
+      },
+      "note": "Release train = 15,000 = paper Table 1. The 1,000 `oos_test` (far-OOD) queries are not used: Table 1 counts 150 intents / 1,500 test utterances; OOD comes from held-out intents."
+    },
+    "banking77": {
+      "repo": "https://github.com/PolyAI-LDN/task-specific-datasets",
+      "commit": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+      "licence": "CC BY 4.0 (repo LICENSE); redistribution permitted with attribution",
+      "files": {
+        "banking_data/test.csv": {"sha256": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d", "rows": 3080},
+        "banking_data/train.csv": {"sha256": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b", "rows": 10003},
+        "banking_data/categories.json": {"sha256": "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63"}
+      },
+      "note": "Release train = 10,003 = paper Table 1 (train is not used: zero-shot)."
+    },
+    "excluded": "DSTC Finance (not selected for this benchmark) and the in-house BIT3 sets (not public)."
+  },
+  "frozen": {
+    "builder": "scripts/prepare_nav_unknown.py (deterministic; byte-identical on rerun)",
+    "clinc150": {"path": "data/frozen/nav_unknown/clinc150.jsonl", "sha256": "596ba0ec1d833000002bde284668b8b8de2b1262141ad43811d4d676b03ca6f3", "n": 1500, "intents": 150, "per_intent": 10},
+    "banking77": {"path": "data/frozen/nav_unknown/banking77.jsonl", "sha256": "e3a062eb96bc94d254a66023fa73e50700d601a8f6fd595d9488d9d057f53ff0", "n": 770, "intents": 77, "per_intent": 10},
+    "splits": {"path": "data/frozen/nav_unknown/splits.json", "sha256": "3e158426eee92613e87a1428c36830de225c5539311008113b9065abaaa5d416"},
+    "fields": "id (<dataset>-test-NNNN = 0-based index in the release test list), text (verbatim), intent (release label)",
+    "selection": "First 10 utterances of each intent in release file order (paper Section 3.2: 'In the test splits we limit the utterance per intent number to 10'; which 10 is not stated).",
+    "partitions": "Three ID/OOD label partitions, sklearn 1.x train_test_split(sorted(intents), test_size=0.5, random_state=seed), seeds 0/1/2; train part = ID, test part = OOD. CLINC150 75/75 intents (750/750 utterances); BANKING77 38 ID / 39 OOD (380/390). Pairwise ID-set overlap: CLINC150 38/38/45 of 75, BANKING77 20/15/16 of 38."
+  },
+  "test_n_resolution": "Paper Table 1: CLINC150 test 1,500 (UPL 10), BANKING77 770 (UPL 10) = intents x 10; frozen N equal exactly. OOD/ID sizes follow from the 50/50 label split (Section 4.1). BANKING77 38 ID / 39 OOD: the Table 2 baseline row satisfies ALL F1 76.7 = (380 x 92.7 + 390 x 61.1) / 770 exactly, consistent with 38 ID and 39 OOD intents (39 ID / 38 OOD gives 77.1).",
+  "english_verification": {
+    "metadata": "Both datasets are English crowd-sourced (CLINC150, Larson et al. 2019) / English banking customer queries (BANKING77, Casanueva et al. 2020).",
+    "method": "langid 1.1.6 on all 2,270 frozen utterances plus non-ASCII-ratio > 5%; all flags inspected; additionally every frozen utterance of the foreign-word-prone CLINC intents translate, change_language, definition and spelling was read.",
+    "result": "CLINC150: 51 langid flags, BANKING77: 25, all short English queries (e.g. 'define discontent', 'spell aaron', 'I lost my card'). No non-ASCII-ratio flags; only non-ASCII characters are a curly apostrophe and a pound sign. translate utterances mention foreign languages but are English sentences ('how do you say fast in spanish'). No non-English or code-mixed rows; none dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {"duplicate_texts": 0, "empty_texts": 0, "max_chars": {"clinc150": 123, "banking77": 266}, "truncated_items": 0},
+  "metrics": {
+    "primary": "all_macro_f1: macro-F1 over the partition's ID intents + the OOD class ('fallback'), all test utterances; mean over the 3 partitions.",
+    "reported": "id_macro_f1 (macro over ID intents, full test set), ood_f1 (F1 of the OOD class), ood_recall; plus ood_precision, accuracy, all_weighted_f1 and id_macro_f1_id_rows (alternatives for the paper's undefined averaging), ood_auroc from P(fallback) (supplementary).",
+    "definition_gap": "The paper names 'total (ALL), OOD and ID macro-F1; OOD recall' (Section 3.1) without formulas. Its reported ALL F1 is often below both ID F1 and OOD F1 (e.g. BANKING77 GPT-4o zero-shot 69.4 / 77.2 / 71.6), which a K+1-class macro or support-weighted F1 with full-test-set ID F1 cannot produce; the ID F1 may be computed on ID-gold rows only (our id_macro_f1_id_rows). Comparisons carry this uncertainty."
+  },
+  "paper_numbers_table2_gpt4o_and_baseline": {
+    "_note": "Table 2 (p. 14656), 50/50 ID/OOD, average of 3 runs; columns ALL F1 / ID F1 / OOD recall / OOD F1, percent.",
+    "banking77": {
+      "baseline_threshold": [76.7, 92.7, 42.5, 61.1],
+      "gpt4o_zero_shot": [69.4, 77.2, 66.0, 71.6],
+      "gpt4o_zero_shot_knn": [67.2, 77.2, 58.9, 67.0],
+      "gpt4o_few_shot_10": [78.7, 90.6, 54.9, 68.9],
+      "gpt4o_few_shot_10_knn": [79.6, 90.5, 58.6, 71.6],
+      "gpt4o_few_shot_45": [78.4, 90.7, 53.9, 68.8],
+      "gpt4o_few_shot_45_knn": [79.5, 90.8, 56.4, 70.4],
+      "hybrid_balanced": [83.2, 93.0, 62.7, 75.0],
+      "hybrid_ood_focused": [86.3, 89.7, 84.0, 85.9],
+      "hybrid_contrastive": [85.8, 93.3, 70.7, 80.2]
+    },
+    "clinc150": {
+      "baseline_threshold": [82.4, 95.9, 56.0, 70.4],
+      "gpt4o_zero_shot": [83.7, 88.5, 82.9, 84.5],
+      "gpt4o_zero_shot_knn": [76.5, 83.8, 74.5, 78.7],
+      "gpt4o_few_shot_10": [91.3, 94.8, 87.1, 90.6],
+      "gpt4o_few_shot_10_knn": [90.0, 92.2, 91.1, 90.9],
+      "gpt4o_few_shot_45": [91.6, 95.7, 85.6, 90.2],
+      "gpt4o_few_shot_45_knn": [92.2, 94.8, 90.5, 92.4],
+      "hybrid_balanced": [95.7, 95.8, 96.8, 96.2],
+      "hybrid_ood_focused": [91.4, 90.5, 99.4, 93.6],
+      "hybrid_contrastive": [95.3, 95.5, 96.4, 95.7],
+      "_table3_zero_shot_gemini_1.5_flash": [74.9, 86.1, 54.8, 67.3],
+      "_table3_zero_shot_llama_3.1_70b": [72.6, 81.6, 55.5, 66.7]
+    }
+  },
+  "deviations": [
+    "No released code, split or seeds: the 10-per-intent test subset (first 10 in release order) and the three 50/50 ID/OOD label partitions (seeds 0/1/2) are reconstructions; the paper's exact utterances and partitions are unknown, so per-number comparisons carry split variance.",
+    "Paper's 'average of 3 runs' is mirrored as the mean over three frozen label partitions (Jev is deterministic, so repeated runs of one partition would be identical).",
+    "Zero-shot only: Jev gets the paper's zero-shot prompt (A.3) and intent names; the few-shot and hybrid methods use train utterances and a fine-tuned front end and are reported as paper reference points, not reproduced.",
+    "Tool calling is replaced by one Jev choice question (ID intents + 'fallback'); the A.3 closing line about tool calling is replaced by a sentence naming the state field. Criterion text per intent = its name with underscores as spaces.",
+    "Metric averaging undefined in the paper (see metrics.definition_gap); primary uses the standard K+1 macro-F1 definition."
+  ]
+}

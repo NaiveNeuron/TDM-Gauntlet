@@ -1,0 +1,12 @@
+@task
+Given a premise, a hypothesis and the correct inference relation between them, rank candidate explanations of
+why that relation holds from best to worst.
+@output
+A ranking of the candidate explanations, which come in <<q:expl_rank:question.criteria|len>> quality tiers
+from nonsense to gold.
+@example frozen test set (e-SNLI, MIT / CC BY-SA, item \texttt{<<jl:data/frozen/expl_rank/test.jsonl.gz:197.id>>})
+Premise & <<jl:data/frozen/expl_rank/test.jsonl.gz:197.premise>> Hypothesis: <<jl:data/frozen/expl_rank/test.jsonl.gz:197.hypothesis>> (<<jl:data/frozen/expl_rank/test.jsonl.gz:197.label>>)
+Candidates & (a) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.candidates.0.text>> (b) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.candidates.1.text>> (c) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.candidates.2.text>> (d) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.candidates.3.text>> (e) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.candidates.4.text>>
+Gold & (d) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.gold.c3.tier>> $>$ (b) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.gold.c1.tier>> $>$ (a) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.gold.c0.tier>> $>$ (e) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.gold.c4.tier>> $>$ (c) <<jl:data/frozen/expl_rank/test.jsonl.gz:197.gold.c2.tier>> (rebuilt Algorithm~1 scores)
+@sets
+expl_rank = e-SNLI validation (not comparable: rebuilt candidates) | queries

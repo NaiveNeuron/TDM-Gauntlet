@@ -1,0 +1,950 @@
+{
+  "lifetox": {
+    "metric": "macro_f1",
+    "method": "RoBERTa-LifeTox 350M",
+    "paper": {
+      "RoBERTa-LifeTox 350M": 0.965,
+      "GPT-3.5 text-davinci-003 zero-shot": 0.744,
+      "Llama-2-Chat 13B": 0.601,
+      "Llama-2-Chat 7B": 0.48,
+      "RoBERTa-Hatred": 0.385,
+      "Perspective API": 0.382,
+      "RoBERTa-ToxiGen": 0.374,
+      "OpenAI moderation": 0.374
+    },
+    "source": "Kim et al. 2024, Table 2, p. 691 (Macro-F1 on LifeTox test)"
+  },
+  "edit_intent": {
+    "metric": "macro_f1",
+    "method": "SeqC Llama3-8B-Instruct structured (best)",
+    "paper": {
+      "SeqC Llama3-8B-Instruct structured (best)": 0.843,
+      "SeqC Llama2-13B inst+structured": 0.843,
+      "XNet Llama2-13B n-diffABS": 0.839,
+      "Gen Llama3-8B-Instruct inst+structured": 0.837,
+      "SeqC RoBERTa structured": 0.784,
+      "Gen T5 natural": 0.781,
+      "Llama2-70B instruction-tuned (Re3)": 0.69,
+      "GPT-4 ICL+CoT": 0.609,
+      "GPT-4-turbo zero-shot": 0.37,
+      "Human": 0.897
+    },
+    "source": "Ruan et al. EMNLP 2024, Table 2 (p. 15053) and Table 3 (p. 15054). Test acc/macro-F1"
+  },
+  "pinose/true_false": {
+    "metric": "auc",
+    "method": "PiNose",
+    "paper": {
+      "PiNose": 0.866,
+      "SAPLMA": 0.902,
+      "RepE": 0.633,
+      "PPL-AVE": 0.6709999999999999,
+      "It-is-True": 0.5479999999999999
+    },
+    "paper_accuracy": {
+      "PiNose": 0.821,
+      "SAPLMA": 0.8370000000000001,
+      "RepE": 0.619,
+      "PPL-AVE": 0.6409999999999999,
+      "It-is-True": 0.601
+    },
+    "source": "Zhang et al. ACL 2024, Table 2 (p. 12353). AUC/ACC. Paper ACC uses a threshold tuned on 100 test-partitioned instances. Ours is fixed at 0.5."
+  },
+  "pinose/nq": {
+    "metric": "auc",
+    "method": "PiNose",
+    "paper": {
+      "PiNose": 0.804,
+      "SAPLMA": 0.6970000000000001,
+      "SCGPT-NLI": 0.774,
+      "SCGPT-PT": 0.723,
+      "RepE": 0.626,
+      "PPL-AVE": 0.618,
+      "It-is-True": 0.63
+    },
+    "paper_accuracy": {
+      "PiNose": 0.725,
+      "SAPLMA": 0.6779999999999999,
+      "SCGPT-NLI": 0.71,
+      "SCGPT-PT": 0.703,
+      "RepE": 0.608,
+      "PPL-AVE": 0.5920000000000001,
+      "It-is-True": 0.595
+    },
+    "source": "Zhang et al. ACL 2024, Table 2 (p. 12353). AUC/ACC. Paper ACC uses a threshold tuned on 100 test-partitioned instances. Ours is fixed at 0.5."
+  },
+  "pinose/triviaqa": {
+    "metric": "auc",
+    "method": "PiNose",
+    "paper": {
+      "PiNose": 0.8390000000000001,
+      "SAPLMA": 0.693,
+      "SCGPT-NLI": 0.769,
+      "SCGPT-PT": 0.764,
+      "RepE": 0.675,
+      "PPL-AVE": 0.617,
+      "It-is-True": 0.617
+    },
+    "paper_accuracy": {
+      "PiNose": 0.738,
+      "SAPLMA": 0.645,
+      "SCGPT-NLI": 0.721,
+      "SCGPT-PT": 0.6990000000000001,
+      "RepE": 0.643,
+      "PPL-AVE": 0.585,
+      "It-is-True": 0.591
+    },
+    "source": "Zhang et al. ACL 2024, Table 2 (p. 12353). AUC/ACC. Paper ACC uses a threshold tuned on 100 test-partitioned instances. Ours is fixed at 0.5."
+  },
+  "pinose/webq": {
+    "metric": "auc",
+    "method": "PiNose",
+    "paper": {
+      "PiNose": 0.833,
+      "SAPLMA": 0.7559999999999999,
+      "SCGPT-NLI": 0.774,
+      "SCGPT-PT": 0.725,
+      "RepE": 0.655,
+      "PPL-AVE": 0.637,
+      "It-is-True": 0.7559999999999999
+    },
+    "paper_accuracy": {
+      "PiNose": 0.76,
+      "SAPLMA": 0.695,
+      "SCGPT-NLI": 0.723,
+      "SCGPT-PT": 0.725,
+      "RepE": 0.635,
+      "PPL-AVE": 0.633,
+      "It-is-True": 0.71
+    },
+    "source": "Zhang et al. ACL 2024, Table 2 (p. 12353). AUC/ACC. Paper ACC uses a threshold tuned on 100 test-partitioned instances. Ours is fixed at 0.5."
+  },
+  "contempo/matres": {
+    "metric": "micro_f1",
+    "method": "ConTempo + Unified Framework",
+    "paper": {
+      "ConTempo + Unified Framework": 0.8317,
+      "ConTempo Baseline": 0.8201,
+      "Endpoint Comparisons (Huang 2023)": 0.826,
+      "TIMERS": 0.823,
+      "MulCo": 0.8208,
+      "Relative Time": 0.8162999999999999,
+      "SCS-EERE": 0.8098000000000001,
+      "Joint Constrained Learning": 0.7879999999999999,
+      "LSTM": 0.7340000000000001,
+      "Fine-tuned GPT-3.5": 0.5527000000000001,
+      "ChatGPT-4 (CoT)": 0.5670000000000001,
+      "ChatGPT-4": 0.4164,
+      "ChatGPT-3.5 (CoT)": 0.3554,
+      "ChatGPT-3.5": 0.2594
+    },
+    "source": "Niu et al. Findings ACL 2024, Table 3 (p. 1528). Micro-F1, VAGUE as negative. ConTempo rows mean of 3 seeds"
+  },
+  "contempo/tbdense": {
+    "metric": "micro_f1",
+    "method": "ConTempo + Unified Framework",
+    "paper": {
+      "ConTempo + Unified Framework": 0.6856,
+      "ConTempo Baseline": 0.6778,
+      "Endpoint Comparisons (Huang 2023)": 0.6809999999999999,
+      "TIMERS": 0.6779999999999999,
+      "MulCo": 0.6751,
+      "Relative Time": 0.6681,
+      "SCS-EERE": 0.6592,
+      "LSTM": 0.622,
+      "Fine-tuned GPT-3.5": 0.6171,
+      "ChatGPT-4 (CoT)": 0.6514,
+      "ChatGPT-4": 0.6758,
+      "ChatGPT-3.5 (CoT)": 0.5714,
+      "ChatGPT-3.5": 0.5306000000000001
+    },
+    "source": "Niu et al. Findings ACL 2024, Table 3 (p. 1528). Micro-F1, VAGUE as negative. ConTempo rows mean of 3 seeds"
+  },
+  "ezstance/subtaskA": {
+    "metric": "macro_f1",
+    "method": "BART-MNLI-ep",
+    "paper": {
+      "BART-MNLI-ep": 0.812,
+      "BART-MNLI-e": 0.81,
+      "RoBERTa-MNLI": 0.799,
+      "TGA-Net": 0.59,
+      "BART-MNLI (no fine-tuning)": 0.664,
+      "ChatGPT gpt-3.5-turbo-0301": 0.499,
+      "LLaMA-2-13B-chat": 0.404
+    },
+    "source": "Zhao & Caragea ACL 2024, Table 7 (p. 15703), mixed targets, mean of 4 seeds. Paper N=7,798 vs our English-only 7,666"
+  },
+  "ezstance/subtaskB": {
+    "metric": "macro_f1",
+    "method": "BART-MNLI-ep",
+    "paper": {
+      "BART-MNLI-ep": 0.783,
+      "BART-MNLI-e": 0.781,
+      "RoBERTa-MNLI": 0.775,
+      "TGA-Net": 0.581,
+      "ChatGPT gpt-3.5-turbo-0301": 0.495
+    },
+    "source": "Zhao & Caragea ACL 2024, Table 8 (p. 15704), mixed targets. Values are our unweighted means over the 8 domains. Paper N=46,011 vs our 45,274"
+  },
+  "prp_graph/trec_covid": {
+    "metric": "ndcg@10",
+    "method": "PRP-Graph-40 Flan-T5-L (BM25-interpolated)",
+    "paper": {
+      "PRP-Graph-40 Flan-T5-L (BM25-interpolated)": 0.788,
+      "PRP-Graph-20 Flan-T5-L (BM25-interpolated)": 0.781,
+      "PRP-Graph-20 Flan-T5-L (uninterpolated, README)": 0.7723,
+      "Allpair Flan-T5-L": 0.77,
+      "HeapSort Flan-T5-L": 0.761,
+      "PRP-Graph-40 Flan-T5-XXL": 0.781,
+      "Allpair Flan-T5-XL": 0.777,
+      "BM25": 0.595
+    },
+    "source": "Luo et al. ACL 2024, Table 2 (p. 5771), TREC-COVID nDCG@10. Per-dataset numbers are BM25-interpolated (alpha by CV on test). The PRP-Graph README gives uninterpolated R=20 0.7723",
+    "jev_paper_protocol": {
+      "path": "paper_protocol_bm25_interpolated_cv_on_test.prp_graph_R40.ndcg@10",
+      "note": "BM25-interpolated, alpha by 10-fold CV on test, as the paper"
+    }
+  },
+  "inli": {
+    "metric": "accuracy",
+    "method": "T5-XXL fine-tuned on INLI (4-way)",
+    "paper": {
+      "T5-XXL fine-tuned on INLI (4-way)": 0.924,
+      "T5-Large fine-tuned": 0.913,
+      "T5-Base fine-tuned": 0.871,
+      "T5-Small fine-tuned": 0.813,
+      "Gemini-Pro 8-shot": 0.77,
+      "GPT-4 8-shot": 0.753,
+      "GPT-4o 8-shot": 0.749,
+      "Mistral-Large 8-shot": 0.744,
+      "Gemini-Flash 8-shot": 0.737,
+      "Claude-3-Sonnet 8-shot": 0.686
+    },
+    "paper_implied_entailment_accuracy": {
+      "T5-XXL fine-tuned on INLI (4-way)": 0.885,
+      "T5-Large fine-tuned": 0.87,
+      "T5-Base fine-tuned": 0.817,
+      "T5-Small fine-tuned": 0.731,
+      "Claude-3-Sonnet 8-shot": 0.738,
+      "Mistral-Large 8-shot": 0.735,
+      "GPT-4 8-shot": 0.645,
+      "Gemini-Flash 8-shot": 0.639,
+      "Gemini-Pro 8-shot": 0.628,
+      "GPT-4o 8-shot": 0.608
+    },
+    "source": "Havaldar et al. ACL 2025, Table 6 (p. 32280). 4-way accuracy on all 4,000 test pairs (implied-entailment accuracy, Jev key implied_entailment_accuracy, in paper_implied_entailment_accuracy). LLM rows are 8-shot, not zero-shot. Claude-3-Sonnet's 0.686 excludes its 1,022 ERROR responses."
+  },
+  "mismatched": {
+    "metric": "macro_f1",
+    "method": "SciBERT fine-tuned on MSciNLI+",
+    "paper": {
+      "SciBERT fine-tuned on MSciNLI+": 0.7817,
+      "RoBERTa fine-tuned on MSciNLI+": 0.7811,
+      "SciBERT MSciNLI+ +Implicit (Table 9)": 0.7966,
+      "Llama-2-13B LoRA on SciNLI (Table 15)": 0.8287,
+      "Gemini-1.5-Pro zero-shot": 0.5555,
+      "Phi-3 zero-shot": 0.5295,
+      "GPT-4o zero-shot": 0.5026,
+      "Gemini-1.5-Pro few-shot MSciNLI+": 0.6295,
+      "GPT-4o few-shot MSciNLI+": 0.6273,
+      "Phi-3 few-shot MSciNLI": 0.5716
+    },
+    "source": "Shaik et al. 2025 (MisMatched), Table 4 (p. 21529) overall macro-F1 pooled over 2,400, mean of 3 runs (zero-shot rows single run). Table 9 (p. 21532) +Implicit. Table 15 (p. 21538) Llama-2 LoRA fine-tuned on SciNLI."
+  },
+  "nav_unknown/clinc150": {
+    "metric": "all_macro_f1",
+    "method": "Hybrid (balanced)",
+    "paper": {
+      "Hybrid (balanced)": 0.957,
+      "Hybrid (contrastive)": 0.953,
+      "Hybrid (OOD-focused)": 0.914,
+      "GPT-4o few-shot 45 kNN": 0.922,
+      "GPT-4o few-shot 10": 0.913,
+      "GPT-4o zero-shot tool calling": 0.837,
+      "Threshold baseline": 0.824,
+      "Gemini-1.5-Flash zero-shot": 0.749,
+      "Llama-3.1-70B zero-shot": 0.726
+    },
+    "paper_other_columns": {
+      "GPT-4o zero-shot tool calling": {
+        "id_f1": 0.885,
+        "ood_recall": 0.829,
+        "ood_f1": 0.845
+      },
+      "Hybrid (balanced)": {
+        "id_f1": 0.958,
+        "ood_recall": 0.968,
+        "ood_f1": 0.962
+      }
+    },
+    "source": "Table 2 (p. 14656) GPT-4o, Hybrid and threshold rows. Table 3 (p. 14658) Gemini and Llama zero-shot. Navigating the Unknown (Findings EMNLP 2025), paper 'ALL F1' (ID intents + OOD). RECONSTRUCTION: no code/splits/seeds released. Our test subset (first 10 utterances per intent) and three seeded 50/50 ID/OOD label partitions stand in for the paper's 'average of 3 runs'. The paper's ALL-F1 formula is unstated (its ALL F1 is sometimes below both ID and OOD F1). Jev reports macro (primary) and weighted variants. Matched setting for Jev is the GPT-4o zero-shot row. Hybrid is the paper's proposed method."
+  },
+  "nav_unknown/banking77": {
+    "metric": "all_macro_f1",
+    "method": "Hybrid (balanced)",
+    "paper": {
+      "Hybrid (balanced)": 0.832,
+      "Hybrid (OOD-focused)": 0.863,
+      "Hybrid (contrastive)": 0.858,
+      "GPT-4o few-shot 10 kNN": 0.796,
+      "GPT-4o few-shot 10": 0.787,
+      "Threshold baseline": 0.767,
+      "GPT-4o zero-shot tool calling": 0.694
+    },
+    "paper_other_columns": {
+      "GPT-4o zero-shot tool calling": {
+        "id_f1": 0.772,
+        "ood_recall": 0.66,
+        "ood_f1": 0.716
+      },
+      "Hybrid (OOD-focused)": {
+        "id_f1": 0.897,
+        "ood_recall": 0.84,
+        "ood_f1": 0.859
+      }
+    },
+    "source": "Table 2 (p. 14656). Navigating the Unknown (Findings EMNLP 2025), paper 'ALL F1' (ID intents + OOD). RECONSTRUCTION: no code/splits/seeds released. Our test subset (first 10 utterances per intent) and three seeded 50/50 ID/OOD label partitions stand in for the paper's 'average of 3 runs'. The paper's ALL-F1 formula is unstated (its ALL F1 is sometimes below both ID and OOD F1). Jev reports macro (primary) and weighted variants. Matched setting for Jev is the GPT-4o zero-shot row. Hybrid is the paper's proposed method."
+  },
+  "xstest": {
+    "metric": "accuracy",
+    "method": "GPT-4 zero-shot response judge (App. D)",
+    "paper": {
+      "GPT-4 zero-shot response judge (App. D)": 0.804,
+      "StrMatch": 0.8387,
+      "Human inter-annotator (ceiling)": 0.964
+    },
+    "paper_secondary": {
+      "macro_f1": {
+        "GPT-4 zero-shot response judge (App. D)": 0.6163,
+        "StrMatch": 0.5808
+      },
+      "cohen_kappa": {
+        "GPT-4 zero-shot response judge (App. D)": 0.6357,
+        "StrMatch": 0.6991,
+        "Human inter-annotator (ceiling)": 0.9365
+      }
+    },
+    "source": "R\u00f6ttger et al. NAACL 2024. The paper prints only refusal rates (Table 2, p. 5382), not judge agreement: these 3-way accuracies vs human final_label (N=2,250) are computed from the released automated_evaluation_labels, which reproduce Table 2 exactly. GPT-4's 11 refusals-to-classify count as full compliance (footnote 10). Human = annotation_1 vs annotation_2 agreement (Section 4.2). StrMatch cannot output partial refusal."
+  },
+  "medreadme": {
+    "metric": "pearson_mean_groups",
+    "method": "RoBERTa-large fine-tuned on MedReadMe",
+    "paper": {
+      "RoBERTa-large fine-tuned on MedReadMe": 0.833,
+      "RoBERTa-large MedReadMe-Jar": 0.83,
+      "RoBERTa-large ReadMe++-Jar": 0.793,
+      "RoBERTa-large on ReadMe++": 0.774,
+      "RoBERTa-large on CEFR-SP": 0.766,
+      "RoBERTa-large on CompDS": 0.711,
+      "GPT-4 (gpt-4-0613) 5-shot": 0.721,
+      "Llama-3.1-8B-Instruct 5-shot": 0.485,
+      "SMOG-Jar": 0.718,
+      "RSRS": 0.646,
+      "SMOG": 0.56,
+      "FKGL": 0.476,
+      "Length": 0.466
+    },
+    "source": "Jiang & Xu EMNLP 2024 (MedReadMe), Table 7 (p. 17300, supervised and 5-shot prompting, 5-run means) and Table 4 (p. 17298, unsupervised). Pearson r within each of 7 source groups, averaged (paper 'Mean' row). LLM rows are 5-shot, not zero-shot."
+  },
+  "factpico": {
+    "metric": "kendall_tau_b",
+    "method": "GPT-4 + PICO-R Extract",
+    "paper": {
+      "GPT-4 + PICO-R Extract": 0.474,
+      "GPT-4 zero-shot": 0.475,
+      "QuestEval": 0.29,
+      "QAFactEval": 0.289,
+      "AlignScore": 0.244,
+      "DAE": 0.152,
+      "Alpaca zero-shot": 0.081,
+      "Llama-2 zero-shot": 0.055,
+      "Mistral zero-shot": 0.047
+    },
+    "paper_spearman_rho": {
+      "GPT-4 + PICO-R Extract": 0.633,
+      "GPT-4 zero-shot": 0.619,
+      "QuestEval": 0.412,
+      "QAFactEval": 0.406,
+      "AlignScore": 0.348,
+      "DAE": 0.219,
+      "Alpaca zero-shot": 0.115,
+      "Llama-2 zero-shot": 0.08,
+      "Mistral zero-shot": 0.065
+    },
+    "paper_acc_eq": {
+      "GPT-4 + PICO-R Extract": 0.686,
+      "GPT-4 zero-shot": 0.676,
+      "QuestEval": 0.611,
+      "QAFactEval": 0.611,
+      "AlignScore": 0.589,
+      "DAE": 0.545,
+      "Llama-2 zero-shot": 0.482,
+      "Alpaca zero-shot": 0.481,
+      "Mistral zero-shot": 0.402
+    },
+    "source": "Joseph et al. ACL 2024, Table 4 'Avg.' row (p. 8442): system overall score vs expert Avg. PICO-R over 345 summaries (reproduced to 3 decimals from the release). Jev also reports spearman_rho and acc_eq."
+  },
+  "smarter/hatexplain": {
+    "metric": "macro_f1",
+    "method": "SMARTER Llama_DPO-256",
+    "paper": {
+      "SMARTER Llama_DPO-256": 0.64,
+      "SMARTER T5_DPO-256": 0.62,
+      "T5 cross-model SFT+DPO (Sec 6.2.2)": 0.66,
+      "Llama_Full": 0.72,
+      "T5_Full": 0.72,
+      "ModernBERT": 0.7,
+      "GPT-5-chat zero-shot": 0.56,
+      "GPT-4.1 zero-shot": 0.55,
+      "Qwen-32B zero-shot": 0.54,
+      "GPT-4o-mini zero-shot": 0.5,
+      "GPT-5-chat 16-shot ICL mean": 0.62
+    },
+    "source": "Nghiem et al. ACL 2026 (SMARTER), Table 1 (p. 34312) macro-F1. Sec 6.2.2 cross-model row. RECONSTRUCTION: paper test files unreleased. Rebuilt from public sources with the authors' own split/sampling code (seeds 123/42), row identity unverifiable. N=1,193 after dropping 7 non-English posts."
+  },
+  "smarter/latent_hate": {
+    "metric": "macro_f1",
+    "method": "SMARTER Llama_DPO-256",
+    "paper": {
+      "SMARTER Llama_DPO-256": 0.69,
+      "SMARTER T5_DPO-256": 0.65,
+      "T5 cross-model SFT+DPO (Sec 6.2.2)": 0.66,
+      "Llama_Full": 0.62,
+      "T5_Full": 0.61,
+      "ModernBERT": 0.61,
+      "GPT-4.1 zero-shot": 0.6,
+      "GPT-4o-mini zero-shot": 0.54,
+      "GPT-5-chat zero-shot": 0.51,
+      "Qwen-32B zero-shot": 0.47,
+      "GPT-4.1 16-shot ICL mean": 0.63
+    },
+    "source": "Nghiem et al. ACL 2026 (SMARTER), Table 1 (p. 34312) macro-F1. Sec 6.2.2 cross-model row. RECONSTRUCTION: paper test files unreleased. Rebuilt from public sources with the authors' own split/sampling code (seeds 123/42), row identity unverifiable."
+  },
+  "smarter/implicit_hate": {
+    "metric": "macro_f1",
+    "method": "SMARTER Llama_DPO-256",
+    "paper": {
+      "SMARTER Llama_DPO-256": 0.6,
+      "SMARTER T5_DPO-256": 0.59,
+      "T5 cross-model SFT+DPO (Sec 6.2.2)": 0.61,
+      "Llama_Full": 0.67,
+      "T5_Full": 0.64,
+      "ModernBERT": 0.64,
+      "GPT-5-chat zero-shot": 0.58,
+      "GPT-4.1 zero-shot": 0.57,
+      "Qwen-32B zero-shot": 0.49,
+      "GPT-4o-mini zero-shot": 0.42,
+      "Qwen-32B 16-shot ICL mean": 0.48
+    },
+    "source": "Nghiem et al. ACL 2026 (SMARTER), Table 1 (p. 34312) macro-F1. Sec 6.2.2 cross-model row. RECONSTRUCTION: paper test files unreleased. Rebuilt from public sources with the authors' own split/sampling code (seeds 123/42), row identity unverifiable. 6 fine-grained classes."
+  },
+  "biorc800": {
+    "metric": "micro_f1",
+    "method": "LLM-SSC with WeighCon",
+    "paper": {
+      "LLM-SSC with WeighCon": 0.908,
+      "LLM-SSC with HeroCon": 0.902,
+      "SSC (Cohan et al., 2019)": 0.905,
+      "SciBERT-HSLN (Brack et al., 2022)": 0.902,
+      "HSLN (Jin and Szolovits, 2018)": 0.849,
+      "LLM-SSC ICL 5-shot Gemma-2b": 0.733,
+      "LLM-SSC ICL 0-shot Gemma-2b": 0.476
+    },
+    "paper_macro_f1": {
+      "LLM-SSC with WeighCon": 0.912,
+      "LLM-SSC with HeroCon": 0.906,
+      "SSC (Cohan et al., 2019)": 0.892,
+      "SciBERT-HSLN (Brack et al., 2022)": 0.897,
+      "HSLN (Jin and Szolovits, 2018)": 0.826,
+      "LLM-SSC ICL 5-shot Gemma-2b": 0.656,
+      "LLM-SSC ICL 0-shot Gemma-2b": 0.322
+    },
+    "source": "Lan et al. 2024 (LLM-SSC), Table 3 (p. 16093) fine-tuned systems and Table 2 (p. 16092) ICL with Gemma-2b. Sentence x label micro-F1 on the 160-abstract test set (Table 4/text give WeighCon 0.907). Primary uses a fixed 0.5 threshold. The paper tunes per-label thresholds on dev.",
+    "jev_paper_protocol": {
+      "path": "dev_tuned.micro_f1",
+      "note": "per-label thresholds fit on dev, paper Sec 3.3"
+    }
+  },
+  "biorc800/dev": {
+    "metric": "micro_f1",
+    "method": "",
+    "paper": {},
+    "source": "Dev split (159 abstracts, release is one short of the paper's 160), run only to fit per-label thresholds for biorc800's dev_tuned protocol. The paper reports no dev-set numbers."
+  },
+  "ttp/tram": {
+    "metric": "p@1",
+    "method": "Asymmetric",
+    "paper": {
+      "Asymmetric": 0.77,
+      "alpha-balanced": 0.765,
+      "InfoNCE": 0.697,
+      "XR-LINEAR": 0.674,
+      "NAPKINXC": 0.662,
+      "eXtremeText (Sigmoid)": 0.632,
+      "XR-TRANSFORMER": 0.54,
+      "TTPDrill (BM25)": 0.25
+    },
+    "paper_other_metrics": {
+      "Asymmetric": {
+        "r@1": 0.658,
+        "f1@3": 0.555,
+        "mrr@3": 0.864
+      },
+      "XR-LINEAR": {
+        "r@1": 0.626,
+        "f1@3": 0.445,
+        "mrr@3": 0.757
+      }
+    },
+    "source": "Nguyen et al. Findings EACL 2024 (Security TTP mapping), Table 2 (p. 361), TRAM, TTP-level P@1 (technique-level in Table 3). No quantitative LLM baseline (ChatGPT only in qualitative examples, Tables 10-12). Binary Relevance row omitted (internally inconsistent)."
+  },
+  "ttp/procedures_plus": {
+    "metric": "p@1",
+    "method": "Asymmetric",
+    "paper": {
+      "Asymmetric": 0.757,
+      "alpha-balanced": 0.76,
+      "InfoNCE": 0.672,
+      "XR-LINEAR": 0.604,
+      "NAPKINXC": 0.578,
+      "eXtremeText (Sigmoid)": 0.557,
+      "XR-TRANSFORMER": 0.502,
+      "TTPDrill (BM25)": 0.23
+    },
+    "paper_other_metrics": {
+      "Asymmetric": {
+        "r@1": 0.718,
+        "f1@3": 0.493,
+        "mrr@3": 0.838
+      }
+    },
+    "source": "Nguyen et al. Findings EACL 2024 (Security TTP mapping), Table 2 (p. 361), Procedures+ (Procedures 1,767 + Derived 521), TTP-level P@1. No quantitative LLM baseline."
+  },
+  "ttp/expert": {
+    "metric": "p@1",
+    "method": "Asymmetric",
+    "paper": {
+      "Asymmetric": 0.731,
+      "InfoNCE": 0.702,
+      "alpha-balanced": 0.693,
+      "XR-LINEAR": 0.529,
+      "NAPKINXC": 0.497,
+      "eXtremeText (Sigmoid)": 0.407,
+      "XR-TRANSFORMER": 0.389,
+      "TTPDrill (BM25)": 0.222
+    },
+    "paper_other_metrics": {
+      "Asymmetric": {
+        "r@1": 0.182,
+        "f1@3": 0.399,
+        "mrr@3": 0.789
+      }
+    },
+    "source": "Nguyen et al. Findings EACL 2024 (Security TTP mapping), Table 2 (p. 361), Expert test (157 texts, 3.3 labels/text), TTP-level P@1. No quantitative LLM baseline."
+  },
+  "ttp/expert_full": {
+    "metric": "p@1",
+    "method": "Asymmetric",
+    "paper": {
+      "Asymmetric": 0.484,
+      "InfoNCE": 0.489,
+      "alpha-balanced": 0.443,
+      "NAPKINXC": 0.43,
+      "XR-LINEAR": 0.426,
+      "TTPDrill (BM25)": 0.311
+    },
+    "paper_other_metrics": {
+      "Asymmetric": {
+        "r@1": 0.217,
+        "f1@3": 0.348,
+        "mrr@3": 0.558,
+        "f1@5": 0.333,
+        "mrr@5": 0.573
+      }
+    },
+    "source": "Nguyen et al. Findings EACL 2024 (Security TTP mapping), Table 6 (p. 363), entire Expert dataset, models trained on Procedures+ and TRAM only. Release has 697 texts vs the paper's 695. No quantitative LLM baseline."
+  },
+  "expl_rank": {
+    "metric": "ndcg@5",
+    "method": "ListNet reward model",
+    "paper": {
+      "ListNet reward model": 0.924,
+      "ApproxNDCG": 0.887,
+      "RankNet": 0.868,
+      "MSE": 0.801
+    },
+    "paper_other_metrics": {
+      "ListNet reward model": {
+        "map": 0.856,
+        "mrr": 0.891,
+        "kendall_tau": 0.634,
+        "spearman": 0.812,
+        "pairwise_agreement_200": 0.87
+      },
+      "RankNet": {
+        "map": 0.798,
+        "mrr": 0.834,
+        "kendall_tau": 0.556,
+        "spearman": 0.689,
+        "pairwise_agreement_200": 0.76
+      }
+    },
+    "source": "Bailleux, Mukherjee et al. Findings ACL 2026, Table 20 (p. 36134), e-SNLI validation (9,842 queries). Pairwise agreement App. D (p. 36132). RECONSTRUCTION: graded candidates/gold never released. Rebuilt from Table 10 templates and Algorithm 1 (tier-violation rate 55.9% vs paper 54%), so gold scores are not the paper's. Other paper tables disagree (Table 1 ListNet NDCG@5 0.996, Tables 13-14 0.912). No LLM baseline."
+  },
+  "sciprompt/arxiv": {
+    "metric": "accuracy",
+    "method": "SciPrompt zero-shot",
+    "paper": {
+      "SciPrompt zero-shot": 0.2228,
+      "KPT zero-shot": 0.2083,
+      "PT zero-shot": 0.2081,
+      "LM-BFF zero-shot": 0.1496,
+      "Llama3-70B zero-shot": 0.5487,
+      "ChatGPT zero-shot": 0.5451,
+      "Llama2-70B zero-shot": 0.2698,
+      "SciPromptSoft 50-shot": 0.7015,
+      "SciPrompt 50-shot": 0.6989,
+      "Full-set fine-tuning": 0.5458
+    },
+    "source": "You et al. EMNLP 2024 (SciPrompt), Table 2 (p. 6093) zero-shot and Table 1 (p. 6092) few-shot/full fine-tuning, accuracy. Method row is SciPrompt zero-shot (Jev is zero-shot). Jev N=5,295 (5 non-English rows dropped from 5,300)."
+  },
+  "sciprompt/s2orc": {
+    "metric": "accuracy",
+    "method": "SciPrompt zero-shot",
+    "paper": {
+      "SciPrompt zero-shot": 0.413,
+      "KPT zero-shot": 0.3842,
+      "PT zero-shot": 0.3293,
+      "Llama3-70B zero-shot": 0.4958,
+      "ChatGPT zero-shot": 0.4695,
+      "Llama2-70B zero-shot": 0.403,
+      "SciPrompt 50-shot": 0.5666,
+      "Full-set fine-tuning": 0.5374
+    },
+    "source": "You et al. EMNLP 2024 (SciPrompt), Table 2 (p. 6093) zero-shot and Table 1 (p. 6092) few-shot/full fine-tuning, accuracy. Method row is SciPrompt zero-shot (Jev is zero-shot). Jev N=5,660 (40 non-English rows dropped from 5,700)."
+  },
+  "sciprompt/sdpra": {
+    "metric": "accuracy",
+    "method": "SciPrompt zero-shot",
+    "paper": {
+      "SciPrompt zero-shot": 0.5197,
+      "KPT zero-shot": 0.415,
+      "PT zero-shot": 0.6297,
+      "LM-BFF zero-shot": 0.6479,
+      "Llama3-70B zero-shot": 0.8115,
+      "ChatGPT zero-shot": 0.7943,
+      "Llama2-70B zero-shot": 0.6204,
+      "SciPrompt 50-shot": 0.8899,
+      "Full-set fine-tuning": 0.9071
+    },
+    "source": "You et al. EMNLP 2024 (SciPrompt), Table 2 (p. 6093) zero-shot and Table 1 (p. 6092) few-shot/full fine-tuning, accuracy. Method row is SciPrompt zero-shot (Jev is zero-shot). Paper evaluates 2,790 (after its <30-token filter). Jev 2,789 (1 non-English row dropped)."
+  },
+  "sciprompt/emerging_nlp": {
+    "metric": "accuracy",
+    "method": "SciPrompt zero-shot",
+    "paper": {
+      "SciPrompt zero-shot": 0.4048,
+      "PT zero-shot": 0.3381,
+      "KPT zero-shot": 0.281,
+      "LM-BFF zero-shot": 0.2619,
+      "RetroPrompt zero-shot": 0.2357,
+      "NPPrompt zero-shot": 0.1929,
+      "Llama2-70B zero-shot": 0.0857,
+      "SimPTC zero-shot": 0.0476,
+      "SciPrompt 5-shot": 0.8933,
+      "SciPromptSoft 5-shot": 0.8834
+    },
+    "source": "You et al. EMNLP 2024 (SciPrompt), Figure 3 (p. 6094), bar chart only: values read by pixel measurement, consistent with Sec 5.2 text differences. Single-run bars equal k/420, KPT and 5-shot bars approximate (+-0.002)."
+  },
+  "legalseg": {
+    "metric": "macro_f1",
+    "method": "Hier_BiLSTM CRF",
+    "paper": {
+      "Hier_BiLSTM CRF": 0.77,
+      "ToInLegalBERT": 0.62,
+      "InLegalBERT(i-2,i-1,i)": 0.58,
+      "InLegalBERT(i-1,i,i+1)": 0.58,
+      "GNN": 0.54,
+      "InLegalBERT(i)": 0.49,
+      "MTL": 0.37,
+      "Role-Aware": 0.14,
+      "RhetoricLLaMA": 0.09,
+      "LLaMA-2 (unquantized)": 0.08
+    },
+    "source": "Nigam et al. NAACL 2025 (LegalSeg), Table 3 (p. 1135), macro-F1 over 7 roles pooled over sentences. CAVEAT: Hier_BiLSTM CRF 0.77 is not reproducible from the authors' released predictions (0.27 / 0.60). ToInLegalBERT 0.62 reproduces exactly and is the reliable strongest baseline. Jev: 82 of 712 judgments shown as context windows (n_truncated), 6 non-English sentences excluded."
+  },
+  "cicc/acid": {
+    "metric": "single",
+    "method": "CICC (BERT)",
+    "paper": {
+      "CICC (BERT)": 0.87,
+      "B1 heuristic (BERT)": 0.88
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 2 (p. 2418), Single = share of test inputs answered without clarification at the paper's 1-alpha, th=7. Conformal predictor on fine-tuned BERT probabilities. Jev replaces BERT's probabilities on the paper's exact 60/20/20 split. 1-alpha .98. Jev Single=0: its calibration p_true hits 0 often enough that q-hat=1 and every set is the full inventory (same operating point, Jev fails it). Jev's own B1 is in scores.baselines."
+  },
+  "cicc/atis": {
+    "metric": "single",
+    "method": "CICC (BERT)",
+    "paper": {
+      "CICC (BERT)": 0.98,
+      "B1 heuristic (BERT)": 0.73
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 2 (p. 2418), Single = share of test inputs answered without clarification at the paper's 1-alpha, th=7. Conformal predictor on fine-tuned BERT probabilities. Jev replaces BERT's probabilities on the paper's exact 60/20/20 split. 1-alpha .99. Jev Single=0 (q-hat=1, full-inventory sets)."
+  },
+  "cicc/c150": {
+    "metric": "single",
+    "method": "CICC (BERT)",
+    "paper": {
+      "CICC (BERT)": 0.97,
+      "B1 heuristic (BERT)": 0.82
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 2 (p. 2418), Single = share of test inputs answered without clarification at the paper's 1-alpha, th=7. Conformal predictor on fine-tuned BERT probabilities. Jev replaces BERT's probabilities on the paper's exact 60/20/20 split. C150 in-scope, 1-alpha .99. Jev Single=0 (q-hat=1, full-inventory sets)."
+  },
+  "cicc/hwu64": {
+    "metric": "single",
+    "method": "CICC (BERT)",
+    "paper": {
+      "CICC (BERT)": 0.82,
+      "B1 heuristic (BERT)": 0.7
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 2 (p. 2418), Single = share of test inputs answered without clarification at the paper's 1-alpha, th=7. Conformal predictor on fine-tuned BERT probabilities. Jev replaces BERT's probabilities on the paper's exact 60/20/20 split. 1-alpha .95 (release has 68 intents)."
+  },
+  "cicc/mtod": {
+    "metric": "single",
+    "method": "CICC (BERT)",
+    "paper": {
+      "CICC (BERT)": 1.0,
+      "B1 heuristic (BERT)": 0.98
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 2 (p. 2418), Single = share of test inputs answered without clarification at the paper's 1-alpha, th=7. Conformal predictor on fine-tuned BERT probabilities. Jev replaces BERT's probabilities on the paper's exact 60/20/20 split. 1-alpha .99. English MTOD only."
+  },
+  "cicc/b77": {
+    "metric": "single",
+    "method": "",
+    "paper": {},
+    "paper_reference": {
+      "CICC (BERT)": 0.73,
+      "B1 heuristic (BERT)": 0.84
+    },
+    "source": "Not comparable at a fixed operating point: CICC Table 2 (p. 2418) prints B77 at 1-alpha .97, but the authors' code selects alpha .02, and the released BERT outputs give Single .79 at .98 (not the printed .73, kept in paper_reference). Jev runs at .98. Its Single is 0.0 at both .98 and .97 (other_levels.0.97), so the conclusion does not depend on which level is used."
+  },
+  "cicc/c150_oos": {
+    "metric": "f1",
+    "method": "CICC-OOS (BERT)",
+    "paper": {
+      "CICC-OOS (BERT)": 0.91,
+      "CICC (BERT)": 0.07
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 3 (p. 2418), OOS F1 (OOS = set size > th). Paper CICC-OOS picked 1-alpha .995, th 6 (AUROC .97). Same selection procedure on Jev picks th=0, flagging every input OOS: Jev F1 0.50 is the trivial all-OOS value (AUROC 0.5)."
+  },
+  "cicc/b77_oos": {
+    "metric": "f1",
+    "method": "CICC-OOS (BERT)",
+    "paper": {
+      "CICC-OOS (BERT)": 0.9,
+      "CICC (BERT)": 0.76
+    },
+    "source": "Hengst et al. 2024 (CICC), Table 3 (p. 2418), OOS F1 with ATIS outliers. Paper CICC-OOS picked 1-alpha .994, th 6 (AUROC .97). Alpha-grid start 1/5871 is our reconstruction (B77 notebook references an undefined y_ood). Same selection on Jev picks th=0: Jev F1 0.667 is the trivial all-OOS value (AUROC 0.5)."
+  },
+  "scalar_constructs/immigration_fear/pointwise": {
+    "metric": "spearman_rho",
+    "method": "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)",
+    "paper": {
+      "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)": 0.91,
+      "DeBERTa-v3-large reward model, 2,000 pairs (Table 3, 5-fold mean)": 0.89,
+      "Qwen-2.5-72B pointwise 0-shot": 0.81,
+      "Llama-3.3-70B pointwise 0-shot": 0.75,
+      "Qwen-2.5-32B pointwise 0-shot": 0.71,
+      "Qwen-2.5-7B pointwise 0-shot": 0.63,
+      "Llama-3.1-8B pointwise 0-shot": 0.68,
+      "Qwen-2.5-72B pointwise 5-shot": 0.87
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Method row: Table 3 (p. 32151), 5-fold mean. Compare with the Jev paper-protocol column.",
+    "jev_paper_protocol": {
+      "path": "supplementary_five_fold_table3_protocol.summary.spearman_rho.mean",
+      "note": "mean of per-fold point estimates over 5 folds, as Table 3 (reward-model rows)"
+    }
+  },
+  "scalar_constructs/ad_negativity/pointwise": {
+    "metric": "spearman_rho",
+    "method": "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)",
+    "paper": {
+      "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)": 0.91,
+      "DeBERTa-v3-large reward model, 2,000 pairs (Table 3, 5-fold mean)": 0.89,
+      "Qwen-2.5-72B pointwise 0-shot": 0.91,
+      "Llama-3.3-70B pointwise 0-shot": 0.89,
+      "Qwen-2.5-32B pointwise 0-shot": 0.87,
+      "Qwen-2.5-7B pointwise 0-shot": 0.85,
+      "Llama-3.1-8B pointwise 0-shot": 0.82,
+      "Qwen-2.5-72B pointwise 5-shot": 0.92
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Method row: Table 3 (p. 32151), 5-fold mean. Compare with the Jev paper-protocol column.",
+    "jev_paper_protocol": {
+      "path": "supplementary_five_fold_table3_protocol.summary.spearman_rho.mean",
+      "note": "mean of per-fold point estimates over 5 folds, as Table 3 (reward-model rows)"
+    }
+  },
+  "scalar_constructs/grandstanding/pointwise": {
+    "metric": "spearman_rho",
+    "method": "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)",
+    "paper": {
+      "DeBERTa-v3-large reward model, all train (Table 3, 5-fold mean)": 0.78,
+      "DeBERTa-v3-large reward model, 2,000 pairs (Table 3, 5-fold mean)": 0.73,
+      "Qwen-2.5-72B pointwise 0-shot": 0.6,
+      "Llama-3.3-70B pointwise 0-shot": 0.55,
+      "Qwen-2.5-32B pointwise 0-shot": 0.58,
+      "Qwen-2.5-7B pointwise 0-shot": 0.58,
+      "Llama-3.1-8B pointwise 0-shot": 0.57,
+      "Qwen-2.5-72B pointwise 5-shot": 0.66,
+      "Llama-3.3-70B pointwise 5-shot": 0.65
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Method row: Table 3 (p. 32151), 5-fold mean. Compare with the Jev paper-protocol column.",
+    "jev_paper_protocol": {
+      "path": "supplementary_five_fold_table3_protocol.summary.spearman_rho.mean",
+      "note": "mean of per-fold point estimates over 5 folds, as Table 3 (reward-model rows)"
+    }
+  },
+  "scalar_constructs/immigration_fear/pairwise": {
+    "metric": "spearman_rho",
+    "method": "Qwen-2.5-72B pairwise 0-shot",
+    "paper": {
+      "Qwen-2.5-72B pairwise 0-shot": 0.72,
+      "Llama-3.3-70B pairwise 0-shot": 0.74,
+      "Qwen-2.5-32B pairwise 0-shot": 0.68,
+      "Qwen-2.5-7B pairwise 0-shot": 0.53,
+      "Llama-3.1-8B pairwise 0-shot": 0.48,
+      "Qwen-2.5-32B pairwise 5-shot": 0.85,
+      "Llama-3.3-70B pairwise 5-shot": 0.85
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Item scores from a Bradley-Terry fit on predicted choices (4-way debiasing). Method row = the paper's largest Qwen, pairwise 0-shot. The paper recommends pointwise scoring (see the pointwise rows)."
+  },
+  "scalar_constructs/ad_negativity/pairwise": {
+    "metric": "spearman_rho",
+    "method": "Qwen-2.5-72B pairwise 0-shot",
+    "paper": {
+      "Qwen-2.5-72B pairwise 0-shot": 0.86,
+      "Llama-3.3-70B pairwise 0-shot": 0.83,
+      "Qwen-2.5-32B pairwise 0-shot": 0.85,
+      "Qwen-2.5-7B pairwise 0-shot": 0.83,
+      "Llama-3.1-8B pairwise 0-shot": 0.46,
+      "Qwen-2.5-72B pairwise 5-shot": 0.87
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Item scores from a Bradley-Terry fit on predicted choices (4-way debiasing). Method row = the paper's largest Qwen, pairwise 0-shot. The paper recommends pointwise scoring (see the pointwise rows)."
+  },
+  "scalar_constructs/grandstanding/pairwise": {
+    "metric": "spearman_rho",
+    "method": "Qwen-2.5-72B pairwise 0-shot",
+    "paper": {
+      "Qwen-2.5-72B pairwise 0-shot": 0.48,
+      "Llama-3.3-70B pairwise 0-shot": 0.54,
+      "Qwen-2.5-32B pairwise 0-shot": 0.51,
+      "Qwen-2.5-7B pairwise 0-shot": 0.45,
+      "Llama-3.1-8B pairwise 0-shot": 0.21,
+      "Qwen-2.5-32B pairwise 5-shot": 0.59
+    },
+    "source": "Licht et al. EMNLP 2025 (scalar constructs). Baseline rows: Table 2 (p. 32150), fold-0 Spearman rho, mean of 25 bootstrap resamples, same protocol as Jev's primary. RECONSTRUCTION: rho/RMSE use the release notebook's item set (test-pair items minus train-pair items: 100/151/303 for immigration_fear/ad_negativity/grandstanding) rather than the 100 V_test items of Sec 3.3. The scorer reproduces all 60 Table 2 cells from the released outputs. Item scores from a Bradley-Terry fit on predicted choices (4-way debiasing). Method row = the paper's largest Qwen, pairwise 0-shot. The paper recommends pointwise scoring (see the pointwise rows). Pairwise rho ceiling under this protocol is ~0.63 (perfect labels)."
+  },
+  "fenice": {
+    "metric": "balanced_accuracy",
+    "method": "FENICE (T5 claims)",
+    "paper": {
+      "FENICE (T5 claims)": 0.657,
+      "FENICE (GPT-3.5 claims)": 0.662,
+      "MENLI": 0.617,
+      "AlignScore": 0.613,
+      "DAE": 0.514
+    },
+    "source": "Scir\u00e8 et al. Findings ACL 2024 (FENICE), Table 7 (p. 14156), balanced accuracy on the long-form narrative test split, threshold tuned on val. Paper's set is 338 pairs over 26 narratives. The public release has only 319 (test 279 / val 40), so Jev scores the released test N=279, not the paper's test rows. Method row uses the same released T5 claim extractor as Jev. No LLM-judge baseline on this set."
+  },
+  "dress_new": {
+    "metric": "qwk_total",
+    "method": "SFT w/ DREsS (New+Std+CASE), Llama 3.1 8B",
+    "paper": {
+      "SFT w/ DREsS (New+Std+CASE), Llama 3.1 8B": 0.691,
+      "SFT w/ DREsS (New+Std+CASE), BERT": 0.685,
+      "ArTS SFT w/ DREsS": 0.69,
+      "NPCR": 0.507,
+      "EASE (SVR)": 0.36,
+      "gpt-4o (B) five-shot ICL": 0.428,
+      "gpt-4o (A) zero-shot ICL": 0.304,
+      "gpt-4o (D) feedback generation": 0.29,
+      "gpt-4o (C) rubric explanation": 0.259
+    },
+    "paper_per_rubric_content_org_lang": {
+      "SFT w/ DREsS (New+Std+CASE), Llama 3.1 8B": [
+        0.631,
+        0.771,
+        0.589
+      ],
+      "SFT w/ DREsS (New+Std+CASE), BERT": [
+        0.642,
+        0.75,
+        0.607
+      ],
+      "gpt-4o (A) zero-shot ICL": [
+        0.31,
+        0.322,
+        0.231
+      ],
+      "gpt-4o (C) rubric explanation": [
+        0.285,
+        0.25,
+        0.2
+      ]
+    },
+    "source": "Yoo et al. ACL 2025 (DREsS), Table 3 (p. 13443), QWK on the summed total over DREsS_New test. RECONSTRUCTION: the paper's 6:2:2 seed-22 split is unreleased. Ours is sklearn train_test_split(test_size=0.2, random_state=22) over file order (456 rows), and 55 rows with empty essays are dropped, so Jev N=401. gpt-4o (C) is the setup closest to Jev's prompt."
+  },
+  "made": {
+    "metric": "macro_f1",
+    "method": "Discriminative FT Llama-3.1-8B-Base",
+    "paper": {
+      "Discriminative FT Llama-3.1-8B-Base": 0.54,
+      "Ettin-1B-Encoder FT": 0.53,
+      "Generative FT Llama-3.1-70B-Base": 0.53,
+      "GPT-5 (thinking)": 0.54,
+      "Qwen3-235B-A22B-Thinking": 0.49,
+      "Qwen3-235B-A22B-Instruct": 0.44,
+      "GPT-4.1": 0.43,
+      "Llama-3.1-70B-Instruct": 0.3,
+      "Qwen3-4B-Instruct": 0.29,
+      "Llama-3.1-8B-Instruct": 0.08
+    },
+    "paper_jaccard": {
+      "Discriminative FT Llama-3.1-8B-Base": 0.62,
+      "GPT-4.1": 0.57,
+      "Llama-3.1-70B-Instruct": 0.43
+    },
+    "source": "MADE (ACL 2026) Table 2 (macro-F1 overall over 1,154 codes, J = Jaccard). Test = released 10,288-report truncated test set."
+  },
+  "relemb/nytfb": {
+    "metric": "p_at_10",
+    "method": "EnCore+Mask",
+    "paper": {
+      "RECON": 0.875,
+      "KGPool": 0.923,
+      "[H,T]": 0.796,
+      "[H,T]+Mask": 0.947,
+      "EnCore+Mask": 0.949
+    },
+    "paper_p_at_30": {
+      "RECON": 0.741,
+      "KGPool": 0.867,
+      "[H,T]": 0.785,
+      "[H,T]+Mask": 0.931,
+      "EnCore+Mask": 0.93
+    },
+    "source": "Mtumbuka & Schockaert, Findings EMNLP 2024, Table 3 (p. 6009). P@K = precision at K% recall (KGPool protocol). NYT-FB is distantly supervised (96% NA)."
+  },
+  "relemb/wikiwd": {
+    "metric": "f1",
+    "method": "EnCore+Mask",
+    "paper": {
+      "RECON": 0.872,
+      "KGPool": 0.886,
+      "[H,T]": 0.752,
+      "[H,T]+Mask": 0.896,
+      "EnCore+Mask": 0.891
+    },
+    "source": "Table 3 (p. 6009), micro F1 with P0 excluded"
+  }
+}

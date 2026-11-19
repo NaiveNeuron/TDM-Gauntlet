@@ -1,0 +1,69 @@
+# jev-native seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Author-perspective framing that keeps the paper's definitions nearly verbatim and adds explicit boundary rules for sarcasm and indirect stance.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: choice
+    instructions: As the author of `tweet`, what is your stance on `target`? Read sarcasm by its intended
+      meaning.
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The author of `tweet` is in favor of `target`, stated directly or clearly implied,
+          including sarcasm whose intended meaning is supportive.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The author of `tweet` is against `target`, stated directly or clearly implied, including
+          sarcasm whose intended meaning is critical.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: The author of `tweet` is neutral toward `target`. The tweet expresses no leaning for
+          or against `target`, even if it mentions `target`.
+        to:
+          label: NONE
+  stance:
+    kind: choice
+    instructions: As the author of `tweet`, is your position on the claim in `target` definite? If it
+      is, which side are you on?
+    state:
+    - tweet
+    - target
+    options:
+      Favor:
+        criterion: The author is definitely in favor of the point or message of the claim in `target`.
+          A hint or a guess is not enough and belongs to Neutral.
+        to:
+          label: FAVOR
+      Against:
+        criterion: The author is definitely against the point or message of the claim in `target`. A hint
+          or a guess is not enough and belongs to Neutral.
+        to:
+          label: AGAINST
+      Neutral:
+        criterion: Based solely on `tweet`, we cannot know whether the author definitely supports or opposes
+          the point or message of the claim in `target`.
+        to:
+          label: NONE

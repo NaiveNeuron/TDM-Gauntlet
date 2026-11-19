@@ -1,0 +1,15 @@
+{
+  "_source": "Havaldar et al., Entailed Between the Lines: Incorporating Implication into NLI, ACL 2025, https://aclanthology.org/2025.acl-long.1552/. Instructions: the first and closing task sentences of the paper's LLM benchmarking prompt, Appendix E.3 (pp. 32289-32290), verbatim, with the eight few-shot examples removed (zero-shot) and the one-word output-format sentence dropped (Jev returns a typed choice); one added sentence maps the state fields onto the prompt's 'premise'/'passage' wording. Each criterion starts with the Appendix E.3 label definition verbatim (label names Implicature/Explicature/Neutral/Contradiction as in that prompt). The two entailment criteria then add the Section 2 definitions verbatim (p. 32275: 'Explicit entailment: Follows directly from ...'; 'Implied entailment: Requires some sort of an additional cognitive step ...'), the definitions the paper's human annotators were given (Section 4.3); these replace, in part, the guidance the removed examples carried. Neutral/contradiction add nothing: Section 2 keeps their standard NLI meaning, which E.3 already states.",
+  "_primitive": "choice",
+  "_state": {"premise": "INLI premise, verbatim", "hypothesis": "one INLI hypothesis, verbatim"},
+  "question": {
+    "type": "choice",
+    "instructions": "Given a premise and a hypothesis, your task is to label whether the hypothesis is a valid inference from the premise. The state holds the premise (\"premise\"; called \"the passage\" in the label definitions) and the hypothesis (\"hypothesis\"). Given a premise and a hypothesis, your task is to label the hypothesis as one of the four labels: Implicature, Explicature, Contradiction, or Neutral.",
+    "criteria": {
+      "implied_entailment": "Implicature: The hypothesis is a valid inference from the passage, but it is NOT explicitly stated in the passage. Implied entailment: Requires some sort of an additional cognitive step, such as logical reasoning, world knowledge, conversational pragmatics, or figurative language.",
+      "explicit_entailment": "Explicature: The hypothesis is a valid inference from the passage, and it is explicitly stated in the passage. Explicit entailment: Follows directly from the text's lexical semantics (e.g. via synonymy and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging, or other endophora).",
+      "neutral": "Neutral: The hypothesis can neither be supported nor contradicted by the passage.",
+      "contradiction": "Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted by the passage."
+    }
+  }
+}

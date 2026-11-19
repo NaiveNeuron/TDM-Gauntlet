@@ -1,0 +1,19 @@
+{
+  "_source": "MATRES annotation scheme, Ning, Wu & Roth, 'A Multi-Axis Annotation Scheme for Event Temporal Relations', ACL 2018, https://aclanthology.org/P18-1122/. Start-point comparison: Section 3 ('we propose ... that TempRel annotation should focus on start-points'; 'our label set for t1start vs. t2start is before, after, equal and vague'). The two questions and the answer-to-label mapping are verbatim from Section 4.2 (p. 1323), with t1start/t2start written out as 'the start time of Event 1/2'. Main-axis restriction: MATRES README (github.com/qiangning/MATRES: 'we only include relations among those events that are on the main-axis') and Section 2.2. Label inventory {BEFORE, AFTER, EQUAL, VAGUE}: ConTempo (Niu et al., Findings ACL 2024) Table 1. Label descriptions restate the Section 4.2 mapping; no test examples are used.",
+  "_primitive": "choice",
+  "_state_fields": {
+    "context": "the sentence containing both events, or the two consecutive sentences containing them, from an English news article; Event 1's trigger word is wrapped in <e1>...</e1> and Event 2's in <e2>...</e2>",
+    "event_1": "Event 1 trigger word",
+    "event_2": "Event 2 trigger word"
+  },
+  "question": {
+    "type": "choice",
+    "instructions": "Temporal relation classification between two events in a news text (MATRES scheme). The state holds \"context\": one sentence or two consecutive sentences from an English news article, in which the trigger word of Event 1 is wrapped in <e1>...</e1> and the trigger word of Event 2 is wrapped in <e2>...</e2>; \"event_1\" and \"event_2\" repeat the two trigger words. Each trigger stands for the whole event it describes. Both events are anchored on the main time axis of the article (the actual story line), so they are temporally comparable. Compare only the START times of the two events; ignore when either event ends. Answer two questions: Q1 = Is it possible that the start time of Event 1 is before the start time of Event 2? Q2 = Is it possible that the start time of Event 2 is before the start time of Event 1? Let the answers be A1 and A2. Then we have a one-to-one mapping as follows: A1=A2=yes -> vague, A1=A2=no -> equal, A1=yes, A2=no -> before, and A1=no, A2=yes -> after. Choose the label for the relation of Event 1 (<e1>) to Event 2 (<e2>), in that order.",
+    "criteria": {
+      "BEFORE": "BEFORE: Event 1 starts before Event 2 starts. It is possible that the start time of Event 1 is before the start time of Event 2 (A1=yes), and it is not possible that the start time of Event 2 is before the start time of Event 1 (A2=no).",
+      "AFTER": "AFTER: Event 1 starts after Event 2 starts. It is not possible that the start time of Event 1 is before the start time of Event 2 (A1=no), and it is possible that the start time of Event 2 is before the start time of Event 1 (A2=yes).",
+      "EQUAL": "EQUAL: Event 1 and Event 2 start at the same time. Neither start time can be before the other (A1=no, A2=no).",
+      "VAGUE": "VAGUE: the text leaves the order of the two start times open. Both orders are possible: the start of Event 1 could be before the start of Event 2 (A1=yes), and the start of Event 2 could be before the start of Event 1 (A2=yes)."
+    }
+  }
+}

@@ -1,0 +1,46 @@
+\paragraph{Task.} Classification of single English social-media posts: HateXplain
+(\textsc{Normal}/\textsc{Offensive}/\textsc{Hate}), Latent Hate (\textsc{Not}/\textsc{Explicit}/\textsc{Implicit
+Hate}) and Implicit Hate, which assigns implicit-hate tweets to fine-grained categories. Implicit Hate has
+<<s:smarter/implicit_hate:per_class_f1|len>> classes, not three as our preregistration row states. The replaced
+predictors are the paper's self-augmented (SFT+DPO) Llama-3.1-8B and COT-T5-XL classifiers. \jev{} only chooses
+the label.
+
+\paragraph{Data and freeze.} The authors' code is public
+(\url{https://github.com/hnghiem-nlp/hate_dpo_public} at <<m:smarter:paper.code.commit|commit>>), but their test files
+were never released. Sources: HateXplain (\url{https://github.com/hate-alert/HateXplain} at
+<<m:smarter:sources.hatexplain.commit|commit>>, MIT) is frozen with text (SHA-256
+<<m:smarter:frozen.hatexplain.sha256|sha>>). The Latent Hatred corpus zip (\url{https://github.com/SALT-NLP/implicit-hate},
+CC BY 4.0) is not redistributed: its frozen files hold tweet IDs, row indices, gold labels and per-row SHA-256s, and
+the text is rebuilt from the zip and verified.
+
+\paragraph{Test set and screen.} The test sets are reconstructions made by \texttt{scripts/prepare\_smarter.py},
+using the authors' own \texttt{split\_train\_test} and \texttt{k\_shot\_sample} code with the code's default
+seeds and the Table~4 split ratios and per-class sizes. Scored $N=$ <<s:smarter/hatexplain:n|int>>, <<s:smarter/latent_hate:n|int>> and
+<<s:smarter/implicit_hate:n|int>>. Latent Hate's \textsc{Explicit Hate} class contributes all
+<<s:smarter/latent_hate:n_gold.Explicit Hate|int>> of its test-split rows, because the release has too few for the
+paper's per-class sample. The language screen (langid, non-ASCII ratio and function words, every flag
+checked) removed <<s:smarter/hatexplain:n_excluded_non_english|int>> non-English HateXplain posts.
+
+\paragraph{Prompt.} One \textsc{<<q:smarter_hatexplain:_primitive|upper>>} per post (state = \{post\}). The
+instruction is the paper's classification prompt without explanation (Fig.~6), and the criteria quote its Table~10
+label definitions verbatim. Prediction: argmax, ties broken in Table~4 order.
+
+\paragraph{Metric.} Macro-F1 per dataset (Table~1, p.~34312).
+
+<<metrics
+cols: smarter/hatexplain=HateX.; smarter/latent_hate=Latent; smarter/implicit_hate=Implicit
+n = $N$ | int
+macro_f1 = Macro-F1 | pct
+accuracy = Accuracy | pct
+>>
+{\setlength{\tabcolsep}{3pt}
+<<papernums:smarter/hatexplain=HateX.;smarter/latent_hate=Latent;smarter/implicit_hate=Implicit|paper|src1>>}
+
+\paragraph{Deviations and status.} Reconstructed test set: the sources, label spaces, ratios, seeds and sample
+sizes follow the authors' code, but row identity with the unreleased files cannot be verified. \jev{} is well below
+the fine-tuned models. It falls within the range of the paper's zero-shot LLMs on HateXplain and Latent Hate, and
+near the weakest of them on Implicit Hate. Its predictions are skewed: it predicts \textsc{Hate}
+<<s:smarter/hatexplain:n_pred.Hate|int>> times against <<s:smarter/hatexplain:n_gold.Hate|int>> gold, and
+\textsc{Stereotypes and Misinformation} <<s:smarter/implicit_hate:n_pred.Stereotypes and Misinformation|int>> times
+against <<s:smarter/implicit_hate:n_gold.Stereotypes and Misinformation|int>>. HateXplain's no-majority posts and
+Implicit Hate's out-of-taxonomy \texttt{other} posts were removed before splitting.

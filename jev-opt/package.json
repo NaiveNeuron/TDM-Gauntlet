@@ -1,0 +1,21 @@
+{
+	"name": "jev-opt",
+	"version": "0.1.0",
+	"description": "Optimize Jev decision programs against labelled dev data (omp plugin + GEPA worker)",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"test": "node --test extension/*.test.ts"
+	},
+	"peerDependencies": {
+		"@oh-my-pi/pi-ai": "^18.3.0",
+		"@oh-my-pi/pi-coding-agent": "^18.3.0"
+	},
+	"devDependencies": {
+		"@oh-my-pi/pi-ai": "^18.3.0",
+		"@oh-my-pi/pi-coding-agent": "^18.3.0"
+	},
+	"omp": {
+		"extensions": ["./extension/index.ts"]
+	}
+}

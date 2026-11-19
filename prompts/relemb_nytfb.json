@@ -1,0 +1,287 @@
+{
+  "_source": "Instruction: task statement quoted from Mtumbuka & Schockaert (2024) Section 3 (p. 6005). Inventory: the paper's NYT_RELATION_TYPES (56 incl. NA; fmtumbuka/RelationEmbeddings@66d3c9a experiment/__init__.py), the labels of the NYT training file. Keys are the Freebase relation paths verbatim. No released definitions exist (Riedel et al. 2010 give none; Freebase is shut down): descriptions are a fixed mechanical reading of the path /domain/type/property. NA description written for this audit.",
+  "instructions": "We consider the standard sentence-level relation extraction setting, where we are given a sentence in which two entities are highlighted, which we refer to as the head entity and tail entity. The goal is to predict which relationship holds between these two entities, given a pre-defined set of candidate relation labels. The relation labels are Freebase relations (/domain/type/property): the head entity is the subject and the tail entity is the value. Choose NA if none of the listed relations holds from the head entity to the tail entity.\n\nSentence (head entity marked <e1>...</e1>, tail entity marked <e2>...</e2>): {marked_sentence}\nHead entity: {head}\nTail entity: {tail}",
+  "negative_label": "NA",
+  "labels": [
+    {
+      "label": "NA",
+      "key": "NA",
+      "description": "No relation: none of the listed Freebase relations holds between the head entity and the tail entity."
+    },
+    {
+      "label": "/broadcast/content/location",
+      "key": "/broadcast/content/location",
+      "description": "Freebase relation /broadcast/content/location: the head entity is a content (Freebase type /broadcast/content) and the tail entity is a value of its 'location' property."
+    },
+    {
+      "label": "/broadcast/producer/location",
+      "key": "/broadcast/producer/location",
+      "description": "Freebase relation /broadcast/producer/location: the head entity is a producer (Freebase type /broadcast/producer) and the tail entity is a value of its 'location' property."
+    },
+    {
+      "label": "/business/business_location/parent_company",
+      "key": "/business/business_location/parent_company",
+      "description": "Freebase relation /business/business_location/parent_company: the head entity is a business location (Freebase type /business/business_location) and the tail entity is a value of its 'parent company' property."
+    },
+    {
+      "label": "/business/company/advisors",
+      "key": "/business/company/advisors",
+      "description": "Freebase relation /business/company/advisors: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'advisors' property."
+    },
+    {
+      "label": "/business/company/founders",
+      "key": "/business/company/founders",
+      "description": "Freebase relation /business/company/founders: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'founders' property."
+    },
+    {
+      "label": "/business/company/industry",
+      "key": "/business/company/industry",
+      "description": "Freebase relation /business/company/industry: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'industry' property."
+    },
+    {
+      "label": "/business/company/locations",
+      "key": "/business/company/locations",
+      "description": "Freebase relation /business/company/locations: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'locations' property."
+    },
+    {
+      "label": "/business/company/major_shareholders",
+      "key": "/business/company/major_shareholders",
+      "description": "Freebase relation /business/company/major_shareholders: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'major shareholders' property."
+    },
+    {
+      "label": "/business/company/place_founded",
+      "key": "/business/company/place_founded",
+      "description": "Freebase relation /business/company/place_founded: the head entity is a company (Freebase type /business/company) and the tail entity is a value of its 'place founded' property."
+    },
+    {
+      "label": "/business/company_advisor/companies_advised",
+      "key": "/business/company_advisor/companies_advised",
+      "description": "Freebase relation /business/company_advisor/companies_advised: the head entity is a company advisor (Freebase type /business/company_advisor) and the tail entity is a value of its 'companies advised' property."
+    },
+    {
+      "label": "/business/company_shareholder/major_shareholder_of",
+      "key": "/business/company_shareholder/major_shareholder_of",
+      "description": "Freebase relation /business/company_shareholder/major_shareholder_of: the head entity is a company shareholder (Freebase type /business/company_shareholder) and the tail entity is a value of its 'major shareholder of' property."
+    },
+    {
+      "label": "/business/person/company",
+      "key": "/business/person/company",
+      "description": "Freebase relation /business/person/company: the head entity is a person (Freebase type /business/person) and the tail entity is a value of its 'company' property."
+    },
+    {
+      "label": "/business/shopping_center/owner",
+      "key": "/business/shopping_center/owner",
+      "description": "Freebase relation /business/shopping_center/owner: the head entity is a shopping center (Freebase type /business/shopping_center) and the tail entity is a value of its 'owner' property."
+    },
+    {
+      "label": "/business/shopping_center_owner/shopping_centers_owned",
+      "key": "/business/shopping_center_owner/shopping_centers_owned",
+      "description": "Freebase relation /business/shopping_center_owner/shopping_centers_owned: the head entity is a shopping center owner (Freebase type /business/shopping_center_owner) and the tail entity is a value of its 'shopping centers owned' property."
+    },
+    {
+      "label": "/film/film/featured_film_locations",
+      "key": "/film/film/featured_film_locations",
+      "description": "Freebase relation /film/film/featured_film_locations: the head entity is a film (Freebase type /film/film) and the tail entity is a value of its 'featured film locations' property."
+    },
+    {
+      "label": "/film/film_festival/location",
+      "key": "/film/film_festival/location",
+      "description": "Freebase relation /film/film_festival/location: the head entity is a film festival (Freebase type /film/film_festival) and the tail entity is a value of its 'location' property."
+    },
+    {
+      "label": "/film/film_location/featured_in_films",
+      "key": "/film/film_location/featured_in_films",
+      "description": "Freebase relation /film/film_location/featured_in_films: the head entity is a film location (Freebase type /film/film_location) and the tail entity is a value of its 'featured in films' property."
+    },
+    {
+      "label": "/location/administrative_division/country",
+      "key": "/location/administrative_division/country",
+      "description": "Freebase relation /location/administrative_division/country: the head entity is a administrative division (Freebase type /location/administrative_division) and the tail entity is a value of its 'country' property."
+    },
+    {
+      "label": "/location/br_state/capital",
+      "key": "/location/br_state/capital",
+      "description": "Freebase relation /location/br_state/capital: the head entity is a br state (Freebase type /location/br_state) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/cn_province/capital",
+      "key": "/location/cn_province/capital",
+      "description": "Freebase relation /location/cn_province/capital: the head entity is a cn province (Freebase type /location/cn_province) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/country/administrative_divisions",
+      "key": "/location/country/administrative_divisions",
+      "description": "Freebase relation /location/country/administrative_divisions: the head entity is a country (Freebase type /location/country) and the tail entity is a value of its 'administrative divisions' property."
+    },
+    {
+      "label": "/location/country/capital",
+      "key": "/location/country/capital",
+      "description": "Freebase relation /location/country/capital: the head entity is a country (Freebase type /location/country) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/de_state/capital",
+      "key": "/location/de_state/capital",
+      "description": "Freebase relation /location/de_state/capital: the head entity is a de state (Freebase type /location/de_state) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/fr_region/capital",
+      "key": "/location/fr_region/capital",
+      "description": "Freebase relation /location/fr_region/capital: the head entity is a fr region (Freebase type /location/fr_region) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/in_state/administrative_capital",
+      "key": "/location/in_state/administrative_capital",
+      "description": "Freebase relation /location/in_state/administrative_capital: the head entity is a in state (Freebase type /location/in_state) and the tail entity is a value of its 'administrative capital' property."
+    },
+    {
+      "label": "/location/in_state/judicial_capital",
+      "key": "/location/in_state/judicial_capital",
+      "description": "Freebase relation /location/in_state/judicial_capital: the head entity is a in state (Freebase type /location/in_state) and the tail entity is a value of its 'judicial capital' property."
+    },
+    {
+      "label": "/location/in_state/legislative_capital",
+      "key": "/location/in_state/legislative_capital",
+      "description": "Freebase relation /location/in_state/legislative_capital: the head entity is a in state (Freebase type /location/in_state) and the tail entity is a value of its 'legislative capital' property."
+    },
+    {
+      "label": "/location/it_region/capital",
+      "key": "/location/it_region/capital",
+      "description": "Freebase relation /location/it_region/capital: the head entity is a it region (Freebase type /location/it_region) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/jp_prefecture/capital",
+      "key": "/location/jp_prefecture/capital",
+      "description": "Freebase relation /location/jp_prefecture/capital: the head entity is a jp prefecture (Freebase type /location/jp_prefecture) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/location/contains",
+      "key": "/location/location/contains",
+      "description": "Freebase relation /location/location/contains: the head entity is a location (Freebase type /location/location) and the tail entity is a value of its 'contains' property."
+    },
+    {
+      "label": "/location/mx_state/capital",
+      "key": "/location/mx_state/capital",
+      "description": "Freebase relation /location/mx_state/capital: the head entity is a mx state (Freebase type /location/mx_state) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/neighborhood/neighborhood_of",
+      "key": "/location/neighborhood/neighborhood_of",
+      "description": "Freebase relation /location/neighborhood/neighborhood_of: the head entity is a neighborhood (Freebase type /location/neighborhood) and the tail entity is a value of its 'neighborhood of' property."
+    },
+    {
+      "label": "/location/province/capital",
+      "key": "/location/province/capital",
+      "description": "Freebase relation /location/province/capital: the head entity is a province (Freebase type /location/province) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/location/us_county/county_seat",
+      "key": "/location/us_county/county_seat",
+      "description": "Freebase relation /location/us_county/county_seat: the head entity is a us county (Freebase type /location/us_county) and the tail entity is a value of its 'county seat' property."
+    },
+    {
+      "label": "/location/us_state/capital",
+      "key": "/location/us_state/capital",
+      "description": "Freebase relation /location/us_state/capital: the head entity is a us state (Freebase type /location/us_state) and the tail entity is a value of its 'capital' property."
+    },
+    {
+      "label": "/people/deceased_person/place_of_burial",
+      "key": "/people/deceased_person/place_of_burial",
+      "description": "Freebase relation /people/deceased_person/place_of_burial: the head entity is a deceased person (Freebase type /people/deceased_person) and the tail entity is a value of its 'place of burial' property."
+    },
+    {
+      "label": "/people/deceased_person/place_of_death",
+      "key": "/people/deceased_person/place_of_death",
+      "description": "Freebase relation /people/deceased_person/place_of_death: the head entity is a deceased person (Freebase type /people/deceased_person) and the tail entity is a value of its 'place of death' property."
+    },
+    {
+      "label": "/people/ethnicity/geographic_distribution",
+      "key": "/people/ethnicity/geographic_distribution",
+      "description": "Freebase relation /people/ethnicity/geographic_distribution: the head entity is a ethnicity (Freebase type /people/ethnicity) and the tail entity is a value of its 'geographic distribution' property."
+    },
+    {
+      "label": "/people/ethnicity/included_in_group",
+      "key": "/people/ethnicity/included_in_group",
+      "description": "Freebase relation /people/ethnicity/included_in_group: the head entity is a ethnicity (Freebase type /people/ethnicity) and the tail entity is a value of its 'included in group' property."
+    },
+    {
+      "label": "/people/ethnicity/includes_groups",
+      "key": "/people/ethnicity/includes_groups",
+      "description": "Freebase relation /people/ethnicity/includes_groups: the head entity is a ethnicity (Freebase type /people/ethnicity) and the tail entity is a value of its 'includes groups' property."
+    },
+    {
+      "label": "/people/ethnicity/people",
+      "key": "/people/ethnicity/people",
+      "description": "Freebase relation /people/ethnicity/people: the head entity is a ethnicity (Freebase type /people/ethnicity) and the tail entity is a value of its 'people' property."
+    },
+    {
+      "label": "/people/family/country",
+      "key": "/people/family/country",
+      "description": "Freebase relation /people/family/country: the head entity is a family (Freebase type /people/family) and the tail entity is a value of its 'country' property."
+    },
+    {
+      "label": "/people/family/members",
+      "key": "/people/family/members",
+      "description": "Freebase relation /people/family/members: the head entity is a family (Freebase type /people/family) and the tail entity is a value of its 'members' property."
+    },
+    {
+      "label": "/people/person/children",
+      "key": "/people/person/children",
+      "description": "Freebase relation /people/person/children: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'children' property."
+    },
+    {
+      "label": "/people/person/ethnicity",
+      "key": "/people/person/ethnicity",
+      "description": "Freebase relation /people/person/ethnicity: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'ethnicity' property."
+    },
+    {
+      "label": "/people/person/nationality",
+      "key": "/people/person/nationality",
+      "description": "Freebase relation /people/person/nationality: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'nationality' property."
+    },
+    {
+      "label": "/people/person/place_lived",
+      "key": "/people/person/place_lived",
+      "description": "Freebase relation /people/person/place_lived: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'place lived' property."
+    },
+    {
+      "label": "/people/person/place_of_birth",
+      "key": "/people/person/place_of_birth",
+      "description": "Freebase relation /people/person/place_of_birth: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'place of birth' property."
+    },
+    {
+      "label": "/people/person/profession",
+      "key": "/people/person/profession",
+      "description": "Freebase relation /people/person/profession: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'profession' property."
+    },
+    {
+      "label": "/people/person/religion",
+      "key": "/people/person/religion",
+      "description": "Freebase relation /people/person/religion: the head entity is a person (Freebase type /people/person) and the tail entity is a value of its 'religion' property."
+    },
+    {
+      "label": "/people/place_of_interment/interred_here",
+      "key": "/people/place_of_interment/interred_here",
+      "description": "Freebase relation /people/place_of_interment/interred_here: the head entity is a place of interment (Freebase type /people/place_of_interment) and the tail entity is a value of its 'interred here' property."
+    },
+    {
+      "label": "/people/profession/people_with_this_profession",
+      "key": "/people/profession/people_with_this_profession",
+      "description": "Freebase relation /people/profession/people_with_this_profession: the head entity is a profession (Freebase type /people/profession) and the tail entity is a value of its 'people with this profession' property."
+    },
+    {
+      "label": "/sports/sports_team/location",
+      "key": "/sports/sports_team/location",
+      "description": "Freebase relation /sports/sports_team/location: the head entity is a sports team (Freebase type /sports/sports_team) and the tail entity is a value of its 'location' property."
+    },
+    {
+      "label": "/sports/sports_team_location/teams",
+      "key": "/sports/sports_team_location/teams",
+      "description": "Freebase relation /sports/sports_team_location/teams: the head entity is a sports team location (Freebase type /sports/sports_team_location) and the tail entity is a value of its 'teams' property."
+    },
+    {
+      "label": "/time/event/locations",
+      "key": "/time/event/locations",
+      "description": "Freebase relation /time/event/locations: the head entity is a event (Freebase type /time/event) and the tail entity is a value of its 'locations' property."
+    }
+  ]
+}

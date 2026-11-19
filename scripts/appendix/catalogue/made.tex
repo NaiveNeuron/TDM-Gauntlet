@@ -1,0 +1,13 @@
+@task
+Given an FDA report of an adverse event involving a medical device, assign every applicable code from the IMDRF
+adverse-event terminology, covering both device problems and effects on the patient.
+@output
+A subset of <<q:made_v2:questions|len>> hierarchical IMDRF codes (A = device problems, E = health effects), each
+code implying its parents.
+@example the paper's Figure~1 illustration, paraphrased, since test reports are gated. Labels are the figure's model output and are not gold labels
+Report & Device: a sensor-augmented insulin infusion pump;~\ldots{} [paraphrased]
+Event & <<rx:data/raw/made/paper.txt:Event Type: (\w+)|c40>>
+Description & The customer was reportedly hospitalized with diabetic ketoacidosis, with a blood glucose of 500 on admission~\ldots{} [paraphrased]
+Fig.~1 labels & <<rx:data/raw/made/paper.txt:(E12: Endocrine and Nutrition)|c60>>; <<rx:data/raw/made/paper.txt:(E1205: Hyperglycemia)|c60>>; <<rx:data/raw/made/paper.txt:(E120501: Diabetic Ketoacidosis)|c60>>
+@sets
+made = MADE truncated test set | reports

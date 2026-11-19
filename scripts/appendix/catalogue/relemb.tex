@@ -1,0 +1,14 @@
+@task
+Given a sentence in which two entities are marked, decide which relation (if any) the sentence expresses from
+the first entity to the second.
+@output
+In Wiki-WD, one of <<q:relemb_wikiwd_v2:labels|len>> Wikidata relation names, such as ``<<q:relemb_wikiwd_v2:labels.0.key>>''; in NYT-FB,
+one of <<q:relemb_nytfb_v2:labels|len>> Freebase relation paths, such as ``<<q:relemb_nytfb_v2:labels.0.key>>''.
+@example frozen Wiki-WD test set (CC BY-SA, item \texttt{<<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.id>>})
+Sentence & <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.0>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.1>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.2>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.3>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.4>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.5>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.6>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.7>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.8>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.9>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.10>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.11>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.12>>
+Head & <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.4>> <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.5>>
+Tail & <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.tokens.9>>
+Gold & <<jl:data/frozen/relemb/wikiwd_test.jsonl.gz:55.edges.0.2>> (<<q:relemb_wikiwd_v2:labels.44.key>>)
+@sets
+relemb/wikiwd = Wiki-WD | entity pairs
+relemb/nytfb = NYT-FB | entity-pair rows

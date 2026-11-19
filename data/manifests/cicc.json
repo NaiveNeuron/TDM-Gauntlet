@@ -1,0 +1,74 @@
+{
+  "task": ["cicc/acid", "cicc/atis", "cicc/b77", "cicc/c150", "cicc/hwu64", "cicc/mtod", "cicc/c150_oos", "cicc/b77_oos"],
+  "paper": {
+    "title": "Conformal Intent Classification and Clarification for Fast and Accurate Intent Recognition",
+    "authors": "Floris den Hengst, Ralf Wolter, Patrick Altmeyer, Arda Kaygan",
+    "venue": "Findings of NAACL 2024, pages 2412-2432",
+    "url": "https://aclanthology.org/2024.findings-naacl.156/",
+    "pdf_sha256": "084e201b6c15eaa95ed826e7bd0f59ea457bf49f31ba858c7148cbd167d811d5"
+  },
+  "source": {
+    "code_repo": "https://github.com/florisdenhengst/cicc (paper footnote 3)",
+    "code_commit": "18019a17a5646cdee4949101c6234cead9aaac96 (2025-01-14, HEAD of main at download 2026-09-26)",
+    "raw_clone": "data/raw/cicc/repo",
+    "licence": "Repo: MIT. Underlying corpora: ACID (github.com/AmFamMLTeam/ACID@66bc5e0) has no licence file; ATIS is LDC-derived; BANKING77 CC-BY-4.0, CLINC150 CC-BY-3.0, HWU64 CC-BY-4.0, MTOD CC-BY-SA-4.0 (from the datasets' public cards; not verified further). Mixed/missing licences, so no utterance text is stored: the frozen files that scripts/prepare_cicc.py writes hold row coordinates, gold intent and a per-row SHA-256 of [text, gold]; the adapter rebuilds text from the clone and verifies every hash.",
+    "split_provenance": "The released data/<dataset>/bert/{calibration,test}_predictions.csv are the exact calibration/test splits the paper evaluated (pretrain_<dataset>.ipynb: HF datasets train_test_split 60/20/20, stratified except ATIS, seed=1; the fine-tuned BERT softmax is stored per row). We use these files directly instead of re-running the split, so the split is identical by construction. Columns used: text, hash (0-based row id), label (index into labels.csv). The BERT scores are only used offline to validate the scoring port.",
+    "files_sha256": {
+      "data/acid/bert/calibration_predictions.csv": "693ad45f3afdbabef5773b2d6b5eee658337c0c84feb7f85984e609171836978",
+      "data/acid/bert/labels.csv": "3d6be0f72ab0d3cebf53e2720e38d66396eda34add067097ca0fe0bd08119c2e",
+      "data/acid/bert/test_predictions.csv": "8e3cd1b08181216132e8edbc79fc0a6f66c072f9354e3ac316045275001c8f02",
+      "data/atis/bert/calibration_predictions.csv": "ab901c8c7ddd4b08710cc892fee6d3e1e8ea3b0ad444b3e3ae9ec3f804945133",
+      "data/atis/bert/labels.csv": "dfa0dd6de75d7ebf12dcea4066d86c607d654dc5d76a68abba30461a281a93e9",
+      "data/atis/bert/test_predictions.csv": "eedd7470d3ba4961884e3ba2c6947c75878bb74c8c8ae978ad92a46ab6c48788",
+      "data/banking77/bert/atis_predictions.csv": "b0cc9f8ebb700eece4f3bd94555fb69f6eda88539375e5869d36ced3b743c4eb",
+      "data/banking77/bert/calibration_predictions.csv": "4bfcceb1afae28989dd9e5e5cd2bf6dd22d8300c5e31385656d37a1fd7b40d1b",
+      "data/banking77/bert/labels.csv": "fafc85ac023b1c23b156dc7a9768c41a3bd7d6a2e9630011a5caea1588d8d5e4",
+      "data/banking77/bert/test_predictions.csv": "67a19c68acf176ccfc132c93296f733cb5e1c804afa89f94bf242c24cc2552f1",
+      "data/clinc150/bert/calibration_predictions.csv": "8f48b9250c6b565917f201ab56bf917a25fcecbb296ba70de28724d5b7154f1e",
+      "data/clinc150/bert/labels.csv": "6871914949abc794ea3eb4a3ad0c81070f96182f4d5d44342878dee49853723b",
+      "data/clinc150/bert/ood_predictions.csv": "f9e6e6cf83765c87ebc9c88c4afb055afd4a0752005c90f174909182f672b631",
+      "data/clinc150/bert/test_predictions.csv": "c6472c40a477b7cd2343c1a2dee3e2b723f3f5dc0f6a9db14ed1d39b9d1e8dcc",
+      "data/hwu64/bert/calibration_predictions.csv": "3254b91e509a776dcc127ee73944fe9f3378d8e490c8afed456de4e0f6b1d9c1",
+      "data/hwu64/bert/labels.csv": "82aeff555244e052153ab7781a0f91fa1a9cd7a41ca935364995414758b20752",
+      "data/hwu64/bert/test_predictions.csv": "803180210443cd361649812e227c89a5c45ee5d5d1d9599ff213b7692cc267a1",
+      "data/mtod/bert/calibration_predictions.csv": "597c7fd5ebcb9bcaa662b9cbac2b8622c0c3ba77f84d2059ed308e782aa41a07",
+      "data/mtod/bert/labels.csv": "00a6824737fe83618296b8089e3d14156c534f7977d3012973f07b8373b37b6e",
+      "data/mtod/bert/test_predictions.csv": "662a4d4462a3fd77e337c144f20f25e34a51ab60f94585b3f5e9556c7e5976cf"
+    },
+    "mtod_release": "https://download.pytorch.org/data/multilingual_task_oriented_dialog_slotfilling.zip (fb.me/multilingual_task_oriented_data), sha256 fdd3ab27570f0d9c3a692260c69c53c5bc5dfff145dadfc428d72b93566b5fce; used only to recover the domain of each MTOD intent (en/*.tsv column 1, 12 domain/intent labels, 43,323 rows = paper Table 1) for the prompt criteria."
+  },
+  "excluded": "The Dutch industry dataset IND (not released, and not English) and the B77/DFCX setting (commercial Dialogflow CX scores, not a replaceable open predictor). Free-form clarification-question wording (Vicuna) is not scored.",
+  "splits": {
+    "acid":  {"intents": 175, "calibration": 4435, "test": 4434, "test_intents_present": 175, "paper_total": 22172},
+    "atis":  {"intents": 26, "calibration": 1175, "test": 1174, "test_intents_present": 20, "paper_total": 5871, "note": "random (non-stratified) split, as in the paper"},
+    "b77":   {"intents": 77, "calibration": 2617, "test": 2617, "test_intents_present": 77, "paper_total": 13083},
+    "c150":  {"intents": 150, "calibration": 3605, "test": 3605, "test_intents_present": 150, "paper_total": 18025, "note": "C150-IS: the release's test file has 3,845 rows incl. 240 `oos`; they are dropped as in cicc_clinc150_bert.ipynb (df_test = test[label != 42]). Jev's inventory excludes `oos` (the paper's BERT was trained without OOS rows; its oos output is untrained)."},
+    "hwu64": {"intents": 68, "calibration": 5143, "test": 5143, "test_intents_present": 68, "paper_total": 25716, "note": "the release has 68 intent labels although the paper calls the set HWU64"},
+    "mtod":  {"intents": 12, "calibration": 8665, "test": 8665, "test_intents_present": 12, "paper_total": 43323},
+    "c150_oos": {"calibration": 3605, "oos_calibration": 1800, "oos_calibration_oos": 600, "oos_test": 1800, "oos_test_oos": 600, "unique_items": 6005, "construction": "cicc_clinc150_bert.ipynb cell 3 replayed on row ids: np.random.seed(42); OOS pool (ood_predictions.csv, 1,200) shuffled; 1,200 in-scope test rows sampled (unused draw, kept for RNG state); OOS-calibration = 1,200 calibration rows + 600 OOS; OOS-test = 1,200 in-scope test rows + 600 OOS. Verified against the notebook's printed X_ood_test (first/last five ids, 1,800 rows)."},
+    "b77_oos": {"calibration": 2617, "oos_calibration": 5872, "oos_calibration_oos": 4563, "oos_test": 2616, "oos_test_oos": 1308, "unique_items": 11105, "construction": "cicc_banking77_bert.ipynb cell 3: np.random.seed(42); ATIS pool (banking77/bert/atis_predictions.csv, 5,871 ATIS utterances labelled 77=oos) shuffled; B77 test shuffled; OOS-calibration = second half of the test (1,309) + ATIS[1308:] (4,563); OOS-test = first half of the test (1,308) + ATIS[:1308] (1,308). The conformal quantile always uses the B77 calibration split."}
+  },
+  "english_verification": {
+    "method": "All 58,589 frozen utterance rows (calibration + test of the six datasets, C150 OOS pool, B77's ATIS pool) screened with langid 1.1.6 (normalised; flag non-en with p > 0.99 and >= 4 tokens) and a non-ASCII character check; flags in data/frozen/cicc/language_screen.json.",
+    "flags": 152,
+    "result": "All 152 flags inspected: every one is English (langid confusions on short MTOD commands such as 'Temperature tonight near Karachi Fahrenheit' -> de, 'do i need an umbrella today' -> it; non-ASCII only currency symbols £/€, curly apostrophes and an ellipsis). No rows dropped; N equals the release.",
+    "datasets": "All six are English-language benchmarks by construction (paper Section 4: 'six public intent recognition data sets in English'); MTOD uses only its English part (the authors' convert_mtod.py also writes es/th, which the paper does not use)."
+  },
+  "prompt": {
+    "files": "prompts/cicc_{acid,atis,b77,c150,hwu64,mtod}.json (written by scripts/prepare_cicc.py; OOS tasks reuse the in-scope prompt so their requests hit the same cache entries)",
+    "primitive": "choice over the full intent inventory (max 175 options, ACID; below the 255-option limit, no decomposition)",
+    "criteria": "released intent names rendered with the authors' label.replace('_', ' ') (their notebooks and Appendix B tables); MTOD adds the release domain (e.g. weather/find). No intent definitions exist in any release.",
+    "instruction": "one sentence naming the assistant context from each dataset paper + 'choose the single intent'.",
+    "truncation": "utterance cut at 36,000 chars; longest frozen request is 9,055 chars (ACID, incl. criteria); n_truncated = 0 for every task"
+  },
+  "validation_offline": {
+    "bert_replay": "The scoring port (MAPIE 0.6.5 'score' quantile and set rule; src/eval.py cq_stats; heuristics B1-B3; notebook OOS procedure) run on the released BERT probabilities reproduces the release's results/results.csv to all printed digits for ACID, ATIS, C150, HWU64, MTOD (CICC and B1-B3) and B77 at alpha=.02; Table 3 C150-OOS CICC F1 .0676 / AUROC .878 and CICC-OOS 1-alpha .99558, th 6, F1 .9054 / AUROC .970 (notebook cells 23-26, 41 exactly); B77-OOS CICC (alpha .02) F1 .757 / AUROC .915 and CICC-OOS 1-alpha .9938, th 6, F1 .903 / AUROC .967 (paper .76/.92 and .994/6/.90/.97).",
+    "synthetic": "gold one-hot answers give coverage 1, Single 1, accuracy 1 on every in-scope task; all 68,388 requests (55,425 unique bodies) build and serialise."
+  },
+  "deviations": [
+    "B77 alpha: Tables 2/3 print 1-alpha = .97 but the reported numbers were produced at alpha = .02 (authors' index_for_arange(.01,.01,.03) truncates to index 1). We run at .98 and also report .97.",
+    "B77-OOS alpha grid start 1/5871 is a reconstruction (the notebook references an undefined y_ood); C150 uses the notebook's 1/2400. Grid values below 1/(n_cal+1) are skipped (MAPIE rejects them).",
+    "Paper Table 2 B77/BERT Single .73 and |CQ| 2.84 are not reproducible from the released outputs at any alpha (.02 gives .79 / 2.90, matching results.csv and Tables 8/9).",
+    "Jev inventory for C150 has 150 intents (no `oos` option), matching the in-scope BERT training."
+  ]
+}

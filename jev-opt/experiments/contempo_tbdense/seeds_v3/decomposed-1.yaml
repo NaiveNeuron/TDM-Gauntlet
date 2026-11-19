@@ -1,0 +1,82 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; first decide whether a relation is stated or clearly implied (else VAGUE), then choose between ordering (non-overlapping) and overlap, then pick the fine relation, with contrastive criteria at each step.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: In `context`, the trigger of Event 1 is marked <e1>...</e1> (also in `event_1`) and
+      the trigger of Event 2 is marked <e2>...</e2> (also in `event_2`). Each trigger stands for its whole
+      event as a time interval. Treat negated, modal, conditional and hypothetical events as if they occur.
+      Which kind of temporal relation does the writer intend a reader to infer between Event 1 and Event
+      2?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      ORDERED:
+        criterion: The text makes it at least 80% clear that one event ends before the other begins, including
+          immediately before. The intervals do not overlap. If they overlap, choose OVERLAP instead.
+        to:
+          node: relation_order
+      OVERLAP:
+        criterion: 'The text makes it at least 80% clear that the two intervals overlap: one happens during
+          the other, one starts or ends the other, or both happen at the same time. This includes an aspectual
+          or manner event inside the event it describes. If one event ends before the other begins, choose
+          ORDERED instead.'
+        to:
+          node: relation_overlap
+      VAGUE:
+        criterion: The text leaves the timing of the two events underspecified, so no relation can be
+          chosen with 80% confidence. This includes a generic event paired with a specific, non-generic
+          event.
+        to:
+          label: VAGUE
+  relation_order:
+    kind: choice
+    instructions: The events marked <e1> (`event_1`) and <e2> (`event_2`) in `context` do not overlap
+      in time. Which one happens first?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 ends before Event 2 begins, including immediately before. Event 1 is the earlier
+          event.
+      AFTER:
+        criterion: Event 1 begins after Event 2 ends, including immediately after. Event 2 is the earlier
+          event.
+  relation_overlap:
+    kind: choice
+    instructions: The events marked <e1> (`event_1`) and <e2> (`event_2`) in `context` overlap in time.
+      Which interval contains the other?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      INCLUDES:
+        criterion: The interval of Event 1 contains the interval of Event 2. Event 2 happens during Event
+          1, or Event 2 starts or ends Event 1. Event 1 is the longer, broader event.
+      IS_INCLUDED:
+        criterion: The interval of Event 1 lies inside the interval of Event 2. Event 1 happens during
+          Event 2, or Event 1 starts or ends Event 2. This includes Event 1 being an aspectual or manner
+          event of Event 2.
+      SIMULTANEOUS:
+        criterion: Event 1 and Event 2 occupy the same time interval. Neither event is broader than the
+          other.

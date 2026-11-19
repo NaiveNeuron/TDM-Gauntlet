@@ -1,0 +1,148 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy, first a broad domain group and then the field within the group.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: choice
+    instructions: Which broad domain does the research described in `abstract` mainly belong to?
+    state:
+    - abstract
+    options:
+      physical:
+        criterion: 'Physical sciences and engineering: physics, chemistry, materials, mathematics, computing,
+          engineering devices and systems. Living organisms and earth or environment belong elsewhere.'
+        to:
+          node: topic_physical
+      life:
+        criterion: 'Life and health sciences: organisms, cells, genes, diseases, patients, health care.
+          Minds and behavior studied as psychology belong to the social group.'
+        to:
+          node: topic_life
+      earth:
+        criterion: 'Earth and environment: rocks, earth history, pollution, climate, ecosystems under
+          human pressure, places, regions and spatial patterns.'
+        to:
+          node: topic_earth
+      social:
+        criterion: 'Social and behavioral sciences: economy, firms, politics, society, individual mind
+          and behavior. Ideas, art and the past belong to humanities.'
+        to:
+          node: topic_social
+      humanities:
+        criterion: 'Humanities: art, music, literature, philosophy, ethics, religion and history of past
+          events.'
+        to:
+          node: topic_humanities
+  topic_physical:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`?
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: Designing, building or controlling devices, structures, circuits, machines or processes;
+          not algorithms as such (Computer Science) or new materials (Materials Science).
+      Chemistry:
+        criterion: Molecules, reactions, synthesis, catalysis, chemical analysis; not bulk material properties
+          (Materials Science).
+      Computer Science:
+        criterion: Algorithms, software, machine learning, data, networks, computing systems; not physical
+          hardware design (Engineering).
+      Physics:
+        criterion: Physical laws, particles, quantum systems, optics, astrophysics, fundamental matter
+          and energy; not applied materials (Materials Science).
+      Materials Science:
+        criterion: Making and characterizing alloys, polymers, ceramics, composites, films or nanomaterials
+          and their properties; not reaction mechanisms (Chemistry).
+      Mathematics:
+        criterion: Theorems, proofs, equations, statistical theory, numerical methods; not models explaining
+          physical phenomena (Physics).
+  topic_life:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`?
+    state:
+    - abstract
+    options:
+      Medicine:
+        criterion: Diseases, patients, clinical trials, diagnosis, treatment, drugs, public health; the
+          work has a clinical or health care aim.
+      Biology:
+        criterion: Organisms, cells, genes, proteins, evolution, physiology, species ecology; no clinical
+          aim (that is Medicine).
+  topic_earth:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`?
+    state:
+    - abstract
+    options:
+      Environmental Science:
+        criterion: Pollution, climate impacts, water or air quality, sustainability, environmental management;
+          not rocks and earth history (Geology).
+      Geography:
+        criterion: Places, regions, spatial patterns, land use, urban areas, mapping and GIS; not measuring
+          environmental damage (Environmental Science).
+      Geology:
+        criterion: Rocks, minerals, tectonics, sediments, earthquakes, volcanoes, earth history.
+  topic_social:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`?
+    state:
+    - abstract
+    options:
+      Business:
+        criterion: Firms, management, marketing, accounting, consumers, entrepreneurship; not the economy
+          as a whole (Economics).
+      Political Science:
+        criterion: Government, elections, public policy, law, international relations; not social groups
+          without political focus (Sociology).
+      Economics:
+        criterion: Markets, prices, trade, growth, labor, economy-wide finance, econometrics; not single
+          firms (Business).
+      Psychology:
+        criterion: Individual mind, behavior, cognition, emotion, perception, personality; not society
+          and groups (Sociology).
+      Sociology:
+        criterion: Social groups, institutions, inequality, family, culture, education in society.
+  topic_humanities:
+    kind: choice
+    instructions: Which Semantic Scholar field of study is the main subject of the research described
+      in `abstract`?
+    state:
+    - abstract
+    options:
+      Art:
+        criterion: Visual arts, music, literature, film, design and artistic works or practices.
+      Philosophy:
+        criterion: Ethics, metaphysics, epistemology, logic, religion and conceptual arguments.
+      History:
+        criterion: Past events, periods, people and societies studied through historical sources; not
+          artworks as art (Art).

@@ -1,0 +1,12 @@
+{
+  "_method": "Sampled test posts screened with langid 1.1.6 (all languages) and a >5% non-ASCII-letter ratio (`uv run scripts/prepare_smarter.py --screen`: 78 flags over the 3,119 sampled posts: 37 HateXplain, 28 Latent Hate, 13 Implicit Hate), plus a second pass flagging posts with 2+ distinct German/Spanish/French/Dutch/Portuguese/Italian function words (8 flags, all within or equal to the first set except one English headline). Every flag was judged from the text alone, before any Jev output. Excluded: posts that are wholly or partly (code-mixed or with an appended translation) in a language other than English. Kept: short English, slang, African American English, emoji-heavy and hashtag-only posts misidentified by langid. All 7 exclusions are HateXplain Gab posts; no Latent Hatred post was flagged as non-English.",
+  "excluded": [
+    {"subset": "hatexplain", "uid": "24570164_gab", "gold": "Hate", "reason": "Spanish/Portuguese sentence"},
+    {"subset": "hatexplain", "uid": "9247014_gab", "gold": "Hate", "reason": "German"},
+    {"subset": "hatexplain", "uid": "21878349_gab", "gold": "Hate", "reason": "English phrase followed by its French translation"},
+    {"subset": "hatexplain", "uid": "23631407_gab", "gold": "Hate", "reason": "German"},
+    {"subset": "hatexplain", "uid": "16054852_gab", "gold": "Hate", "reason": "English sentence continued in German (code-mixed)"},
+    {"subset": "hatexplain", "uid": "16944494_gab", "gold": "Normal", "reason": "Dutch"},
+    {"subset": "hatexplain", "uid": "1078329_gab", "gold": "Normal", "reason": "Portuguese"}
+  ]
+}

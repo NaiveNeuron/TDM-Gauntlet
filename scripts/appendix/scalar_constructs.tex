@@ -1,0 +1,46 @@
+\paragraph{Task.} Scalar measurement of three constructs in English U.S. political text: immigration fear in survey
+answers (Imm.), ad negativity (Ad) and grandstanding in hearings (Grand.). Gold item scores are Bradley--Terry
+(BT) fits to crowd pairwise comparisons. The paper's task-specific model is a DeBERTa-v3-large reward model
+(Table~3). \emph{Pointwise}: \jev{} rates one text on the paper's scale. \emph{Pairwise}: \jev{} picks the text
+with more of the construct, and a BT fit to its choices gives the item scores.
+
+\paragraph{Data and test set.} Release <<m:scalar_constructs:source.release_repo|url>> at
+<<m:scalar_constructs:source.commit|commit>>. The release has no licence, so the prepare script stores only an ID + SHA-256 manifest.
+The test set is fold~0 of the released graph splits, which is what Table~2 uses. Pairwise: all fold-0 test
+pairs, $N=$ <<s:scalar_constructs/immigration_fear/pairwise:n|int>> /
+<<s:scalar_constructs/ad_negativity/pairwise:n|int>> / <<s:scalar_constructs/grandstanding/pairwise:n|int>>.
+Pointwise: texts from all folds' test pairs, $N=$ <<s:scalar_constructs/immigration_fear/pointwise:n|int>> /
+<<s:scalar_constructs/ad_negativity/pointwise:n|int>> / <<s:scalar_constructs/grandstanding/pointwise:n|int>>,
+which also allows Table~3's 5-fold protocol. $\rho$ is computed over the release notebook's test items, not the
+$V_{test}$ of \S3.3. The language screen dropped
+<<m:scalar_constructs:english_verification.rows_dropped|int>> rows.
+
+\paragraph{Prompt and metric.} Both modes use the paper's zero-shot prompts (App.~E) verbatim, minus the
+output-format line. \emph{Pointwise}: one \textsc{Score} request per text, and the prediction is the
+probability-weighted mean level (Eq.~1). \emph{Pairwise}: a \textsc{Choice} over \{1, 2\} in the paper's four
+debiasing presentations (App.~A.2), averaged. The state is the release's pair string, byte-identical.
+The metric is Spearman $\rho$ against gold BT (fold-0 bootstrap mean, Table~2). Our scorer reproduces every
+Table~2 cell from the paper's released outputs. In Table~\ref{tab:main}, the pointwise rows ($\dagger$) use the
+5-fold mean, and the pairwise rows are compared with the reward model's 5-fold mean. Replayed through our
+fold-0 scorer, the reward model gets
+<<m:scalar_constructs:paper_results.immigration_fear.derived_deberta_v3_large_rm_all_fold0_bootstrap.spearman_rho|pct>> /
+<<m:scalar_constructs:paper_results.ad_negativity.derived_deberta_v3_large_rm_all_fold0_bootstrap.spearman_rho|pct>> /
+<<m:scalar_constructs:paper_results.grandstanding.derived_deberta_v3_large_rm_all_fold0_bootstrap.spearman_rho|pct>>.
+<<metrics
+cols: scalar_constructs/immigration_fear/pointwise=I-pt; scalar_constructs/ad_negativity/pointwise=A-pt; scalar_constructs/grandstanding/pointwise=G-pt; scalar_constructs/immigration_fear/pairwise=I-pw; scalar_constructs/ad_negativity/pairwise=A-pw; scalar_constructs/grandstanding/pairwise=G-pw
+spearman_rho = $\rho$ fold 0 | pct
+?supplementary_five_fold_table3_protocol.summary.spearman_rho.mean = $\rho$ 5-fold$^\dagger$ | pct
+rmse = RMSE | f2
+accuracy = Pair acc. | pct
+>>
+<<papernums:scalar_constructs/immigration_fear/pointwise=Imm.;scalar_constructs/ad_negativity/pointwise=Ad;scalar_constructs/grandstanding/pointwise=Grand.>>
+
+\paragraph{Deviations and status.} Complete. Zero-shot only. In the Jev table, pt = pointwise, pw = pairwise,
+and I/A/G = Imm./Ad/Grand. The paper table lists the pointwise rows. The paper's pairwise 0-shot reference,
+Qwen-2.5-72B, scores
+<<pn:scalar_constructs/immigration_fear/pairwise:paper.Qwen-2.5-72B pairwise 0-shot|pct>> /
+<<pn:scalar_constructs/ad_negativity/pairwise:paper.Qwen-2.5-72B pairwise 0-shot|pct>> /
+<<pn:scalar_constructs/grandstanding/pairwise:paper.Qwen-2.5-72B pairwise 0-shot|pct>>. Because the BT fit uses
+only the fold-0 test pairs, even a perfect pairwise judge reaches at most
+<<m:scalar_constructs:validation.gold_derived_oracles.pairwise (every presentation answered per gold label).grandstanding.spearman_rho|pct>>
+on Grand., which is below the reward model.

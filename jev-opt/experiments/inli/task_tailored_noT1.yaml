@@ -1,0 +1,75 @@
+# jev-tailored dev study (Jev-adapted GEPA), written by make_tailored_tasks.py from task_v3.yaml: same data,
+# splits, metric, paper seed (the gauntlet prompt), 400-example stratified train fit slice, CV grouping and jev-
+# native seeds (seeds_v3/, written from the task definition only). Ablation: start paper only, no rulebook (T1
+# off); everything else as task_tailored.yaml. OMP budget (max_reflection_cost) = the reflection spend of v1
+# study-inli-program ($1.8126); ablations: half of it, the paper start's share of the main run.
+name: inli
+labels:
+  implied_entailment: 'Implicature: The hypothesis is a valid inference from the passage, but it is NOT explicitly
+    stated in the passage. Implied entailment: Requires some sort of an additional cognitive step, such as logical
+    reasoning, world knowledge, conversational pragmatics, or figurative language.'
+  explicit_entailment: 'Explicature: The hypothesis is a valid inference from the passage, and it is explicitly
+    stated in the passage. Explicit entailment: Follows directly from the text''s lexical semantics (e.g. via synonymy
+    and paraphrasing) and syntax (e.g. via pronominal co-reference, bridging, or other endophora).'
+  neutral: 'Neutral: The hypothesis can neither be supported nor contradicted by the passage.'
+  contradiction: 'Contradiction: The hypothesis is NOT a valid inference from the passage, and is contradicted by
+    the passage.'
+inputs:
+  premise: ''
+  hypothesis: ''
+data:
+  train: data/train.jsonl
+  val: data/val.jsonl
+  test: data/test.jsonl
+primary_metric: accuracy
+objectives:
+- quality
+- calibration
+- cheap
+- tokens
+jev:
+  model: typesafe/jev-1.13
+  max_rpm: 1800
+  concurrency: 32
+optimizer:
+  model: current
+  reflection_model: null
+  structural_model: null
+  thinking: null
+  max_metric_calls: 40000
+  reflection_minibatch_size: 3
+  use_merge: false
+  seed: 0
+  progressive:
+  - 64
+  - 256
+  fit_examples: 400
+  calibrate: true
+  class_bias: true
+  max_component_chars: 1500
+  max_program_chars: 40000
+  readout: false
+  readout_folds: 5
+  readout_group: ^inli-(?:train|val|test)-(\d+)-
+  fit_parameters: true
+  max_reflection_cost: 0.91
+  tailored:
+    starts:
+    - paper
+    seeds:
+    - kind: jev-native
+      path: seeds_v3/jev-native-1.yaml
+    - kind: jev-native
+      path: seeds_v3/jev-native-2.yaml
+    - kind: jev-native
+      path: seeds_v3/jev-native-3.yaml
+    rulebook: false
+    continuous_accept: true
+    accept_n: 64
+    accept_tol: 0.02
+    confusion_target: true
+    minimal_pairs: 4
+    max_examples: 8
+    max_jev_cost: 1.0
+    head: true
+seed_program: seed.yaml

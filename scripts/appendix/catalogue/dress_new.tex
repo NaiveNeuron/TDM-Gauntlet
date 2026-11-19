@@ -1,0 +1,11 @@
+@task
+Score an essay written by an English-as-a-foreign-language student in response to a writing prompt, separately
+for content, organization and language.
+@output
+One score per rubric from \{<<q:dress_new:levels|keys>>\}. The total is their sum.
+@example no essay shown: the dataset's consent terms forbid sharing, and the rubric text is from the paper's Table~2
+Essay & (not shown)
+Rubric & content: <<q:dress_new:questions.content.criteria.-1|c220>>
+Gold & the course instructor's score for each rubric
+@sets
+dress_new = DREsS\_New test (reconstructed split) | essays

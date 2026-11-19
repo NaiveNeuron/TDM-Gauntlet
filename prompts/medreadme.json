@@ -1,0 +1,17 @@
+{
+  "_source": "Jiang & Xu, MedReadMe: A Systematic Study for Fine-grained Sentence Readability in Medical Domain, EMNLP 2024, https://aclanthology.org/2024.emnlp-main.958/. Instruction and the six level descriptions are quoted verbatim from the paper's LLM readability prompt, Appendix H, Table 15 (p. 17313; following Naous et al. 2023), which the paper says uses 'the same description of the six CEFR levels that were provided to human annotators'. Zero-shot deviation: the prompt's five dev-set examples ('EXAMPLES: Sentence: \"[EXAMPLE 1]\" ...') are omitted. The closing line 'Given the above key, the readability of the sentence is (scale=1-6)' is kept; two additions: after 'You should use the following key:' the words 'the six levels below, from 1 (very easy) to 6 (very hard).' (the key itself is supplied as the score criteria), and the sentence 'The sentence is the \"sentence\" field of the state.' Level 4's text ends '... to different texts and purpose' exactly as printed in Table 15. The human annotation interface (Appendix J, p. 17315) shows longer descriptions plus example sentences; those are not used, to keep the paper's prompted-baseline wording.",
+  "_primitive": "score (6 ordered levels = readability 1 (easiest) .. 6 (hardest)); prediction = 1 + expected level index",
+  "_state": {"sentence": "one English sentence from a medical text"},
+  "question": {
+    "type": "score",
+    "instructions": "Rate the following sentence on its readability level. The readability is defined as the cognitive load required to understand the meaning of the sentence. Rate the readability on a scale from very easy to very hard. Base your scores on the CEFR scale for L2 learners. You should use the following key: the six levels below, from 1 (very easy) to 6 (very hard). The sentence is the \"sentence\" field of the state. Given the above key, the readability of the sentence is (scale=1-6):",
+    "criteria": [
+      "1 = Can understand very short, simple texts a single phrase at a time, picking up familiar names, words and basic phrases and rereading as required.",
+      "2 = Can understand short, simple texts on familiar matters of a concrete type",
+      "3 = Can read straightforward factual texts on subjects related to his/her field and interest with a satisfactory level of comprehension.",
+      "4 = Can read with a large degree of independence, adapting style and speed of reading to different texts and purpose",
+      "5 = Can understand in detail lengthy, complex texts, whether or not they relate to his/her own area of speciality, provided he/she can reread difficult sections.",
+      "6 = Can understand and interpret critically virtually all forms of the written language including abstract, structurally complex, or highly colloquial literary and non-literary writings."
+    ]
+  }
+}

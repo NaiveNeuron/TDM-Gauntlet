@@ -1,0 +1,9 @@
+{
+  "_source": "Nguyen, Srndic & Neth, Noise Contrastive Estimation-based Matching Framework for Low-Resource Security Attack Pattern Recognition, Findings EACL 2024, https://aclanthology.org/2024.findings-eacl.25/. Task framing from the abstract (p. 355): 'Identifying TTPs in cybersecurity writing, often called TTP mapping'. The yes/no question is the paper's own zero-shot LLM prompt (App. D.3, p. 369: 'What MITRE ATT&CK techniques (TTPs) are explicitly and implicitly mentioned in the following text: [..]') asked once per candidate TTP, mirroring the paper's pointwise matcher g(x, y) that scores the input text against each TTP's textual profile (Sections 3-4.1; Section 5.3: 'The rich textual description of a TTP is selected for the textual profile'). {id} = ATT&CK ID; {name} = MITRE ATT&CK Enterprise v12.0 name (the paper's ATT&CK version, App. A), 'Parent: Sub-technique' for sub-techniques; {description} = the released textual profile from ttp-desc-mappings.csv, verbatim (lower-cased, markup-stripped v12.0 description as released by the authors). The candidate inventory is data/frozen/ttp/candidates.jsonl, pinned by _candidates_sha256. Deprecated/revoked status and tactics are not shown (the paper's matcher sees only the textual profile).",
+  "_primitive": "noul (one per candidate TTP; all 737 candidates for every text; rank by P(yes))",
+  "_candidates_sha256": "d4a59802b54229e78bf64d83ffab91126b3f0fa5abaefdc4b20b5626b28f6bf2",
+  "question_template": {
+    "type": "noul",
+    "instructions": "TTP mapping: identifying MITRE ATT&CK attack patterns (TTPs) in cybersecurity writing. Is the following MITRE ATT&CK technique (TTP) explicitly or implicitly mentioned in `text`?\nTechnique {id}: {name}\nDescription: {description}"
+  }
+}

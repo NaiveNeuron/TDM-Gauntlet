@@ -1,0 +1,21 @@
+# API key
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Downloaded sources, rebuilt test sets and caches
+data/raw/
+data/frozen/
+data/cache/
+checkpoints/
+
+# Model runs and generated tables
+runs/
+paper/
+*.pending.jsonl

@@ -1,0 +1,110 @@
+{
+ "rule": "Preparation machine only (gauntlet tasks and raw data; `PYTHONPATH=src`): the frozen gauntlet test requests' units per item (DREsS: the rubric's own question of the joint request), digested, and compared with the seed program's test units.",
+ "sets": {
+  "contempo-tbdense": {
+   "gauntlet_task": "contempo/tbdense",
+   "rubric": null,
+   "n_items": 1427,
+   "n_units": 1427,
+   "digest": "f35f6d58281a0acd4210277dce216d9b898dc7a86f84909632ed4d5849485711",
+   "seed_program_identical": true
+  },
+  "ezstance-subtaskA": {
+   "gauntlet_task": "ezstance/subtaskA",
+   "rubric": null,
+   "n_items": 7666,
+   "n_units": 7666,
+   "digest": "b51a9c99866f343bfdcd937a3864788712fbf77e8e982af92ed95d0257b374ee",
+   "seed_program_identical": true
+  },
+  "smarter-implicit-hate": {
+   "gauntlet_task": "smarter/implicit_hate",
+   "rubric": null,
+   "n_items": 900,
+   "n_units": 900,
+   "digest": "e3a5e47ea15d3f56f6e5395a28897c7623f8c6bd0279ae2be1af88168e1f4aea",
+   "seed_program_identical": true
+  },
+  "edit-intent": {
+   "gauntlet_task": "edit_intent",
+   "rubric": null,
+   "n_items": 2312,
+   "n_units": 2312,
+   "digest": "c8a79d5a4b4113f6c2cdf4042c19e7c0461c0dfcf999f468cb8cc45492ef3423",
+   "seed_program_identical": true
+  },
+  "inli": {
+   "gauntlet_task": "inli",
+   "rubric": null,
+   "n_items": 4000,
+   "n_units": 4000,
+   "digest": "85c81a388f0e8a890f81113629559c7fe78cf3a929766eceb55d134c7f8e00f3",
+   "seed_program_identical": true
+  },
+  "dress-new-content": {
+   "gauntlet_task": "dress_new",
+   "rubric": "content",
+   "n_items": 401,
+   "n_units": 401,
+   "digest": "1ddedee1957059861708b0433cddc81b03ff0df22faaf3db6a7a7041023678ea",
+   "seed_program_identical": true
+  },
+  "dress-new-organization": {
+   "gauntlet_task": "dress_new",
+   "rubric": "organization",
+   "n_items": 401,
+   "n_units": 401,
+   "digest": "c4bec26166cd3a75e7d0e9a958043edfcba8f996faa8098e029f83dccbdc1409",
+   "seed_program_identical": true
+  },
+  "dress-new-language": {
+   "gauntlet_task": "dress_new",
+   "rubric": "language",
+   "n_items": 401,
+   "n_units": 401,
+   "digest": "66fafcdc3788eb9dceca6cde52d27fc1fe45d9179acb6d2d707d858a3dc7e386",
+   "seed_program_identical": true
+  },
+  "contempo-matres": {
+   "gauntlet_task": "contempo/matres",
+   "rubric": null,
+   "n_items": 837,
+   "n_units": 837,
+   "digest": "381d807f3260ab01549a12022c3ce9d08ec74ff6758a4fc9f1d6bb2643de2ad4",
+   "seed_program_identical": true
+  },
+  "lifetox": {
+   "gauntlet_task": "lifetox",
+   "rubric": null,
+   "n_items": 3000,
+   "n_units": 3000,
+   "digest": "6a532cf850290c533a320e773d2b17f4e2558b184a9839e72b73d3347ea6549e",
+   "seed_program_identical": true
+  },
+  "sciprompt-s2orc": {
+   "gauntlet_task": "sciprompt/s2orc",
+   "rubric": null,
+   "n_items": 5660,
+   "n_units": 5660,
+   "digest": "5dade08a33ceb1b722448b26582ae5c52d0923264087bbf848cea02f951f6f99",
+   "seed_program_identical": true
+  },
+  "smarter-hatexplain": {
+   "gauntlet_task": "smarter/hatexplain",
+   "rubric": null,
+   "n_items": 1193,
+   "n_units": 1193,
+   "digest": "56068ca013967716ed87fd06f50c1fed3745794c0003a6ab11fa014dfc7f7898",
+   "seed_program_identical": true
+  },
+  "smarter-latent-hate": {
+   "gauntlet_task": "smarter/latent_hate",
+   "rubric": null,
+   "n_items": 1019,
+   "n_units": 1019,
+   "digest": "77b36046ca800052df0966dba62ca90648fdc15503b78761fa3973eaebe24278",
+   "seed_program_identical": true
+  }
+ },
+ "computed_at": "2026-10-08T00:18:03+00:00"
+}

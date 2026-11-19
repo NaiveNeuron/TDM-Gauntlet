@@ -1,0 +1,60 @@
+# decomposed seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Flat Jev-style choice per target type with short literal instructions and contrastive criteria that separate each option from its nearest neighbour.
+version: 1
+labels:
+- AGAINST
+- FAVOR
+- NONE
+inputs:
+  tweet: ''
+  target: ''
+  target_type: ''
+shared_state: true
+temperature: 1.0
+root: by_target_type
+nodes:
+  by_target_type:
+    kind: switch
+    field: target_type
+    cases:
+      noun_phrase:
+        node: stance_np
+      claim:
+        node: stance
+  stance_np:
+    kind: choice
+    instructions: What stance does the author of `tweet` take toward the noun-phrase `target`?
+    state:
+    - tweet
+    - target
+    options:
+      FAVOR:
+        criterion: The author of `tweet` is in favor of `target`, for example by praising, supporting
+          or defending it. If the tweet only mentions `target` without a positive position, choose NONE
+          instead.
+      AGAINST:
+        criterion: The author of `tweet` is against `target`, for example by criticizing, mocking or opposing
+          it. If the tweet only mentions `target` without a negative position, choose NONE instead.
+      NONE:
+        criterion: The author of `tweet` is neutral toward `target`. This covers tweets that mention `target`
+          without taking a side and tweets about something unrelated to `target`. A tweet with a clear
+          positive or negative position toward `target` belongs to FAVOR or AGAINST.
+  stance:
+    kind: choice
+    instructions: Based only on `tweet`, what is the author's stance toward the point or message of the
+      claim in `target`?
+    state:
+    - tweet
+    - target
+    options:
+      FAVOR:
+        criterion: From `tweet` alone, the author is definitely in favor of the point or message of the
+          claim in `target`. A tweet on the same topic that does not clearly support the claim belongs
+          to NONE.
+      AGAINST:
+        criterion: From `tweet` alone, the author is definitely against the point or message of the claim
+          in `target`. A tweet on the same topic that does not clearly oppose the claim belongs to NONE.
+      NONE:
+        criterion: From `tweet` alone, we cannot know whether the author definitely supports or opposes
+          the point or message of the claim in `target`. This covers related but uncommitted tweets and
+          unrelated tweets.

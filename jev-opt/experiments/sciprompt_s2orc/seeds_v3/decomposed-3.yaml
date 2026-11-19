@@ -1,0 +1,97 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest, judging for each field independently whether it is the main field of the abstract.
+version: 1
+labels:
+- Engineering
+- Chemistry
+- Computer Science
+- Business
+- Political Science
+- Environmental Science
+- Physics
+- Economics
+- Geography
+- Medicine
+- Psychology
+- Art
+- Materials Science
+- Mathematics
+- Sociology
+- Geology
+- Philosophy
+- Biology
+- History
+inputs:
+  abstract: ''
+shared_state: true
+temperature: 1.0
+root: topic
+nodes:
+  topic:
+    kind: one_vs_rest
+    instructions: Judge whether the statement is true about the research described in `abstract`. It is
+      true only if the named field is the main field the work contributes to, not one only mentioned as
+      context or application.
+    state:
+    - abstract
+    options:
+      Engineering:
+        criterion: The main field is Engineering, meaning the work designs, builds, controls or tests
+          devices, structures, circuits, machines or industrial processes.
+      Chemistry:
+        criterion: The main field is Chemistry, meaning the work studies molecules, chemical reactions,
+          synthesis, catalysis or chemical analysis.
+      Computer Science:
+        criterion: The main field is Computer Science, meaning the work develops algorithms, software,
+          machine learning, data processing, networks or computing systems.
+      Business:
+        criterion: The main field is Business, meaning the work studies firms, management, marketing,
+          accounting, consumers or entrepreneurship.
+      Political Science:
+        criterion: The main field is Political Science, meaning the work studies government, elections,
+          public policy, law or international relations.
+      Environmental Science:
+        criterion: The main field is Environmental Science, meaning the work studies pollution, climate
+          impacts, environmental quality, sustainability or environmental management.
+      Physics:
+        criterion: The main field is Physics, meaning the work studies physical laws, particles, quantum
+          systems, optics, astrophysics or fundamental matter and energy.
+      Economics:
+        criterion: The main field is Economics, meaning the work studies markets, prices, trade, growth,
+          labor or the economy with economic or econometric analysis.
+      Geography:
+        criterion: The main field is Geography, meaning the work studies places, regions, spatial patterns,
+          land use, urban areas or mapping and GIS.
+      Medicine:
+        criterion: The main field is Medicine, meaning the work studies diseases, patients, diagnosis,
+          treatment, drugs, public health or health care.
+      Psychology:
+        criterion: The main field is Psychology, meaning the work studies individual mind, behavior, cognition,
+          emotion, perception or personality.
+      Art:
+        criterion: The main field is Art, meaning the work studies visual arts, music, literature, film,
+          design or artistic works and practices.
+      Materials Science:
+        criterion: The main field is Materials Science, meaning the work makes or characterizes materials
+          such as alloys, polymers, ceramics, composites, films or nanomaterials.
+      Mathematics:
+        criterion: The main field is Mathematics, meaning the work proves theorems or develops equations,
+          statistical theory, numerical methods or abstract structures.
+      Sociology:
+        criterion: The main field is Sociology, meaning the work studies social groups, institutions,
+          inequality, family, culture or education in society.
+      Geology:
+        criterion: The main field is Geology, meaning the work studies rocks, minerals, tectonics, sediments,
+          earthquakes, volcanoes or earth history.
+      Philosophy:
+        criterion: The main field is Philosophy, meaning the work makes ethical, metaphysical, epistemological,
+          logical, religious or conceptual arguments.
+      Biology:
+        criterion: The main field is Biology, meaning the work studies living organisms, cells, genes,
+          proteins, evolution or physiology without a clinical aim.
+      History:
+        criterion: The main field is History, meaning the work studies past events, periods, people or
+          societies through historical sources.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

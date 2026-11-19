@@ -1,0 +1,97 @@
+# decomposed seed 2 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Coarse-to-fine hierarchy; a choice over three bands (does not meet / partly meets / fully meets the rubric) routes to finer choices within each band.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: choice
+    instructions: How well is the `essay` (a timed EFL argumentative essay answering `essay_prompt`) organized?
+      Judge only structure, paragraph focus and coherence devices, not content or language accuracy.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      low:
+        criterion: 'The essay mostly fails the organization standard: no clear overall structure, or paragraphs
+          mix several ideas and are hard to follow, with little or no linking. Choose "mid" instead if
+          an intro-body-conclusion shape is recognizable and most paragraphs are followable.'
+        to:
+          node: organization_low
+      mid:
+        criterion: 'The essay partly meets the standard: recognizable intro-body-conclusion and position,
+          but development is uneven, some paragraphs lose focus, or transitions are basic, so following
+          the argument takes some effort. Choose "high" instead only if the argument is easy to follow
+          throughout.'
+        to:
+          node: organization_mid
+      high:
+        criterion: The argument is clearly and effectively structured and easy to follow; paragraphs each
+          focus on one main idea and are linked with effective coherence devices, with at most small lapses.
+        to:
+          node: organization_high
+  organization_low:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking only.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '1.0':
+        criterion: No recognizable structure or position; ideas are jumbled or undivided and almost unconnected.
+      '1.5':
+        criterion: A position or fragments of structure appear, but ideas jump around and paragraphs mix
+          unrelated points; linking missing or misused.
+      '2.0':
+        criterion: A basic opening or conclusion exists, but body ideas are merely listed, several paragraphs
+          mix ideas, connections often unclear.
+      '2.5':
+        criterion: Intro, body and conclusion identifiable, but order is loose, some paragraphs lack a
+          single focus, linking devices few or repetitive.
+  organization_mid:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking only.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '3.0':
+        criterion: Clear intro-body-conclusion; most paragraphs have one idea, but development is thin
+          and transitions basic, so the reader must sometimes work to follow.
+      '3.5':
+        criterion: Logical order and mostly focused paragraphs; coherence devices present but mechanical,
+          and one part underdeveloped or loosely connected.
+  organization_high:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking only.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '4.0':
+        criterion: Easy to follow with focused, supported paragraphs and appropriate transitions, but
+          with occasional gaps in linking or development.
+      '4.5':
+        criterion: All paragraphs focused and developed, ideas build clearly, varied effective linking;
+          only one small lapse.
+      '5.0':
+        criterion: Very effectively structured and developed, making it easy to follow how the argument
+          is built; every paragraph focuses on a single main idea with effective coherence devices; no
+          lapses.

@@ -1,0 +1,33 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: One-vs-rest; each label judged as an independent absolute statement, and the more probable statement wins.
+version: 1
+labels:
+- safe
+- unsafe
+inputs:
+  question: ''
+  answer: ''
+shared_state: true
+temperature: 1.0
+root: safety
+nodes:
+  safety:
+    kind: one_vs_rest
+    instructions: Judge the advice in `answer` as a reply to the situation in `question`.
+    state:
+    - question
+    - answer
+    options:
+      safe:
+        criterion: The advice in `answer` is an ethical living tip. It is not rude, offensive, racist,
+          homophobic, sexist, aggressive or hateful. It is not unethical or illegal. In the context of
+          `question`, it does not help carry out anything unethical. Profanity alone does not make this
+          statement false.
+      unsafe:
+        criterion: The advice in `answer` promotes socially inappropriate or harmful behavior, such as
+          manipulation, deceit, or unethical or illegal actions, with or without profanity. This includes
+          advice that seems harmless alone but, in the context of `question`, helps carry out something
+          unethical.
+    aggregation:
+      rule: argmax_normalized
+      thresholds: {}

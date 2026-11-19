@@ -1,0 +1,89 @@
+{
+  "task": "ttp (ttp/tram, ttp/procedures_plus, ttp/expert, ttp/expert_full)",
+  "paper": {
+    "title": "Noise Contrastive Estimation-based Matching Framework for Low-Resource Security Attack Pattern Recognition",
+    "venue": "Findings of EACL 2024, pages 355-373",
+    "url": "https://aclanthology.org/2024.findings-eacl.25/",
+    "pdf_sha256": "9fadf82574349c00c3ec49fdd183b11c6e5f90a1f86059084c705e9613eeb438"
+  },
+  "source": {
+    "hf_dataset": "tumeteor/Security-TTP-Mapping",
+    "url": "https://huggingface.co/datasets/tumeteor/Security-TTP-Mapping",
+    "hf_revision": "1af2f0ef96f32ba5ff8d9b82b8cb5fc4810430bd",
+    "github_mirror": "https://github.com/tumeteor/mitre-ttp-mapping @ a16856a6438ca2b7888c5cadfba6d7c854f04a55 (datasets/ byte-identical to the HF snapshot; paper footnote 6 URL github.com/TTP-Mapping returns 404)",
+    "code": "No model/training code is released (the GitHub repo holds only the datasets and README).",
+    "licence": "CC BY 4.0 (README 'License' section and commit 2585964 'change license to cc by 4.0'; HF card `license: cc`; the README badge text says CC-BY-NC-SA-4.0 but links to CC BY 4.0). Redistribution with attribution permitted, so test rows are frozen as JSONL. Paper Ethics section: texts are scraped from vendor threat reports (copyright of their owners); PII screened by the authors.",
+    "files": {
+      "datasets/ttp-desc-mappings.csv": {"sha256": "d800d4b6affe9df87c91aeeb7e0eed149e3a41473af54a89183580c916e1b2b6", "rows": 737},
+      "datasets/tram/tram_test.tsv": {"sha256": "2f12f2cfa909f99849f78d6101dc204bd2274877b04a643d00a452af216700a4", "rows": 725},
+      "datasets/tram/tram_dev.tsv": {"sha256": "5145cb16221d573adad13ee78cce9aa4c3d840933cf306c5b726e23acfe535ac", "rows": 604},
+      "datasets/tram/tram_train.tsv": {"sha256": "a53b9d467b751de7eb22496167b01515a61de942b694d6c7575899b19512c777", "rows": 3468},
+      "datasets/procedures/procedure_test.tsv": {"sha256": "0623e0105463af4956cd63d475cb55fe04abe74530e4c1b041e702042b202723", "rows": 1767},
+      "datasets/procedures/procedure_dev.tsv": {"sha256": "ab1989686dd30b088da332a9d2460c342200b22d52fd2857c1641986dccbd8f0", "rows": 1469},
+      "datasets/procedures/procedure_train.tsv": {"sha256": "b2e60445c3f3c716d341b84001beb43e222b1e7876caa8fd1c43fbeec0b98654", "rows": 8487},
+      "datasets/derived_procedures/derived_procedure_test.tsv": {"sha256": "d1e1ad8482e87910203582dfc4f5a1087dc4ef937adafa47938ecbe3d77bf0bc", "rows": 521},
+      "datasets/derived_procedures/derived_procedure_dev.tsv": {"sha256": "242edfaa6da66f6c7b854cfb7699d4ebd4198c4cd9ddf1d1911fa2c7734ec251", "rows": 488},
+      "datasets/derived_procedures/derived_procedure_train.tsv": {"sha256": "7d62334b00eef61a3aa1b38ee031392c2012222ba6d4c9b93e63b318e922c167", "rows": 2510},
+      "datasets/expert/expert_test.tsv": {"sha256": "674cbb8149df68f4c0661ea7738705900d0682f5837adb85c8040d856e0e1378", "rows": 157},
+      "datasets/expert/expert_dev.tsv": {"sha256": "7815932d419aa98a54a1bafffa0c363fc0de3ef8aa3b754096eec9101e97fedb", "rows": 69},
+      "datasets/expert/expert_train.tsv": {"sha256": "e982b5464c70c257e2a0cf6ae6b4e63e5a227bc8acb1546c4c2d3d65082930fc", "rows": 471},
+      "README.md": {"sha256": "62e9fd19ed1cfcee06f481cf18b336330867e8fc325a58c70a2cbed37b8aa4d0"}
+    },
+    "format": "TSV, header `text1<TAB>labels`, standard CSV quoting (quoted fields contain tabs/newlines; parse with csv.reader(delimiter='\\t'), not line splitting); labels = Python list literal of ATT&CK IDs.",
+    "label_names": {
+      "url": "https://raw.githubusercontent.com/mitre/cti/ATT%26CK-v12.0/enterprise-attack/enterprise-attack.json",
+      "tag": "mitre/cti ATT&CK-v12.0 -> 2b248218b6bce57a0213fccf352b9a5aa4e4072f",
+      "sha256": "a8952b72ec4104c959d0ad642541dab1b84d835f439a77f7d1322d794aeb4aaf",
+      "licence": "MITRE ATT&CK Terms of Use (royalty-free, reproduction permitted with the MITRE copyright notice). © The MITRE Corporation. Used only for technique names, status and tactics.",
+      "use": "The released profile file has IDs and descriptions only; names come from v12.0 (the paper's version, App. A). All 737 profile IDs are Enterprise v12.0 attack-patterns; the released descriptions are the v12.0 descriptions lower-cased with markup stripped."
+    }
+  },
+  "frozen": {
+    "builder": "scripts/prepare_ttp.py (deterministic; two runs byte-identical)",
+    "files": {
+      "data/frozen/ttp/candidates.jsonl": {"sha256": "d4a59802b54229e78bf64d83ffab91126b3f0fa5abaefdc4b20b5626b28f6bf2", "n": 737, "status": {"active": 594, "revoked": 131, "deprecated": 12}, "sub_techniques": 404},
+      "data/frozen/ttp/tram_test.jsonl": {"sha256": "d5b9679d4d7a7770486aaed3e466320ccb359b981dd59dc45ac388697d791f86", "n": 725},
+      "data/frozen/ttp/procedure_test.jsonl": {"sha256": "013f2920f17c158752ebe368c4d9a2fbfb4ce90d9949733c5c1b369a41adbfcb", "n": 1767},
+      "data/frozen/ttp/derived_procedure_test.jsonl": {"sha256": "e47fa9fb261d7cba87412ab901713dd1523420fe84d9efe8d1d942806ece2740", "n": 521},
+      "data/frozen/ttp/expert_train.jsonl": {"sha256": "757b37d9bf29322862dcb5851fb5acfb8b5f789396c81bee2102999fc19f57fe", "n": 471},
+      "data/frozen/ttp/expert_dev.jsonl": {"sha256": "6984d83df3ad6d4bd8e2a78023026a0b4592d25049afdd90f8ad756659d8da5f", "n": 69},
+      "data/frozen/ttp/expert_test.jsonl": {"sha256": "1f5a94e1f66099f4bf7023cb8f460d4c55578fcfb95558e6572e8df03d6a4e16", "n": 157}
+    },
+    "fields": "split files: id (ttp-<source>-<split>-NNNN = 0-based data-row index), text (verbatim), labels_raw (release list), gold (sorted unique upper-case IDs). candidates: id, name, description (verbatim release profile), status and tactics (not sent to Jev)."
+  },
+  "tasks": {
+    "ttp/tram": {"files": ["tram_test"], "n": 725, "avg_gold_labels": 1.174, "paper": "Table 2/3 TRAM"},
+    "ttp/procedures_plus": {"files": ["procedure_test", "derived_procedure_test"], "n": 2288, "by_subset": {"procedures": 1767, "derived_procedures": 521}, "paper": "Table 2/3 Procedures+ ('the combined procedure examples datasets')"},
+    "ttp/expert": {"files": ["expert_test"], "n": 157, "avg_gold_labels": 3.318, "paper": "Table 2/3 Expert (dedicated held-out test set, Section 5.3: 157 samples, 3.3 labels on average)"},
+    "ttp/expert_full": {"files": ["expert_train", "expert_dev", "expert_test"], "n": 697, "paper": "Tables 6/7 'entire Expert dataset' (models trained on Procedure+ and TRAM only; paper Table 1: 695 texts)"}
+  },
+  "test_n_resolution": "Release totals equal paper Table 1 exactly for TRAM (3,468+604+725 = 4,797), Procedures (8,487+1,469+1,767 = 11,723) and Derived Procedures (2,510+488+521 = 3,519); Expert release 471+69+157 = 697 vs paper 695 (+2). Expert test N = 157 and 3.318 labels/text match Section 5.3 ('157 unique paragraph-level samples and 3.3 labels per sample'). Test splits are the released ones (paper: stratified 72.5/12.5/15 split, test fixed).",
+  "candidate_resolution": "The paper's matcher scores the text against the textual profile of every TTP (Section 3 'Problem Reformulation', 4.1, 5.3); negatives are sampled uniformly from the whole corpus (4.3). The released profile corpus is ttp-desc-mappings.csv: 737 IDs = every Enterprise v12.0 technique/sub-technique incl. 143 revoked/deprecated. The deprecated entries cannot be dropped: TRAM test gold uses T1064 (Scripting, 15x) and T1043 (Commonly Used Port, 9x). All gold labels of every split are in the 737. Jev therefore ranks all 737 candidates for every text (no retrieval shortlist; the paper uses none).",
+  "english_verification": {
+    "metadata": "HF card `language: en`; paper Ethics statement: 'The language of the dataset is English, written by native and non-native speakers.'",
+    "method": "langid 1.1.6 on every text of the six frozen split files (3,710 texts) plus a non-Latin-letter ratio > 2% check; all flags inspected.",
+    "result": "31 flags. 29 are short English sentences mis-identified by langid (e.g. 'Uroburos uses a custom packer.' -> es, 'Comnie executes BAT scripts.' -> pl). 2 are English prose quoting non-Latin artefact strings: tram_test row 702 (Arabic lure file name inside an IOC listing) and expert_test row 94 (Cyrillic file paths hard-coded in malware). These are file names/paths (indicators, like hashes), not natural-language content to be understood; the sentences are English. No rows dropped.",
+    "rows_dropped": 0
+  },
+  "data_checks": {
+    "duplicate_ids_within_row_dropped": {"tram_test": 1, "procedure_test": 1, "derived_procedure_test": 12, "expert_train": 16, "expert_dev": 4, "expert_test": 0},
+    "distinct_gold_labels": {"tram_test": 127, "procedure_test": 300, "derived_procedure_test": 194, "expert_test": 152},
+    "max_text_chars": 2744,
+    "truncated_items": 0,
+    "ideal_r@1": {"expert_test": 0.4827, "expert_test_technique_level": 0.5440, "paper_table2_caption": 0.504}
+  },
+  "requests": {
+    "per_text": "12 requests (fixed ID-ordered partition of the 737 noul questions, <=96,000 serialized question chars each), all over state {text}",
+    "max_request_cl100k_tokens": 20538,
+    "tokens_per_text_cl100k": 224170
+  },
+  "deviations": [
+    "Jev answers one noul per (text, candidate TTP) pair and candidates are ranked by P(yes); the paper's trained dual-encoder matcher is replaced, the candidate corpus (all 737 released TTP profiles) and the ranking metrics are the paper's.",
+    "Technique names added to the released profile (released file has ID + description only), from ATT&CK Enterprise v12.0.",
+    "Gold duplicates within a row (34 across the frozen splits) are dropped: gold is a label set.",
+    "F1@k = harmonic mean of the text-averaged P@k and R@k (App. D.1 literal reading); a per-text-F1 mean is reported as a supplementary key. With this definition the gold-oracle ceiling of F1@3 on TRAM is 0.555, identical to the paper's best (Asymmetric) F1@3 of .555, so the paper's F1 may be computed differently; P@1, R@1 and MRR are unambiguous.",
+    "Paper Table 2 caption gives ideal Expert R@1 = 0.504; the released test gives 0.483 (0.544 technique-level): the release or the paper's gold handling differs slightly.",
+    "Expert test labels were produced by annotators reviewing the InfoNCE model's top-20 (App. C), so they are biased towards the paper's own matcher.",
+    "ttp/expert_full (Table 6/7 setting, whole Expert dataset, 697 vs paper 695 texts) is added because the paper reports F1@5/MRR@5 only there, and it is the paper's own out-of-training-distribution setting for its models."
+  ]
+}

@@ -1,0 +1,49 @@
+\paragraph{Task.} English intent classification with near-OOD detection: half of each dataset's intents are held
+out as OOD, and each utterance gets one in-distribution (ID) intent or \textsc{fallback}. The replaced predictor is
+GPT-4o. The matched setting is the paper's zero-shot tool-calling method (intent names only, plus a
+\textsc{fallback} tool). The Hybrid and few-shot methods use training data and serve as reference points only.
+DSTC Finance and the in-house BIT3 sets are excluded.
+
+\paragraph{Data and freeze.} CLINC150 (\url{https://github.com/clinc/oos-eval} at
+<<m:nav_unknown:source.clinc150.commit|commit>>, CC BY 3.0) and BANKING77
+(\url{https://github.com/PolyAI-LDN/task-specific-datasets} at <<m:nav_unknown:source.banking77.commit|commit>>,
+CC BY 4.0). The test subsets are frozen with text (SHA-256 <<m:nav_unknown:frozen.clinc150.sha256|sha>>,
+<<m:nav_unknown:frozen.banking77.sha256|sha>>, partitions <<m:nav_unknown:frozen.splits.sha256|sha>>), built by
+\texttt{scripts/prepare\_nav\_unknown.py}.
+
+\paragraph{Test set and screen.} $N=$ <<s:nav_unknown/clinc150:n|int>> and <<s:nav_unknown/banking77:n|int>>, equal
+to the paper's Table~1. The paper releases no code, split or seeds. We therefore take the first
+<<m:nav_unknown:frozen.clinc150.per_intent|int>> test utterances per intent in release order and build
+<<s:nav_unknown/clinc150:per_partition|len>> seeded ID/OOD label partitions (half of the intents each), in place of the paper's averaged
+runs. BANKING77 has <<s:nav_unknown/banking77:per_partition.0.n_id_intents|int>> ID and
+<<s:nav_unknown/banking77:per_partition.0.n_ood_intents|int>> OOD intents, the split consistent with the paper's
+baseline row. All langid flags are English. No row was dropped.
+
+\paragraph{Prompt.} One request per utterance (state = \{utterance\}) carries one
+\textsc{<<q:nav_unknown:_primitive|upper>>} per partition, over that partition's ID intent names plus
+\textsc{fallback}. The instruction is the paper's zero-shot system prompt (App.~A.3), with the tool-calling line
+replaced by a sentence naming the state field. Prediction: argmax.
+
+\paragraph{Metric.} The paper's primary metric is ALL F1 (Table~2, p.~14656), averaged over partitions. The paper
+gives no formula, and its ALL F1 is sometimes below both its ID and OOD F1. We use the standard macro-F1 over the ID
+intents plus the OOD class, and also report ID macro-F1 computed on ID-gold rows only.
+
+<<metrics
+cols: nav_unknown/clinc150=CLINC150; nav_unknown/banking77=BANKING77
+all_macro_f1 = ALL macro-F1 | pct
+id_macro_f1 = ID macro-F1 | pct
+ood_recall = OOD recall | pct
+ood_f1 = OOD F1 | pct
+id_macro_f1_id_rows = ID macro-F1 (ID rows) | pct
+>>
+<<papernums:nav_unknown/clinc150=CLINC150;nav_unknown/banking77=BANKING77|paper|src1>>
+
+\paragraph{Deviations and status.} Reconstructed test set: the exact utterances and ID/OOD partitions are unknown,
+so comparisons include split variance as well as the ALL-F1 definition gap. The matched GPT-4o zero-shot row reports
+ID F1 / OOD recall / OOD F1 of
+<<pn:nav_unknown/clinc150:paper_other_columns.GPT-4o zero-shot tool calling.id_f1|pct>> /
+<<pn:nav_unknown/clinc150:paper_other_columns.GPT-4o zero-shot tool calling.ood_recall|pct>> /
+<<pn:nav_unknown/clinc150:paper_other_columns.GPT-4o zero-shot tool calling.ood_f1|pct>> (CLINC150) and
+<<pn:nav_unknown/banking77:paper_other_columns.GPT-4o zero-shot tool calling.id_f1|pct>> /
+<<pn:nav_unknown/banking77:paper_other_columns.GPT-4o zero-shot tool calling.ood_recall|pct>> /
+<<pn:nav_unknown/banking77:paper_other_columns.GPT-4o zero-shot tool calling.ood_f1|pct>> (BANKING77).

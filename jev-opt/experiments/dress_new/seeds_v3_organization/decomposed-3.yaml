@@ -1,0 +1,92 @@
+# decomposed seed 3 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Branch chain splitting at the midpoint, then quarter bands, then finer choices, each noul a single organization threshold statement.
+version: 1
+labels:
+- '1.0'
+- '1.5'
+- '2.0'
+- '2.5'
+- '3.0'
+- '3.5'
+- '4.0'
+- '4.5'
+- '5.0'
+inputs:
+  essay_prompt: ''
+  essay: ''
+shared_state: true
+temperature: 1.0
+root: organization
+nodes:
+  organization:
+    kind: branch
+    condition: The `essay` (a timed EFL argumentative essay answering `essay_prompt`) has a recognizable
+      introduction-body-conclusion structure and most of its paragraphs each focus on one main idea.
+    state:
+    - essay_prompt
+    - essay
+    if_true:
+      node: organization_upper
+    if_false:
+      node: organization_lower
+    threshold: 0.5
+  organization_lower:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking, not content or grammar.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '1.0':
+        criterion: No recognizable structure or position; ideas jumbled or undivided, almost no linking.
+      '1.5':
+        criterion: Fragments of structure only; ideas jump around, paragraphs mix unrelated points, linking
+          missing or misused.
+      '2.0':
+        criterion: A basic opening or conclusion exists but body ideas are listed without development
+          and connections are often unclear.
+      '2.5':
+        criterion: Intro, body and conclusion nearly identifiable but order is loose and linking devices
+          are few or repetitive.
+  organization_upper:
+    kind: branch
+    condition: 'In the `essay`, the argument is easy to follow throughout: ideas are in a logical order
+      and paragraphs are connected with appropriate coherence devices.'
+    state:
+    - essay_prompt
+    - essay
+    if_true:
+      node: organization_top
+    if_false:
+      node: organization_middle
+    threshold: 0.5
+  organization_middle:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking only.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '3.0':
+        criterion: Structure present but development thin and transitions basic; the reader must sometimes
+          work to follow the argument.
+      '3.5':
+        criterion: Logical order and mostly focused paragraphs; linking is mechanical and one part is
+          underdeveloped, but the argument is mostly easy to follow.
+  organization_top:
+    kind: choice
+    instructions: Which description fits the organization of the `essay` best? Judge structure, paragraph
+      focus and linking only.
+    state:
+    - essay_prompt
+    - essay
+    options:
+      '4.0':
+        criterion: Easy to follow with focused paragraphs, but occasional gaps in linking or development.
+      '4.5':
+        criterion: Ideas build clearly with varied, effective linking; only one small lapse.
+      '5.0':
+        criterion: Very effectively structured and developed; every paragraph focuses on a single main
+          idea and uses coherence devices effectively; no lapses.

@@ -1,0 +1,49 @@
+# jev-native seed 1 (jev-opt /jev-seeds; writer anthropic/claude-opus-5-5; zero-shot: written from the task definition only)
+# rationale: Minimal literal question; each criterion states its interval condition and what belongs to the nearest neighbour instead.
+version: 1
+labels:
+- BEFORE
+- AFTER
+- INCLUDES
+- IS_INCLUDED
+- SIMULTANEOUS
+- VAGUE
+inputs:
+  context: ''
+  event_1: ''
+  event_2: ''
+shared_state: true
+temperature: 1.0
+root: relation
+nodes:
+  relation:
+    kind: choice
+    instructions: In `context`, the event marked <e1> (trigger word in `event_1`) is Event 1 and the event
+      marked <e2> (trigger word in `event_2`) is Event 2. Each trigger stands for the whole event as a
+      time interval. Which relation holds from Event 1 to Event 2, as the writer intends a reader to infer
+      it?
+    state:
+    - context
+    - event_1
+    - event_2
+    options:
+      BEFORE:
+        criterion: Event 1 ends before or exactly when Event 2 begins (includes immediately before). If
+          the two intervals overlap at all, this is not BEFORE.
+      AFTER:
+        criterion: Event 1 begins after or exactly when Event 2 ends (includes immediately after). If
+          the two intervals overlap at all, this is not AFTER.
+      INCLUDES:
+        criterion: 'Event 2 happens during Event 1: the interval of Event 1 contains the interval of Event
+          2, including when Event 2 starts or ends Event 1. If the intervals are the same, choose SIMULTANEOUS.
+          If Event 1 is the shorter, contained event, choose IS_INCLUDED.'
+      IS_INCLUDED:
+        criterion: 'Event 1 happens during Event 2: the interval of Event 1 is contained in the interval
+          of Event 2, including when Event 1 starts or ends Event 2. If the intervals are the same, choose
+          SIMULTANEOUS. If Event 2 is the shorter, contained event, choose INCLUDES.'
+      SIMULTANEOUS:
+        criterion: Event 1 and Event 2 occupy the same time interval and happen at the same time. If one
+          clearly lasts longer than the other, choose INCLUDES or IS_INCLUDED.
+      VAGUE:
+        criterion: 'The text leaves the order of the two events underspecified: no other relation can
+          be chosen with 80% confidence that the writer intended a reader to infer it.'

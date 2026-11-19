@@ -1,0 +1,98 @@
+{
+  "task": [
+    "relemb/wikiwd",
+    "relemb/nytfb"
+  ],
+  "paper": {
+    "title": "Entity or Relation Embeddings? An Analysis of Encoding Strategies for Relation Extraction",
+    "authors": "Frank Mtumbuka, Steven Schockaert",
+    "venue": "Findings of EMNLP 2024, pages 6003-6022",
+    "url": "https://aclanthology.org/2024.findings-emnlp.348/",
+    "pdf_sha256": "0a3a114faf4b1cc7d1b3c9224ae0c9ff1c1188bd01e2e64fdec11578b9cc29bb",
+    "code_repo": "https://github.com/fmtumbuka/RelationEmbeddings",
+    "code_commit": "66d3c9a7fb4e72501514a0e239fe5451b3003d90 (2024-12-30). Data loaders and label inventories only (experiment/__init__.py, datapipeline/*_data_loader.py); no evaluation script and no data are released.",
+    "benchmarks": "Section 4.1 / Table 1. In scope: Wiki-WD (P/R/F1), NYT-FB (P@10, P@30); the paper's LDC-licensed benchmarks are out of scope. Predictor: RoBERTa-large relation encoder + 1-hidden-layer MLP softmax over the fixed inventory (Section 3.2); gold entity types are not used (Section 4.1)."
+  },
+  "prepare": "uv run python scripts/prepare_relemb.py. Deterministic: a rerun reproduces every frozen file and prompt byte for byte.",
+  "sources": {
+    "wikiwd": {
+      "dataset": "Sorokin & Gurevych (2017) Wikipedia-Wikidata distant-supervision relations, v1.0 (enwiki-20160501); held-out split = the paper's wikidata/test.json (loader reads edgeSet left/right/kbID)",
+      "url": "https://drive.google.com/file/d/1mmKLh6a78GVNizBoCGhs5ZMYJX2g-DIU (RECON README, github.com/ansonb/RECON @ b157930110a161706d5d419f22f55c08a548fd5d; the original UKP page now points to TUdatalib)",
+      "raw_zip": "data/raw/relemb/WikipediaWikidataDistantSupervisionAnnotations.v1.0.zip",
+      "raw_zip_sha256": "31300761e83cc2b53f03ada2e1323d503b4e4febe9fd88481acdab4a30368902",
+      "raw_zip_bytes": 188633261,
+      "test_member": "WikipediaWikidataDistantSupervisionAnnotations.v1.0/enwiki-20160501/semantic-graphs-filtered-held-out.02_06.json",
+      "test_member_sha256": "79e0d6ab669e198114445a222055d4d598b3e29f0fc13c13317bbbd0ca0c84f0",
+      "licence": "CC BY-SA 4.0 (release README; derived from Wikipedia and Wikidata). Redistributable with attribution and share-alike: the frozen JSONL.gz carries tokens, entity positions and labels; attribution: Sorokin & Gurevych (2017), EMNLP, 'Context-Aware Representations for Knowledge Base Relation Extraction'.",
+      "release_counts": "360,334 sentences, 740,963 edges (paper Table 1: test 360.3K = sentences), 352 distinct labels = 351 Wikidata properties + P0 (paper/RECON/KGPool say 353; the paper's own WIKIDATA_RELATION_TYPES lists these 352; the 353rd class in RECON-style code is the padding index)."
+    },
+    "nytfb": {
+      "dataset": "Riedel et al. (2010) NYT-Freebase, RECON release; the paper's nyt/test.json ({\"data\": [{sub, obj, sent, rel, ...}]})",
+      "url": "https://drive.google.com/file/d/1VhY3i3SoLS3XZvtsk_BmpZgN5cjITlij (RECON README, same commit)",
+      "raw_zip": "data/raw/relemb/NYT.zip",
+      "raw_zip_sha256": "7e0816de89f69545653e37fcd4deb59364a053ee9fbe4cd1fc181086cc6643c3",
+      "raw_zip_bytes": 104794552,
+      "test_member": "NYT/dataset_triples_test.json",
+      "test_member_sha256": "519f05b91e5ad696296d27bccb067bcca58e2faef6b4a15d1e91acd654cfbc96",
+      "licence": "No licence in the RECON release. Sentences come from the New York Times Annotated Corpus (LDC2008T19), so no text is redistributed: data/frozen/relemb/nytfb_test.jsonl.gz holds raw row indices + a SHA-256 per sentence group, and items() rebuilds text from the hash-checked zip.",
+      "release_counts": "172,448 rows (= paper Table 1 test 172.4K), 45,736 distinct sentences, 32 labels present; 166,004 NA."
+    },
+    "label_text": {
+      "paper_label_text": "None. The paper's classifier sees labels only as class indices: fmtumbuka/RelationEmbeddings@66d3c9a datapipeline/relational_dataset.py:159 `relation_type_idx = self._relation_types.index(sample.relation_type)` over the inventories in experiment/__init__.py, fed to the MLP softmax of Section 3.2; Limitations (p. 6010): 'we do not attempt to model the relation labels'. No label names or descriptions enter the model.",
+      "v2_prompts": "Option names only, null descriptions (TypeSafe Choice docs: 'null descriptions because the option names are clear on their own'). Wiki-WD: the dataset's 2016 Wikidata property labels (UKPLab/emnlp2017-relation-extraction@77bfd94 resources/properties-with-labels.txt, SHA-256 633b3329..., Apache-2.0; 351 distinct), P0 shown as 'no relation'. NYT-FB: Freebase paths verbatim, NA shown as 'NA (no relation)'.",
+      "paper_inventories": "fmtumbuka/RelationEmbeddings@66d3c9a src/main/python/experiment/__init__.py (SHA-256 9e9215fb...): WIKIDATA 352, NYT 56.",
+      "v1_prompts": "prompts/relemb_{wikiwd,nytfb}.json (definitions per option: Wikidata descriptions, mechanical Freebase glosses) are superseded and no longer referenced by the adapter or the prepare script. No v1 NYT-FB output was scored."
+    }
+  },
+  "frozen": {
+    "relemb/wikiwd": {
+      "file": "data/frozen/relemb/wikiwd_test.jsonl.gz",
+      "sha256": "9d21535394b0173f4813f3b039d9b09c37275b29d08efe401d7a87d817558ecd",
+      "n_sentences": 360052,
+      "n": 739977,
+      "n_P0": 166900,
+      "n_labels_in_gold": 352,
+      "item": "one sentence; gold = one label per edge (a (head positions, tail positions) pair may repeat with a different label: 13 such pairs)"
+    },
+    "relemb/nytfb": {
+      "file": "data/frozen/relemb/nytfb_test.jsonl.gz",
+      "sha256": "7566e1d357bd65f4c71295868e292be5ee9bbafd406b1539a6df30e17262a859",
+      "n_sentences": 45736,
+      "n": 172444,
+      "n_NA": 166004,
+      "n_labels_in_gold": 30,
+      "item": "one distinct sentence; gold = one label per released row (rows repeat: 156,879 distinct (sentence, head, tail) pairs, 11,024 of them on 2+ rows; 729 pairs carry 2-3 different positive labels over 1,904 rows, so a single-label predictor's argmax ceiling is micro-F1 0.831 while the P@K ceiling (probability spread over a pair's gold labels) is 1.0)"
+    },
+    "excluded": {
+      "file": "data/frozen/relemb/excluded.jsonl",
+      "sha256": "9f17cc14d62985fe507f7d011614706f1f6f62503515e2fed002d251e7fa4e28",
+      "wikiwd_empty_entity_span": "962 edges whose left or right position list is empty (cannot be marked; the paper's loader raises on them and skips the edge); 269 sentences lose all their edges this way",
+      "wikiwd_non_english": "13 sentences / 24 edges (frozen language screen)",
+      "nytfb_out_of_inventory": "4 rows labelled /location/country/languages_spoken (3) and /base/locations/countries/states_provinces_within (1): not in the paper's 56-label NYT inventory (loader skips them)"
+    },
+    "prompts_sha256": {
+      "prompts/relemb_wikiwd_v2.json": "fb20740d2c93e68e850cf1de4785593d171d08c9321f2b363256332b40acf242",
+      "prompts/relemb_nytfb_v2.json": "9eed67cbdde420ab01f600533bd1107aeb10fc4d48c3f84ede0edda1bdc318ec"
+    }
+  },
+  "english_verification": {
+    "sources": "Wiki-WD: English Wikipedia (enwiki-20160501). NYT-FB: New York Times articles.",
+    "method": "Every Wiki-WD sentence (360,334; tokens joined, HTML entities unescaped) and every distinct NYT sentence (45,736): (1) langid.py 1.1.6 top-1 (non-en: Wiki-WD 6,465, NYT 226; mostly 'la'/'es'/'pt' on foreign names); (2) >= 2 letters outside the Latin script (Wiki-WD 1,240, NYT 0); (3) the union (Wiki-WD 7,271, NYT 226) was screened by a general-purpose chat LLM (not Jev/TypeSafe) in batches of 50 with the rule below, flagging Wiki-WD 36 and NYT 0; (4) the 36 were judged from the text alone (no labels, no Jev output): 13 excluded. A random sample of 25 unflagged candidates was read: all English sentences with foreign names.",
+    "rule": "Exclude a sentence if it contains a non-English sentence, clause or multi-word running-text phrase (quoted lines, inscriptions, honorifics, Italian/French/Spanish phrases used as text) or non-English function words (code-mixing). Keep proper names in any language or script, titles of works, native-script renderings of names, transliterations, taxonomic names, single loanwords and single-word etymologies.",
+    "frozen_list": "data/frozen/relemb/non_english.json (index in the held-out file, SHA-256 of the sentence text, reason; plus screen counts and the 36 LLM-flagged indices)",
+    "effect": "Wiki-WD: 13 of 360,334 sentences (24 of 740,963 edges, 0.003%). NYT-FB: none."
+  },
+  "evaluation": {
+    "wikiwd": "micro P/R/F1 with P0 excluded from both denominators (RECON/KGPool utils/evaluation_utils.py evaluate_instance_based, from Sorokin & Gurevych); pooled over all edges (RECON's test.py averages batch F1s; pooled is the well-defined equivalent). Paper Table 3 reports P, R, F1.",
+    "nytfb": "P@K = precision at K% recall (KGPool Section 5: 'P@K here represents precision at K percent recall'; RECON/KGPool numbers are copied into paper Table 3): all (row, non-NA relation) Jev probabilities ranked descending (ties by row, then label order), precision at the first rank reaching 10% / 30% of the 6,440 positive rows; NA probability ignored. The paper's sentence 'averaged across all relation labels' is ambiguous, so the per-label (macro) variant is also reported. No evaluation code was released by the paper."
+  },
+  "deviations": [
+    "Wiki-WD's 352 labels exceed the 255-option choice cap: fixed two-half tournament (numeric PID order, 176 + 175 properties, each half with a 'none of the listed relations' option; both none -> P0, one real winner -> it, two -> a 2-way round-2 choice, requested adaptively). Equivalent to the flat argmax under consistent preferences; fixed before any Jev output.",
+    "Wiki-WD: 962 empty-span edges dropped (unmarkable; also dropped by the paper's loader). 13 non-English sentences (24 edges) dropped.",
+    "NYT-FB: 4 rows with labels outside the paper's 56-label inventory dropped (also dropped by the paper's loader). Inventory = the paper's 56 labels (paper text says 53).",
+    "NYT-FB entity mentions are located by first case-insensitive whole-word match of the entity name (underscores -> spaces; substring fallback), as in the paper's loader; all 172,444 rows match. Sentences keep original casing (the paper's loader lower-cases).",
+    "Wiki-WD tokens are joined with spaces and HTML entities unescaped.",
+    "Label text (v2): option names only with null descriptions, mirroring the paper's classifier, which sees no label text. Jev, being zero-shot, gets the names (the paper's model learns label meaning from 372K-570K training instances instead).",
+    "Request layout (v2): state = {task statement, plain sentence} once per request; one question per distinct (head, tail) pair with the marked sentence; all pairs of a sentence packed into as few requests as fit 90K serialized chars (~24K tokens at the measured 3.7 chars/token)."
+  ]
+}
